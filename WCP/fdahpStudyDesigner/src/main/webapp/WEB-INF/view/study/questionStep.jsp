@@ -3437,10 +3437,13 @@
         }
       });
 
+
       $("#anchorTextId").blur(function () {
         validateAnchorDateText('', function (val) {
         });
       });
+
+      
 
       if (${empty questionnairesStepsBo.questionReponseTypeBo.selectionStyle || 
           questionnairesStepsBo.questionReponseTypeBo.selectionStyle eq 'Single'}) {
@@ -3629,6 +3632,12 @@
       } else {
         $('.ImageChoiceContainer').find(".remBtnDis").addClass("hide");
         $('.ImageChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
+      }
+      if (${actionTypeForQuestionPage == 'view'}) {
+    	  $('.TextScaleContainer').find(".remBtnDis").css("pointer-events", "none");
+    	  $('.ImageChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
+    	  $('.ValuePickerContainer').find(".remBtnDis").css("pointer-events", "none");
+    	  $('.TextChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
       }
       $(".menuNav li.active").removeClass('active');
       $(".sixthQuestionnaires").addClass('active');
