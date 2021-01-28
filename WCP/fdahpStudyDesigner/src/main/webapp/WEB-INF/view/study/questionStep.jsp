@@ -29,6 +29,12 @@
   .btn{
   font-size:13px !important
   }
+  .response_type{
+  cursor: not-allowed;
+  background-color: #eee;
+    opacity: 1;
+    pointer-events:none;
+  }
 </style>
 <script type="text/javascript">
   function isNumber(evt) {
@@ -3610,6 +3616,7 @@
       $('.addBtnDis, .remBtnDis,.add_varible').addClass('dis-none');
       $("#trailId").hide();
       $(".removeImageId").css("visibility", "hidden");
+      
       </c:if>
 
       if ($('.value-picker').length > 2) {
@@ -3633,12 +3640,17 @@
         $('.ImageChoiceContainer').find(".remBtnDis").addClass("hide");
         $('.ImageChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
       }
+      
       if (${actionTypeForQuestionPage == 'view'}) {
     	  $('.TextScaleContainer').find(".remBtnDis").css("pointer-events", "none");
     	  $('.ImageChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
     	  $('.ValuePickerContainer').find(".remBtnDis").css("pointer-events", "none");
     	  $('.TextChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
+    	  $('.ImageChoiceContainer').find(".thumb-img").css("pointer-events", "none");
+    	  $('.btn-group').find(".btn").addClass("response_type");
+    	  
       }
+      
       $(".menuNav li.active").removeClass('active');
       $(".sixthQuestionnaires").addClass('active');
       $("#doneId").click(function () {

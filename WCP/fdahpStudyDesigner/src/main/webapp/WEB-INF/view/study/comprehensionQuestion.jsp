@@ -257,6 +257,7 @@
     $('.TestQuestionButtonHide').hide();
     $('.addBtnDis, .remBtnDis').addClass('dis-none');
     </c:if>
+   
     $("#doneId").on("click", function () {
       if (isFromValid("#comprehensionFormId") && validateCorrectAnswers()) {
         validateForUniqueValue('', function (val) {
@@ -266,6 +267,9 @@
         });
       }
     });
+
+   
+    
     $("#saveId").on("click", function () {
       $(".right-content-body").parents("form").validator("destroy");
       $(".right-content-body").parents("form").validator();
@@ -278,6 +282,10 @@
       $(".remBtnDis").addClass("hide");
       $(".remBtnDis").css("pointer-events", "none");
     }
+
+    if (${actionPage == 'view'}) {
+    	  $('.ans-opts').find(".remBtnDis").css("pointer-events", "none");
+      }
 
 	 
   });
