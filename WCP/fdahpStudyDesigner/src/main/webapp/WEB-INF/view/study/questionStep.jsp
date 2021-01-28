@@ -3646,7 +3646,7 @@
     	  $('.ImageChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
     	  $('.ValuePickerContainer').find(".remBtnDis").css("pointer-events", "none");
     	  $('.TextChoiceContainer').find(".remBtnDis").css("pointer-events", "none");
-    	  $('.ImageChoiceContainer').find(".thumb-img").css("pointer-events", "none");
+    	  $('.form-group').find(".sm-thumb-btn").css("pointer-events", "none");
     	  $('.btn-group').find(".btn").addClass("response_type");
     	  
       }
