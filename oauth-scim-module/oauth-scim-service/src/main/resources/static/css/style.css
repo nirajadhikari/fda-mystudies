@@ -500,13 +500,13 @@ body#body-container {
 #loading-spinner .spin-icon {
   margin: auto;
   display: inline-block;
-    width: 100px;
-    height: 100px;
-    vertical-align: text-bottom;
-    border: 6px solid currentColor;
-    border-right-color: transparent;
-    border-radius: 50%;
-    color: #387fea;
+  width: 100px;
+  height: 100px;
+  vertical-align: text-bottom;
+  border: 6px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  color: #387fea;
 
   -webkit-animation: loading-spinner 500ms linear infinite;
   -moz-animation:    loading-spinner 500ms linear infinite;

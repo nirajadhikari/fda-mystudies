@@ -9,5 +9,5 @@
 window.onload = function() {
   window.setTimeout(function() {
     document.consentForm.submit();
-  }, 500);
+  }, 100);
 };
