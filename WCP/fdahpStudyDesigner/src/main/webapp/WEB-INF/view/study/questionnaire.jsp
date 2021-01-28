@@ -67,6 +67,9 @@
   }
 
   /* error box css end here  */
+  
+  .display_inl_tbl { display: inline-table !important; }    
+  
 </style>
 
 <script type="text/javascript">
@@ -1353,7 +1356,7 @@
                  id="previousFrequency" value="${questionnaireBo.frequency}">
           <input type="hidden" name="type" id="type" value="schedule">
           <div class="manually all mt-lg dis-none">
-            <div class="gray-xs-f mb-sm">
+           <%--  <div class="gray-xs-f mb-sm">
               Select time period
               <span class="requiredStar">*</span>
               <span
@@ -1362,7 +1365,7 @@
                   data-placement="bottom"
                   title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
               </span>
-            </div>
+            </div> --%>
             <div class="manuallyContainer">
               <c:if
                   test="${fn:length(questionnaireBo.questionnaireCustomScheduleBo) eq 0}">
@@ -1370,6 +1373,19 @@
                   <input type="hidden"
                          name="questionnaireCustomScheduleBo[0].questionnairesId"
                          id="questionnairesId" value="${questionnaireBo.id}">
+                         
+                         <span class="display_inl_tbl">
+                          <div class="gray-xs-f mb-sm">
+              Select date period
+              <span class="requiredStar">*</span>
+              <span
+                  class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
+              </span>
+            </div>
+                         
                   <span
                       class="form-group  dis-inline vertical-align-middle pr-md">
                     <input id="StartDate0" type="text" count='0'
@@ -1392,6 +1408,21 @@
                            required/>
                     <span class='help-block with-errors red-txt'></span>
                   </span>
+                  </span>
+                  
+                  <span class="display_inl_tbl">
+                  <div class="gray-xs-f mb-sm">
+              Select time period
+              <span class="requiredStar">*</span>
+              <span
+                  class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
+              </span>
+            </div>
+        
+                  
                   <span
                       class="form-group  dis-inline vertical-align-middle pr-md">
                     <input id="customTime0" type="text" count='0'
@@ -1400,8 +1431,10 @@
                            placeholder="Time" onclick='timep(this.id);' disabled required/>
                     <span class='help-block with-errors red-txt'></span>
                   </span>
+                  
                   <span class="addbtn addBtnDis align-span-center mr-md"
                         onclick="addDate();">+
+                  </span>
                   </span>
                 </div>
               </c:if>
