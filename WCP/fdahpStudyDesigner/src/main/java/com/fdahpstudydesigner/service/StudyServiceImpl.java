@@ -1478,7 +1478,10 @@ public class StudyServiceImpl implements StudyService {
         studyDetails.setAppDescription("App Desc_" + studyBo.getAppId());
         studyDetails.setLogoImageUrl(
             StringUtils.isEmpty(studyBo.getThumbnailImage())
-                ? ""
+                ? propMap.get("fda.imgDisplaydPath")
+                    + propMap.get("cloud.bucket.name")
+                    + propMap.get(FdahpStudyDesignerConstants.FDA_SMD_STUDY_THUMBNAIL_PATH)
+                    + propMap.get(FdahpStudyDesignerConstants.STUDY_BASICINFORMATION_DEFAULT_IMAGE)
                 : propMap.get("fda.imgDisplaydPath")
                     + propMap.get("cloud.bucket.name")
                     + propMap.get(FdahpStudyDesignerConstants.FDA_SMD_STUDY_THUMBNAIL_PATH)
