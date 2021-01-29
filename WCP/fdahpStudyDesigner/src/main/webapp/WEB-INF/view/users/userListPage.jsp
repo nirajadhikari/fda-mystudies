@@ -5,6 +5,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<style>
+    #user_list tr td {
+    padding-left: 20px !important;
+}
+#user_list tr th {
+    padding-left: 20px !important;
+}
+</style>
+
 <div
     class="col-xs-12 col-sm-12 col-md-12 col-lg-12 grayeef2f5-bg p-none">
   <div>

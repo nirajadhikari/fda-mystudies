@@ -9,6 +9,12 @@
   }
 
   -->
+  #app_Wide_Notification_list tr td {
+    padding-left: 20px !important;
+    }
+    #app_Wide_Notification_list tr th {
+    padding-left: 20px !important;
+}
 </style>
 
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none mb-md">
