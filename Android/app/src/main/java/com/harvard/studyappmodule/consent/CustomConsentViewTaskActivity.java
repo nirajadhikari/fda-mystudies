@@ -777,10 +777,10 @@ public class CustomConsentViewTaskActivity extends AppCompatActivity
                       .getStepResult(getResources().getString(R.string.signature_form_step))
                       .getResults());
       JSONObject formResultObj = new JSONObject(formResult);
-      JSONObject fullNameObj = formResultObj.getJSONObject("First Name");
+      JSONObject fullNameObj = formResultObj.getJSONObject("First name");
       JSONObject fullNameResult = fullNameObj.getJSONObject("results");
 
-      JSONObject lastNameObj = formResultObj.getJSONObject("Last Name");
+      JSONObject lastNameObj = formResultObj.getJSONObject("Last name");
       JSONObject lastNameResult = lastNameObj.getJSONObject("results");
       String firstName = fullNameResult.getString("answer");
       String lastName = lastNameResult.getString("answer");

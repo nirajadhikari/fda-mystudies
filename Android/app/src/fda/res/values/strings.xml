@@ -8,7 +8,7 @@
     <string name="app_name">&app_name;</string>
     <string name="poweredby">Powered by FDA MyStudies on Google Cloud</string>
     <string name="website"></string>
-    <string name="websitetxt">App Website</string>
+    <string name="websitetxt">App website</string>
     <string name="gateway_des">&lt;Introductory content paragraph goes here&gt;</string>
     <string name="gateway_des1">&lt;Introductory content paragraph goes here&gt;</string>
     <string name="delete_account_content">You have chosen to delete your &app_name; account. This will result in automatic withdrawal from the studies you were enrolled in.</string>
@@ -16,8 +16,8 @@
     <string name="studie_your_enrolled">It\'s been a while since you visited the &app_name; app. Please consider continuing your participation in any studies in which you\'re enrolled.</string>
     <string name="termsurl"></string>
     <string name="privacyurl"></string>
-    <string name="view_consent">View Consent</string>
-    <string name="visit_website">Visit Website</string>
+    <string name="view_consent">View consent document</string>
+    <string name="visit_website">Visit website</string>
     <string name="join_study">Participate</string>
     <string name="clientToken">clientToken</string>
     <string name="account_type">&package_name;.offlineModule.auth.syncadapterexample</string>
