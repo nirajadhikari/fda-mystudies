@@ -59,7 +59,7 @@
          <span>
             <span
                data-toggle="tooltip" data-placement="top"
-               title="This will present a set of questions to the participant to gauge their understanding of the study based on their review of the consent sections."
+               title="This will present a set of questions to the app user to gauge their understanding of the study based on their review of the consent sections."
                class="filled-tooltip"></span>
             </span>
           <span class="ct_panel"
@@ -137,13 +137,13 @@
       </div>
 
       <div class="right-content-body mt-xlg" id="displayTitleId">
-        <div class="gray-xs-f mb-xs">Minimum score needed to pass</div>
+        <div class="gray-xs-f mb-xs">Minimum score needed to pass the test</div>
         <div class="form-group col-md-5 p-none scoreClass">
           <input type="text" id="comprehensionTestMinimumScore" class="form-control"
                  name="comprehensionTestMinimumScore"
                  value="${consentBo.comprehensionTestMinimumScore}"
                  maxlength="3" onkeypress="return isNumber(event)"
-                 Style="width:200px">
+                 Style="width:250px">
           <div class="help-block with-errors red-txt"></div>
         </div>
         <input type="hidden" name="consentId" id="consentId" value="${consentBo.id}"/>
@@ -219,7 +219,7 @@
       "info": false,
       "filter": false,
       language: {
-        "zeroRecords": "You haven't created any content yet.",
+        "zeroRecords": "No content created yet.",
       },
       rowReorder: reorder,
       "columnDefs": [{orderable: false, targets: [0, 1]}],

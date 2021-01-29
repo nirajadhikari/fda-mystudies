@@ -129,7 +129,7 @@
         {"bSortable": true}
       ],
       language: {
-        "zeroRecords": "You haven't created any content yet.",
+        "zeroRecords": "No content created yet.",
       },
       "order": [[0, "desc"]],
       "info": false,
