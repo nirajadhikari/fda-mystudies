@@ -37,7 +37,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
   <div class="white-bg">
     <div>
-      <table id="app_Wide_Notification_list" class="table table-right tbl">
+      <table id="app_Wide_Notification_list" class="table wid100 tbl">
         <thead>
           <tr>
             <th id="">Notification</th>

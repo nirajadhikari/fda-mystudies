@@ -61,7 +61,7 @@
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 p-none">
   <div class="white-bg">
     <div>
-      <table id="user_list" class="table tbl_rightalign tbl">
+      <table id="user_list" class="table wid100 tbl">
         <thead>
           <tr>
             <th id="">Name
