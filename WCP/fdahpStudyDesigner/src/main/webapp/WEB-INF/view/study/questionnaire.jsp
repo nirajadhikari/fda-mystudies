@@ -503,6 +503,7 @@
                 <div class="mt-none resetDate">
                   <div>
                     <span class="pr-md">Anchor Date</span>
+                    
                     <span><select
                         class="signDropDown selectpicker sign-box ${(questionnaireBo.shortTitleDuplicate > 0)?'cursor-none' : ''}"
                         name="questionnairesFrequenciesBo.xDaysSign"
@@ -1512,8 +1513,21 @@
                   <input type="hidden"
                          name="questionnaireCustomScheduleBo[0].questionnairesId"
                          id="questionnairesId" value="${questionnaireBo.id}">
+                         
+                          <span class="display_inl_tbl">
+                          <div class="gray-xs-f">
+              Select date period
+              <span class="requiredStar">*</span>
+              <span
+                  class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
+              </span>
+            </div>
                   <span
                       class="mb-sm pr-md">
+                     
                     <span class="light-txt opacity06">
                       Anchor Date
                     </span>
@@ -1580,6 +1594,19 @@
                         class="light-txt opacity06"> days
                     </span>
                   </span>
+                  </span>
+                  
+                  <span class="display_inl_tbl">
+                          <div class="gray-xs-f mb-xs">
+              Select Time period
+              <span class="requiredStar">*</span>
+              <span
+                  class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
+              </span>
+            </div>
                   <span
                       class="form-group  dis-inline vertical-align-middle pr-md"
                       style="margin-bottom: -13px"><input id="manualTime0"
@@ -1593,6 +1620,7 @@
                   <span id="addbtn0"
                         class="addbtn addBtnDis dis-inline vertical-align-middle mr-sm"
                         onclick="addDateAnchor();">+
+                  </span>
                   </span>
                 </div>
               </c:if>

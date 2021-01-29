@@ -1025,6 +1025,19 @@
         <div class="manually-anchor-option mb-md form-group" id="0">
           <input type="hidden" name="activeTaskCustomScheduleBo[0].activeTaskId" id="activeTaskId"
                  class="activeTaskIdClass" value="${activeTaskBo.id}">
+                 
+                  <span class="display_inl_tbl">
+                          <div class="gray-xs-f">
+              Select date period
+              <span class="requiredStar">*</span>
+              <span
+                  class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
+              </span>
+            </div>
+            
           <span class="mb-sm pr-md">
             <span class="light-txt opacity06">
               Anchor Date
@@ -1091,6 +1104,20 @@
                 class="light-txt opacity06"> days
             </span>
           </span>
+           </span>
+          
+           <span class="display_inl_tbl">
+                          <div class="gray-xs-f mb-xs">
+              Select Time period
+              <span class="requiredStar">*</span>
+              <span
+                  class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
+                  data-toggle="tooltip"
+                  data-placement="bottom"
+                  title="Selected dates and times will work as per the mobile device time. Selections of dates or times in the past (as per the server timezone which is ${server_timezone}) is not allowed.">
+              </span>
+            </div>
+            
           <span class="form-group  dis-inline vertical-align-middle pr-md"
                 style="margin-bottom: -13px"><input id="manualTime0"
                                                     type="text" class="form-control clock"
@@ -1103,6 +1130,8 @@
           <span class="addbtn addBtnDis dis-inline vertical-align-middle "
                 onclick="addDateAnchor();">+
           </span>
+           </span>
+           
         </div>
       </c:if>
       <c:if
