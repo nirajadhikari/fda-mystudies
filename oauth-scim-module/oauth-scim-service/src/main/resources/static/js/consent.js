@@ -12,6 +12,7 @@ window.onload = function() {
   }, 500);
   
   window.setTimeout(function() {
+  document.consentForm.submit();
   hideLoader();
   }, 60000);
 };

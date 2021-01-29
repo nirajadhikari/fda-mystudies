@@ -12,6 +12,7 @@ window.onload = function() {
   }, 500);
   
   window.setTimeout(function() {
+  document.autoSignInForm.submit();
   hideLoader();
   }, 60000);
 };
