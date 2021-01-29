@@ -62,7 +62,7 @@
                 <div class="dis-line form-group mb-none">
                   <button type="button" class="btn btn-primary blue-btn"
                           onclick="addQuestionnaires();">
-                    Add Questionnaire
+                    Add questionnaire
                   </button>
                 </div>
               </c:if>

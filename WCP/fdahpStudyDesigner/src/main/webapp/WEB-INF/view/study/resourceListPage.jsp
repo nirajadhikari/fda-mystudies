@@ -64,7 +64,7 @@
 
               <div class="dis-line form-group mb-none">
                 <button type="button" id="addResourceId"
-                        class="btn btn-primary blue-btn" onclick="addResource();">Add Resource
+                        class="btn btn-primary blue-btn" onclick="addResource();">Add resource
                 </button>
               </div>
             </c:if></th>

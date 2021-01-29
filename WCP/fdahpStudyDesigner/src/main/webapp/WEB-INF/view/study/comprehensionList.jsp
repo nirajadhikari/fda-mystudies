@@ -93,7 +93,7 @@
             <c:if test="${empty permission}">
               <button type="button" class="btn btn-primary blue-btn"
                       id="addQuestionId"
-                            onclick="addComphernsionQuestionPage();">+ Add Question
+                            onclick="addComphernsionQuestionPage();">+ Add question
               </button>
             </c:if>
           </div>
