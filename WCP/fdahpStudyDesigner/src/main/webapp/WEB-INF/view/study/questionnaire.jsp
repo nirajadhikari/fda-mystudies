@@ -348,6 +348,7 @@
               scheduletype="Regular" value="Regular" name="scheduleType"
             ${empty questionnaireBo.scheduleType  || questionnaireBo.scheduleType=='Regular' ?'checked':''}
             ${(questionnaireBo.shortTitleDuplicate > 0)?'disabled' : ''}
+            ${(actionType eq 'view')?'disabled' : ''}
             <c:if test="${empty anchorTypeList || fn:length(anchorTypeList) le 1}">'disabled'</c:if>>
             <label for="schedule1">Regular</label>
           </span>
@@ -363,6 +364,7 @@
             ${isAnchorQuestionnaire?'disabled':''}
             ${questionnaireBo.scheduleType=='AnchorDate' ?'checked':''}
             ${questionnaireBo.shortTitleDuplicate > 0?'disabled' : ''}
+             ${(actionType eq 'view')?'disabled' : ''}
                                                          <c:if
                                                              test="${empty anchorTypeList}">disabled</c:if>> <label
                 for="schedule2">Anchor date based</label>
