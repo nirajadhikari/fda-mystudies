@@ -9,12 +9,15 @@
 window.onload = function() {
   window.setTimeout(function() {
     document.autoSignInForm.submit();
-  }, 100);
-  loaded();
+  }, 500);
+  
+  window.setTimeout(function() {
+  hideLoader();
+  }, 60000);
 };
 
 var hideLoader = function () {
-        $(".loading_div").fadeOut("slow");
-       //  $("#div1").show();
+  $(".loading_div").fadeOut("slow");
+  $("#errorMsg").show();
 };
-setTimeout(hideLoader, 2000);
+

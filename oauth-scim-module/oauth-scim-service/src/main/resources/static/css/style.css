@@ -489,7 +489,7 @@ body#body-container {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  }
+}
 
 #loading-spinner {
   display: inline;
@@ -522,6 +522,14 @@ font-family: Muli, sans-serif;
 font-weight: 600;
 text-align: center;
 margin-top: 80%;
+}
+
+.loading_text_error {
+color: var(--space-gray);
+font-size: 14px;
+font-family: Muli, sans-serif;
+font-weight: 600;
+text-align: center;
 }
 
 @-webkit-keyframes loading-spinner {

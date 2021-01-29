@@ -9,5 +9,14 @@
 window.onload = function() {
   window.setTimeout(function() {
     document.consentForm.submit();
-  }, 100);
+  }, 500);
+  
+  window.setTimeout(function() {
+  hideLoader();
+  }, 60000);
+};
+
+var hideLoader = function () {
+  $(".loading_div").fadeOut("slow");
+  $("#errorMsg").show();
 };
