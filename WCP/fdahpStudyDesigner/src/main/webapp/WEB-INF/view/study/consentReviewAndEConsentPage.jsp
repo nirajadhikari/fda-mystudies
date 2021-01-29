@@ -45,7 +45,7 @@
           </div>
           <div class="dis-line form-group mb-none">
             <button type="button" class="btn btn-primary blue-btn" id="doneId">Mark
-              as Completed
+              as completed
             </button>
           </div>
         </div>

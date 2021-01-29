@@ -49,7 +49,7 @@
                   <button type="button"
                           class="btn btn-primary blue-btn hideButtonIfPaused studyNotificationDetails">
                     Add
-                    Notification
+                    notification
                   </button>
                 </div>
               </c:if>

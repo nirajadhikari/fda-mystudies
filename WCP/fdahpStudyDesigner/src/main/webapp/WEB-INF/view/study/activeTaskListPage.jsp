@@ -69,7 +69,7 @@
                 <c:if test="${empty permission}">
                   <button type="button" class="btn btn-primary blue-btn"
                           onclick="addActiveTaskPage();">
-                    Add Active Task
+                    Add active task
                   </button>
                 </c:if>
               </div>
