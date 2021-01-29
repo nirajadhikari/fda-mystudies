@@ -203,8 +203,11 @@ Superadmins can manage users of the Participant Manager and in addition, can man
                     [ngModelOptions]="{standalone: true}"
                     [disabled]="!user.manageLocationsSelected"
                   />
-                  <label for="location_view_edit_permssion">
-                    View And Edit
+                  <label
+                    for="location_view_edit_permssion"
+                    class="txt_style_unset"
+                  >
+                    View and edit
                   </label>
                 </span>
               </div>
@@ -280,8 +283,11 @@ Superadmins can manage users of the Participant Manager and in addition, can man
                               name="appRadioGroup{{ app.id }}"
                               (change)="appRadioButtonChange(app)"
                             />
-                            <label for="appRadioEdit{{ app.id }}">
-                              View And Edit
+                            <label
+                              for="appRadioEdit{{ app.id }}"
+                              class="txt_style_unset"
+                            >
+                              View and edit
                             </label>
                           </span>
                         </div>
@@ -369,8 +375,9 @@ Superadmins can manage users of the Participant Manager and in addition, can man
                                     />
                                     <label
                                       for="studyRadioEdit{{ study.studyId }}"
+                                      class="txt_style_unset"
                                     >
-                                      View And Edit
+                                      View and edit
                                     </label>
                                   </span>
                                 </div>
@@ -457,8 +464,11 @@ Superadmins can manage users of the Participant Manager and in addition, can man
                                       id="siteRadioEdit{{ site.siteId }}"
                                       name="siteRadioGroup{{ site.siteId }}"
                                     />
-                                    <label for="siteRadioEdit{{ site.siteId }}">
-                                      View And Edit
+                                    <label
+                                      for="siteRadioEdit{{ site.siteId }}"
+                                      class="txt_style_unset"
+                                    >
+                                      View and edit
                                     </label>
                                   </span>
                                 </div>
