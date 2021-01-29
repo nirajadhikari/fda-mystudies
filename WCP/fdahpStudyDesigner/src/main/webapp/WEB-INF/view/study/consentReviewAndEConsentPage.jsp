@@ -96,7 +96,7 @@
                   id="rootContainer">
                 <div class="col-md-12 p-none">
                   <div class="gray-xs-f mb-xs">
-                    Screen Title
+                    Screen title
                     <small>(250 characters max)</small>
                     <span
                         class="requiredStar">*
