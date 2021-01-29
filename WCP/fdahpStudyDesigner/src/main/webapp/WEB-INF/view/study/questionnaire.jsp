@@ -1377,7 +1377,7 @@
                          
                          <span class="display_inl_tbl">
                           <div class="gray-xs-f mb-sm">
-              Select date period
+              Select a date range
               <span class="requiredStar">*</span>
               <span
                   class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
@@ -1413,7 +1413,7 @@
                   
                   <span class="display_inl_tbl">
                   <div class="gray-xs-f mb-sm">
-              Select time period
+              Select a time
               <span class="requiredStar">*</span>
               <span
                   class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
@@ -1516,7 +1516,7 @@
                          
                           <span class="display_inl_tbl">
                           <div class="gray-xs-f">
-              Select date period
+              Select a date range
               <span class="requiredStar">*</span>
               <span
                   class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
@@ -1598,7 +1598,7 @@
                   
                   <span class="display_inl_tbl">
                           <div class="gray-xs-f mb-xs">
-              Select Time period
+              Select a time
               <span class="requiredStar">*</span>
               <span
                   class="ml-xs sprites_v3 filled-tooltip Selectedtooltip"
