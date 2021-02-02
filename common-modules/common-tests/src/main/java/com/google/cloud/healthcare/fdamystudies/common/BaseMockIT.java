@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.ContainsPattern;
@@ -342,12 +343,14 @@ public class BaseMockIT {
 
   protected String generateApiDocs() throws IOException {
     // get swagger json
-    String swagger = this.restTemplate.getForObject("/v2/api-docs", String.class);
+    String apiDocs = this.restTemplate.getForObject("/v2/api-docs", String.class);
 
     // format the json
     ObjectMapper mapper = new ObjectMapper();
     mapper.enable(SerializationFeature.INDENT_OUTPUT);
-    swagger = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mapper.readTree(swagger));
+
+    ObjectNode jsonObjNode = mapper.readValue(apiDocs, ObjectNode.class);
+    jsonObjNode.put("host", "localhost:8080");
 
     // prepare the filepath
     String documentPath = Paths.get("").toAbsolutePath().toString();
@@ -359,7 +362,7 @@ public class BaseMockIT {
     documentPath = documentPath.replace(" ", "_");
 
     // write api-docs json to a file
-    FileUtils.write(new File(documentPath), swagger, Charset.defaultCharset());
+    FileUtils.write(new File(documentPath), jsonObjNode.toPrettyString(), Charset.defaultCharset());
     logger.info(String.format("Open API documentation created at %s", documentPath));
     return documentPath;
   }

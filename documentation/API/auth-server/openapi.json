@@ -9,7 +9,7 @@
       "url" : "https://github.com/GoogleCloudPlatform/fda-mystudies/blob/master/LICENSE.txt"
     }
   },
-  "host" : "localhost:60900",
+  "host" : "localhost:8080",
   "basePath" : "/auth-server",
   "tags" : [ {
     "name" : "Get Health",
