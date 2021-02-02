@@ -24,8 +24,7 @@ import springfox.documentation.spi.schema.contexts.ModelPropertyContext;
 
 @Component
 @Order(Validators.BEAN_VALIDATOR_PLUGIN_ORDER)
-public class SwaggerParameterAnnotationPlugin
-    implements ModelPropertyBuilderPlugin {
+public class SwaggerParameterAnnotationPlugin implements ModelPropertyBuilderPlugin {
 
   @Override
   public boolean supports(DocumentationType delimiter) {
