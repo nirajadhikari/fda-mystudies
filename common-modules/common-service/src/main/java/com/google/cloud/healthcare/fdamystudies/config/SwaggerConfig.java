@@ -14,6 +14,9 @@ import com.google.cloud.healthcare.fdamystudies.common.CommonConstants;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import org.apache.commons.text.WordUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -38,6 +41,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig extends WebMvcConfigurationSupport {
+
+  @Value("${component.name:}")
+  private Optional<String> componentName;
 
   @Bean
   public Docket api() {
@@ -80,8 +86,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
   private ApiInfo apiInfo() {
     return new ApiInfo(
-        ApiInfo.DEFAULT.getTitle(),
-        null,
+        "Api Documentation",
+        WordUtils.capitalizeFully(componentName.get()),
         ApiInfo.DEFAULT.getVersion(),
         null,
         ApiInfo.DEFAULT_CONTACT,
