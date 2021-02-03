@@ -36,6 +36,8 @@ import com.google.cloud.healthcare.fdamystudies.util.AppConstants;
 import com.google.cloud.healthcare.fdamystudies.util.BeanUtil;
 import com.google.cloud.healthcare.fdamystudies.util.ErrorCode;
 import com.google.cloud.healthcare.fdamystudies.util.MyStudiesUserRegUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -55,6 +57,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(
+    tags = "Study Information",
+    value = "Study info related API's",
+    description = "Operations pertaining to get participant study details")
 @RestController
 public class StudyStateController {
 
@@ -68,6 +74,7 @@ public class StudyStateController {
 
   @Autowired private StudyRepository studyRepository;
 
+  @ApiOperation(value = "update enrollment status of a participant associated to particular study")
   @PostMapping(
       value = "/updateStudyState",
       consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -113,6 +120,7 @@ public class StudyStateController {
     return new ResponseEntity<>(studyStateRespBean, HttpStatus.OK);
   }
 
+  @ApiOperation(value = "fetch participant's study information")
   @GetMapping(value = "/studyState", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> getStudyState(
       @RequestHeader(USER_ID) String userId,
@@ -142,6 +150,7 @@ public class StudyStateController {
     }
   }
 
+  @ApiOperation(value = "withdraw participant from study")
   @PostMapping(
       value = "/withdrawfromstudy",
       consumes = MediaType.APPLICATION_JSON_VALUE,
