@@ -73,7 +73,7 @@ table.dataTable thead th:last-child {
 						<c:if
                   test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'I')}">disabled</c:if>
 						data-error="Please check these box if you want to proceed."
-						required> <label for="inlineCheckbox1"> iOS </label> </span> <span
+						> <label for="inlineCheckbox1"> iOS </label> </span> <span
 						class="checkbox checkbox-inline"><input type="checkbox"
 						class="platformClass" id="inlineCheckbox2" name="platform"
 						value="A"
@@ -81,7 +81,7 @@ table.dataTable thead th:last-child {
 						<c:if
                   test="${not empty studyBo.liveStudyBo && fn:contains(studyBo.liveStudyBo.platform,'A')}">disabled</c:if>
 						data-error="Please check these box if you want to proceed."
-						required> <label for="inlineCheckbox2"> Android </label> </span>
+						> <label for="inlineCheckbox2"> Android </label> </span>
 					<div class="help-block with-errors red-txt"></div>
 				</div>
 			</div>
