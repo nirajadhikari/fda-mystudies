@@ -143,7 +143,6 @@ public class ResourcesListAdapter extends RecyclerView.Adapter<ResourcesListAdap
                 intent.putExtra("studyStatus", ((SurveyActivity) context).getStudyStatus());
                 intent.putExtra("position", "" + ((SurveyActivity) context).getPosition());
                 intent.putExtra("enroll", "" + ((SurveyActivity) context).getTitle1());
-                intent.putExtra("rejoin", "" + ((SurveyActivity) context).getTitle1());
                 intent.putExtra("about_this_study", true);
                 (context).startActivity(intent);
 
