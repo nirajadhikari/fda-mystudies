@@ -517,6 +517,7 @@
     <string name="retry">Retry</string>
 
     <string name="refreshToken">refreshToken</string>
+    <string name="consentConfirmation">By tapping on Agree, you confirm that you have reviewed the consent document and agree to participate in the study.</string>
 
 
     <string name="activetaskremindertxt">Reminder: The fetal kick activity timer is currently running. Please record kicks or movements you have felt in the app.</string>
