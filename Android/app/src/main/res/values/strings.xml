@@ -518,6 +518,8 @@
 
     <string name="refreshToken">refreshToken</string>
     <string name="consentConfirmation">By tapping on Agree, you confirm that you have reviewed the consent document and agree to participate in the study.</string>
+    <string name="leaveStudy">Are you sure you want to leave the study?</string>
+    <string name="leaveStudyDeleteAccount">Are you sure you want to leave the study?\nThis will also delete your app account.</string>
 
 
     <string name="activetaskremindertxt">Reminder: The fetal kick activity timer is currently running. Please record kicks or movements you have felt in the app.</string>
