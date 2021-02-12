@@ -162,7 +162,7 @@ public class StandaloneStudyInfoActivity extends AppCompatActivity
                 .equalsIgnoreCase("")) {
               Toast.makeText(
                       StandaloneStudyInfoActivity.this,
-                      "SignIn to Join the Study",
+                      "" + getString(R.string.signinToJoin),
                       Toast.LENGTH_SHORT)
                   .show();
               SharedPreferenceHelper.writePreference(
