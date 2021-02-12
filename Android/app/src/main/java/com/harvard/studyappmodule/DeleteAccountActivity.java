@@ -211,7 +211,7 @@ public class DeleteAccountActivity extends AppCompatActivity
           jsonArray1.put(jsonObject);
         }
       }
-      obj.put("deleteData", jsonArray1);
+      obj.put("studyData", jsonArray1);
     } catch (JSONException e) {
       Logger.log(e);
     }
