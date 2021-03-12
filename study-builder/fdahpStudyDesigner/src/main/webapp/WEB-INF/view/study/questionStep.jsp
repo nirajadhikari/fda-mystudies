@@ -4662,6 +4662,8 @@
         if ((file = this.files[0])) {
           img = new Image();
           img.onload = function () {
+        	  this.height=100;
+        	  this.width=100;
             var ht = this.height;
             var wds = this.width;
             if ((parseInt(ht) == parseInt(wds)) && (parseInt(ht) >= 90 && parseInt(ht) <= 120)

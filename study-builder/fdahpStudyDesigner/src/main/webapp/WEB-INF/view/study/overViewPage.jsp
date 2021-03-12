@@ -185,16 +185,15 @@
                   <div class="mt-xlg">
                     <div class="gray-xs-f mb-xs">
                       Description
-                      <small>(200 characters max)</small>
                       <span
                           class="requiredStar">*
                       </span>
                     </div>
                     <div class="form-group elaborateClass">
-                      <textarea class=" form-control updateInput" rows="5"
+                      <textarea class=" form-control updateInput summernote " rows="5"
                                 id="editor1" name="description" required
-                                data-error="Please enter plain text of up to 200 characters max."
-                                maxlength="200"></textarea>
+                                data-error="Please fill out this field."
+                                ></textarea>
 
                       <div class="help-block with-errors red-txt"></div>
                     </div>
@@ -327,19 +326,18 @@
                   <div class="mt-md">
                     <div class="gray-xs-f mb-xs">
                       Description
-                      <small>(200 characters max)</small>
                       <span
                           class="requiredStar">*
                       </span>
                     </div>
-                    <div class="form-group elaborateClass">
-                      <textarea class="form-control updateInput" rows="5"
-                                name="description" id="editor${spbSt.count}" required
-                                data-error="Please enter plain text of up to 200 characters max."
-                                maxlength="200">${studyPageBo.description}</textarea>
+                    
+                   <div class="form-group">
+                      <textarea class="form-control summernote" rows="5"
+                                name="description" id="editor${spbSt.count}" 
+                                data-error="Please fill out this field."> ${studyPageBo.description}</textarea>
                       <div class="help-block with-errors red-txt"></div>
-                    </div>
-                  </div>
+                    </div> 
+					</div>				
                 </div>
               </div>
             </div>
@@ -402,6 +400,41 @@
     </c:if>
     $("[data-toggle=tooltip]").tooltip();
     var countId = ${fn:length(studyPageBos)+ 2};
+    
+    //summernote editor initialization
+    $('.summernote')
+        .summernote(
+            {
+              placeholder: '',
+              disableResizeEditor: true,
+              tabsize: 2,
+              height: 200,
+              toolbar: [
+                [
+                  'font',
+                  ['bold', 'italic']],
+                [
+                  'para',
+                  ['paragraph',
+                    'ul', 'ol']],
+                ['font', ['underline']],
+                ['insert', ['link']],
+                ['hr'],
+                ['clear'],
+                ['cut'],
+                ['undo'],
+                ['redo'],
+                ['fontname',
+                  ['fontname']],
+                ['fontsize',
+                  ['fontsize']],]
+
+            });
+    
+    <c:if test="${not empty permission}">
+    $('.summernote').summernote('disable');
+    </c:if>
+
     // File Upload
     $(document).on("click", ".uploadImgbtn", function () {
       $(this).parent().find(".uploadImg").click();
@@ -508,11 +541,11 @@
           "</div>" +
           "</div>" +
           "<div class=mt-lg>" +
-          "<div class='gray-xs-f mb-xs'>Description <small>(200 characters max) </small><span class='requiredStar'>*</span></div>"
+          "<div class='gray-xs-f mb-xs'>Description<span class='requiredStar'>*</span></div>"
           +
-          "<div class='form-group elaborateClass'><textarea class='form-control updateInput' name='description' id='editor"
+          "<div class='form-group elaborateClass '><textarea class='summernote form-control updateInput' name='description' id='editor"
           + countId
-          + "' rows='5' required data-error='Please enter plain text of up to 200 characters max.' maxlength='200'></textarea>"
+          + "' rows='5' required data-error='Please fill out this field.'></textarea>"
           +
           "<div class='help-block with-errors red-txt'></div></div>" +
           "</div>" +
@@ -530,6 +563,42 @@
       countId++;
       $("[data-toggle=tooltip]").tooltip();
       $('body').find('.panel-collapse:last').collapse('show').addClass('in');
+
+
+      $('.summernote')
+      .summernote(
+          {
+            placeholder: '',
+            disableResizeEditor: true,
+            tabsize: 2,
+            height: 200,
+            toolbar: [
+              [
+                'font',
+                ['bold', 'italic']],
+              [
+                'para',
+                ['paragraph',
+                  'ul', 'ol']],
+              ['font', ['underline']],
+              ['insert', ['link']],
+              ['hr'],
+              ['clear'],
+              ['cut'],
+              ['undo'],
+              ['redo'],
+              ['fontname',
+                ['fontname']],
+              ['fontsize',
+                ['fontsize']],]
+
+          });
+  <c:if test="${not empty permission}">
+  $('.summernote').summernote('disable');
+  </c:if>
+
+      
+      
     });
     $(document).on('show.bs.collapse', '.panel-collapse', function () {
       $('.panel-collapse').not(this).collapse('hide').removeClass('in');
@@ -555,8 +624,46 @@
         $('#overViewFormId').submit();
       }
     });
+
+
+    function validateSummer(){   
+        var valid=true;     
+           $("textarea[id^='editor']").each(function (i, el) {
+        	   var richTextVal = $(this).val()
+       		var a=$(this).val();
+       		if ($(this).summernote(
+   	     'code') === '<br>' || $(this).summernote(
+   	     'code') === '' || $(this).summernote('code') === '<p><br></p>') {
+      		 $(this).attr(
+      		       'required', true);
+
+      		   $(this)
+      		       .parent()
+      		       .addClass(
+      		           'has-error has-danger')
+      		       .find(".help-block")
+      		       .empty()
+      		       .append(
+      		           '<ul class="list-unstyled"><li>Please fill out this field.</li></ul>');
+       			valid=false;
+       			return false;
+          }else{
+        	  var richTextVal = $(this).val();
+        	  if (null != richTextVal && richTextVal != '' && typeof richTextVal != 'undefined' && richTextVal != '<p><br></p>'){
+          	  var richText=$(this).summernote('code');
+          	  var escaped = $(this).text(richText).html();
+            	  $(this).val(escaped);
+        	  }
+          }
+    	      });
+	      return valid;
+    
+
+    } 
+             
     $("#completedId").on('click', function (e) {
       e.preventDefault();
+         
       var formValid = true;
       $('#accordion').find('.panel-default').each(function () {
         var file = $(this).find('input[type=file]').val();
@@ -566,6 +673,7 @@
           $(this).find('input[type=file]').removeAttr('required');
         } 
       });
+      
       if ((!isFromValid($(this).parents('form')))) {
         if (!($(this).parents('body').find('.panel-collapse.in').find('.has-error:first').length
             > 0)) {
@@ -582,13 +690,21 @@
             '.in').collapse('show');
         $(this).parents('body').find(".has-error-cust:first").ScrollTo();
       }
-      if (isFromValid($(this).parents('form')) && formValid) {
+      
+      var a=validateSummer();
+      if(a===false){
+          return false;
+      }
+     
+      if (isFromValid($(this).parents('form')) && formValid ) {
         $(this).attr('disabled', 'disabled')
         $(this).parents('form').submit();
       } else {
+          
         e.preventDefault();
       }
     });
+       
     var _URL = window.URL || window.webkitURL;
 
     $(document).on('change', '.uploadImg', function (e) {
@@ -598,9 +714,15 @@
       if ((file = this.files[0])) {
         img = new Image();
         img.onload = function () {
-          var ht = this.height;
-          var wds = this.width;
+
+        	
+            
+        
           if (thisId != '' && thisId == 1) {
+        	   this.height=1334;
+               this.width=750;
+               var ht = this.height;
+               var wds = this.width;
             if (ht == 1334 && wds == 750) {
               $(thisAttr).parent().parent().find('.removeUrl').css("visibility", "visible");
               $(thisAttr).parent().parent().parent().find(".thumb img")
@@ -618,6 +740,10 @@
               $(thisAttr).parent().parent().parent().find(".removeUrl").click();
             }
           } else {
+        	  this.height=570;
+              this.width=750;
+              var ht = this.height;
+              var wds = this.width;
             if (ht == 570 && wds == 750) {
               $(thisAttr).parent().parent().find('.removeUrl').css("visibility", "visible");
               $(thisAttr).parent().parent().parent().find(".thumb img")
