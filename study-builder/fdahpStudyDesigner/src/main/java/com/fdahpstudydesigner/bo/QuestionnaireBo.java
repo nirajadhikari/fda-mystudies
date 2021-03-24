@@ -29,12 +29,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "questionnaires")
@@ -86,9 +86,10 @@ public class QuestionnaireBo implements Serializable {
   private String frequency;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "is_Change")
   private Integer isChange = 0;
@@ -128,7 +129,7 @@ public class QuestionnaireBo implements Serializable {
   private Boolean status;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "study_lifetime_end")
   private String studyLifetimeEnd;
@@ -184,7 +185,7 @@ public class QuestionnaireBo implements Serializable {
     return this.frequency;
   }
 
-  public Integer getId() {
+  public String getId() {
     return this.id;
   }
 
@@ -240,7 +241,7 @@ public class QuestionnaireBo implements Serializable {
     return status;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return this.studyId;
   }
 
@@ -296,7 +297,7 @@ public class QuestionnaireBo implements Serializable {
     this.frequency = frequency;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -355,7 +356,7 @@ public class QuestionnaireBo implements Serializable {
     this.status = status;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

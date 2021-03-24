@@ -27,12 +27,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "eligibility")
@@ -61,9 +61,10 @@ public class EligibilityBo implements Serializable {
   private String failureOutcomeText;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "instructional_text")
   private String instructionalText;
@@ -75,7 +76,7 @@ public class EligibilityBo implements Serializable {
   private String modifiedOn;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   public String getActionType() {
     return actionType;
@@ -97,7 +98,7 @@ public class EligibilityBo implements Serializable {
     return failureOutcomeText;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -113,7 +114,7 @@ public class EligibilityBo implements Serializable {
     return modifiedOn;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -137,7 +138,7 @@ public class EligibilityBo implements Serializable {
     this.failureOutcomeText = failureOutcomeText;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -153,7 +154,7 @@ public class EligibilityBo implements Serializable {
     this.modifiedOn = modifiedOn;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 }

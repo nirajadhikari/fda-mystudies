@@ -112,7 +112,7 @@ public interface StudyService {
 
   public List<StudyListBean> getStudyList(Integer userId);
 
-  public List<StudyListBean> getStudyListByUserId(Integer userId);
+  public List<StudyListBean> getStudyListByUserId(String userId);
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
@@ -182,18 +182,18 @@ public interface StudyService {
 
   public boolean validateStudyId(String studyId);
 
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId);
 
   public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId);
 
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId);
 
   public boolean validateAppId(
       String customStudyId, String appId, String studyType, String dbCustomStudyId);
 
-  public StudyPermissionBO findStudyPermissionBO(int studyId, int userId);
+  public StudyPermissionBO findStudyPermissionBO(String studyId, int userId);
 
   public StudyDetailsBean getStudyByLatestVersion(String customStudyId);
 

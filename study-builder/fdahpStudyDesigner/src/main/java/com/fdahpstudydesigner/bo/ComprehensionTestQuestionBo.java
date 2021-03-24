@@ -28,10 +28,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "comprehension_test_question")
@@ -49,9 +49,10 @@ public class ComprehensionTestQuestionBo implements Serializable {
   private String createdOn;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "modified_by")
   private Integer modifiedBy;
@@ -88,7 +89,7 @@ public class ComprehensionTestQuestionBo implements Serializable {
     return createdOn;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -136,7 +137,7 @@ public class ComprehensionTestQuestionBo implements Serializable {
     this.createdOn = createdOn;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 

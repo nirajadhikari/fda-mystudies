@@ -27,11 +27,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "form")
@@ -54,9 +54,10 @@ public class FormBo implements Serializable {
   private String createdOn;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "form_id")
-  private Integer formId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "form_id", updatable = false, nullable = false)
+  private String formId;
 
   @Column(name = "modified_by")
   private Integer modifiedBy;
@@ -76,7 +77,7 @@ public class FormBo implements Serializable {
     return createdOn;
   }
 
-  public Integer getFormId() {
+  public String getFormId() {
     return formId;
   }
 
@@ -100,7 +101,7 @@ public class FormBo implements Serializable {
     this.createdOn = createdOn;
   }
 
-  public void setFormId(Integer formId) {
+  public void setFormId(String formId) {
     this.formId = formId;
   }
 

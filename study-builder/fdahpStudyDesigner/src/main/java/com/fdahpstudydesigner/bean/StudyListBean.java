@@ -32,7 +32,7 @@ public class StudyListBean {
   private String customStudyId;
   private boolean flag = false;
   private Integer id;
-  private Integer liveStudyId;
+  private String liveStudyId;
   private String name;
   private String projectLeadName;
   private String researchSponsor;
@@ -138,11 +138,11 @@ public class StudyListBean {
     this.id = id;
   }
 
-  public Integer getLiveStudyId() {
+  public String getLiveStudyId() {
     return liveStudyId;
   }
 
-  public void setLiveStudyId(Integer liveStudyId) {
+  public void setLiveStudyId(String liveStudyId) {
     this.liveStudyId = liveStudyId;
   }
 

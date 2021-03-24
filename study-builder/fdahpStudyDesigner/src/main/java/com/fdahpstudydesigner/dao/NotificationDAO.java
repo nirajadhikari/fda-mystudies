@@ -44,7 +44,7 @@ public interface NotificationDAO {
 
   public List<PushNotificationBean> getPushNotificationList(String scheduledTimestamp);
 
-  public Integer saveOrUpdateOrResendNotification(
+  public String saveOrUpdateOrResendNotification(
       NotificationBO notificationBO,
       String notificationType,
       String buttonType,

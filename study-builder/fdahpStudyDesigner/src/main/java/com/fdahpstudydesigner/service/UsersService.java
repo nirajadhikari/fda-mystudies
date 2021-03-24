@@ -52,7 +52,7 @@ public interface UsersService {
 
   public List<String> getActiveUserEmailIds();
 
-  public List<Integer> getPermissionsByUserId(Integer userId);
+  public List<Integer> getPermissionsByUserId(String userId);
 
   public UserBO getUserDetails(Integer userId);
 

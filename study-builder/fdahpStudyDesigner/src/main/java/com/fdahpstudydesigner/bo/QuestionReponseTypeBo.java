@@ -27,12 +27,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -118,9 +118,10 @@ public class QuestionReponseTypeBo implements Serializable {
   private Integer questionsResponseTypeId;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "response_type_id")
-  private Integer responseTypeId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "response_type_id", updatable = false, nullable = false)
+  private String responseTypeId;
 
   @Column(name = "selection_style")
   private String selectionStyle;
@@ -278,7 +279,7 @@ public class QuestionReponseTypeBo implements Serializable {
     return questionsResponseTypeId;
   }
 
-  public Integer getResponseTypeId() {
+  public String getResponseTypeId() {
     return responseTypeId;
   }
 
@@ -422,7 +423,7 @@ public class QuestionReponseTypeBo implements Serializable {
     this.questionsResponseTypeId = questionsResponseTypeId;
   }
 
-  public void setResponseTypeId(Integer responseTypeId) {
+  public void setResponseTypeId(String responseTypeId) {
     this.responseTypeId = responseTypeId;
   }
 

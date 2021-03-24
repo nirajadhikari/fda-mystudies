@@ -31,12 +31,12 @@ import java.util.TreeMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "questionnaires_steps")
@@ -98,7 +98,7 @@ public class QuestionnairesStepsBo implements Serializable {
   @Transient private List<QuestionConditionBranchBo> questionConditionBranchBoList;
 
   @Column(name = "questionnaires_id")
-  private Integer questionnairesId;
+  private String questionnairesId;
 
   @Transient private QuestionReponseTypeBo questionReponseTypeBo;
 
@@ -122,9 +122,10 @@ public class QuestionnairesStepsBo implements Serializable {
   private Boolean status;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "step_id")
-  private Integer stepId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "step_id", updatable = false, nullable = false)
+  private String stepId;
 
   @Column(name = "step_short_title")
   private String stepShortTitle;
@@ -174,7 +175,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return questionConditionBranchBoList;
   }
 
-  public Integer getQuestionnairesId() {
+  public String getQuestionnairesId() {
     return questionnairesId;
   }
 
@@ -210,7 +211,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return status;
   }
 
-  public Integer getStepId() {
+  public String getStepId() {
     return stepId;
   }
 
@@ -267,7 +268,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.questionConditionBranchBoList = questionConditionBranchBoList;
   }
 
-  public void setQuestionnairesId(Integer questionnairesId) {
+  public void setQuestionnairesId(String questionnairesId) {
     this.questionnairesId = questionnairesId;
   }
 
@@ -304,7 +305,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.status = status;
   }
 
-  public void setStepId(Integer stepId) {
+  public void setStepId(String stepId) {
     this.stepId = stepId;
   }
 

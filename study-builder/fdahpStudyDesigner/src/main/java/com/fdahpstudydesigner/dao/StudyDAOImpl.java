@@ -37,7 +37,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -1449,7 +1448,7 @@ public class StudyDAOImpl implements StudyDAO {
         String searchQuery =
             "From ComprehensionTestResponseBo CRBO where CRBO.comprehensionTestQuestionId=:id";
         query = session.createQuery(searchQuery);
-        query.setInteger("id", comprehensionTestQuestionBo.getId());
+        query.setString("id", comprehensionTestQuestionBo.getId());
         comprehensionTestResponsList = query.list();
         comprehensionTestQuestionBo.setResponseList(comprehensionTestResponsList);
       }
@@ -2849,7 +2848,7 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session
                 .getNamedQuery("getEligibiltyByStudyId")
-                .setInteger(FdahpStudyDesignerConstants.STUDY_ID, liveStudyBo.getId());
+                .setString(FdahpStudyDesignerConstants.STUDY_ID, liveStudyBo.getId());
         eligibilityBo = (EligibilityBo) query.uniqueResult();
         if (eligibilityBo != null) {
           EligibilityBo bo = SerializationUtils.clone(eligibilityBo);
@@ -2860,7 +2859,7 @@ public class StudyDAOImpl implements StudyDAO {
           eligibilityTestList =
               session
                   .getNamedQuery("EligibilityTestBo.findByEligibilityId")
-                  .setInteger(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId())
+                  .setString(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId())
                   .list();
           if ((eligibilityTestList != null) && !eligibilityTestList.isEmpty()) {
             for (EligibilityTestBo eligibilityTestBo : eligibilityTestList) {
@@ -2939,7 +2938,7 @@ public class StudyDAOImpl implements StudyDAO {
                 List<QuestionnaireCustomScheduleBo> questionnaireCustomScheduleList =
                     session
                         .createQuery(searchQuery)
-                        .setInteger("id", questionnaireBo.getId())
+                        .setString("id", questionnaireBo.getId())
                         .list();
                 if ((questionnaireCustomScheduleList != null)
                     && !questionnaireCustomScheduleList.isEmpty()) {
@@ -2959,7 +2958,7 @@ public class StudyDAOImpl implements StudyDAO {
                 List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList =
                     session
                         .createQuery(searchQuery)
-                        .setInteger("id", questionnaireBo.getId())
+                        .setString("id", questionnaireBo.getId())
                         .list();
                 if ((questionnairesFrequenciesList != null)
                     && !questionnairesFrequenciesList.isEmpty()) {
@@ -2987,7 +2986,7 @@ public class StudyDAOImpl implements StudyDAO {
             query =
                 session
                     .getNamedQuery("getQuestionnaireStepList")
-                    .setInteger("questionnaireId", questionnaireBo.getId());
+                    .setString("questionnaireId", questionnaireBo.getId());
             existedQuestionnairesStepsBoList = query.list();
             if ((existedQuestionnairesStepsBoList != null)
                 && !existedQuestionnairesStepsBoList.isEmpty()) {

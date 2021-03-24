@@ -27,12 +27,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -51,7 +51,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
   private Integer active = 0;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "active_task_master_attr_id")
   private Integer activeTaskMasterAttrId;
@@ -66,9 +66,10 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
   private String attributeVal;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "active_task_attribute_id")
-  private Integer attributeValueId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "active_task_attribute_id", updatable = false, nullable = false)
+  private String attributeValueId;
 
   @Column(name = "display_name_stat")
   private String displayNameStat;
@@ -107,7 +108,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
     return active;
   }
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return activeTaskId;
   }
 
@@ -119,7 +120,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
     return attributeVal;
   }
 
-  public Integer getAttributeValueId() {
+  public String getAttributeValueId() {
     return attributeValueId;
   }
 
@@ -179,7 +180,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
     this.active = active;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
+  public void setActiveTaskId(String activeTaskId) {
     this.activeTaskId = activeTaskId;
   }
 
@@ -199,7 +200,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
     this.attributeVal = attributeVal;
   }
 
-  public void setAttributeValueId(Integer attributeValueId) {
+  public void setAttributeValueId(String attributeValueId) {
     this.attributeValueId = attributeValueId;
   }
 

@@ -27,9 +27,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "study_page")
@@ -56,12 +56,13 @@ public class StudyPageBo implements Serializable {
   private String modifiedOn;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "page_id")
-  private Integer pageId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "page_id", updatable = false, nullable = false)
+  private String pageId;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "title")
   private String title;
@@ -90,11 +91,11 @@ public class StudyPageBo implements Serializable {
     return modifiedOn;
   }
 
-  public Integer getPageId() {
+  public String getPageId() {
     return pageId;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -126,11 +127,11 @@ public class StudyPageBo implements Serializable {
     this.modifiedOn = modifiedOn;
   }
 
-  public void setPageId(Integer pageId) {
+  public void setPageId(String pageId) {
     this.pageId = pageId;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

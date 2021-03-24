@@ -32,6 +32,7 @@ import com.fdahpstudydesigner.util.SessionObject;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -139,21 +140,21 @@ public class NotificationServiceImpl implements NotificationService {
   }
 
   @Override
-  public Integer saveOrUpdateOrResendNotification(
+  public String saveOrUpdateOrResendNotification(
       NotificationBO notificationBO,
       String notificationType,
       String buttonType,
       SessionObject sessionObject,
       String customStudyId) {
     logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
-    int notificationId = 0;
+    String notificationId = "";
     try {
       if (notificationBO != null) {
         notificationId =
             notificationDAO.saveOrUpdateOrResendNotification(
                 notificationBO, notificationType, buttonType, sessionObject);
         if (notificationType.equals(FdahpStudyDesignerConstants.STUDYLEVEL)
-            && (notificationId != 0)) {
+            && (StringUtils.isNotEmpty(notificationId))) {
           studyDAO.markAsCompleted(
               notificationBO.getStudyId(),
               FdahpStudyDesignerConstants.NOTIFICATION,

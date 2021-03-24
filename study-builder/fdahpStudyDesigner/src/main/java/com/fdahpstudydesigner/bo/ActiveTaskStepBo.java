@@ -27,10 +27,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "active_task_steps")
@@ -52,9 +52,10 @@ public class ActiveTaskStepBo implements Serializable {
   private int sequenceNo;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "step_id")
-  private Integer stepId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "step_id", updatable = false, nullable = false)
+  private String stepId;
 
   public ActiveTaskStepBo() {}
 
@@ -74,7 +75,7 @@ public class ActiveTaskStepBo implements Serializable {
     return this.sequenceNo;
   }
 
-  public Integer getStepId() {
+  public String getStepId() {
     return this.stepId;
   }
 
@@ -94,7 +95,7 @@ public class ActiveTaskStepBo implements Serializable {
     this.sequenceNo = sequenceNo;
   }
 
-  public void setStepId(Integer stepId) {
+  public void setStepId(String stepId) {
     this.stepId = stepId;
   }
 }

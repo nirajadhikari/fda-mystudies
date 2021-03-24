@@ -27,10 +27,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,9 +59,10 @@ public class ResourceBO implements Serializable {
   private String endDate;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "modified_by")
   private Integer modifiedBy;
@@ -99,7 +100,7 @@ public class ResourceBO implements Serializable {
   private boolean status;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "study_protocol", length = 1)
   private boolean studyProtocol;
@@ -137,7 +138,7 @@ public class ResourceBO implements Serializable {
     return endDate;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -177,7 +178,7 @@ public class ResourceBO implements Serializable {
     return startDate;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -241,7 +242,7 @@ public class ResourceBO implements Serializable {
     this.endDate = endDate;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -293,7 +294,7 @@ public class ResourceBO implements Serializable {
     this.status = status;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 
