@@ -110,10 +110,10 @@ public class QuestionsBo implements Serializable {
   private String modifiedOn;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "active")
   private Boolean active;
@@ -175,7 +175,7 @@ public class QuestionsBo implements Serializable {
     return chartTitle;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -211,7 +211,7 @@ public class QuestionsBo implements Serializable {
     return lineChartTimeRange;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -311,7 +311,7 @@ public class QuestionsBo implements Serializable {
     this.chartTitle = chartTitle;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -347,7 +347,7 @@ public class QuestionsBo implements Serializable {
     this.lineChartTimeRange = lineChartTimeRange;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

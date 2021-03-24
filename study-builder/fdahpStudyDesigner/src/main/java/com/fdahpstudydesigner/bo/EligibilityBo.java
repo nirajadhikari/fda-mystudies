@@ -49,7 +49,7 @@ public class EligibilityBo implements Serializable {
   @Transient private String actionType;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -70,7 +70,7 @@ public class EligibilityBo implements Serializable {
   private String instructionalText;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -82,7 +82,7 @@ public class EligibilityBo implements Serializable {
     return actionType;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -106,7 +106,7 @@ public class EligibilityBo implements Serializable {
     return instructionalText;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -122,7 +122,7 @@ public class EligibilityBo implements Serializable {
     this.actionType = actionType;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -146,7 +146,7 @@ public class EligibilityBo implements Serializable {
     this.instructionalText = instructionalText;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

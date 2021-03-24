@@ -74,7 +74,7 @@ public class QuestionnairesStepsBo implements Serializable {
   private Boolean active;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -90,7 +90,7 @@ public class QuestionnairesStepsBo implements Serializable {
   @Transient private Integer isShorTitleDuplicate = 0;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -139,7 +139,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return active;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -163,7 +163,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return isShorTitleDuplicate;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -231,7 +231,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.active = active;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -255,7 +255,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.isShorTitleDuplicate = isShorTitleDuplicate;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

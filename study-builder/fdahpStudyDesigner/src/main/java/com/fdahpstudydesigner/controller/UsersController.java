@@ -34,7 +34,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_CHAN
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_ENFORCEMENT_EMAIL_SENT;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_ACCOUNT_UPDATED_FAILED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_RECORD_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bo.RoleBO;
@@ -123,7 +122,7 @@ public class UsersController {
     List<StudyBo> studyBOList = null;
     String actionPage = "";
     List<Integer> permissions = null;
-    int usrId = 0;
+    String usrId = "";
     try {
       if (FdahpStudyDesignerUtil.isSession(request)) {
         String userId =
@@ -136,7 +135,7 @@ public class UsersController {
                 : request.getParameter("checkRefreshFlag");
         if (!"".equalsIgnoreCase(checkRefreshFlag)) {
           if (!"".equals(userId)) {
-            usrId = Integer.valueOf(userId);
+            usrId = userId;
             actionPage = FdahpStudyDesignerConstants.EDIT_PAGE;
             userBO = usersService.getUserDetails(usrId);
             if (null != userBO) {
@@ -453,7 +452,7 @@ public class UsersController {
                 ? ""
                 : request.getParameter("userId");
         if (StringUtils.isNotEmpty(userId)) {
-          userBo = usersService.getUserDetails(Integer.parseInt(userId));
+          userBo = usersService.getUserDetails(userId);
           if (userBo != null) {
             msg =
                 loginService.sendPasswordResetLinkToMail(
@@ -507,7 +506,7 @@ public class UsersController {
                 : request.getParameter("checkViewRefreshFlag");
         if (!"".equalsIgnoreCase(checkViewRefreshFlag)) {
           if (!"".equals(userId)) {
-            userBO = usersService.getUserDetails(Integer.valueOf(userId));
+            userBO = usersService.getUserDetails(userId);
             if (null != userBO) {
               studyBOs = studyService.getStudyListByUserId(userBO.getUserId());
               permissions = usersService.getPermissionsByUserId(userBO.getUserId());

@@ -172,7 +172,7 @@ public class StudyBo implements Serializable {
   @Column(name = "type")
   private String type;
 
-  @Transient private Integer userId;
+  @Transient private String userId;
 
   @Column(name = "version")
   private Float version = 0f;
@@ -334,7 +334,7 @@ public class StudyBo implements Serializable {
     return type;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
@@ -502,7 +502,7 @@ public class StudyBo implements Serializable {
     this.type = type;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

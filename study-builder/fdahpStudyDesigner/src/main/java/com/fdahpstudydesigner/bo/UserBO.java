@@ -64,7 +64,7 @@ public class UserBO implements Serializable {
   private boolean accountNonLocked;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_date")
   private String createdOn;
@@ -143,7 +143,7 @@ public class UserBO implements Serializable {
   @Column(name = "access_level")
   private String accessLevel;
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -255,7 +255,7 @@ public class UserBO implements Serializable {
     this.accountNonLocked = accountNonLocked;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 

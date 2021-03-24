@@ -35,7 +35,7 @@ public interface UsersService {
   public String activateOrDeactivateUser(
       int userId,
       int userStatus,
-      int loginUser,
+      String loginUser,
       SessionObject userSession,
       HttpServletRequest request);
 
@@ -54,11 +54,11 @@ public interface UsersService {
 
   public List<Integer> getPermissionsByUserId(String userId);
 
-  public UserBO getUserDetails(Integer userId);
+  public UserBO getUserDetails(String userId);
 
   public List<UserBO> getUserList();
 
-  public Integer getUserPermissionByUserId(Integer sessionUserId);
+  public Integer getUserPermissionByUserId(String sessionUserId);
 
   public RoleBO getUserRole(int roleId);
 

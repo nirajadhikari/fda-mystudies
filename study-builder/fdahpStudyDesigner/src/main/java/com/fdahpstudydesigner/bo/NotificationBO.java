@@ -57,7 +57,7 @@ public class NotificationBO implements Serializable {
   @Transient private String checkNotificationSendingStatus;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -66,7 +66,7 @@ public class NotificationBO implements Serializable {
   private String customStudyId;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -137,7 +137,7 @@ public class NotificationBO implements Serializable {
     return checkNotificationSendingStatus;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -149,7 +149,7 @@ public class NotificationBO implements Serializable {
     return customStudyId;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -237,7 +237,7 @@ public class NotificationBO implements Serializable {
     this.checkNotificationSendingStatus = checkNotificationSendingStatus;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -249,7 +249,7 @@ public class NotificationBO implements Serializable {
     this.customStudyId = customStudyId;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

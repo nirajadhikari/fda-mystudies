@@ -90,7 +90,7 @@ public interface StudyQuestionnaireService {
   public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo);
+      String questionnaireId, Integer sequenceNo);
 
   public QuestionnairesStepsBo getQuestionnaireStep(
       Integer stepId,

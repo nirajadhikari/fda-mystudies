@@ -35,7 +35,7 @@ import java.util.List;
 public interface StudyActiveTasksService {
 
   public String deleteActiveTask(
-      String activeTaskInfoId, Integer studyId, SessionObject sesObj, String customStudyId);
+      String activeTaskInfoId, String studyId, SessionObject sesObj, String customStudyId);
 
   public ActiveTaskBo getActiveTaskById(String activeTaskId, String customStudyId);
 
