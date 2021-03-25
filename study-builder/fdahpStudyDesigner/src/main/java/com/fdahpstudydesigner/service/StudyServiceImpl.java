@@ -72,7 +72,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public int comprehensionTestQuestionOrder(Integer studyId) {
+  public int comprehensionTestQuestionOrder(String studyId) {
     int count = 1;
     logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
     try {

@@ -48,7 +48,7 @@ public interface StudyService {
 
   public String checkActiveTaskTypeValidation(Integer studyId);
 
-  public int comprehensionTestQuestionOrder(Integer studyId);
+  public int comprehensionTestQuestionOrder(String studyId);
 
   public int consentInfoOrder(String studyId);
 

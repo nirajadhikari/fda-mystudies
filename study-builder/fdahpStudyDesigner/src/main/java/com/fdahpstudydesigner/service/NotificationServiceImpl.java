@@ -127,7 +127,7 @@ public class NotificationServiceImpl implements NotificationService {
   }
 
   @Override
-  public List<NotificationBO> getNotificationList(int studyId, String type) {
+  public List<NotificationBO> getNotificationList(String studyId, String type) {
     logger.info("NotificationServiceImpl - getNotificationList() - Starts");
     List<NotificationBO> notificationList = null;
     try {
