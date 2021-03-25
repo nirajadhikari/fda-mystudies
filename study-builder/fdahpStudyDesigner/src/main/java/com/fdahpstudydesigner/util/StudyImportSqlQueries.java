@@ -2,25 +2,25 @@ package com.fdahpstudydesigner.util;
 
 public class StudyImportSqlQueries {
 
-  public static final String ACTIVE_TASK_SQL =
+  public static final String ACTIVETASK_SQL =
       "INSERT INTO `fda_hphc_dev`.`active_task` (`id`, `action`, `active`, `active_task_lifetime_end`, `active_task_lifetime_start`, `anchor_date_id`, `created_by`, `created_date`, `custom_study_id`, `day_of_the_week`, `display_name`, `duration`, `frequency`, `instruction`, `is_Change`, `is_live`, `modified_by`, `modified_date`, `repeat_active_task`, `schedule_type`, `short_title`, `study_id`, `task_type_id`, `task_title`, `version`, `study_version`) VALUES (<{id: }>, <{action: }>, <{active: }>, <{active_task_lifetime_end: }>, <{active_task_lifetime_start: }>, <{anchor_date_id: }>, <{created_by: }>, <{created_date: }>, <{custom_study_id: }>, <{day_of_the_week: }>, <{display_name: }>, <{duration: }>, <{frequency: }>, <{instruction: }>, <{is_Change: }>, <{is_live: }>, <{modified_by: }>, <{modified_date: }>, <{repeat_active_task: }>, <{schedule_type: }>, <{short_title: }>, <{study_id: }>, <{task_type_id: }>, <{task_title: }>, <{version: }>, <{study_version: }>);";
 
-  public static final String ACTIVE_TASK_ATTRIBUTES_VALUES =
+  public static final String ACTIVETASK_ATTRIBUTES_VALUES =
       "INSERT INTO `fda_hphc_dev`.`active_task_attrtibutes_values` (`active_task_attribute_id`, `active`, `active_task_id`, `active_task_master_attr_id`, `add_to_line_chart`, `attribute_val`, `display_name_stat`, `display_units_stat`, `formula_applied_stat`, `identifier_name_stat`, `rollback_chat`, `time_range_chart`, `time_range_stat`, `title_chat`, `upload_type_stat`, `use_for_statistic`, `study_version`) VALUES (<{active_task_attribute_id: }>, <{active: }>, <{active_task_id: }>, <{active_task_master_attr_id: }>, <{add_to_line_chart: }>, <{attribute_val: }>, <{display_name_stat: }>, <{display_units_stat: }>, <{formula_applied_stat: }>, <{identifier_name_stat: }>, <{rollback_chat: }>, <{time_range_chart: }>, <{time_range_stat: }>, <{title_chat: }>, <{upload_type_stat: }>, <{use_for_statistic: }>, <{study_version: }>);";
 
-  public static final String ACTIVE_TASK_CUSTOM_FREQUENCIES =
+  public static final String ACTIVETASK_CUSTOM_FREQUENCIES =
       "INSERT INTO `fda_hphc_dev`.`active_task_custom_frequencies` (`id`, `active_task_id`, `frequency_end_date`, `frequency_start_date`, `frequency_time`, `time_period_from_days`, `time_period_to_days`, `is_used`, `x_days_sign`, `y_days_sign`, `study_version`) VALUES (<{id: }>, <{active_task_id: }>, <{frequency_end_date: }>, <{frequency_start_date: }>, <{frequency_time: }>, <{time_period_from_days: }>, <{time_period_to_days: }>, <{is_used: }>, <{x_days_sign: }>, <{y_days_sign: }>, <{study_version: }>);";
 
-  public static final String ACTIVE_TASK_FREQUENCIES =
+  public static final String ACTIVETASK_FREQUENCIES =
       "INSERT INTO `fda_hphc_dev`.`active_task_frequencies` (`id`, `active_task_id`, `frequency_date`, `frequency_time`, `is_launch_study`, `is_study_life_time`, `time_period_from_days`, `time_period_to_days`, `x_days_sign`, `y_days_sign`, `study_version`) VALUES (<{id: }>, <{active_task_id: }>, <{frequency_date: }>, <{frequency_time: }>, <{is_launch_study: }>, <{is_study_life_time: }>, <{time_period_from_days: }>, <{time_period_to_days: }>, <{x_days_sign: }>, <{y_days_sign: }>, <{study_version: }>);";
 
-  public static final String ACTIVE_TASK_LIST =
+  public static final String ACTIVETASK_LIST =
       "INSERT INTO `fda_hphc_dev`.`active_task_list` (`active_task_list_id`, `task_name`, `type`) VALUES (<{active_task_list_id: }>, <{task_name: }>, <{type: }>);";
 
-  public static final String ACTIVE_TASK_MASTER_ATTRIBUTE =
+  public static final String ACTIVETASK_MASTER_ATTRIBUTE =
       "INSERT INTO `fda_hphc_dev`.`active_task_master_attribute` (`active_task_master_attr_id`, `add_to_dashboard`, `attribute_data_type`, `attribute_name`, `attribute_type`, `display_name`, `order_by`, `task_type_id`, `study_version`, `task_type`) VALUES (<{active_task_master_attr_id: }>, <{add_to_dashboard: }>, <{attribute_data_type: }>, <{attribute_name: }>, <{attribute_type: }>, <{display_name: }>, <{order_by: }>, <{task_type_id: }>, <{study_version: }>, <{task_type: }>);";
 
-  public static final String ACTIVEtASK_SELECT_OPTIONS =
+  public static final String ACTIVETASK_SELECT_OPTIONS =
       "INSERT INTO `fda_hphc_dev`.`active_task_select_options` (`active_task_select_options_id`, `active_task_master_attr_id`, `option_val`) VALUES (<{active_task_select_options_id: }>, <{active_task_master_attr_id: }>, <{option_val: }>);";
 
   public static final String ACTIVE_TASK_STEPS =

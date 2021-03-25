@@ -24,6 +24,7 @@
 package com.fdahpstudydesigner.dao;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_ACTIVE_TASK_DELETED;
+
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -93,7 +94,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
       auditRequest.setStudyId(customStudyId);
       session = hibernateTemplate.getSessionFactory().openSession();
       if (activeTaskBo != null) {
-        Integer studyId = activeTaskBo.getStudyId();
+        String studyId = activeTaskBo.getStudyId();
 
         transaction = session.beginTransaction();
 
@@ -449,8 +450,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
           for (ActiveTaskBo activeTaskBo : activeTasks) {
             if (activeTaskBo.getTaskTypeId() != null) {
               for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
-                if (activeTaskListBo.getActiveTaskListId().intValue()
-                    == activeTaskBo.getTaskTypeId().intValue()) {
+                if (activeTaskListBo.getActiveTaskListId() == activeTaskBo.getTaskTypeId()) {
                   activeTaskBo.setType(activeTaskListBo.getTaskName());
                 }
               }
@@ -682,7 +682,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
             (StudySequenceBo)
                 session
                     .getNamedQuery("getStudySequenceByStudyId")
-                    .setInteger("studyId", activeTaskBo.getStudyId())
+                    .setString("studyId", activeTaskBo.getStudyId())
                     .uniqueResult();
         if (studySequence != null) {
           studySequence.setStudyExcActiveTask(false);
