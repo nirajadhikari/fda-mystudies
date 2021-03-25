@@ -2759,7 +2759,7 @@ public class StudyDAOImpl implements StudyDAO {
     List<ResourceBO> resourceBOList = null;
     List<QuestionnaireBo> questionnaires = null;
     QuestionReponseTypeBo questionReponseTypeBo = null;
-    List<Integer> studyIdList = null;
+    List<String> studyIdList = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
@@ -3376,7 +3376,7 @@ public class StudyDAOImpl implements StudyDAO {
                   .equalsIgnoreCase(FdahpStudyDesignerConstants.FREQUENCY_TYPE_MANUALLY_SCHEDULE)) {
                 searchQuery = "From ActiveTaskCustomScheduleBo QCSBO where QCSBO.activeTaskId=:id";
                 List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleList =
-                    session.createQuery(searchQuery).setInteger("id", activeTaskBo.getId()).list();
+                    session.createQuery(searchQuery).setString("id", activeTaskBo.getId()).list();
                 if ((activeTaskCustomScheduleList != null)
                     && !activeTaskCustomScheduleList.isEmpty()) {
                   for (ActiveTaskCustomScheduleBo customScheduleBo : activeTaskCustomScheduleList) {
@@ -3391,7 +3391,7 @@ public class StudyDAOImpl implements StudyDAO {
               } else {
                 searchQuery = "From ActiveTaskFrequencyBo QFBO where QFBO.activeTaskId=:id";
                 List<ActiveTaskFrequencyBo> activeTaskFrequenciesList =
-                    session.createQuery(searchQuery).setInteger("id", activeTaskBo.getId()).list();
+                    session.createQuery(searchQuery).setString("id", activeTaskBo.getId()).list();
                 if ((activeTaskFrequenciesList != null) && !activeTaskFrequenciesList.isEmpty()) {
                   for (ActiveTaskFrequencyBo activeTaskFrequenciesBo : activeTaskFrequenciesList) {
                     ActiveTaskFrequencyBo newFrequenciesBo =
@@ -3409,7 +3409,7 @@ public class StudyDAOImpl implements StudyDAO {
             query =
                 session
                     .getNamedQuery("getAttributeListByActiveTAskId")
-                    .setInteger("activeTaskId", activeTaskBo.getId());
+                    .setString("activeTaskId", activeTaskBo.getId());
             List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBoList = query.list();
             if ((activeTaskAtrributeValuesBoList != null)
                 && !activeTaskAtrributeValuesBoList.isEmpty()) {
@@ -3456,12 +3456,12 @@ public class StudyDAOImpl implements StudyDAO {
                   .getNeedComprehensionTest()
                   .equalsIgnoreCase(FdahpStudyDesignerConstants.YES)) {
             List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
-            List<Integer> comprehensionIds = new ArrayList<>();
+            List<String> comprehensionIds = new ArrayList<>();
             List<ComprehensionTestResponseBo> comprehensionTestResponseList = null;
             query =
                 session.createQuery(
                     "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId=:studyId and CTQBO.active=1 order by CTQBO.sequenceNo asc");
-            query.setInteger("studyId", consentBo.getStudyId());
+            query.setString("studyId", consentBo.getStudyId());
             comprehensionTestQuestionList = query.list();
             if ((comprehensionTestQuestionList != null)
                 && !comprehensionTestQuestionList.isEmpty()) {
@@ -3492,10 +3492,8 @@ public class StudyDAOImpl implements StudyDAO {
                     && !comprehensionTestResponseList.isEmpty()) {
                   for (ComprehensionTestResponseBo comprehensionTestResponseBo :
                       comprehensionTestResponseList) {
-                    if (comprehensionTestQuestionBo.getId().intValue()
-                        == comprehensionTestResponseBo
-                            .getComprehensionTestQuestionId()
-                            .intValue()) {
+                    if (comprehensionTestQuestionBo.getId()
+                        == comprehensionTestResponseBo.getComprehensionTestQuestionId()) {
                       ComprehensionTestResponseBo newComprehensionTestResponseBo =
                           SerializationUtils.clone(comprehensionTestResponseBo);
                       newComprehensionTestResponseBo.setId(null);
@@ -3577,7 +3575,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public int resourceOrder(Integer studyId) {
+  public int resourceOrder(String studyId) {
     logger.info("StudyDAOImpl - resourceOrder() - Starts");
     Session session = null;
     int count = 1;
@@ -3587,7 +3585,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session.createQuery(
               "From ResourceBO RBO where RBO.studyId=:studyId and RBO.studyProtocol = false and RBO.status=1 order by RBO.sequenceNo DESC");
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       query.setMaxResults(1);
       resourceBo = ((ResourceBO) query.uniqueResult());
       if (resourceBo != null) {
@@ -3695,7 +3693,7 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session.createQuery(
                 " from ConsentInfoBo CIBO where CIBO.studyId=:studyId and CIBO.active=1");
-        query.setInteger("studyId", consentBo.getStudyId());
+        query.setString("studyId", consentBo.getStudyId());
         consentInfoList = query.list();
         if ((consentInfoList != null) && (consentInfoList.size() > 0)) {
           for (ConsentInfoBo consentInfo : consentInfoList) {
@@ -3717,7 +3715,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudySequenceBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                    .setInteger(FdahpStudyDesignerConstants.STUDY_ID, consentBo.getStudyId())
+                    .setString(FdahpStudyDesignerConstants.STUDY_ID, consentBo.getStudyId())
                     .uniqueResult();
         if (studySequence != null) {
           studySequence.seteConsent(false);
@@ -3806,15 +3804,15 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Integer saveOrDoneChecklist(Checklist checklist) {
+  public String saveOrDoneChecklist(Checklist checklist) {
     logger.info("StudyDAOImpl - saveOrDoneChecklist() - Starts");
     Session session = null;
-    Integer checklistId = 0;
+    String checklistId = "";
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       if (checklist.getChecklistId() == null) {
-        checklistId = (Integer) session.save(checklist);
+        checklistId = (String) session.save(checklist);
       } else {
         session.update(checklist);
         checklistId = checklist.getChecklistId();
@@ -3848,7 +3846,7 @@ public class StudyDAOImpl implements StudyDAO {
             "delete from comprehension_test_response where comprehension_test_question_id=:id";
         session
             .createSQLQuery(deleteQuery)
-            .setInteger("id", comprehensionTestQuestionBo.getId())
+            .setString("id", comprehensionTestQuestionBo.getId())
             .executeUpdate();
         for (ComprehensionTestResponseBo comprehensionTestResponseBo :
             comprehensionTestQuestionBo.getResponseList()) {
@@ -4172,8 +4170,8 @@ public class StudyDAOImpl implements StudyDAO {
     Session session = null;
     String message = FdahpStudyDesignerConstants.SUCCESS;
     StudyPermissionBO studyPermissionBO = null;
-    Integer studyId = null;
-    Integer userId = null;
+    String studyId = null;
+    String userId = null;
     StudySequenceBo studySequenceBo = null;
     StudyBo dbStudyBo = null;
     List<Integer> userSuperAdminList = null;
@@ -4190,7 +4188,7 @@ public class StudyDAOImpl implements StudyDAO {
         appId = studyBo.getAppId().toUpperCase();
         studyBo.setAppId(appId);
         studyBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-        studyId = (Integer) session.save(studyBo);
+        studyId = (String) session.save(studyBo);
 
         studyPermissionBO = new StudyPermissionBO();
         studyPermissionBO.setUserId(userId);
@@ -4350,7 +4348,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudySequenceBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                    .setInteger(FdahpStudyDesignerConstants.STUDY_ID, eligibilityBo.getStudyId())
+                    .setString(FdahpStudyDesignerConstants.STUDY_ID, eligibilityBo.getStudyId())
                     .uniqueResult();
         if (studySequence != null) {
           if ((eligibilityBo.getActionType() != null)
@@ -4694,7 +4692,7 @@ public class StudyDAOImpl implements StudyDAO {
                     .setString(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId())
                     .list();
             if ((eligibilityTestList != null) && !eligibilityTestList.isEmpty()) {
-              List<Integer> eligibilityTestIds = new ArrayList<>();
+              List<String> eligibilityTestIds = new ArrayList<>();
               for (EligibilityTestBo eligibilityTestBo : eligibilityTestList) {
                 eligibilityTestIds.add(eligibilityTestBo.getId());
                 EligibilityTestBo newEligibilityTestBo =
@@ -4842,7 +4840,7 @@ public class StudyDAOImpl implements StudyDAO {
                       List<QuestionnairesFrequenciesBo> questionnairesFrequenciesList =
                           session
                               .createQuery(searchQuery)
-                              .setInteger("id", questionnaireBo.getId())
+                              .setString("id", questionnaireBo.getId())
                               .list();
                       if ((questionnairesFrequenciesList != null)
                           && !questionnairesFrequenciesList.isEmpty()) {
@@ -5412,7 +5410,7 @@ public class StudyDAOImpl implements StudyDAO {
                 query =
                     session
                         .getNamedQuery("getAttributeListByActiveTAskId")
-                        .setInteger("activeTaskId", activeTaskBo.getId());
+                        .setString("activeTaskId", activeTaskBo.getId());
                 List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBoList = query.list();
                 if ((activeTaskAtrributeValuesBoList != null)
                     && !activeTaskAtrributeValuesBoList.isEmpty()) {
@@ -5540,10 +5538,8 @@ public class StudyDAOImpl implements StudyDAO {
                       && !comprehensionTestResponseList.isEmpty()) {
                     for (ComprehensionTestResponseBo comprehensionTestResponseBo :
                         comprehensionTestResponseList) {
-                      if (comprehensionTestQuestionBo.getId().intValue()
-                          == comprehensionTestResponseBo
-                              .getComprehensionTestQuestionId()
-                              .intValue()) {
+                      if (comprehensionTestQuestionBo.getId()
+                          == comprehensionTestResponseBo.getComprehensionTestQuestionId()) {
                         ComprehensionTestResponseBo newComprehensionTestResponseBo =
                             SerializationUtils.clone(comprehensionTestResponseBo);
                         newComprehensionTestResponseBo.setId(null);

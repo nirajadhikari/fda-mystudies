@@ -104,7 +104,7 @@ public class ConsentInfoBo implements Serializable {
   private Boolean status;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Transient private String type;
 
@@ -185,7 +185,7 @@ public class ConsentInfoBo implements Serializable {
     return status;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -273,7 +273,7 @@ public class ConsentInfoBo implements Serializable {
     this.status = status;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

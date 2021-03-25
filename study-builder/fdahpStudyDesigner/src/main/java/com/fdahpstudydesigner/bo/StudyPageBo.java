@@ -38,7 +38,7 @@ public class StudyPageBo implements Serializable {
   private static final long serialVersionUID = 3736160119532905474L;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -50,7 +50,7 @@ public class StudyPageBo implements Serializable {
   private String imagePath;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -67,7 +67,7 @@ public class StudyPageBo implements Serializable {
   @Column(name = "title")
   private String title;
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -83,7 +83,7 @@ public class StudyPageBo implements Serializable {
     return imagePath;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -103,7 +103,7 @@ public class StudyPageBo implements Serializable {
     return title;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -119,7 +119,7 @@ public class StudyPageBo implements Serializable {
     this.imagePath = imagePath;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

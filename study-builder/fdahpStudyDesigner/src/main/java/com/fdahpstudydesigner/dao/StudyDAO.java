@@ -156,7 +156,7 @@ public interface StudyDAO {
   public ConsentBo saveOrCompleteConsentReviewDetails(
       ConsentBo consentBo, SessionObject sesObj, String customStudyId);
 
-  public Integer saveOrDoneChecklist(Checklist checklist);
+  public String saveOrDoneChecklist(Checklist checklist);
 
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
       ComprehensionTestQuestionBo comprehensionTestQuestionBo);
