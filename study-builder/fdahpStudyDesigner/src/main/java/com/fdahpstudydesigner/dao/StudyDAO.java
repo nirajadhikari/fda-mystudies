@@ -51,7 +51,7 @@ public interface StudyDAO {
 
   public int comprehensionTestQuestionOrder(Integer studyId);
 
-  public int consentInfoOrder(Integer studyId);
+  public int consentInfoOrder(String studyId);
 
   public String deleteComprehensionTestQuestion(
       Integer questionId, Integer studyId, SessionObject sessionObject);

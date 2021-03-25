@@ -2997,7 +2997,7 @@ public class StudyController {
   public ModelAndView saveOrDoneChecklist(HttpServletRequest request, Checklist checklist) {
     logger.info("StudyController - saveOrDoneChecklist() - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-    Integer checklistId = 0;
+    String checklistId = "";
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String customStudyId = "";
     ModelMap map = new ModelMap();
@@ -3036,7 +3036,7 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         checklistId = studyService.saveOrDoneChecklist(checklist, actionBut, sesObj, customStudyId);
         map.addAttribute("_S", sessionStudyCount);
-        if (!checklistId.equals(0)) {
+        if (!checklistId.equals("")) {
           if (checklist.getChecklistId() == null) {
             if (("save").equalsIgnoreCase(actionBut)) {
               request

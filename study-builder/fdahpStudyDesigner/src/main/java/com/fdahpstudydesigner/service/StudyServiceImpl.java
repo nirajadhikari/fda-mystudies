@@ -85,7 +85,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public int consentInfoOrder(Integer studyId) {
+  public int consentInfoOrder(String studyId) {
     int count = 1;
     logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
     try {
@@ -821,10 +821,10 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public Integer saveOrDoneChecklist(
+  public String saveOrDoneChecklist(
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId) {
     logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
-    Integer checklistId = 0;
+    String checklistId = "";
     Checklist checklistBO = null;
     StudyBo studyBo = null;
     try {

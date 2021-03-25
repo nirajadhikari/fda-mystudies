@@ -50,7 +50,7 @@ public interface StudyService {
 
   public int comprehensionTestQuestionOrder(Integer studyId);
 
-  public int consentInfoOrder(Integer studyId);
+  public int consentInfoOrder(String studyId);
 
   public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject sesObj);
 
@@ -149,7 +149,7 @@ public interface StudyService {
   public ConsentBo saveOrCompleteConsentReviewDetails(
       ConsentBo consentBo, SessionObject sesObj, String customStudyId);
 
-  public Integer saveOrDoneChecklist(
+  public String saveOrDoneChecklist(
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId);
 
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(

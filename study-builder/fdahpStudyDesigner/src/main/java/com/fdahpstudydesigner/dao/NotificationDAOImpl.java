@@ -33,7 +33,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_NOTIFIC
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NEW_NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.OLD_NOTIFICATION_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
@@ -447,12 +446,12 @@ public class NotificationDAOImpl implements NotificationDAO {
   }
 
   @Override
-  public List<NotificationBO> getNotificationList(Integer studyId) {
+  public List<NotificationBO> getNotificationList(String studyId) {
     logger.info("NotificationDAOImpl - getNotificationList() - Starts");
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      return session.getNamedQuery("getNotification").setInteger("studyId", studyId).list();
+      return session.getNamedQuery("getNotification").setString("studyId", studyId).list();
     } catch (Exception e) {
       logger.error("NotificationDAOImpl - getNotificationList() - ERROR", e);
     } finally {
