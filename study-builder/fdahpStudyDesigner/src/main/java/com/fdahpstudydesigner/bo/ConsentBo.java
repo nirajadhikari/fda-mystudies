@@ -63,7 +63,7 @@ public class ConsentBo implements Serializable {
   private String consentDocType;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -105,7 +105,7 @@ public class ConsentBo implements Serializable {
   private String longDescription;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -120,7 +120,7 @@ public class ConsentBo implements Serializable {
   private String shortDescription;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "tagline_description")
   private String taglineDescription;
@@ -156,7 +156,7 @@ public class ConsentBo implements Serializable {
     return consentDocType;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -208,7 +208,7 @@ public class ConsentBo implements Serializable {
     return longDescription;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -228,7 +228,7 @@ public class ConsentBo implements Serializable {
     return shortDescription;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -272,7 +272,7 @@ public class ConsentBo implements Serializable {
     this.consentDocType = consentDocType;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -324,7 +324,7 @@ public class ConsentBo implements Serializable {
     this.longDescription = longDescription;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 
@@ -344,7 +344,7 @@ public class ConsentBo implements Serializable {
     this.shortDescription = shortDescription;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

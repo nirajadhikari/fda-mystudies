@@ -3034,7 +3034,7 @@ public class StudyDAOImpl implements StudyDAO {
                         (InstructionsBo)
                             session
                                 .getNamedQuery("getInstructionStep")
-                                .setInteger("id", questionnairesStepsBo.getInstructionFormId())
+                                .setString("id", questionnairesStepsBo.getInstructionFormId())
                                 .uniqueResult();
                     if (instructionsBo != null) {
                       InstructionsBo newInstructionsBo = SerializationUtils.clone(instructionsBo);
@@ -3058,7 +3058,7 @@ public class StudyDAOImpl implements StudyDAO {
                         (QuestionsBo)
                             session
                                 .getNamedQuery("getQuestionStep")
-                                .setInteger("stepId", questionnairesStepsBo.getInstructionFormId())
+                                .setString("stepId", questionnairesStepsBo.getInstructionFormId())
                                 .uniqueResult();
                     if (questionsBo != null) {
                       boolean questionDraftFlag = false;
@@ -3066,13 +3066,13 @@ public class StudyDAOImpl implements StudyDAO {
                       List<QuestionResponseSubTypeBo> questionResponseSubTypeList =
                           session
                               .getNamedQuery("getQuestionSubResponse")
-                              .setInteger("responseTypeId", questionsBo.getId())
+                              .setString("responseTypeId", questionsBo.getId())
                               .list();
 
                       List<QuestionConditionBranchBo> questionConditionBranchList =
                           session
                               .getNamedQuery("getQuestionConditionBranchList")
-                              .setInteger("questionId", questionsBo.getId())
+                              .setString("questionId", questionsBo.getId())
                               .list();
 
                       // Question response Type
@@ -3080,7 +3080,7 @@ public class StudyDAOImpl implements StudyDAO {
                           (QuestionReponseTypeBo)
                               session
                                   .getNamedQuery("getQuestionResponse")
-                                  .setInteger("questionsResponseTypeId", questionsBo.getId())
+                                  .setString("questionsResponseTypeId", questionsBo.getId())
                                   .uniqueResult();
 
                       QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
@@ -3158,7 +3158,7 @@ public class StudyDAOImpl implements StudyDAO {
                         (FormBo)
                             session
                                 .getNamedQuery("getFormBoStep")
-                                .setInteger("stepId", questionnairesStepsBo.getInstructionFormId())
+                                .setString("stepId", questionnairesStepsBo.getInstructionFormId())
                                 .uniqueResult();
                     if (formBo != null) {
                       boolean formDraftFlag = false;
@@ -3169,7 +3169,7 @@ public class StudyDAOImpl implements StudyDAO {
                       List<FormMappingBo> formMappingBoList =
                           session
                               .getNamedQuery("getFormByFormId")
-                              .setInteger("formId", formBo.getFormId())
+                              .setString("formId", formBo.getFormId())
                               .list();
                       if ((formMappingBoList != null) && !formMappingBoList.isEmpty()) {
                         for (FormMappingBo formMappingBo : formMappingBoList) {
@@ -3181,7 +3181,7 @@ public class StudyDAOImpl implements StudyDAO {
                               (QuestionsBo)
                                   session
                                       .getNamedQuery("getQuestionByFormId")
-                                      .setInteger("formId", formMappingBo.getQuestionId())
+                                      .setString("formId", formMappingBo.getQuestionId())
                                       .uniqueResult();
                           if (questionsBo != null) {
                             boolean questionFlag = false;
@@ -3190,7 +3190,7 @@ public class StudyDAOImpl implements StudyDAO {
                             List<QuestionResponseSubTypeBo> questionResponseSubTypeList =
                                 session
                                     .getNamedQuery("getQuestionSubResponse")
-                                    .setInteger("responseTypeId", questionsBo.getId())
+                                    .setString("responseTypeId", questionsBo.getId())
                                     .list();
 
                             // Question response
@@ -3199,7 +3199,7 @@ public class StudyDAOImpl implements StudyDAO {
                                 (QuestionReponseTypeBo)
                                     session
                                         .getNamedQuery("getQuestionResponse")
-                                        .setInteger("questionsResponseTypeId", questionsBo.getId())
+                                        .setString("questionsResponseTypeId", questionsBo.getId())
                                         .uniqueResult();
 
                             QuestionsBo newQuestionsBo = SerializationUtils.clone(questionsBo);
@@ -4656,7 +4656,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId())
+                      .setString(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId())
                       .uniqueResult();
           StudySequenceBo newStudySequenceBo = SerializationUtils.clone(studySequence);
           newStudySequenceBo.setStudyId(studyDreaftBo.getId());
@@ -4665,7 +4665,7 @@ public class StudyDAOImpl implements StudyDAO {
 
           // clone of Over View section
           query = session.createQuery("from StudyPageBo where studyId=:id");
-          query.setInteger("id", studyBo.getId());
+          query.setString("id", studyBo.getId());
           studyPageBo = query.list();
           if ((studyPageBo != null) && !studyPageBo.isEmpty()) {
             for (StudyPageBo pageBo : studyPageBo) {
@@ -4680,7 +4680,7 @@ public class StudyDAOImpl implements StudyDAO {
           query =
               session
                   .getNamedQuery("getEligibiltyByStudyId")
-                  .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId());
+                  .setString(FdahpStudyDesignerConstants.STUDY_ID, studyBo.getId());
           eligibilityBo = (EligibilityBo) query.uniqueResult();
           if (eligibilityBo != null) {
             EligibilityBo bo = SerializationUtils.clone(eligibilityBo);
@@ -4691,7 +4691,7 @@ public class StudyDAOImpl implements StudyDAO {
             eligibilityTestList =
                 session
                     .getNamedQuery("EligibilityTestBo.findByEligibilityId")
-                    .setInteger(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId())
+                    .setString(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId())
                     .list();
             if ((eligibilityTestList != null) && !eligibilityTestList.isEmpty()) {
               List<Integer> eligibilityTestIds = new ArrayList<>();

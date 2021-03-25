@@ -76,7 +76,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
   private String responseSubTypeValueId;
 
   @Column(name = "response_type_id")
-  private Integer responseTypeId;
+  private String responseTypeId;
 
   @Column(name = "selected_image")
   private String selectedImage;
@@ -128,7 +128,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
     return responseSubTypeValueId;
   }
 
-  public Integer getResponseTypeId() {
+  public String getResponseTypeId() {
     return responseTypeId;
   }
 
@@ -184,7 +184,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
     this.responseSubTypeValueId = responseSubTypeValueId;
   }
 
-  public void setResponseTypeId(Integer responseTypeId) {
+  public void setResponseTypeId(String responseTypeId) {
     this.responseTypeId = responseTypeId;
   }
 

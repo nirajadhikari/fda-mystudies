@@ -85,7 +85,7 @@ public class QuestionnairesStepsBo implements Serializable {
   @Transient private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 
   @Column(name = "instruction_form_id")
-  private Integer instructionFormId;
+  private String instructionFormId;
 
   @Transient private Integer isShorTitleDuplicate = 0;
 
@@ -155,7 +155,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return formQuestionMap;
   }
 
-  public Integer getInstructionFormId() {
+  public String getInstructionFormId() {
     return instructionFormId;
   }
 
@@ -247,7 +247,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.formQuestionMap = formQuestionMap;
   }
 
-  public void setInstructionFormId(Integer instructionFormId) {
+  public void setInstructionFormId(String instructionFormId) {
     this.instructionFormId = instructionFormId;
   }
 

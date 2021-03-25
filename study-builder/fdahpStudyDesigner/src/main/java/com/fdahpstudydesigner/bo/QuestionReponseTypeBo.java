@@ -115,7 +115,7 @@ public class QuestionReponseTypeBo implements Serializable {
   private String placeholder;
 
   @Column(name = "questions_response_type_id")
-  private Integer questionsResponseTypeId;
+  private String questionsResponseTypeId;
 
   @Id
   @GeneratedValue(generator = "system-uuid")
@@ -275,7 +275,7 @@ public class QuestionReponseTypeBo implements Serializable {
     return placeholder;
   }
 
-  public Integer getQuestionsResponseTypeId() {
+  public String getQuestionsResponseTypeId() {
     return questionsResponseTypeId;
   }
 
@@ -419,7 +419,7 @@ public class QuestionReponseTypeBo implements Serializable {
     this.placeholder = placeholder;
   }
 
-  public void setQuestionsResponseTypeId(Integer questionsResponseTypeId) {
+  public void setQuestionsResponseTypeId(String questionsResponseTypeId) {
     this.questionsResponseTypeId = questionsResponseTypeId;
   }
 

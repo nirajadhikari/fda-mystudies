@@ -69,10 +69,10 @@ public class FormMappingBo implements Serializable {
   private String id;
 
   @Column(name = "form_id")
-  private Integer formId;
+  private String formId;
 
   @Column(name = "question_id")
-  private Integer questionId;
+  private String questionId;
 
   @Column(name = "sequence_no")
   private Integer sequenceNo;
@@ -84,7 +84,7 @@ public class FormMappingBo implements Serializable {
     return active;
   }
 
-  public Integer getFormId() {
+  public String getFormId() {
     return formId;
   }
 
@@ -92,7 +92,7 @@ public class FormMappingBo implements Serializable {
     return id;
   }
 
-  public Integer getQuestionId() {
+  public String getQuestionId() {
     return questionId;
   }
 
@@ -104,7 +104,7 @@ public class FormMappingBo implements Serializable {
     this.active = active;
   }
 
-  public void setFormId(Integer formId) {
+  public void setFormId(String formId) {
     this.formId = formId;
   }
 
@@ -112,7 +112,7 @@ public class FormMappingBo implements Serializable {
     this.id = id;
   }
 
-  public void setQuestionId(Integer questionId) {
+  public void setQuestionId(String questionId) {
     this.questionId = questionId;
   }
 
