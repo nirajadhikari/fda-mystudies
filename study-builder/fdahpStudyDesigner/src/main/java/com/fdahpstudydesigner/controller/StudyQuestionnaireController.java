@@ -17,7 +17,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTIO
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.FORM_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -233,7 +232,7 @@ public class StudyQuestionnaireController {
                     FdahpStudyDesignerConstants.FORM_STEP,
                     null,
                     customStudyId,
-                    Integer.valueOf(questionnairesId));
+                    questionnairesId);
             if (questionnairesStepsBo != null) {
               questionnairesStepsBo.setType(FdahpStudyDesignerConstants.ACTION_TYPE_SAVE);
               studyQuestionnaireService.saveOrUpdateFromStepQuestionnaire(
@@ -1608,9 +1607,7 @@ public class StudyQuestionnaireController {
               studyQuestionnaireService.reOrderQuestionnaireSteps(
                   Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-            qTreeMap =
-                studyQuestionnaireService.getQuestionnaireStepList(
-                    Integer.valueOf(questionnaireId));
+            qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireId);
             if (qTreeMap != null) {
               boolean isDone = true;
               for (Entry<Integer, QuestionnaireStepBean> entry : qTreeMap.entrySet()) {
@@ -2699,9 +2696,7 @@ public class StudyQuestionnaireController {
               studyQuestionnaireService.validateLineChartSchedule(
                   Integer.valueOf(questionnaireId), frequency);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-            qTreeMap =
-                studyQuestionnaireService.getQuestionnaireStepList(
-                    Integer.valueOf(questionnaireId));
+            qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireId);
             questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
             jsonobject.put("questionnaireJsonObject", questionnaireJsonObject);
           }

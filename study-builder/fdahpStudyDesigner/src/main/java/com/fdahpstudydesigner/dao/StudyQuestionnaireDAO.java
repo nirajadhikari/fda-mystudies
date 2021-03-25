@@ -85,7 +85,7 @@ public interface StudyQuestionnaireDAO {
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList();
 
   public InstructionsBo getInstructionsBo(
-      Integer instructionId,
+      String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
       Integer questionnaireId);
@@ -93,7 +93,7 @@ public interface StudyQuestionnaireDAO {
   public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(
       Session session, Integer questionId);
 
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
       Integer questionnaireId, Integer sequenceNo);
@@ -103,15 +103,14 @@ public interface StudyQuestionnaireDAO {
       String stepType,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId);
+      String questionnaireId);
 
-  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
-      Integer questionnaireId);
+  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(String questionnaireId);
 
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId);
+      String questionId, String questionnaireShortTitle, String customStudyId);
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 

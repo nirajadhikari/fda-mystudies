@@ -119,7 +119,7 @@ public class UsersDAOImpl implements UsersDAO {
       UserBO userBO, String permissions, String selectedStudies, String permissionValues) {
     logger.info("UsersDAOImpl - addOrUpdateUserDetails() - Starts");
     Session session = null;
-    Integer userId = 0;
+    String userId;
     String msg = FdahpStudyDesignerConstants.FAILURE;
     Query query = null;
     UserBO userBO2 = null;
@@ -135,7 +135,7 @@ public class UsersDAOImpl implements UsersDAO {
       transaction = session.beginTransaction();
       userIdAccessLevelInfo = new UserIdAccessLevelInfo();
       if (null == userBO.getUserId()) {
-        userId = (Integer) session.save(userBO);
+        userId = (String) session.save(userBO);
         userIdAccessLevelInfo.setUserId(userId);
       } else {
         session.update(userBO);
@@ -204,7 +204,7 @@ public class UsersDAOImpl implements UsersDAO {
             session.update(studyPermissionBO);
           } else {
             studyPermissionBO = new StudyPermissionBO();
-            studyPermissionBO.setStudyId(Integer.parseInt(selectedStudy[i]));
+            studyPermissionBO.setStudyId(selectedStudy[i]);
             studyPermissionBO.setViewPermission("1".equals(permissionValue[i]) ? true : false);
             studyPermissionBO.setUserId(userId);
             session.save(studyPermissionBO);
@@ -473,7 +473,7 @@ public class UsersDAOImpl implements UsersDAO {
         userList = new ArrayList<>();
         for (Object[] obj : objList) {
           UserBO userBO = new UserBO();
-          userBO.setUserId(null != obj[0] ? (Integer) obj[0] : 0);
+          userBO.setUserId(null != obj[0] ? String.valueOf(obj[0]) : "");
           userBO.setFirstName(null != obj[1] ? String.valueOf(obj[1]) : "");
           userBO.setLastName(null != obj[2] ? String.valueOf(obj[2]) : "");
           userBO.setUserEmail(null != obj[3] ? String.valueOf(obj[3]) : "");

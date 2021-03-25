@@ -48,7 +48,7 @@ public class SessionObject implements Serializable {
   private List<StudySessionBean> studySessionBeans;
   private Integer superAdminId = 0;
   private String termsText = "";
-  private Integer userId = 0;
+  private String userId;
   private String userName = "";
   private String userPermissions = "";
   private String userType = "";
@@ -122,7 +122,7 @@ public class SessionObject implements Serializable {
     return termsText;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
@@ -214,7 +214,7 @@ public class SessionObject implements Serializable {
     this.termsText = termsText;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

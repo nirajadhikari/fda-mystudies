@@ -82,7 +82,7 @@ public interface StudyDAO {
 
   public Checklist getchecklistInfo(Integer studyId);
 
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId);
 
   public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 
@@ -113,7 +113,7 @@ public interface StudyDAO {
 
   public List<NotificationBO> getSavedNotification(Integer studyId);
 
-  public StudyBo getStudyById(String studyId, Integer userId);
+  public StudyBo getStudyById(String studyId, String userId);
 
   public StudyBo getStudy(Integer id);
 
@@ -121,7 +121,7 @@ public interface StudyDAO {
 
   public List<StudyListBean> getStudyList(Integer userId);
 
-  public List<StudyListBean> getStudyListByUserId(Integer userId);
+  public List<StudyListBean> getStudyListByUserId(String userId);
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 

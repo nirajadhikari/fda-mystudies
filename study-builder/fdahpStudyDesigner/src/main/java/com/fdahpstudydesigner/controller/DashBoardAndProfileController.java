@@ -24,7 +24,6 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.ACCOUNT_DETAILS_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bo.RoleBO;
@@ -73,7 +72,7 @@ public class DashBoardAndProfileController {
     JSONObject jsonobject = new JSONObject();
     PrintWriter out = null;
     String message = "";
-    int userId = 0;
+    String userId;
     try {
       HttpSession session = request.getSession();
       SessionObject sessionObject =
@@ -140,7 +139,7 @@ public class DashBoardAndProfileController {
   public ModelAndView updateProfileDetails(HttpServletRequest request, UserBO userBO) {
     logger.info("DashBoardAndProfileController - Entry Point: updateProfileDetails()");
     ModelAndView mav = new ModelAndView();
-    Integer userId = null;
+    String userId = null;
     String message = FdahpStudyDesignerConstants.FAILURE;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     try {

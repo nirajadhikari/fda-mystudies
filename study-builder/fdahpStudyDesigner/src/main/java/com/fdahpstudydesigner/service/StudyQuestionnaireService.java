@@ -85,22 +85,21 @@ public interface StudyQuestionnaireService {
       Integer instructionId,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId);
+      String questionnaireId);
 
   public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo);
+      String questionnaireId, Integer sequenceNo);
 
   public QuestionnairesStepsBo getQuestionnaireStep(
       Integer stepId,
       String stepType,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId);
+      String questionnaireId);
 
-  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
-      Integer questionnaireId);
+  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(String questionnaireId);
 
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 

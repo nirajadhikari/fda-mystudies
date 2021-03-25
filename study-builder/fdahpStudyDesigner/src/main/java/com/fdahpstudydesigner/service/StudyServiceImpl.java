@@ -511,7 +511,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<StudyListBean> getStudyListByUserId(Integer userId) {
+  public List<StudyListBean> getStudyListByUserId(String userId) {
     logger.info("StudyServiceImpl - getStudyListByUserId() - Starts");
     List<StudyListBean> studyListBeans = null;
     try {

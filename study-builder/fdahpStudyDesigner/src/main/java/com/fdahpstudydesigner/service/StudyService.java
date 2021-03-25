@@ -96,7 +96,7 @@ public interface StudyService {
 
   public StudyIdBean getLiveVersion(String customStudyId);
 
-  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
+  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId);
 
   public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
@@ -106,13 +106,13 @@ public interface StudyService {
 
   public List<NotificationBO> getSavedNotification(Integer studyId);
 
-  public StudyBo getStudyById(String studyId, Integer userId);
+  public StudyBo getStudyById(String studyId, String userId);
 
   public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 
-  public List<StudyListBean> getStudyList(Integer userId);
+  public List<StudyListBean> getStudyList(String userId);
 
-  public List<StudyListBean> getStudyListByUserId(Integer userId);
+  public List<StudyListBean> getStudyListByUserId(String userId);
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
@@ -136,7 +136,7 @@ public interface StudyService {
 
   public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 
-  public int resourceOrder(Integer studyId);
+  public int resourceOrder(String studyId);
 
   public List<ResourceBO> resourcesSaved(Integer studyId);
 
@@ -164,7 +164,7 @@ public interface StudyService {
 
   public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 
-  public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject);
+  public String saveOrUpdateStudy(StudyBo studyBo, String userId, SessionObject sessionObject);
 
   public String saveOrUpdateStudyEligibilty(
       EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
@@ -182,18 +182,18 @@ public interface StudyService {
 
   public boolean validateStudyId(String studyId);
 
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId);
 
   public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId);
 
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId);
 
   public boolean validateAppId(
       String customStudyId, String appId, String studyType, String dbCustomStudyId);
 
-  public StudyPermissionBO findStudyPermissionBO(int studyId, int userId);
+  public StudyPermissionBO findStudyPermissionBO(String studyId, String userId);
 
   public StudyDetailsBean getStudyByLatestVersion(String customStudyId);
 

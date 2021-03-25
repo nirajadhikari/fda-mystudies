@@ -42,7 +42,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURCE_SECTION_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SAVED_IN_DRAFT_STATE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -743,9 +742,7 @@ public class StudyController {
                 sesObj,
                 customStudyId);
         if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-          testBos =
-              studyService.viewEligibilityTestQusAnsByEligibilityId(
-                  Integer.parseInt(eligibilityId));
+          testBos = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityId);
           if ((testBos != null) && !testBos.isEmpty()) {
             eligibilityTestJsonArray = new JSONArray(mapper.writeValueAsString(testBos));
           }
@@ -3430,7 +3427,7 @@ public class StudyController {
           } else {
             resourceBO.setStudyProtocol(false);
           }
-          resourceBO.setStudyId(Integer.parseInt(studyId));
+          resourceBO.setStudyId(studyId);
           resourceBO.setTextOrPdf(("0").equals(textOrPdfParam) ? false : true);
           resourceBO.setResourceVisibility(("0").equals(resourceVisibilityParam) ? false : true);
           if (!resourceBO.isResourceVisibility()) {
@@ -3778,7 +3775,7 @@ public class StudyController {
     logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
     ModelMap map = new ModelMap();
-    Integer notificationId = 0;
+    String notificationId = "";
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String customStudyId = "";
 
@@ -3884,10 +3881,10 @@ public class StudyController {
                     : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
           }
           if (StringUtils.isNotEmpty(studyId)) {
-            StudyBo studyBo = studyService.getStudyById(studyId, 0);
+            StudyBo studyBo = studyService.getStudyById(studyId, "");
             if (studyBo != null) {
               notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-              notificationBO.setStudyId(Integer.valueOf(studyId));
+              notificationBO.setStudyId(studyId);
             }
           }
           if (notificationBO.getNotificationId() == null) {
@@ -4877,7 +4874,7 @@ public class StudyController {
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           if (eligibilityBo == null) {
             eligibilityBo = new EligibilityBo();
-            eligibilityBo.setStudyId(Integer.parseInt(studyId));
+            eligibilityBo.setStudyId(studyId);
             eligibilityBo.setInstructionalText(
                 FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
           }

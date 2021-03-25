@@ -29,12 +29,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -101,9 +101,10 @@ public class StudyBo implements Serializable {
   private Integer hasStudyDraft = 0;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "inbox_email_address")
   private String inboxEmailAddress;
@@ -171,7 +172,7 @@ public class StudyBo implements Serializable {
   @Column(name = "type")
   private String type;
 
-  @Transient private Integer userId;
+  @Transient private String userId;
 
   @Column(name = "version")
   private Float version = 0f;
@@ -241,7 +242,7 @@ public class StudyBo implements Serializable {
     return hasStudyDraft;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -333,7 +334,7 @@ public class StudyBo implements Serializable {
     return type;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
@@ -405,7 +406,7 @@ public class StudyBo implements Serializable {
     this.hasStudyDraft = hasStudyDraft;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -501,7 +502,7 @@ public class StudyBo implements Serializable {
     this.type = type;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

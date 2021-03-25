@@ -27,9 +27,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "eligibility_test_response")
@@ -47,9 +47,10 @@ public class EligibilityTestResponseBo implements Serializable {
   private String passFail;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "response_id")
-  private Integer responseId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "response_id", updatable = false, nullable = false)
+  private String responseId;
 
   @Column(name = "response_option")
   private String responseOption;
@@ -66,7 +67,7 @@ public class EligibilityTestResponseBo implements Serializable {
     return passFail;
   }
 
-  public Integer getResponseId() {
+  public String getResponseId() {
     return responseId;
   }
 
@@ -86,7 +87,7 @@ public class EligibilityTestResponseBo implements Serializable {
     this.passFail = passFail;
   }
 
-  public void setResponseId(Integer responseId) {
+  public void setResponseId(String responseId) {
     this.responseId = responseId;
   }
 

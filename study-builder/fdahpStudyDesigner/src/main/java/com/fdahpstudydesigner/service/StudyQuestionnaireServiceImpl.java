@@ -317,7 +317,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       String stepType,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId) {
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
     QuestionnairesStepsBo questionnairesStepsBo = null;
     try {
@@ -362,7 +362,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
-      Integer questionnaireId) {
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStepList() - Starts");
     SortedMap<Integer, QuestionnaireStepBean> questionnaireStepMap = null;
     try {

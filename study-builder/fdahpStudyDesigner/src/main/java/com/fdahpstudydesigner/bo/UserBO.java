@@ -31,13 +31,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 import org.hibernate.annotations.Type;
@@ -64,7 +64,7 @@ public class UserBO implements Serializable {
   private boolean accountNonLocked;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_date")
   private String createdOn;
@@ -89,7 +89,7 @@ public class UserBO implements Serializable {
   private String lastName;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_date")
   private String modifiedOn;
@@ -129,9 +129,10 @@ public class UserBO implements Serializable {
   @Transient private String userFullName;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
-  private Integer userId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "user_id", updatable = false, nullable = false)
+  private String userId;
 
   @Column(name = "user_login_datetime")
   private String userLastLoginDateTime;
@@ -142,7 +143,7 @@ public class UserBO implements Serializable {
   @Column(name = "access_level")
   private String accessLevel;
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -162,7 +163,7 @@ public class UserBO implements Serializable {
     return lastName;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -214,7 +215,7 @@ public class UserBO implements Serializable {
     return userFullName;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
@@ -254,7 +255,7 @@ public class UserBO implements Serializable {
     this.accountNonLocked = accountNonLocked;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -286,7 +287,7 @@ public class UserBO implements Serializable {
     this.lastName = lastName;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 
@@ -338,7 +339,7 @@ public class UserBO implements Serializable {
     this.userFullName = userFullName;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

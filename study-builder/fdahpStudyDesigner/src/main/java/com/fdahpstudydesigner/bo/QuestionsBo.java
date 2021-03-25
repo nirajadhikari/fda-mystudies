@@ -28,12 +28,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "questions")
@@ -53,9 +53,10 @@ public class QuestionsBo implements Serializable {
   private static final long serialVersionUID = 7281155550929426893L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "short_title")
   private String shortTitle;
@@ -109,10 +110,10 @@ public class QuestionsBo implements Serializable {
   private String modifiedOn;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "active")
   private Boolean active;
@@ -174,7 +175,7 @@ public class QuestionsBo implements Serializable {
     return chartTitle;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -194,7 +195,7 @@ public class QuestionsBo implements Serializable {
     return healthkitDatatype;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -210,7 +211,7 @@ public class QuestionsBo implements Serializable {
     return lineChartTimeRange;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -310,7 +311,7 @@ public class QuestionsBo implements Serializable {
     this.chartTitle = chartTitle;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -330,7 +331,7 @@ public class QuestionsBo implements Serializable {
     this.healthkitDatatype = healthkitDatatype;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -346,7 +347,7 @@ public class QuestionsBo implements Serializable {
     this.lineChartTimeRange = lineChartTimeRange;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

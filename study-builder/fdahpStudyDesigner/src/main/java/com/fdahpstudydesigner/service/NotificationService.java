@@ -39,7 +39,7 @@ public interface NotificationService {
 
   public List<NotificationBO> getNotificationList(int studyId, String type);
 
-  public Integer saveOrUpdateOrResendNotification(
+  public String saveOrUpdateOrResendNotification(
       NotificationBO notificationBO,
       String notificationType,
       String buttonType,

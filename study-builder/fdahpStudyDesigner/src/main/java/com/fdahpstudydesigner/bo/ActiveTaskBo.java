@@ -29,12 +29,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "active_task")
@@ -90,7 +90,7 @@ public class ActiveTaskBo implements Serializable {
   @Transient private String buttonText;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_date")
   private String createdDate;
@@ -113,8 +113,10 @@ public class ActiveTaskBo implements Serializable {
   private String frequency;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "instruction")
   private String instruction;
@@ -128,7 +130,7 @@ public class ActiveTaskBo implements Serializable {
   private Integer live = 0;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_date")
   private String modifiedDate;
@@ -207,7 +209,7 @@ public class ActiveTaskBo implements Serializable {
     return buttonText;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -239,7 +241,7 @@ public class ActiveTaskBo implements Serializable {
     return frequency;
   }
 
-  public Integer getId() {
+  public String getId() {
     return this.id;
   }
 
@@ -259,7 +261,7 @@ public class ActiveTaskBo implements Serializable {
     return live;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -372,7 +374,7 @@ public class ActiveTaskBo implements Serializable {
     this.buttonText = buttonText;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -404,7 +406,7 @@ public class ActiveTaskBo implements Serializable {
     this.frequency = frequency;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -424,7 +426,7 @@ public class ActiveTaskBo implements Serializable {
     this.live = live;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

@@ -24,7 +24,6 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.APP_LEVEL_NOTIFICATION_LIST_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
@@ -227,7 +226,7 @@ public class NotificationController {
   public ModelAndView saveOrUpdateOrResendNotification(
       HttpServletRequest request, NotificationBO notificationBO) {
     logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
-    Integer notificationId = 0;
+    String notificationId;
     ModelAndView mav = new ModelAndView();
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     try {
