@@ -132,11 +132,7 @@ public class StudyQuestionnaireController {
           map.addAttribute("_S", sessionStudyCount);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           mav = new ModelAndView("redirect:/adminStudies/viewQuestionnaire.do", map);
         } else {
@@ -260,11 +256,7 @@ public class StudyQuestionnaireController {
                         .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
             if (StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
-                  Integer.valueOf(studyId),
-                  FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                  false,
-                  sesObj,
-                  customStudyId);
+                  studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
             }
           }
         }
@@ -347,11 +339,7 @@ public class StudyQuestionnaireController {
           }
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           boolean markAsComplete = true;
           actMsg =
@@ -473,11 +461,7 @@ public class StudyQuestionnaireController {
                         .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
             if (StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
-                  Integer.valueOf(studyId),
-                  FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                  false,
-                  sesObj,
-                  customStudyId);
+                  studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
             }
           }
         }
@@ -663,11 +647,7 @@ public class StudyQuestionnaireController {
             map.addAttribute("destinationStepList", destionationStepList);
             if (!questionnairesStepsBo.getStatus() && StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
-                  Integer.valueOf(studyId),
-                  FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                  false,
-                  sesObj,
-                  customStudyId);
+                  studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
             }
           }
           map.addAttribute("questionnairesStepsBo", questionnairesStepsBo);
@@ -1234,7 +1214,7 @@ public class StudyQuestionnaireController {
               map.addAttribute("isDone", isDone);
               if (!isDone && StringUtils.isNotEmpty(studyId)) {
                 studyService.markAsCompleted(
-                    Integer.valueOf(studyId),
+                    studyId,
                     FdahpStudyDesignerConstants.QUESTIONNAIRE,
                     false,
                     sesObj,
@@ -1539,11 +1519,7 @@ public class StudyQuestionnaireController {
                             sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
             if (StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
-                  Integer.valueOf(studyId),
-                  FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                  false,
-                  sesObj,
-                  customStudyId);
+                  studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
             }
           }
         }
@@ -1646,11 +1622,7 @@ public class StudyQuestionnaireController {
                             sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
             if (StringUtils.isNotEmpty(studyId)) {
               studyService.markAsCompleted(
-                  Integer.valueOf(studyId),
-                  FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                  false,
-                  sesObj,
-                  customStudyId);
+                  studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
             }
           }
         }
@@ -1719,11 +1691,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
         }
       }
@@ -1804,11 +1772,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
         }
       }
@@ -1878,11 +1842,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           map.addAttribute("_S", sessionStudyCount);
           mav = new ModelAndView("redirect:/adminStudies/formStep.do", map);
@@ -1949,11 +1909,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           if (questionnairesStepsBo.getStepId() != null) {
             request
@@ -2044,11 +2000,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           if (instructionsBo.getId() != null) {
             request
@@ -2147,7 +2099,7 @@ public class StudyQuestionnaireController {
             if (StringUtils.isNotEmpty(studyId)) {
               String message =
                   studyService.markAsCompleted(
-                      Integer.valueOf(studyId),
+                      studyId,
                       FdahpStudyDesignerConstants.QUESTIONNAIRE,
                       false,
                       sesObj,
@@ -2226,11 +2178,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           if (questionnairesStepsBo.getStepId() != null) {
             request
@@ -2358,11 +2306,7 @@ public class StudyQuestionnaireController {
           message = FdahpStudyDesignerConstants.SUCCESS;
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
         }
       }
@@ -2450,7 +2394,7 @@ public class StudyQuestionnaireController {
               }
               if (StringUtils.isNotEmpty(studyId)) {
                 studyService.markAsCompleted(
-                    Integer.valueOf(studyId),
+                    studyId,
                     FdahpStudyDesignerConstants.QUESTIONNAIRE,
                     false,
                     sesObj,
@@ -2575,11 +2519,7 @@ public class StudyQuestionnaireController {
                       .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
           if (addQuestionnairesStepsBo.getQuestionsBo() != null) {
             jsonobject.put("questionId", addQuestionnairesStepsBo.getQuestionsBo().getId());
@@ -3097,11 +3037,7 @@ public class StudyQuestionnaireController {
                         .getAttribute(
                             sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                false,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
         }
         map.addAttribute("permission", permission);
