@@ -50,7 +50,7 @@ public class ResourceBO implements Serializable {
   private boolean action;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -126,7 +126,7 @@ public class ResourceBO implements Serializable {
   @Column(name = "anchor_date_id")
   private Integer anchorDateId;
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -230,7 +230,7 @@ public class ResourceBO implements Serializable {
     this.action = action;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 

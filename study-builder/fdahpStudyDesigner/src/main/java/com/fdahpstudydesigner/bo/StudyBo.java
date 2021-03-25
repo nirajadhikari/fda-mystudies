@@ -66,7 +66,7 @@ public class StudyBo implements Serializable {
   private String category;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -194,7 +194,7 @@ public class StudyBo implements Serializable {
     return category;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -358,7 +358,7 @@ public class StudyBo implements Serializable {
     this.category = category;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 

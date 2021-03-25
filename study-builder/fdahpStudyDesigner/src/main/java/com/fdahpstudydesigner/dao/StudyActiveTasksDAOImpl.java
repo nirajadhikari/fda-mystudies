@@ -205,7 +205,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId) {
+  public ActiveTaskBo getActiveTaskById(String activeTaskId, String customStudyId) {
     logger.info("StudyActiveTasksDAOImpl - getActiveTaskById() - Starts");
     ActiveTaskBo activeTaskBo = null;
     Session session = null;

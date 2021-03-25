@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -338,7 +339,7 @@ public class StudyDAOImpl implements StudyDAO {
           "Update ConsentInfoBo CIB set CIB.active=0,CIB.modifiedBy=:userId"
               + ",CIB.modifiedOn=:currentDateTime where CIB.id= :consentInfoId";
       query = session.createQuery(deleteQuery);
-      query.setInteger("userId", sessionObject.getUserId());
+      query.setString("userId", sessionObject.getUserId());
       query.setString("currentDateTime", FdahpStudyDesignerUtil.getCurrentDateTime());
       query.setInteger("consentInfoId", consentInfoId);
       count = query.executeUpdate();
@@ -1435,7 +1436,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId) {
     logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Starts");
     ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
     Session session = null;
@@ -1966,7 +1967,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public StudyBo getStudyById(String studyId, Integer userId) {
+  public StudyBo getStudyById(String studyId, String userId) {
     logger.info("StudyDAOImpl - getStudyById() - Starts");
     Session session = null;
     StudyBo studyBo = null;
@@ -1994,7 +1995,7 @@ public class StudyDAOImpl implements StudyDAO {
                 session
                     .getNamedQuery("getStudyPermissionById")
                     .setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId))
-                    .setInteger("userId", userId)
+                    .setString("userId", userId)
                     .uniqueResult();
         if (studySequenceBo != null) {
           studyBo.setStudySequenceBo(studySequenceBo);
@@ -2169,13 +2170,13 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<StudyListBean> getStudyListByUserId(Integer userId) {
+  public List<StudyListBean> getStudyListByUserId(String userId) {
     logger.info("StudyDAOImpl - getStudyListByUserId() - Starts");
     Session session = null;
     List<StudyListBean> studyListBeans = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if ((userId != null) && (userId != 0)) {
+      if ((userId != null) && (StringUtils.isNotEmpty(userId))) {
         query =
             session.createQuery(
                 "select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,p.viewPermission)"
@@ -2268,7 +2269,11 @@ public class StudyDAOImpl implements StudyDAO {
 
   @Override
   public String markAsCompleted(
-      int studyId, String markCompleted, boolean flag, SessionObject sesObj, String customStudyId) {
+      String studyId,
+      String markCompleted,
+      boolean flag,
+      SessionObject sesObj,
+      String customStudyId) {
     logger.info("StudyDAOImpl - markAsCompleted() - Starts");
     String msg = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -2807,7 +2812,7 @@ public class StudyDAOImpl implements StudyDAO {
           if (objects != null) {
             Integer superadminId = (Integer) objects[0];
             StudyPermissionBO studyPermissionBO = new StudyPermissionBO();
-            studyPermissionBO.setUserId((Integer) objects[0]);
+            studyPermissionBO.setUserId((String) objects[0]);
             studyPermissionBO.setViewPermission((Boolean) objects[1]);
             studyPermissionBO.setStudyId(studyDreaftBo.getId());
             studyPermissionBO.setStudyPermissionId(null);
