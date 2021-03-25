@@ -101,7 +101,7 @@ public interface StudyDAO {
 
   public StudyIdBean getLiveVersion(String customStudyId);
 
-  public NotificationBO getNotificationByResourceId(Integer resourseId);
+  public NotificationBO getNotificationByResourceId(String resourseId);
 
   public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId);
 
@@ -166,7 +166,7 @@ public interface StudyDAO {
 
   public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sessionObject,
       String customStudyId);
 
