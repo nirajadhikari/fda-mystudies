@@ -46,7 +46,7 @@ public class SessionObject implements Serializable {
   private String privacyPolicyText = "";
   private List<Integer> studySession;
   private List<StudySessionBean> studySessionBeans;
-  private Integer superAdminId = 0;
+  private String superAdminId = "";
   private String termsText = "";
   private String userId;
   private String userName = "";
@@ -114,7 +114,7 @@ public class SessionObject implements Serializable {
     return studySessionBeans;
   }
 
-  public Integer getSuperAdminId() {
+  public String getSuperAdminId() {
     return superAdminId;
   }
 
@@ -206,7 +206,7 @@ public class SessionObject implements Serializable {
     this.isSuperAdmin = isSuperAdmin;
   }
 
-  public void setSuperAdminId(Integer superAdminId) {
+  public void setSuperAdminId(String superAdminId) {
     this.superAdminId = superAdminId;
   }
 
