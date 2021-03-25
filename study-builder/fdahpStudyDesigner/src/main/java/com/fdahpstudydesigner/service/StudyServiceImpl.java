@@ -128,7 +128,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteConsentInfo(
-      Integer consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId) {
+      String consentInfoId, String studyId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
     String message = null;
     try {
@@ -173,7 +173,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteResourceInfo(
-      String resourceInfoId, SessionObject sesObj, String customStudyId, int studyId) {
+      String resourceInfoId, SessionObject sesObj, String customStudyId, String studyId) {
     logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     ResourceBO resourceBO = null;

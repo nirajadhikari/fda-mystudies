@@ -27,7 +27,7 @@ import java.util.Map;
 
 public class QuestionnaireStepBean {
 
-  private Integer destinationStep;
+  private String destinationStep;
   private String destinationText;
   Map<Integer, QuestionnaireStepBean> fromMap;
   private String lineChart;
@@ -42,11 +42,11 @@ public class QuestionnaireStepBean {
   private String title;
   private Boolean useAnchorDate;
 
-  public Integer getDestinationStep() {
+  public String getDestinationStep() {
     return destinationStep;
   }
 
-  public void setDestinationStep(Integer destinationStep) {
+  public void setDestinationStep(String destinationStep) {
     this.destinationStep = destinationStep;
   }
 

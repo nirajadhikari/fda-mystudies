@@ -139,7 +139,7 @@ public class QuestionsBo implements Serializable {
 
   @Transient private Integer questionnaireId;
 
-  @Transient private Integer fromId;
+  @Transient private String fromId;
 
   @Transient QuestionnairesStepsBo questionnairesStepsBo;
 
@@ -187,7 +187,7 @@ public class QuestionsBo implements Serializable {
     return description;
   }
 
-  public Integer getFromId() {
+  public String getFromId() {
     return fromId;
   }
 
@@ -323,7 +323,7 @@ public class QuestionsBo implements Serializable {
     this.description = description;
   }
 
-  public void setFromId(Integer fromId) {
+  public void setFromId(String fromId) {
     this.fromId = fromId;
   }
 

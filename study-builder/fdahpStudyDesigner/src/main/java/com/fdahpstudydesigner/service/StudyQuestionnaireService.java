@@ -63,8 +63,8 @@ public interface StudyQuestionnaireService {
       Integer questionnaireId, String customStudyId, SessionObject sessionObject);
 
   public String deleteFromStepQuestion(
-      Integer formId,
-      Integer questionId,
+      String formId,
+      String questionId,
       SessionObject sessionObject,
       String customStudyId,
       AuditLogEventRequest auditRequest);

@@ -57,7 +57,7 @@ public interface StudyDAO {
       Integer questionId, Integer studyId, SessionObject sessionObject);
 
   public String deleteConsentInfo(
-      Integer consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId);
+      String consentInfoId, String studyId, SessionObject sessionObject, String customStudyId);
 
   public String deleteEligibilityTestQusAnsById(
       Integer eligibilityTestId,
@@ -69,7 +69,8 @@ public interface StudyDAO {
 
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
-  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility, int studyId);
+  public String deleteResourceInfo(
+      String resourceInfoId, boolean resourceVisibility, String studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 

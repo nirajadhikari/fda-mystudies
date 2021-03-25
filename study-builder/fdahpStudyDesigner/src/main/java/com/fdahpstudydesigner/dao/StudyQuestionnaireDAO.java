@@ -66,8 +66,8 @@ public interface StudyQuestionnaireDAO {
       Integer questionnaireId, String customStudyId, SessionObject sessionObject);
 
   public String deleteFromStepQuestion(
-      Integer formId,
-      Integer questionId,
+      String formId,
+      String questionId,
       SessionObject sessionObject,
       String customStudyId,
       AuditLogEventRequest auditRequest);
@@ -156,10 +156,10 @@ public interface StudyQuestionnaireDAO {
       Session session,
       Transaction transaction,
       StudyVersionBo studyVersionBo,
-      Integer questionnaireId,
+      String questionnaireId,
       SessionObject sessionObject,
       String studyId,
-      Integer stepId,
+      String stepId,
       String questionId,
       String stepType,
       boolean isChange);

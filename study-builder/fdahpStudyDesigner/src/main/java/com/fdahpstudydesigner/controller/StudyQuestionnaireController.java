@@ -17,6 +17,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTIO
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.FORM_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -200,11 +201,7 @@ public class StudyQuestionnaireController {
         if (!formId.isEmpty() && !questionId.isEmpty()) {
           message =
               studyQuestionnaireService.deleteFromStepQuestion(
-                  Integer.valueOf(formId),
-                  Integer.valueOf(questionId),
-                  sesObj,
-                  customStudyId,
-                  auditRequest);
+                  formId, questionId, sesObj, customStudyId, auditRequest);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 
             Map<String, String> values = new HashMap<>();
