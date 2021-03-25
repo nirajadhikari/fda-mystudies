@@ -179,10 +179,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public InstructionsBo getInstructionsBo(
-      Integer instructionId,
+      String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId) {
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getInstructionsBo - Starts");
     InstructionsBo instructionsBo = null;
     try {
@@ -197,7 +197,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Starts");
     QuestionnaireBo questionnaireBo = null;
     try {
@@ -298,7 +298,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo) {
+      String questionnaireId, Integer sequenceNo) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnairesStepsList - Starts");
     List<QuestionnairesStepsBo> questionnairesStepsList = null;
     try {
@@ -431,7 +431,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId) {
+      String questionId, String questionnaireShortTitle, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
     QuestionsBo questionsBo = null;
     try {

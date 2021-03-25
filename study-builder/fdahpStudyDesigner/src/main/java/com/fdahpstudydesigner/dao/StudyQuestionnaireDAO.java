@@ -88,7 +88,7 @@ public interface StudyQuestionnaireDAO {
       String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId);
+      String questionnaireId);
 
   public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(
       Session session, Integer questionId);
@@ -96,7 +96,7 @@ public interface StudyQuestionnaireDAO {
   public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo);
+      String questionnaireId, Integer sequenceNo);
 
   public QuestionnairesStepsBo getQuestionnaireStep(
       Integer stepId,

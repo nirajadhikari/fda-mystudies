@@ -72,7 +72,7 @@ public class InstructionsBo implements Serializable {
   @Column(name = "modified_on")
   private String modifiedOn;
 
-  @Transient private Integer questionnaireId;
+  @Transient private String questionnaireId;
 
   @Transient private QuestionnairesStepsBo questionnairesStepsBo;
 
@@ -113,7 +113,7 @@ public class InstructionsBo implements Serializable {
     return modifiedOn;
   }
 
-  public Integer getQuestionnaireId() {
+  public String getQuestionnaireId() {
     return questionnaireId;
   }
 
@@ -161,7 +161,7 @@ public class InstructionsBo implements Serializable {
     this.modifiedOn = modifiedOn;
   }
 
-  public void setQuestionnaireId(Integer questionnaireId) {
+  public void setQuestionnaireId(String questionnaireId) {
     this.questionnaireId = questionnaireId;
   }
 

@@ -470,7 +470,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public StudyBo getStudyById(String studyId, Integer userId) {
+  public StudyBo getStudyById(String studyId, String userId) {
     logger.info("StudyServiceImpl - getStudyById() - Starts");
     StudyBo studyBo = null;
     try {
