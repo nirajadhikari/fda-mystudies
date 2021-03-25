@@ -69,18 +69,18 @@ public interface StudyDAO {
 
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
-  public String deleteResourceInfo(Integer resourceInfoId, boolean resourceVisibility, int studyId);
+  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility, int studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
   public String deleteStudyByIdOrCustomstudyId(
       Session session, Transaction transaction, String studyId, String customStudyId);
 
-  public int eligibilityTestOrderCount(Integer eligibilityId);
+  public int eligibilityTestOrderCount(String eligibilityId);
 
   public List<StudyBo> getAllStudyList();
 
-  public Checklist getchecklistInfo(Integer studyId);
+  public Checklist getchecklistInfo(String studyId);
 
   public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId);
 
@@ -91,7 +91,7 @@ public interface StudyDAO {
 
   public ConsentBo getConsentDetailsByStudyId(String studyId);
 
-  public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
+  public ConsentInfoBo getConsentInfoById(String consentInfoId);
 
   public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
@@ -103,11 +103,11 @@ public interface StudyDAO {
 
   public NotificationBO getNotificationByResourceId(Integer resourseId);
 
-  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
+  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId);
 
   public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
-  public ResourceBO getResourceInfo(Integer resourceInfoId);
+  public ResourceBO getResourceInfo(String resourceInfoId);
 
   public List<ResourceBO> getResourceList(Integer studyId);
 
@@ -119,7 +119,7 @@ public interface StudyDAO {
 
   public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 
-  public List<StudyListBean> getStudyList(Integer userId);
+  public List<StudyListBean> getStudyList(String userId);
 
   public List<StudyListBean> getStudyListByUserId(String userId);
 
@@ -147,7 +147,7 @@ public interface StudyDAO {
   public boolean resetDraftStudyByCustomStudyId(
       String customStudyId, String action, SessionObject sesObj);
 
-  public int resourceOrder(Integer studyId);
+  public int resourceOrder(String studyId);
 
   public List<ResourceBO> resourcesSaved(Integer studyId);
 
@@ -194,13 +194,13 @@ public interface StudyDAO {
 
   public boolean validateStudyId(String studyId);
 
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId);
 
   public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId);
 
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId);
 
   public String updateAnchordateForEnrollmentDate(
       StudyBo oldStudyBo, StudyBo updatedStudyBo, Session session, Transaction transaction);

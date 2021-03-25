@@ -102,7 +102,7 @@ public class Checklist implements Serializable {
   private String modifiedOn;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   public String getChecklistId() {
     return checklistId;
@@ -128,7 +128,7 @@ public class Checklist implements Serializable {
     return modifiedOn;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -252,7 +252,7 @@ public class Checklist implements Serializable {
     this.modifiedOn = modifiedOn;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 }

@@ -69,15 +69,15 @@ public interface StudyService {
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
   public String deleteResourceInfo(
-      Integer resourceInfoId, SessionObject sesObj, String customStudyId, int studyId);
+      String resourceInfoId, SessionObject sesObj, String customStudyId, int studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
   public List<StudyBo> getAllStudyList();
 
-  public Checklist getchecklistInfo(Integer studyId);
+  public Checklist getchecklistInfo(String studyId);
 
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId);
 
   public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
 
@@ -86,7 +86,7 @@ public interface StudyService {
 
   public ConsentBo getConsentDetailsByStudyId(String studyId);
 
-  public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
+  public ConsentInfoBo getConsentInfoById(String consentInfoId);
 
   public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
@@ -100,7 +100,7 @@ public interface StudyService {
 
   public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
-  public ResourceBO getResourceInfo(Integer resourceInfoId);
+  public ResourceBO getResourceInfo(String resourceInfoId);
 
   public List<ResourceBO> getResourceList(Integer studyId);
 
@@ -119,10 +119,14 @@ public interface StudyService {
   public ResourceBO getStudyProtocol(Integer studyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, Boolean flag, SessionObject sesObj, String customStudyId);
+      String studyId,
+      String markCompleted,
+      Boolean flag,
+      SessionObject sesObj,
+      String customStudyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, SessionObject sesObj, String customStudyId);
+      String studyId, String markCompleted, SessionObject sesObj, String customStudyId);
 
   public String reOrderComprehensionTestQuestion(
       Integer studyId, int oldOrderNumber, int newOrderNumber);

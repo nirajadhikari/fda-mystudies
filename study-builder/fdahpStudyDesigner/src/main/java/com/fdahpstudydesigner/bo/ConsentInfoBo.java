@@ -65,7 +65,7 @@ public class ConsentInfoBo implements Serializable {
   private String contentType;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -92,7 +92,7 @@ public class ConsentInfoBo implements Serializable {
   private Integer live = 0;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -137,7 +137,7 @@ public class ConsentInfoBo implements Serializable {
     return contentType;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -169,7 +169,7 @@ public class ConsentInfoBo implements Serializable {
     return live;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -225,7 +225,7 @@ public class ConsentInfoBo implements Serializable {
     this.contentType = contentType;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -257,7 +257,7 @@ public class ConsentInfoBo implements Serializable {
     this.live = live;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

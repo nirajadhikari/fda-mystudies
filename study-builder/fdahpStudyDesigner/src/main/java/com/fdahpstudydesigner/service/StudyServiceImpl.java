@@ -173,7 +173,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteResourceInfo(
-      Integer resourceInfoId, SessionObject sesObj, String customStudyId, int studyId) {
+      String resourceInfoId, SessionObject sesObj, String customStudyId, int studyId) {
     logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     ResourceBO resourceBO = null;
@@ -218,7 +218,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public Checklist getchecklistInfo(Integer studyId) {
+  public Checklist getchecklistInfo(String studyId) {
     logger.info("StudyServiceImpl - getchecklistInfo() - Starts");
     Checklist checklist = null;
     try {
@@ -231,7 +231,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId) {
     logger.info("StudyServiceImpl - getComprehensionTestQuestionById() - Starts");
     ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
     try {
@@ -285,7 +285,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
+  public ConsentInfoBo getConsentInfoById(String consentInfoId) {
     logger.info("StudyServiceImpl - getConsentInfoById() - Starts");
     ConsentInfoBo consentInfoBo = null;
     try {
@@ -375,7 +375,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) {
+  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId) {
     logger.info("StudyServiceImpl - getOverviewStudyPagesById() - Starts");
     List<StudyPageBo> studyPageBos = null;
     try {
@@ -413,7 +413,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public ResourceBO getResourceInfo(Integer resourceInfoId) {
+  public ResourceBO getResourceInfo(String resourceInfoId) {
     logger.info("StudyServiceImpl - getResourceInfo() - Starts");
     ResourceBO resourceBO = null;
     try {
@@ -496,11 +496,11 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<StudyListBean> getStudyList(Integer userId) {
+  public List<StudyListBean> getStudyList(String userId) {
     logger.info("StudyServiceImpl - getStudyList() - Starts");
     List<StudyListBean> studyBos = null;
     try {
-      if ((userId != null) && (userId != 0)) {
+      if (StringUtils.isNotEmpty(userId)) {
         studyBos = studyDAO.getStudyList(userId);
       }
     } catch (Exception e) {
@@ -551,7 +551,11 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String markAsCompleted(
-      int studyId, String markCompleted, Boolean flag, SessionObject sesObj, String customStudyId) {
+      String studyId,
+      String markCompleted,
+      Boolean flag,
+      SessionObject sesObj,
+      String customStudyId) {
     logger.info("StudyServiceImpl - markAsCompleted() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -565,7 +569,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String markAsCompleted(
-      int studyId, String markCompleted, SessionObject sesObj, String customStudyId) {
+      String studyId, String markCompleted, SessionObject sesObj, String customStudyId) {
     logger.info("StudyServiceImpl - markAsCompleted() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -653,7 +657,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public int resourceOrder(Integer studyId) {
+  public int resourceOrder(String studyId) {
     int count = 1;
     logger.info("StudyServiceImpl - resourceOrder() - Starts");
     try {
@@ -1228,7 +1232,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject) {
+  public String saveOrUpdateStudy(StudyBo studyBo, String userId, SessionObject sessionObject) {
     logger.info("StudyServiceImpl - saveOrUpdateStudy() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -1341,7 +1345,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId) {
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId) {
     logger.info("StudyServiceImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
     List<EligibilityTestBo> eligibilityTestBos = null;
     try {
@@ -1367,13 +1371,13 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId) {
     logger.info("StudyServiceImpl - isAnchorDateExistForEnrollment - Starts");
     return studyDAO.isAnchorDateExistForEnrollment(studyId, customStudyId);
   }
 
   @Override
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId) {
     logger.info("StudyServiceImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
     return studyDAO.isAnchorDateExistForEnrollmentDraftStudy(studyId, customStudyId);
   }

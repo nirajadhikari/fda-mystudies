@@ -65,7 +65,7 @@ public class ResourceBO implements Serializable {
   private String id;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -142,7 +142,7 @@ public class ResourceBO implements Serializable {
     return id;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -246,7 +246,7 @@ public class ResourceBO implements Serializable {
     this.id = id;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 
