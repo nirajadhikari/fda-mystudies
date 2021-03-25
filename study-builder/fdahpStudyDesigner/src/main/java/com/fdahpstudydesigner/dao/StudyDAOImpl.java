@@ -37,7 +37,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -267,7 +266,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(
+                      .setString(
                           FdahpStudyDesignerConstants.STUDY_ID,
                           comprehensionTestQuestionBo.getStudyId())
                       .uniqueResult();
@@ -409,7 +408,7 @@ public class StudyDAOImpl implements StudyDAO {
           session
               .createQuery(sb.toString())
               .setInteger("sequenceNo", eligibilityTestBo.getSequenceNo())
-              .setInteger("eligibilityId", eligibilityTestBo.getEligibilityId())
+              .setString("eligibilityId", eligibilityTestBo.getEligibilityId())
               .list();
       if ((eligibilityDeleteResult > 0) && !eligibilityTestBos.isEmpty()) {
         reorderQuery =
@@ -3902,7 +3901,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudySequenceBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                    .setInteger(FdahpStudyDesignerConstants.STUDY_ID, consentInfoBo.getStudyId())
+                    .setString(FdahpStudyDesignerConstants.STUDY_ID, consentInfoBo.getStudyId())
                     .uniqueResult();
         if (consentInfoBo
             .getType()
@@ -4333,7 +4332,7 @@ public class StudyDAOImpl implements StudyDAO {
               (EligibilityBo)
                   session
                       .getNamedQuery("getEligibiltyById")
-                      .setInteger("id", eligibilityBo.getId())
+                      .setString("id", eligibilityBo.getId())
                       .uniqueResult();
           eligibilityBoUpdate.setEligibilityMechanism(eligibilityBo.getEligibilityMechanism());
           eligibilityBoUpdate.setInstructionalText(eligibilityBo.getInstructionalText());
@@ -4403,13 +4402,13 @@ public class StudyDAOImpl implements StudyDAO {
               (StudyBo)
                   session
                       .createQuery("from StudyBo where id=:id")
-                      .setInteger("id", studyBo.getId())
+                      .setString("id", studyBo.getId())
                       .uniqueResult();
           studySequence =
               (StudySequenceBo)
                   session
                       .createQuery("from StudySequenceBo where studyId=:id")
-                      .setInteger("id", studyBo.getId())
+                      .setString("id", studyBo.getId())
                       .uniqueResult();
           if ((study != null) && (studySequence != null)) {
             // validation of anchor date
@@ -4449,14 +4448,14 @@ public class StudyDAOImpl implements StudyDAO {
               session
                   .createSQLQuery(
                       "UPDATE anchordate_type set has_anchortype_draft=1 where study_id=:id and has_anchortype_draft=0 and name=:enrollment")
-                  .setInteger("id", study.getId())
+                  .setString("id", study.getId())
                   .setString("enrollment", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                   .executeUpdate();
             } else {
               session
                   .createSQLQuery(
                       "UPDATE anchordate_type set has_anchortype_draft=0 where study_id=:id and has_anchortype_draft=1 and name=:enrollment")
-                  .setInteger("id", study.getId())
+                  .setString("id", study.getId())
                   .setString("enrollment", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                   .executeUpdate();
             }
@@ -4917,8 +4916,7 @@ public class StudyDAOImpl implements StudyDAO {
                               (InstructionsBo)
                                   session
                                       .getNamedQuery("getInstructionStep")
-                                      .setInteger(
-                                          "id", questionnairesStepsBo.getInstructionFormId())
+                                      .setString("id", questionnairesStepsBo.getInstructionFormId())
                                       .uniqueResult();
                           if (instructionsBo != null) {
                             InstructionsBo newInstructionsBo =
@@ -4942,7 +4940,7 @@ public class StudyDAOImpl implements StudyDAO {
                               (QuestionsBo)
                                   session
                                       .getNamedQuery("getQuestionStep")
-                                      .setInteger(
+                                      .setString(
                                           "stepId", questionnairesStepsBo.getInstructionFormId())
                                       .uniqueResult();
                           if (questionsBo != null) {
@@ -5570,12 +5568,12 @@ public class StudyDAOImpl implements StudyDAO {
                 .createQuery(
                     "UPDATE NotificationBO set customStudyId=:customStudyId where studyId=:id")
                 .setString("customStudyId", studyBo.getCustomStudyId())
-                .setInteger("id", studyBo.getId())
+                .setString("id", studyBo.getId())
                 .executeUpdate();
             session
                 .createQuery("UPDATE Checklist set customStudyId=:customStudyId where studyId=:id")
                 .setString("customStudyId", studyBo.getCustomStudyId())
-                .setInteger("id", studyBo.getId())
+                .setString("id", studyBo.getId())
                 .executeUpdate();
           }
           message = FdahpStudyDesignerConstants.SUCCESS;
@@ -5977,7 +5975,7 @@ public class StudyDAOImpl implements StudyDAO {
         searchQuery =
             " FROM ResourceBO RBO WHERE RBO.studyId=:id AND RBO.status = 1 AND RBO.startDate IS NOT NULL ORDER BY RBO.createdOn DESC ";
         query = session.createQuery(searchQuery);
-        query.setInteger("id", studyBo.getId());
+        query.setString("id", studyBo.getId());
         resourceBOList = query.list();
         if ((resourceBOList != null) && !resourceBOList.isEmpty()) {
           for (ResourceBO resourceBO : resourceBOList) {
@@ -6191,7 +6189,7 @@ public class StudyDAOImpl implements StudyDAO {
                 + " AND RBO.notificationType='ST' AND RBO.notificationSubType='Announcement' AND RBO.notificationScheduleType='notImmediate' "
                 + " AND RBO.notificationSent=0 AND RBO.notificationStatus=0 ";
         query = session.createQuery(searchQuery);
-        query.setInteger("studyId", studyBo.getId());
+        query.setString("studyId", studyBo.getId());
         notificationBOs = query.list();
         if ((notificationBOs != null) && !notificationBOs.isEmpty()) {
           // checking notification expired or not
@@ -6565,7 +6563,7 @@ public class StudyDAOImpl implements StudyDAO {
                 (StudySequenceBo)
                     session
                         .getNamedQuery("getStudySequenceByStudyId")
-                        .setInteger("studyId", oldStudy.getId())
+                        .setString("studyId", oldStudy.getId())
                         .uniqueResult();
             if (studySequence != null) {
               int count1 =
@@ -6573,7 +6571,7 @@ public class StudyDAOImpl implements StudyDAO {
                       .createSQLQuery(
                           "update questionnaires set status=0,anchor_date_id=null, "
                               + " modified_by=:modifiedBy , modified_date=:currentDateTime where active=1 and anchor_date_id in (:anchorIds)")
-                      .setInteger("modifiedBy", updatedStudy.getModifiedBy())
+                      .setString("modifiedBy", updatedStudy.getModifiedBy())
                       .setString("currentDateTime", FdahpStudyDesignerUtil.getCurrentDateTime())
                       .setParameterList("anchorIds", anchorIds)
                       .executeUpdate();
@@ -6591,7 +6589,7 @@ public class StudyDAOImpl implements StudyDAO {
                   session
                       .createSQLQuery(
                           "update active_task set action=0 ,anchor_date_id=null, modified_by=:modifiedBy,modified_date=:currentDateTime where active=1 and anchor_date_id in (:anchorIds) ")
-                      .setInteger("modifiedBy", updatedStudy.getModifiedBy())
+                      .setString("modifiedBy", updatedStudy.getModifiedBy())
                       .setString("currentDateTime", FdahpStudyDesignerUtil.getCurrentDateTime())
                       .setParameterList("anchorIds", anchorIds)
                       .executeUpdate();

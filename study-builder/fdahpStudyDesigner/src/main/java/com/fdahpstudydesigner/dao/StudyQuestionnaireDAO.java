@@ -80,7 +80,7 @@ public interface StudyQuestionnaireDAO {
       String customStudyId);
 
   public String deleteQuestuionnaireInfo(
-      Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);
+      String studyId, String questionnaireId, SessionObject sessionObject, String customStudyId);
 
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList();
 
@@ -91,7 +91,7 @@ public interface StudyQuestionnaireDAO {
       String questionnaireId);
 
   public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(
-      Session session, Integer questionId);
+      Session session, String questionId);
 
   public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
@@ -160,7 +160,7 @@ public interface StudyQuestionnaireDAO {
       SessionObject sessionObject,
       String studyId,
       Integer stepId,
-      Integer questionId,
+      String questionId,
       String stepType,
       boolean isChange);
 

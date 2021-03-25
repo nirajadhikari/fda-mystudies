@@ -5069,8 +5069,7 @@ public class StudyController {
            * Passing studyId in the param to fetch study related notification list and
            * type to define study notification in service level
            */
-          notificationList =
-              notificationService.getNotificationList(Integer.valueOf(studyId), type);
+          notificationList = notificationService.getNotificationList(studyId, type);
           for (NotificationBO notification : notificationList) {
             if (!notification.isNotificationSent()
                 && notification
