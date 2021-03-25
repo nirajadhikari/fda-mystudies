@@ -842,7 +842,7 @@ public class StudyServiceImpl implements StudyService {
         checklist.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
       }
       checklistId = studyDAO.saveOrDoneChecklist(checklist);
-      if (!checklistId.equals(0)) {
+      if (!checklistId.equals("")) {
         if ("save".equalsIgnoreCase(actionBut)) {
           studyDAO.markAsCompleted(
               checklist.getStudyId(),
@@ -997,13 +997,13 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public Integer saveOrUpdateEligibilityTestQusAns(
+  public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sessionObject,
       String customStudyId) {
     logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");
-    Integer eligibilityTestId = 0;
+    String eligibilityTestId = "";
     Integer seqCount = 0;
     try {
       if (eligibilityTestBo != null) {
@@ -1070,9 +1070,9 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
+  public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj) {
     logger.info("StudyServiceImpl - saveOrUpdateResource() - Starts");
-    Integer resourseId = 0;
+    String resourseId = "";
     ResourceBO resourceBO2 = null;
     String fileName = "";
     String file = "";

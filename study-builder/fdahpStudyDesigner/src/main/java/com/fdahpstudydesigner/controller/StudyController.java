@@ -3343,7 +3343,7 @@ public class StudyController {
   public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
     logger.info("StudyController - saveOrUpdateResource() - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-    Integer resourseId = 0;
+    String resourseId = "";
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     ModelMap map = new ModelMap();
     Map<String, String> values = new HashMap<>();
@@ -3657,7 +3657,7 @@ public class StudyController {
     logger.info("StudyController - saveOrUpdateStudyEligibiltyTestQusAns - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
     ModelMap map = new ModelMap();
-    Integer result = 0;
+    String result = "";
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String customStudyId = "";
     try {
@@ -3693,7 +3693,7 @@ public class StudyController {
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
           result =
               studyService.saveOrUpdateEligibilityTestQusAns(
-                  eligibilityTestBo, Integer.parseInt(studyId), sesObj, customStudyId);
+                  eligibilityTestBo, studyId, sesObj, customStudyId);
         }
         map.addAttribute("_S", sessionStudyCount);
         if (result > 0) {

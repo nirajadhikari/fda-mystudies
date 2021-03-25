@@ -158,15 +158,15 @@ public interface StudyService {
   public ConsentInfoBo saveOrUpdateConsentInfo(
       ConsentInfoBo consentInfoBo, SessionObject sessionObject, String customStudyId);
 
-  public Integer saveOrUpdateEligibilityTestQusAns(
+  public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sessionObject,
       String customStudyId);
 
   public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 
-  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
+  public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 
   public String saveOrUpdateStudy(StudyBo studyBo, String userId, SessionObject sessionObject);
 

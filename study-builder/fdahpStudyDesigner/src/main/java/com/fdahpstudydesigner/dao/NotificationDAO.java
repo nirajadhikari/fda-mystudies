@@ -40,7 +40,7 @@ public interface NotificationDAO {
 
   public List<NotificationBO> getNotificationList(int studyId, String type);
 
-  public List<NotificationBO> getNotificationList(Integer studyId);
+  public List<NotificationBO> getNotificationList(String studyId);
 
   public List<PushNotificationBean> getPushNotificationList(String scheduledTimestamp);
 
