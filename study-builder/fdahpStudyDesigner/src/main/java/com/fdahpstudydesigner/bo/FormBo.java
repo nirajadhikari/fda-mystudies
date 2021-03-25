@@ -48,7 +48,7 @@ public class FormBo implements Serializable {
   private Boolean active;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -69,7 +69,7 @@ public class FormBo implements Serializable {
     return active;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -93,7 +93,7 @@ public class FormBo implements Serializable {
     this.active = active;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 

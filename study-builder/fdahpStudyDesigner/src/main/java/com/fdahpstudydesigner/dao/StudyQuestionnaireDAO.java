@@ -146,7 +146,7 @@ public interface StudyQuestionnaireDAO {
   public String checkUniqueAnchorDateName(
       String anchordateText, String customStudyId, String anchorDateId);
 
-  public Integer getStudyIdByCustomStudy(Session session, String customStudyId);
+  public String getStudyIdByCustomStudy(Session session, String customStudyId);
 
   public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 
@@ -158,7 +158,7 @@ public interface StudyQuestionnaireDAO {
       StudyVersionBo studyVersionBo,
       Integer questionnaireId,
       SessionObject sessionObject,
-      Integer studyId,
+      String studyId,
       Integer stepId,
       Integer questionId,
       String stepType,

@@ -37,7 +37,7 @@ public class QuestionnaireStepBean {
   private Integer sequenceNo;
   private String statData;
   private Boolean status;
-  private Integer stepId;
+  private String stepId;
   private String stepType;
   private String title;
   private Boolean useAnchorDate;
@@ -122,11 +122,11 @@ public class QuestionnaireStepBean {
     this.status = status;
   }
 
-  public Integer getStepId() {
+  public String getStepId() {
     return stepId;
   }
 
-  public void setStepId(Integer stepId) {
+  public void setStepId(String stepId) {
     this.stepId = stepId;
   }
 
