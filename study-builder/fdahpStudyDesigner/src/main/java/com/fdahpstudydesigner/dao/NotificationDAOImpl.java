@@ -33,6 +33,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_NOTIFIC
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NEW_NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.OLD_NOTIFICATION_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
@@ -184,14 +185,15 @@ public class NotificationDAOImpl implements NotificationDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<NotificationBO> getNotificationList(int studyId, String type) {
+  public List<NotificationBO> getNotificationList(String studyId, String type) {
     logger.info("NotificationDAOImpl - getNotificationList() - Starts");
     List<NotificationBO> notificationList = null;
     Session session = null;
     String queryString = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if (FdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && (studyId != 0)) {
+      if (FdahpStudyDesignerConstants.STUDYLEVEL.equals(type)
+          && (StringUtils.isNotEmpty(studyId))) {
         queryString =
             "from NotificationBO NBO where NBO.studyId = :studyId "
                 + " and NBO.notificationSubType = 'Announcement' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 "
