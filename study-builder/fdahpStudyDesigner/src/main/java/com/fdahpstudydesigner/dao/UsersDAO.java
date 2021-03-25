@@ -32,7 +32,7 @@ import java.util.List;
 public interface UsersDAO {
 
   public String activateOrDeactivateUser(
-      int userId, int userStatus, int loginUser, SessionObject userSession);
+      String userId, int userStatus, String loginUser, SessionObject userSession);
 
   public UserIdAccessLevelInfo addOrUpdateUserDetails(
       UserBO userBO, String permissions, String selectedStudies, String permissionValues);
@@ -41,17 +41,17 @@ public interface UsersDAO {
 
   public List<String> getActiveUserEmailIds();
 
-  public List<Integer> getPermissionsByUserId(Integer userId);
+  public List<Integer> getPermissionsByUserId(String userId);
 
   public List<String> getSuperAdminList();
 
   public UserBO getSuperAdminNameByEmailId(String emailId);
 
-  public UserBO getUserDetails(int userId);
+  public UserBO getUserDetails(String userId);
 
   public List<UserBO> getUserList();
 
-  public Integer getUserPermissionByUserId(Integer sessionUserId);
+  public Integer getUserPermissionByUserId(String sessionUserId);
 
   public RoleBO getUserRole(int roleId);
 

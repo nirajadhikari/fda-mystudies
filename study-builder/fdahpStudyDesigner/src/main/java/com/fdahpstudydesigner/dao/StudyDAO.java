@@ -208,13 +208,13 @@ public interface StudyDAO {
   public boolean validateAppId(
       String customStudyId, String appId, String studyType, String dbCustomStudyId);
 
-  public StudyPermissionBO getStudyPermissionBO(int studyId, int userId);
+  public StudyPermissionBO getStudyPermissionBO(String studyId, String userId);
 
   public StudyBo getStudyByLatestVersion(String customStudyId);
 
   public String getStudyCategory(Integer id);
 
-  public Integer getEligibilityType(Integer studyId);
+  public Integer getEligibilityType(String studyId);
 
   public boolean validateStudyActions(String studyId);
 

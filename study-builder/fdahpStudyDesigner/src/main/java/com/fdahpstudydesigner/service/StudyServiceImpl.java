@@ -1386,7 +1386,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public StudyPermissionBO findStudyPermissionBO(int studyId, int userId) {
+  public StudyPermissionBO findStudyPermissionBO(String studyId, String userId) {
     logger.info("StudyServiceImpl - findStudyPermissionBO() - Starts");
     return studyDAO.getStudyPermissionBO(studyId, userId);
   }
