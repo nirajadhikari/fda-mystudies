@@ -82,12 +82,12 @@ public interface StudyQuestionnaireService {
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList();
 
   public InstructionsBo getInstructionsBo(
-      Integer instructionId,
+      String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
       String questionnaireId);
 
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
       String questionnaireId, Integer sequenceNo);
@@ -104,7 +104,7 @@ public interface StudyQuestionnaireService {
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId);
+      String questionId, String questionnaireShortTitle, String customStudyId);
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 
