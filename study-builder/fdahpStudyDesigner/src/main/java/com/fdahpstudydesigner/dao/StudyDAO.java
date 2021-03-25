@@ -128,7 +128,11 @@ public interface StudyDAO {
   public ResourceBO getStudyProtocol(Integer studyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, boolean flag, SessionObject sesObj, String customStudyId);
+      String studyId,
+      String markCompleted,
+      boolean flag,
+      SessionObject sesObj,
+      String customStudyId);
 
   public String reOrderComprehensionTestQuestion(
       Integer studyId, int oldOrderNumber, int newOrderNumber);
