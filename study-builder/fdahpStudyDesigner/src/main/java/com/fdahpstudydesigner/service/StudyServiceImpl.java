@@ -537,7 +537,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public ResourceBO getStudyProtocol(Integer studyId) {
+  public ResourceBO getStudyProtocol(String studyId) {
     logger.info("StudyServiceImpl - getStudyProtocol() - Starts");
     ResourceBO studyprotocol = null;
     try {
@@ -1421,7 +1421,7 @@ public class StudyServiceImpl implements StudyService {
         }
         studyDetails.setStudyStatus(studyBo.getStatus());
         if (studyBo.getCategory() != null) {
-          studyCatagory = studyDAO.getStudyCategory(Integer.valueOf(studyBo.getCategory()));
+          studyCatagory = studyDAO.getStudyCategory(studyBo.getCategory());
         }
         if (StringUtils.isNotBlank(studyCatagory)) {
           studyDetails.setStudyCategory(studyCatagory);
@@ -1465,7 +1465,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   public StudyBo getStudyInfo(String studyId) {
-    return studyDAO.getStudy(Integer.valueOf(studyId));
+    return studyDAO.getStudy(studyId);
   }
 
   @Override

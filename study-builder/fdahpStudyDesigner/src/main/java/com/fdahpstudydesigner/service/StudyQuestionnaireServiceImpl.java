@@ -165,7 +165,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String deletQuestionnaire(
-      Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId) {
+      String studyId, String questionnaireId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - deletQuestionnaire - Starts");
     return studyQuestionnaireDAO.deleteQuestuionnaireInfo(
         studyId, questionnaireId, sessionObject, customStudyId);

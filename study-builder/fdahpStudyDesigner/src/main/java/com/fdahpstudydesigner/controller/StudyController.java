@@ -1752,7 +1752,7 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION);
         if (StringUtils.isNotEmpty(studyId)) {
           resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
-          studyProtocolResourceBO = studyService.getStudyProtocol(Integer.valueOf(studyId));
+          studyProtocolResourceBO = studyService.getStudyProtocol(studyId);
           resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
@@ -3425,7 +3425,7 @@ public class StudyController {
           }
           resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);
         }
-        if (!resourseId.equals(0)) {
+        if (!resourseId.equals("")) {
           values.put("resource_id", resourseId.toString());
           auditLogEventHelper.logEvent(STUDY_NEW_RESOURCE_CREATED, auditRequest, values);
           if ((resourceBO != null) && (resourceBO.getId() == null)) {

@@ -116,7 +116,7 @@ public interface StudyService {
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
-  public ResourceBO getStudyProtocol(Integer studyId);
+  public ResourceBO getStudyProtocol(String studyId);
 
   public String markAsCompleted(
       String studyId,

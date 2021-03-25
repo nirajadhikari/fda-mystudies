@@ -77,7 +77,7 @@ public interface StudyQuestionnaireService {
       String customStudyId);
 
   public String deletQuestionnaire(
-      Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);
+      String studyId, String questionnaireId, SessionObject sessionObject, String customStudyId);
 
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList();
 

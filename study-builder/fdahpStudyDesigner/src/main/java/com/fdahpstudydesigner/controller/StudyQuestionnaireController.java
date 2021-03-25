@@ -320,10 +320,7 @@ public class StudyQuestionnaireController {
 
           message =
               studyQuestionnaireService.deletQuestionnaire(
-                  Integer.valueOf(studyId),
-                  Integer.valueOf(questionnaireId),
-                  sesObj,
-                  customStudyId);
+                  studyId, questionnaireId, sesObj, customStudyId);
           if (message == FdahpStudyDesignerConstants.SUCCESS) {
             StudyBo studyBo = studyService.getStudyInfo(studyId);
             auditRequest.setStudyVersion(studyBo.getVersion().toString());
