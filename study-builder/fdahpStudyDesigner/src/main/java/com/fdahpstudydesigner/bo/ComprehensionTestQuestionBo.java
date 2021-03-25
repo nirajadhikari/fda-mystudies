@@ -75,7 +75,7 @@ public class ComprehensionTestQuestionBo implements Serializable {
   private Boolean structureOfCorrectAns = true;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   public Boolean getActive() {
     return active;
@@ -121,7 +121,7 @@ public class ComprehensionTestQuestionBo implements Serializable {
     return structureOfCorrectAns;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -169,7 +169,7 @@ public class ComprehensionTestQuestionBo implements Serializable {
     this.structureOfCorrectAns = structureOfCorrectAns;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 }
