@@ -67,7 +67,7 @@ public class LoginDAOImpl implements LoginDAO {
   public LoginDAOImpl() {}
 
   @Override
-  public String changePassword(Integer userId, String newPassword, String oldPassword) {
+  public String changePassword(String userId, String newPassword, String oldPassword) {
     logger.info("LoginDAOImpl - changePassword() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -77,7 +77,7 @@ public class LoginDAOImpl implements LoginDAO {
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      query = session.getNamedQuery("getUserById").setInteger("userId", userId);
+      query = session.getNamedQuery("getUserById").setString("userId", userId);
       adminUserBO = (UserBO) query.uniqueResult();
       if ((null != adminUserBO)
           && FdahpStudyDesignerUtil.compareEncryptedPassword(

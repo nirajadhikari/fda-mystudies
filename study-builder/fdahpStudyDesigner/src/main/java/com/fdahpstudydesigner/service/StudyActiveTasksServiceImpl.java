@@ -52,7 +52,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 
   @Override
   public String deleteActiveTask(
-      String activeTaskInfoId, Integer studyId, SessionObject sesObj, String customStudyId) {
+      String activeTaskInfoId, String studyId, SessionObject sesObj, String customStudyId) {
     logger.info("StudyServiceImpl - deleteActiveTask() - Starts");
     String message = null;
     ActiveTaskBo activeTaskBo = null;

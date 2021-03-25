@@ -34,7 +34,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_RESE
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_RESET_EMAIL_SENT_FOR_LOCKED_ACCOUNT;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_RESET_FAILED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_RESET_SUCCEEDED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -199,7 +198,7 @@ public class LoginServiceImpl implements LoginService, UserDetailsService {
 
   @Override
   public String changePassword(
-      Integer userId, String newPassword, String oldPassword, SessionObject sesObj) {
+      String userId, String newPassword, String oldPassword, SessionObject sesObj) {
     logger.info("LoginServiceImpl - changePassword() - Starts");
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String message = FdahpStudyDesignerConstants.FAILURE;

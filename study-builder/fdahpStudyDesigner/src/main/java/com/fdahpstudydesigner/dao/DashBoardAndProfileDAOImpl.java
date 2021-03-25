@@ -121,7 +121,7 @@ public class DashBoardAndProfileDAOImpl implements DashBoardAndProfileDAO {
             null != userBO.getUserEmail().trim() ? userBO.getUserEmail().trim() : "");
         updatedUserBo.setPhoneNumber(
             null != userBO.getPhoneNumber().trim() ? userBO.getPhoneNumber().trim() : "");
-        updatedUserBo.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : 0);
+        updatedUserBo.setModifiedBy(null != userBO.getModifiedBy() ? userBO.getModifiedBy() : "");
         updatedUserBo.setModifiedOn(null != userBO.getModifiedOn() ? userBO.getModifiedOn() : "");
         session.update(updatedUserBo);
       }
