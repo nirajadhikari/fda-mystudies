@@ -30,7 +30,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_ACCOUNT_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_RECORD_DEACTIVATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_RECORD_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.EDITED_USER_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.UserIdAccessLevelInfo;
 import com.fdahpstudydesigner.bo.RoleBO;
@@ -66,9 +65,9 @@ public class UsersServiceImpl implements UsersService {
 
   @Override
   public String activateOrDeactivateUser(
-      int userId,
+      String userId,
       int userStatus,
-      int loginUser,
+      String loginUser,
       SessionObject userSession,
       HttpServletRequest request) {
     logger.info("UsersServiceImpl - activateOrDeactivateUser() - Starts");
@@ -255,7 +254,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public List<Integer> getPermissionsByUserId(Integer userId) {
+  public List<Integer> getPermissionsByUserId(String userId) {
     logger.info("UsersServiceImpl - permissionsByUserId() - Starts");
     List<Integer> permissions = null;
     try {
@@ -268,7 +267,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public UserBO getUserDetails(Integer userId) {
+  public UserBO getUserDetails(String userId) {
     logger.info("UsersServiceImpl - getUserDetails() - Starts");
     UserBO userBO = null;
     try {
@@ -294,7 +293,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public Integer getUserPermissionByUserId(Integer sessionUserId) {
+  public Integer getUserPermissionByUserId(String sessionUserId) {
     logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
     Integer userId = null;
     try {
