@@ -164,7 +164,7 @@ public interface StudyDAO {
   public ConsentInfoBo saveOrUpdateConsentInfo(
       ConsentInfoBo consentInfoBo, SessionObject sesObj, String customStudyId);
 
-  public Integer saveOrUpdateEligibilityTestQusAns(
+  public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
       Integer studyId,
       SessionObject sessionObject,
@@ -172,7 +172,7 @@ public interface StudyDAO {
 
   public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 
-  public Integer saveOrUpdateResource(ResourceBO resourceBO);
+  public String saveOrUpdateResource(ResourceBO resourceBO);
 
   public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
 

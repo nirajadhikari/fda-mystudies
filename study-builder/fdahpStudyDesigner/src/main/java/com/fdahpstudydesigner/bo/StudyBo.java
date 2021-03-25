@@ -121,7 +121,7 @@ public class StudyBo implements Serializable {
   private String mediaLink;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_on")
   private String modifiedOn;
@@ -266,7 +266,7 @@ public class StudyBo implements Serializable {
     return mediaLink;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -430,7 +430,7 @@ public class StudyBo implements Serializable {
     this.mediaLink = mediaLink;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 
