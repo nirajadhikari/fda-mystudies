@@ -1359,7 +1359,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public int eligibilityTestOrderCount(Integer eligibilityId) {
+  public int eligibilityTestOrderCount(String eligibilityId) {
     logger.info("StudyDAOImpl - eligibilityTestOrderCount - Starts");
     Session session = null;
     int count = 1;
@@ -1373,7 +1373,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session
               .createQuery(sb.toString())
-              .setInteger("eligibilityId", eligibilityId)
+              .setString("eligibilityId", eligibilityId)
               .setMaxResults(1);
       eligibilityTestBo = ((EligibilityTestBo) query.uniqueResult());
       if (eligibilityTestBo != null) {
@@ -2067,7 +2067,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<StudyListBean> getStudyList(Integer userId) {
+  public List<StudyListBean> getStudyList(String userId) {
     logger.info("StudyDAOImpl - getStudyList() - Starts");
     Session session = null;
     List<StudyListBean> studyListBeans = null;
@@ -2078,7 +2078,7 @@ public class StudyDAOImpl implements StudyDAO {
     try {
 
       session = hibernateTemplate.getSessionFactory().openSession();
-      if ((userId != null) && (userId != 0)) {
+      if ((StringUtils.isNotEmpty(userId))) {
         query =
             session.createQuery(
                 "select new com.fdahpstudydesigner.bean.StudyListBean(s.id,s.customStudyId,s.name,s.category,s.researchSponsor,user.firstName, user.lastName,p.viewPermission,s.status,s.createdOn,s.appId)"
@@ -2088,7 +2088,7 @@ public class StudyDAOImpl implements StudyDAO {
                     + " and s.version=0"
                     + " and p.userId=:impValue"
                     + " order by s.createdOn desc");
-        query.setInteger(FdahpStudyDesignerConstants.IMP_VALUE, userId);
+        query.setString(FdahpStudyDesignerConstants.IMP_VALUE, userId);
         studyListBeans = query.list();
 
         if ((studyListBeans != null) && !studyListBeans.isEmpty()) {
@@ -2468,7 +2468,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(
+                      .setString(
                           FdahpStudyDesignerConstants.STUDY_ID,
                           comprehensionTestQuestionBo.getStudyId())
                       .uniqueResult();
@@ -3952,7 +3952,7 @@ public class StudyDAOImpl implements StudyDAO {
   @Override
   public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sesObj,
       String customStudyId) {
     logger.info("StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - Starts");
@@ -4173,7 +4173,7 @@ public class StudyDAOImpl implements StudyDAO {
     String userId = null;
     StudySequenceBo studySequenceBo = null;
     StudyBo dbStudyBo = null;
-    List<Integer> userSuperAdminList = null;
+    List<String> userSuperAdminList = null;
     StudyBuilderAuditEvent auditLogEvent = null;
     try {
       AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);
@@ -4203,7 +4203,7 @@ public class StudyDAOImpl implements StudyDAO {
                 .setInteger("superAdminId", FdahpStudyDesignerConstants.ROLE_SUPERADMIN);
         userSuperAdminList = query.list();
         if ((userSuperAdminList != null) && !userSuperAdminList.isEmpty()) {
-          for (Integer superAdminId : userSuperAdminList) {
+          for (String superAdminId : userSuperAdminList) {
             if ((null != userId) && !userId.equals(superAdminId)) {
               studyPermissionBO = new StudyPermissionBO();
               studyPermissionBO.setUserId(superAdminId);
@@ -4862,7 +4862,7 @@ public class StudyDAOImpl implements StudyDAO {
                   /** Schedule Purpose creating draft End * */
                   /** Content purpose creating draft Start * */
                   List<Integer> destinationList = new ArrayList<>();
-                  Map<Integer, Integer> destionationMapList = new HashMap<>();
+                  Map<Integer, String> destionationMapList = new HashMap<>();
 
                   List<QuestionnairesStepsBo> existedQuestionnairesStepsBoList = null;
                   List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
@@ -5209,7 +5209,7 @@ public class StudyDAOImpl implements StudyDAO {
                   // for other type , update the destination in questionresponsetype table
                   /** start * */
                   List<Integer> sequenceTypeList = new ArrayList<>();
-                  List<Integer> destinationResTypeList = new ArrayList<>();
+                  List<String> destinationResTypeList = new ArrayList<>();
                   if ((existingQuestionResponseTypeList != null)
                       && !existingQuestionResponseTypeList.isEmpty()) {
                     for (QuestionReponseTypeBo questionResponseTypeBo :
@@ -5238,11 +5238,11 @@ public class StudyDAOImpl implements StudyDAO {
                   }
                   if ((sequenceTypeList != null) && !sequenceTypeList.isEmpty()) {
                     for (int i = 0; i < sequenceTypeList.size(); i++) {
-                      Integer desId = null;
+                      String desId = null;
                       if (sequenceTypeList.get(i) == null) {
                         desId = null;
                       } else if (sequenceTypeList.get(i).equals(-1)) {
-                        desId = 0;
+                        desId = "";
                       } else {
                         for (QuestionnairesStepsBo questionnairesStepsBo :
                             newQuestionnairesStepsBoList) {
@@ -5505,7 +5505,7 @@ public class StudyDAOImpl implements StudyDAO {
                     .getNeedComprehensionTest()
                     .equalsIgnoreCase(FdahpStudyDesignerConstants.YES)) {
               List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
-              List<Integer> comprehensionIds = new ArrayList<>();
+              List<String> comprehensionIds = new ArrayList<>();
               List<ComprehensionTestResponseBo> comprehensionTestResponseList = null;
               query =
                   session.createQuery(
@@ -6315,7 +6315,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId) {
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId) {
     logger.info("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
     Session session = null;
     List<EligibilityTestBo> eligibilityTestList = null;
@@ -6324,7 +6324,7 @@ public class StudyDAOImpl implements StudyDAO {
       eligibilityTestList =
           session
               .getNamedQuery("EligibilityTestBo.findByEligibilityId")
-              .setInteger("eligibilityId", eligibilityId)
+              .setString("eligibilityId", eligibilityId)
               .list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - ERROR ", e);
@@ -6362,7 +6362,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId) {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollment - Starts");
     Session session = null;
     Boolean isExist = false;
@@ -6429,7 +6429,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId) {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
     Session session = null;
     Boolean isExist = false;
@@ -6449,7 +6449,7 @@ public class StudyDAOImpl implements StudyDAO {
                   .setString(
                       "enrollmentDate", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                   .setString("customStudyId", customStudyId)
-                  .setInteger("studyId", studyId)
+                  .setString("studyId", studyId)
                   .uniqueResult();
       if (count.intValue() > 0) {
         isExist = true;
@@ -6467,7 +6467,7 @@ public class StudyDAOImpl implements StudyDAO {
                     .setString(
                         "enrollmentDate", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                     .setString("customStudyId", customStudyId)
-                    .setInteger("studyId", studyId)
+                    .setString("studyId", studyId)
                     .uniqueResult();
         if ((subCount != null) && (subCount.intValue() > 0)) {
           isExist = true;
@@ -6484,7 +6484,7 @@ public class StudyDAOImpl implements StudyDAO {
                       .setString(
                           "enrollmentDate", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                       .setString("customStudyId", customStudyId)
-                      .setInteger("studyId", studyId)
+                      .setString("studyId", studyId)
                       .uniqueResult();
           if ((sub1Count != null) && (sub1Count.intValue() > 0)) {
             isExist = true;
@@ -6758,7 +6758,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public String getStudyCategory(Integer id) {
+  public String getStudyCategory(String id) {
     logger.info("StudyDAOImpl - getStudyCategory() - Starts");
     Session session = null;
     String searchQuery = "";
@@ -6768,7 +6768,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       searchQuery = " SELECT r.value From ReferenceTablesBo r WHERE r.id=:id ";
       query = session.createQuery(searchQuery);
-      query.setInteger("id", id);
+      query.setString("id", id);
       studyCatagory = (String) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getStudyCategory() - ERROR", e);
@@ -6782,18 +6782,18 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Integer getEligibilityType(String studyId) {
+  public String getEligibilityType(String studyId) {
     logger.info("StudyDAOImpl - getEligibilityType() - Starts");
     Session session = null;
     String searchQuery = "";
     Query query = null;
-    Integer eligibilityType = null;
+    String eligibilityType = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       searchQuery = "SELECT e.eligibilityMechanism From EligibilityBo e WHERE e.studyId=:studyId";
       query = session.createQuery(searchQuery);
       query.setString("studyId", studyId);
-      eligibilityType = (Integer) query.uniqueResult();
+      eligibilityType = (String) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getEligibilityType() - ERROR", e);
     } finally {

@@ -115,7 +115,7 @@ public interface StudyDAO {
 
   public StudyBo getStudyById(String studyId, String userId);
 
-  public StudyBo getStudy(Integer id);
+  public StudyBo getStudy(String id);
 
   public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 
@@ -125,7 +125,7 @@ public interface StudyDAO {
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
-  public ResourceBO getStudyProtocol(Integer studyId);
+  public ResourceBO getStudyProtocol(String studyId);
 
   public String markAsCompleted(
       String studyId,
@@ -212,9 +212,9 @@ public interface StudyDAO {
 
   public StudyBo getStudyByLatestVersion(String customStudyId);
 
-  public String getStudyCategory(Integer id);
+  public String getStudyCategory(String id);
 
-  public Integer getEligibilityType(String studyId);
+  public String getEligibilityType(String studyId);
 
   public boolean validateStudyActions(String studyId);
 
