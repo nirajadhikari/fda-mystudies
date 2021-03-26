@@ -27,9 +27,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "questionnaires_frequencies")
@@ -38,9 +38,10 @@ public class QuestionnairesFrequenciesBo implements Serializable {
   private static final long serialVersionUID = -1673441133422366930L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "questionnaires_id")
   private Integer questionnairesId;
@@ -77,7 +78,7 @@ public class QuestionnairesFrequenciesBo implements Serializable {
     return frequencyTime;
   }
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
@@ -101,7 +102,7 @@ public class QuestionnairesFrequenciesBo implements Serializable {
     this.frequencyTime = frequencyTime;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 

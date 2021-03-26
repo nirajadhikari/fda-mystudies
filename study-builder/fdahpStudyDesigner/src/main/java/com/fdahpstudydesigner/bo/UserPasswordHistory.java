@@ -26,11 +26,11 @@ package com.fdahpstudydesigner.bo;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "users_password_history")
@@ -44,9 +44,10 @@ public class UserPasswordHistory {
   private String createdDate;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "password_history_id")
-  private Integer passwordHistoryId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "password_history_id", updatable = false, nullable = false)
+  private String passwordHistoryId;
 
   @Column(name = "user_id")
   private Integer userId;
@@ -58,7 +59,7 @@ public class UserPasswordHistory {
     return createdDate;
   }
 
-  public Integer getPasswordHistoryId() {
+  public String getPasswordHistoryId() {
     return passwordHistoryId;
   }
 
@@ -74,7 +75,7 @@ public class UserPasswordHistory {
     this.createdDate = createdDate;
   }
 
-  public void setPasswordHistoryId(Integer passwordHistoryId) {
+  public void setPasswordHistoryId(String passwordHistoryId) {
     this.passwordHistoryId = passwordHistoryId;
   }
 

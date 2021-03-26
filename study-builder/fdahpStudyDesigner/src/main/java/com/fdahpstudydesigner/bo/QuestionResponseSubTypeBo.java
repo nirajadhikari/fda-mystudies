@@ -27,12 +27,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -70,9 +70,10 @@ public class QuestionResponseSubTypeBo implements Serializable {
   @Transient private Integer imageId;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "response_sub_type_value_id")
-  private Integer responseSubTypeValueId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "response_sub_type_value_id", updatable = false, nullable = false)
+  private String responseSubTypeValueId;
 
   @Column(name = "response_type_id")
   private Integer responseTypeId;
@@ -123,7 +124,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
     return imageId;
   }
 
-  public Integer getResponseSubTypeValueId() {
+  public String getResponseSubTypeValueId() {
     return responseSubTypeValueId;
   }
 
@@ -179,7 +180,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
     this.imageId = imageId;
   }
 
-  public void setResponseSubTypeValueId(Integer responseSubTypeValueId) {
+  public void setResponseSubTypeValueId(String responseSubTypeValueId) {
     this.responseSubTypeValueId = responseSubTypeValueId;
   }
 

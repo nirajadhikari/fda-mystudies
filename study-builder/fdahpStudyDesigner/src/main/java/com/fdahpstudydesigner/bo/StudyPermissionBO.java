@@ -27,12 +27,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "study_permission")
@@ -55,9 +55,10 @@ public class StudyPermissionBO implements Serializable {
   private Integer studyId;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer studyPermissionId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String studyPermissionId;
 
   @Transient private String userFullName;
 
@@ -79,7 +80,7 @@ public class StudyPermissionBO implements Serializable {
     return studyId;
   }
 
-  public Integer getStudyPermissionId() {
+  public String getStudyPermissionId() {
     return studyPermissionId;
   }
 
@@ -107,7 +108,7 @@ public class StudyPermissionBO implements Serializable {
     this.studyId = studyId;
   }
 
-  public void setStudyPermissionId(Integer studyPermissionId) {
+  public void setStudyPermissionId(String studyPermissionId) {
     this.studyPermissionId = studyPermissionId;
   }
 
