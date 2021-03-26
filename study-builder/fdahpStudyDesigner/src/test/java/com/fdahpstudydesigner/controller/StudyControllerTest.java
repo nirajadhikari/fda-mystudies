@@ -793,12 +793,11 @@ public class StudyControllerTest extends BaseMockIT {
 
     mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound());
 
-    List<NotificationBO> notificationList =
-        notificationDaoImpl.getNotificationList(Integer.valueOf(STUDY_ID_VALUE));
+    List<NotificationBO> notificationList = notificationDaoImpl.getNotificationList(STUDY_ID_VALUE);
     assertTrue(notificationList.size() > 0);
 
     for (NotificationBO notification : notificationList) {
-      if (notification.getCreatedBy().equals(Integer.parseInt(USER_ID_VALUE))) {
+      if (notification.getCreatedBy().equals(USER_ID_VALUE)) {
         assertEquals(resourceBO.getResourceText(), notification.getNotificationText());
       }
     }
@@ -836,8 +835,7 @@ public class StudyControllerTest extends BaseMockIT {
 
     mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound());
 
-    List<NotificationBO> notificationList =
-        notificationDaoImpl.getNotificationList(Integer.valueOf(STUDY_ID_VALUE));
+    List<NotificationBO> notificationList = notificationDaoImpl.getNotificationList(STUDY_ID_VALUE);
     assertEquals(0, notificationList.size());
 
     verifyAuditEventCall(STUDY_NEW_RESOURCE_CREATED);

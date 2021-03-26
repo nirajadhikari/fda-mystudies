@@ -126,7 +126,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   @Override
   public String deleteFromStepQuestion(
       Integer formId,
-      Integer questionId,
+      String questionId,
       SessionObject sessionObject,
       String customStudyId,
       AuditLogEventRequest auditRequest) {
@@ -459,13 +459,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public Boolean isAnchorDateExistsForStudy(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistsForStudy(String studyId, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
     return studyQuestionnaireDAO.isAnchorDateExistsForStudy(studyId, customStudyId);
   }
 
   @Override
-  public Boolean isQuestionnairesCompleted(Integer studyId) {
+  public Boolean isQuestionnairesCompleted(String studyId) {
     logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistsForStudy - Starts");
     return studyQuestionnaireDAO.isQuestionnairesCompleted(studyId);
   }
@@ -1105,7 +1105,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public QuestionsBo getQuestionById(Integer questionId) {
+  public QuestionsBo getQuestionById(String questionId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionById - Starts");
     return studyQuestionnaireDAO.getQuestionById(questionId);
   }

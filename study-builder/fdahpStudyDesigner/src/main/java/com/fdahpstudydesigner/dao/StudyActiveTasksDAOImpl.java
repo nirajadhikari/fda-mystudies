@@ -449,8 +449,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
           for (ActiveTaskBo activeTaskBo : activeTasks) {
             if (activeTaskBo.getTaskTypeId() != null) {
               for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
-                if (activeTaskListBo.getActiveTaskListId().intValue()
-                    == activeTaskBo.getTaskTypeId().intValue()) {
+                if (activeTaskListBo.getActiveTaskListId().equals(activeTaskBo.getTaskTypeId())) {
                   activeTaskBo.setType(activeTaskListBo.getTaskName());
                 }
               }

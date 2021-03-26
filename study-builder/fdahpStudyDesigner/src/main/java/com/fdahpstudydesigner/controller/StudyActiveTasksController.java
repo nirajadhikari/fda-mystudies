@@ -315,7 +315,7 @@ public class StudyActiveTasksController {
         } else {
           activeTaskBo = new ActiveTaskBo();
           activeTaskBo.setStudyId(studyId);
-          activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
+          activeTaskBo.setTaskTypeId(typeOfActiveTask);
         }
         if (StringUtils.isNotEmpty(actionType)) {
           activeTaskBo.setActionPage(actionType);
