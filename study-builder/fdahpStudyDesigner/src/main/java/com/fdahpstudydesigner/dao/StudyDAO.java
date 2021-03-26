@@ -49,9 +49,9 @@ public interface StudyDAO {
 
   public String checkActiveTaskTypeValidation(Integer studyId);
 
-  public int comprehensionTestQuestionOrder(Integer studyId);
+  public int comprehensionTestQuestionOrder(String studyId);
 
-  public int consentInfoOrder(Integer studyId);
+  public int consentInfoOrder(String studyId);
 
   public String deleteComprehensionTestQuestion(
       Integer questionId, Integer studyId, SessionObject sessionObject);
@@ -69,29 +69,29 @@ public interface StudyDAO {
 
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
-  public String deleteResourceInfo(Integer resourceInfoId, boolean resourceVisibility, int studyId);
+  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility, int studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
   public String deleteStudyByIdOrCustomstudyId(
       Session session, Transaction transaction, String studyId, String customStudyId);
 
-  public int eligibilityTestOrderCount(Integer eligibilityId);
+  public int eligibilityTestOrderCount(String eligibilityId);
 
   public List<StudyBo> getAllStudyList();
 
-  public Checklist getchecklistInfo(Integer studyId);
+  public Checklist getchecklistInfo(String studyId);
 
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId);
 
-  public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
+  public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(String studyId);
 
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
       Integer comprehensionQuestionId);
 
   public ConsentBo getConsentDetailsByStudyId(String studyId);
 
-  public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
+  public ConsentInfoBo getConsentInfoById(String consentInfoId);
 
   public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
@@ -101,13 +101,13 @@ public interface StudyDAO {
 
   public StudyIdBean getLiveVersion(String customStudyId);
 
-  public NotificationBO getNotificationByResourceId(Integer resourseId);
+  public NotificationBO getNotificationByResourceId(String resourseId);
 
-  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
+  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId);
 
   public HashMap<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
-  public ResourceBO getResourceInfo(Integer resourceInfoId);
+  public ResourceBO getResourceInfo(String resourceInfoId);
 
   public List<ResourceBO> getResourceList(String studyId);
 
@@ -147,7 +147,7 @@ public interface StudyDAO {
   public boolean resetDraftStudyByCustomStudyId(
       String customStudyId, String action, SessionObject sesObj);
 
-  public int resourceOrder(Integer studyId);
+  public int resourceOrder(String studyId);
 
   public List<ResourceBO> resourcesSaved(Integer studyId);
 
@@ -194,13 +194,13 @@ public interface StudyDAO {
 
   public boolean validateStudyId(String studyId);
 
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId);
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId);
 
   public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
 
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId);
 
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId);
 
   public String updateAnchordateForEnrollmentDate(
       StudyBo oldStudyBo, StudyBo updatedStudyBo, Session session, Transaction transaction);
@@ -208,13 +208,13 @@ public interface StudyDAO {
   public boolean validateAppId(
       String customStudyId, String appId, String studyType, String dbCustomStudyId);
 
-  public StudyPermissionBO getStudyPermissionBO(int studyId, int userId);
+  public StudyPermissionBO getStudyPermissionBO(String studyId, String userId);
 
   public StudyBo getStudyByLatestVersion(String customStudyId);
 
   public String getStudyCategory(Integer id);
 
-  public Integer getEligibilityType(Integer studyId);
+  public Integer getEligibilityType(String studyId);
 
   public boolean validateStudyActions(String studyId);
 

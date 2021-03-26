@@ -93,7 +93,7 @@ public interface StudyQuestionnaireService {
       String questionnaireId, Integer sequenceNo);
 
   public QuestionnairesStepsBo getQuestionnaireStep(
-      Integer stepId,
+      String stepId,
       String stepType,
       String questionnaireShortTitle,
       String customStudyId,
@@ -104,7 +104,7 @@ public interface StudyQuestionnaireService {
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId);
+      String questionId, String questionnaireShortTitle, String customStudyId);
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 

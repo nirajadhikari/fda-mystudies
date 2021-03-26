@@ -55,7 +55,7 @@ public class ActiveTaskStepBo implements Serializable {
   @GeneratedValue(generator = "system-uuid")
   @GenericGenerator(name = "system-uuid", strategy = "uuid")
   @Column(name = "step_id", updatable = false, nullable = false)
-  private Integer stepId;
+  private String stepId;
 
   public ActiveTaskStepBo() {}
 
@@ -75,7 +75,7 @@ public class ActiveTaskStepBo implements Serializable {
     return this.sequenceNo;
   }
 
-  public Integer getStepId() {
+  public String getStepId() {
     return this.stepId;
   }
 
@@ -95,7 +95,7 @@ public class ActiveTaskStepBo implements Serializable {
     this.sequenceNo = sequenceNo;
   }
 
-  public void setStepId(Integer stepId) {
+  public void setStepId(String stepId) {
     this.stepId = stepId;
   }
 }

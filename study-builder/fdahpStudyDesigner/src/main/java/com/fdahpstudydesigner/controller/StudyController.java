@@ -3427,7 +3427,7 @@ public class StudyController {
           } else {
             resourceBO.setStudyProtocol(false);
           }
-          resourceBO.setStudyId(Integer.parseInt(studyId));
+          resourceBO.setStudyId(studyId);
           resourceBO.setTextOrPdf(("0").equals(textOrPdfParam) ? false : true);
           resourceBO.setResourceVisibility(("0").equals(resourceVisibilityParam) ? false : true);
           if (!resourceBO.isResourceVisibility()) {
@@ -3775,7 +3775,7 @@ public class StudyController {
     logger.info("StudyController - saveOrUpdateStudyNotification - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
     ModelMap map = new ModelMap();
-    Integer notificationId = 0;
+    String notificationId = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String customStudyId = "";
 
@@ -3884,7 +3884,7 @@ public class StudyController {
             StudyBo studyBo = studyService.getStudyById(studyId, 0);
             if (studyBo != null) {
               notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-              notificationBO.setStudyId(Integer.valueOf(studyId));
+              notificationBO.setStudyId(studyId);
             }
           }
           if (notificationBO.getNotificationId() == null) {
@@ -3898,7 +3898,7 @@ public class StudyController {
               notificationService.saveOrUpdateOrResendNotification(
                   notificationBO, notificationType, buttonType, sessionObject, customStudyId);
         }
-        if (!notificationId.equals(0)) {
+        if (StringUtils.isNotEmpty(notificationId)) {
           if (notificationBO.getNotificationId() == null) {
             if ("save".equalsIgnoreCase(buttonType)) {
               request
@@ -4874,7 +4874,7 @@ public class StudyController {
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
           if (eligibilityBo == null) {
             eligibilityBo = new EligibilityBo();
-            eligibilityBo.setStudyId(Integer.parseInt(studyId));
+            eligibilityBo.setStudyId(studyId);
             eligibilityBo.setInstructionalText(
                 FdahpStudyDesignerConstants.ELIGIBILITY_TOKEN_TEXT_DEFAULT);
           }

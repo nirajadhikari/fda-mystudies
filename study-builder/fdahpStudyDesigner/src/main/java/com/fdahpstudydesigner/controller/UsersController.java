@@ -95,11 +95,7 @@ public class UsersController {
       if (null != userSession) {
         msg =
             usersService.activateOrDeactivateUser(
-                Integer.valueOf(userId),
-                Integer.valueOf(userStatus),
-                userSession.getUserId(),
-                userSession,
-                request);
+                userId, Integer.valueOf(userStatus), userSession.getUserId(), userSession, request);
       }
     } catch (Exception e) {
       logger.error("UsersController - activateOrDeactivateUser() - ERROR", e);

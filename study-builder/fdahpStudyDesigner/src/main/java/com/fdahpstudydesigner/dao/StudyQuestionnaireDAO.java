@@ -105,13 +105,12 @@ public interface StudyQuestionnaireDAO {
       String customStudyId,
       String questionnaireId);
 
-  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
-      Integer questionnaireId);
+  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(String questionnaireId);
 
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId);
+      String questionId, String questionnaireShortTitle, String customStudyId);
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 

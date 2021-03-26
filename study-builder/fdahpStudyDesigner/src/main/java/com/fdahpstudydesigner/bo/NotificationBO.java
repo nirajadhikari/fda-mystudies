@@ -105,7 +105,7 @@ public class NotificationBO implements Serializable {
   private String questionnarieId;
 
   @Column(name = "resource_id")
-  private Integer resourceId;
+  private String resourceId;
 
   @Column(name = "schedule_date")
   private String scheduleDate;
@@ -181,7 +181,7 @@ public class NotificationBO implements Serializable {
     return questionnarieId;
   }
 
-  public Integer getResourceId() {
+  public String getResourceId() {
     return resourceId;
   }
 
@@ -297,7 +297,7 @@ public class NotificationBO implements Serializable {
     this.questionnarieId = questionnarieId;
   }
 
-  public void setResourceId(Integer resourceId) {
+  public void setResourceId(String resourceId) {
     this.resourceId = resourceId;
   }
 

@@ -48,9 +48,9 @@ public interface StudyService {
 
   public String checkActiveTaskTypeValidation(Integer studyId);
 
-  public int comprehensionTestQuestionOrder(Integer studyId);
+  public int comprehensionTestQuestionOrder(String studyId);
 
-  public int consentInfoOrder(Integer studyId);
+  public int consentInfoOrder(String studyId);
 
   public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject sesObj);
 
@@ -69,24 +69,24 @@ public interface StudyService {
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
   public String deleteResourceInfo(
-      Integer resourceInfoId, SessionObject sesObj, String customStudyId, int studyId);
+      String resourceInfoId, SessionObject sesObj, String customStudyId, int studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
   public List<StudyBo> getAllStudyList();
 
-  public Checklist getchecklistInfo(Integer studyId);
+  public Checklist getchecklistInfo(String studyId);
 
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId);
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId);
 
-  public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId);
+  public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(String studyId);
 
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
       Integer comprehensionQuestionId);
 
   public ConsentBo getConsentDetailsByStudyId(String studyId);
 
-  public ConsentInfoBo getConsentInfoById(Integer consentInfoId);
+  public ConsentInfoBo getConsentInfoById(String consentInfoId);
 
   public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
@@ -100,11 +100,11 @@ public interface StudyService {
 
   public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
-  public ResourceBO getResourceInfo(Integer resourceInfoId);
+  public ResourceBO getResourceInfo(String resourceInfoId);
 
-  public List<ResourceBO> getResourceList(Integer studyId);
+  public List<ResourceBO> getResourceList(String studyId);
 
-  public List<NotificationBO> getSavedNotification(Integer studyId);
+  public List<NotificationBO> getSavedNotification(String studyId);
 
   public StudyBo getStudyById(String studyId, String userId);
 
@@ -116,13 +116,17 @@ public interface StudyService {
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
-  public ResourceBO getStudyProtocol(Integer studyId);
+  public ResourceBO getStudyProtocol(String studyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, Boolean flag, SessionObject sesObj, String customStudyId);
+      String studyId,
+      String markCompleted,
+      Boolean flag,
+      SessionObject sesObj,
+      String customStudyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, SessionObject sesObj, String customStudyId);
+      String studyId, String markCompleted, SessionObject sesObj, String customStudyId);
 
   public String reOrderComprehensionTestQuestion(
       Integer studyId, int oldOrderNumber, int newOrderNumber);
@@ -136,7 +140,7 @@ public interface StudyService {
 
   public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 
-  public int resourceOrder(Integer studyId);
+  public int resourceOrder(String studyId);
 
   public List<ResourceBO> resourcesSaved(Integer studyId);
 
@@ -145,7 +149,7 @@ public interface StudyService {
   public ConsentBo saveOrCompleteConsentReviewDetails(
       ConsentBo consentBo, SessionObject sesObj, String customStudyId);
 
-  public Integer saveOrDoneChecklist(
+  public String saveOrDoneChecklist(
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId);
 
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
@@ -154,7 +158,7 @@ public interface StudyService {
   public ConsentInfoBo saveOrUpdateConsentInfo(
       ConsentInfoBo consentInfoBo, SessionObject sessionObject, String customStudyId);
 
-  public Integer saveOrUpdateEligibilityTestQusAns(
+  public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
       Integer studyId,
       SessionObject sessionObject,
@@ -162,7 +166,7 @@ public interface StudyService {
 
   public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 
-  public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
+  public String saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 
   public String saveOrUpdateStudy(StudyBo studyBo, String userId, SessionObject sessionObject);
 
