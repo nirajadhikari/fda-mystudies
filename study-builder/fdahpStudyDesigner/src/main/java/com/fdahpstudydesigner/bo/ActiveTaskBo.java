@@ -29,12 +29,12 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "active_task")
@@ -113,8 +113,10 @@ public class ActiveTaskBo implements Serializable {
   private String frequency;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "instruction")
   private String instruction;
@@ -239,7 +241,7 @@ public class ActiveTaskBo implements Serializable {
     return frequency;
   }
 
-  public Integer getId() {
+  public String getId() {
     return this.id;
   }
 
@@ -404,7 +406,7 @@ public class ActiveTaskBo implements Serializable {
     this.frequency = frequency;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 

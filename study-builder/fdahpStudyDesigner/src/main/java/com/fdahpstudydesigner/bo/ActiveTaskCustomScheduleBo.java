@@ -27,10 +27,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -55,8 +55,10 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
   private String frequencyTime;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "is_used")
   @Type(type = "yes_no")
@@ -94,7 +96,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
     return this.frequencyTime;
   }
 
-  public Integer getId() {
+  public String getId() {
     return this.id;
   }
 
@@ -118,7 +120,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
     this.frequencyTime = frequencyTime;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
