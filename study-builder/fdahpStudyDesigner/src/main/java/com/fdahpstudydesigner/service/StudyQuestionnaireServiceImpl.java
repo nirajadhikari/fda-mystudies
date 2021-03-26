@@ -431,7 +431,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId) {
+      String questionId, String questionnaireShortTitle, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionsById - Starts");
     QuestionsBo questionsBo = null;
     try {

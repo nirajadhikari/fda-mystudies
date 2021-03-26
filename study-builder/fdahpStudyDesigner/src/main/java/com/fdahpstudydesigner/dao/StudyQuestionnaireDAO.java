@@ -105,8 +105,7 @@ public interface StudyQuestionnaireDAO {
       String customStudyId,
       String questionnaireId);
 
-  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
-      Integer questionnaireId);
+  public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(String questionnaireId);
 
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 

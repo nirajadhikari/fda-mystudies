@@ -104,7 +104,7 @@ public interface StudyQuestionnaireService {
   public List<QuestionResponseTypeMasterInfoBo> getQuestionReponseTypeList();
 
   public QuestionsBo getQuestionsById(
-      Integer questionId, String questionnaireShortTitle, String customStudyId);
+      String questionId, String questionnaireShortTitle, String customStudyId);
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 
