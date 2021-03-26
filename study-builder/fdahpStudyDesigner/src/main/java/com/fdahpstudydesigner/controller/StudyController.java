@@ -325,7 +325,7 @@ public class StudyController {
         map.addAttribute("_S", sessionStudyCount);
         if (!FdahpStudyDesignerUtil.isEmpty(action)) {
           if (!("").equals(resourceInfoId)) {
-            resourceBO = studyService.getResourceInfo(Integer.parseInt(resourceInfoId));
+            resourceBO = studyService.getResourceInfo(resourceInfoId);
             request
                 .getSession()
                 .removeAttribute(sessionStudyCount + FdahpStudyDesignerConstants.RESOURCE_INFO_ID);
@@ -402,10 +402,7 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         message =
             studyService.markAsCompleted(
-                Integer.parseInt(studyId),
-                FdahpStudyDesignerConstants.COMPREHENSION_TEST,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.COMPREHENSION_TEST, sesObj, customStudyId);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
@@ -470,10 +467,7 @@ public class StudyController {
         auditRequest.setStudyId(customStudyId);
         message =
             studyService.markAsCompleted(
-                Integer.parseInt(studyId),
-                FdahpStudyDesignerConstants.CONESENT,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.CONESENT, sesObj, customStudyId);
         StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           auditRequest.setStudyVersion(studyBo.getVersion().toString());
@@ -541,10 +535,7 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         message =
             studyService.markAsCompleted(
-                Integer.parseInt(studyId),
-                FdahpStudyDesignerConstants.CONESENT_REVIEW,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.CONESENT_REVIEW, sesObj, customStudyId);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
@@ -803,7 +794,7 @@ public class StudyController {
         if (!resourceInfoId.isEmpty()) {
           message =
               studyService.deleteResourceInfo(
-                  Integer.valueOf(resourceInfoId), sesObj, customStudyId, Integer.valueOf(studyId));
+                  resourceInfoId, sesObj, customStudyId, Integer.valueOf(studyId));
         }
         resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
         if (!resourcesSavedList.isEmpty()) {
@@ -1021,7 +1012,7 @@ public class StudyController {
         }
         if (StringUtils.isNotEmpty(studyId)) {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
-          checklist = studyService.getchecklistInfo(Integer.valueOf(studyId));
+          checklist = studyService.getchecklistInfo(studyId);
         }
         map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         map.addAttribute("checklist", checklist);
@@ -1128,8 +1119,7 @@ public class StudyController {
           } else {
             consentBo = studyService.getConsentDetailsByStudyId(studyId);
           }
-          comprehensionTestQuestionList =
-              studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
+          comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(studyId);
           boolean markAsComplete = true;
           if ((comprehensionTestQuestionList != null) && !comprehensionTestQuestionList.isEmpty()) {
             for (ComprehensionTestQuestionBo comprehensionTestQuestionBo :
@@ -1259,8 +1249,7 @@ public class StudyController {
         }
         if (StringUtils.isNotEmpty(comprehensionQuestionId)) {
           comprehensionTestQuestionBo =
-              studyService.getComprehensionTestQuestionById(
-                  Integer.valueOf(comprehensionQuestionId));
+              studyService.getComprehensionTestQuestionById(comprehensionQuestionId);
           request
               .getSession()
               .setAttribute(
@@ -1531,7 +1520,7 @@ public class StudyController {
           }
         }
         if ((consentInfoId != null) && !consentInfoId.isEmpty()) {
-          consentInfoBo = studyService.getConsentInfoById(Integer.valueOf(consentInfoId));
+          consentInfoBo = studyService.getConsentInfoById(consentInfoId);
           map.addAttribute("consentInfoBo", consentInfoBo);
         }
         map.addAttribute("_S", sessionStudyCount);
@@ -1761,8 +1750,8 @@ public class StudyController {
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.PERMISSION);
         if (StringUtils.isNotEmpty(studyId)) {
-          resourceBOList = studyService.getResourceList(Integer.valueOf(studyId));
-          studyProtocolResourceBO = studyService.getStudyProtocol(Integer.valueOf(studyId));
+          resourceBOList = studyService.getResourceList(studyId);
+          studyProtocolResourceBO = studyService.getStudyProtocol(studyId);
           resourcesSavedList = studyService.resourcesSaved(Integer.valueOf(studyId));
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
@@ -2055,9 +2044,7 @@ public class StudyController {
         auditRequest.setStudyId(customStudyId);
         // markCompleted in param specify that notification to update it
         // as completed in table StudySequenceBo
-        message =
-            studyService.markAsCompleted(
-                Integer.parseInt(studyId), markCompleted, sesObj, customStudyId);
+        message = studyService.markAsCompleted(studyId, markCompleted, sesObj, customStudyId);
         map.addAttribute("_S", sessionStudyCount);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
@@ -2223,10 +2210,7 @@ public class StudyController {
         auditRequest.setStudyId(customStudyId);
         message =
             studyService.markAsCompleted(
-                Integer.parseInt(studyId),
-                FdahpStudyDesignerConstants.QUESTIONNAIRE,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, sesObj, customStudyId);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           if (studyBo != null) {
@@ -2279,8 +2263,7 @@ public class StudyController {
                 ? ""
                 : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
         if (StringUtils.isNotEmpty(studyId)) {
-          comprehensionTestQuestionList =
-              studyService.getComprehensionTestQuestionList(Integer.valueOf(studyId));
+          comprehensionTestQuestionList = studyService.getComprehensionTestQuestionList(studyId);
           if ((comprehensionTestQuestionList != null) && !comprehensionTestQuestionList.isEmpty()) {
             comprehensionJsonArray =
                 new JSONArray(mapper.writeValueAsString(comprehensionTestQuestionList));
@@ -2377,7 +2360,7 @@ public class StudyController {
                 ? ""
                 : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
         if (StringUtils.isNotEmpty(studyId)) {
-          resourceList = studyService.getResourceList(Integer.valueOf(studyId));
+          resourceList = studyService.getResourceList(studyId);
           if ((resourceList != null) && !resourceList.isEmpty()) {
             boolean markAsComplete = true;
             resourceJsonArray = new JSONArray(mapper.writeValueAsString(resourceList));
@@ -2587,7 +2570,7 @@ public class StudyController {
               studyService.reOrderResourceList(
                   Integer.valueOf(studyId), oldOrderNumber, newOrderNumber);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-            resourceList = studyService.getResourceList(Integer.valueOf(studyId));
+            resourceList = studyService.getResourceList(studyId);
             if ((resourceList != null) && !resourceList.isEmpty()) {
               resourceJsonArray = new JSONArray(mapper.writeValueAsString(resourceList));
             }
@@ -2755,10 +2738,7 @@ public class StudyController {
         if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
           message =
               studyService.markAsCompleted(
-                  Integer.parseInt(studyId),
-                  FdahpStudyDesignerConstants.RESOURCE,
-                  sesObj,
-                  customStudyId);
+                  studyId, FdahpStudyDesignerConstants.RESOURCE, sesObj, customStudyId);
           if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
             StudyBo studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
             auditRequest.setStudyVersion(studyBo.getVersion().toString());
@@ -2857,7 +2837,7 @@ public class StudyController {
           message = FdahpStudyDesignerConstants.SUCCESS;
           if (StringUtils.isNotEmpty(studyId)) {
             studyService.markAsCompleted(
-                Integer.valueOf(studyId),
+                studyId,
                 FdahpStudyDesignerConstants.COMPREHENSION_TEST,
                 false,
                 sesObj,
@@ -2989,7 +2969,7 @@ public class StudyController {
               if ((comprehensionTest != null)
                   && comprehensionTest.equalsIgnoreCase(FdahpStudyDesignerConstants.SAVE_BUTTON)) {
                 studyService.markAsCompleted(
-                    Integer.valueOf(studyId),
+                    studyId,
                     FdahpStudyDesignerConstants.COMPREHENSION_TEST,
                     false,
                     sesObj,
@@ -3015,7 +2995,7 @@ public class StudyController {
   public ModelAndView saveOrDoneChecklist(HttpServletRequest request, Checklist checklist) {
     logger.info("StudyController - saveOrDoneChecklist() - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-    Integer checklistId = 0;
+    String checklistId = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String customStudyId = "";
     ModelMap map = new ModelMap();
@@ -3046,7 +3026,7 @@ public class StudyController {
                   ? ""
                   : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
         }
-        checklist.setStudyId(Integer.valueOf(studyId));
+        checklist.setStudyId(studyId);
         customStudyId =
             (String)
                 request
@@ -3054,7 +3034,7 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         checklistId = studyService.saveOrDoneChecklist(checklist, actionBut, sesObj, customStudyId);
         map.addAttribute("_S", sessionStudyCount);
-        if (!checklistId.equals(0)) {
+        if (StringUtils.isNotEmpty(checklistId)) {
           if (checklist.getChecklistId() == null) {
             if (("save").equalsIgnoreCase(actionBut)) {
               request
@@ -3361,7 +3341,7 @@ public class StudyController {
   public ModelAndView saveOrUpdateResource(HttpServletRequest request, ResourceBO resourceBO) {
     logger.info("StudyController - saveOrUpdateResource() - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
-    Integer resourseId = 0;
+    String resourseId = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     ModelMap map = new ModelMap();
     Map<String, String> values = new HashMap<>();
@@ -3443,7 +3423,7 @@ public class StudyController {
           }
           resourseId = studyService.saveOrUpdateResource(resourceBO, sesObj);
         }
-        if (!resourseId.equals(0)) {
+        if (StringUtils.isNotEmpty(resourseId)) {
           values.put("resource_id", resourseId.toString());
           auditLogEventHelper.logEvent(STUDY_NEW_RESOURCE_CREATED, auditRequest, values);
           if ((resourceBO != null) && (resourceBO.getId() == null)) {
@@ -3675,7 +3655,7 @@ public class StudyController {
     logger.info("StudyController - saveOrUpdateStudyEligibiltyTestQusAns - Starts");
     ModelAndView mav = new ModelAndView("redirect:/adminStudies/studyList.do");
     ModelMap map = new ModelMap();
-    Integer result = 0;
+    String result = null;
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     String customStudyId = "";
     try {
@@ -3711,7 +3691,7 @@ public class StudyController {
                           sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
           result =
               studyService.saveOrUpdateEligibilityTestQusAns(
-                  eligibilityTestBo, Integer.parseInt(studyId), sesObj, customStudyId);
+                  eligibilityTestBo, studyId, sesObj, customStudyId);
         }
         map.addAttribute("_S", sessionStudyCount);
         if (result > 0) {
@@ -5087,8 +5067,7 @@ public class StudyController {
            * Passing studyId in the param to fetch study related notification list and
            * type to define study notification in service level
            */
-          notificationList =
-              notificationService.getNotificationList(Integer.valueOf(studyId), type);
+          notificationList = notificationService.getNotificationList(studyId, type);
           for (NotificationBO notification : notificationList) {
             if (!notification.isNotificationSent()
                 && notification
@@ -5111,7 +5090,7 @@ public class StudyController {
           } else {
             studyLive = studyBo;
           }
-          notificationSavedList = studyService.getSavedNotification(Integer.valueOf(studyId));
+          notificationSavedList = studyService.getSavedNotification(studyId);
           map.addAttribute("notificationList", notificationList);
           map.addAttribute("studyLive", studyLive);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);

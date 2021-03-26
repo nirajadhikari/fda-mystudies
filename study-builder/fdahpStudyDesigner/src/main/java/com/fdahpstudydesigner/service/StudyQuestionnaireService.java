@@ -70,8 +70,8 @@ public interface StudyQuestionnaireService {
       AuditLogEventRequest auditRequest);
 
   public String deleteQuestionnaireStep(
-      Integer stepId,
-      Integer questionnaireId,
+      String stepId,
+      String questionnaireId,
       String stepType,
       SessionObject sessionObject,
       String customStudyId);
@@ -149,9 +149,9 @@ public interface StudyQuestionnaireService {
 
   public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 
-  public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
+  public boolean isAnchorDateExistByQuestionnaire(String questionnaireId);
 
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId);
 
   public QuestionsBo getQuestionById(Integer valueOf);
 }

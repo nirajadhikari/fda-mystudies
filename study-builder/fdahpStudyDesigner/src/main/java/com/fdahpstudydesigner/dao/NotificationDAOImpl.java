@@ -192,14 +192,15 @@ public class NotificationDAOImpl implements NotificationDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<NotificationBO> getNotificationList(int studyId, String type) {
+  public List<NotificationBO> getNotificationList(String studyId, String type) {
     logger.info("NotificationDAOImpl - getNotificationList() - Starts");
     List<NotificationBO> notificationList = null;
     Session session = null;
     String queryString = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if (FdahpStudyDesignerConstants.STUDYLEVEL.equals(type) && (studyId != 0)) {
+      if (FdahpStudyDesignerConstants.STUDYLEVEL.equals(type)
+          && (StringUtils.isNotEmpty(studyId))) {
         queryString =
             "from NotificationBO NBO where NBO.studyId = :studyId "
                 + " and NBO.notificationSubType = 'Announcement' and NBO.notificationType = 'ST' and NBO.notificationStatus = 0 "
@@ -465,12 +466,12 @@ public class NotificationDAOImpl implements NotificationDAO {
   }
 
   @Override
-  public List<NotificationBO> getNotificationList(Integer studyId) {
+  public List<NotificationBO> getNotificationList(String studyId) {
     logger.info("NotificationDAOImpl - getNotificationList() - Starts");
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      return session.getNamedQuery("getNotification").setInteger("studyId", studyId).list();
+      return session.getNamedQuery("getNotification").setString("studyId", studyId).list();
     } catch (Exception e) {
       logger.error("NotificationDAOImpl - getNotificationList() - ERROR", e);
     } finally {

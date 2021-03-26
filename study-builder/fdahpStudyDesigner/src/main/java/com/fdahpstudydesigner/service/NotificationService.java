@@ -37,7 +37,7 @@ public interface NotificationService {
 
   public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId);
 
-  public List<NotificationBO> getNotificationList(int studyId, String type);
+  public List<NotificationBO> getNotificationList(String studyId, String type);
 
   public String saveOrUpdateOrResendNotification(
       NotificationBO notificationBO,
