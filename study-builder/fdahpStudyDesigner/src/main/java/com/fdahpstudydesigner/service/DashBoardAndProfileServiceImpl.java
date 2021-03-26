@@ -25,7 +25,6 @@ package com.fdahpstudydesigner.service;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_ACCOUNT_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_ACCOUNT_UPDATED_FAILED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.MasterDataBO;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -70,7 +69,7 @@ public class DashBoardAndProfileServiceImpl implements DashBoardAndProfileServic
   }
 
   @Override
-  public String updateProfileDetails(UserBO userBO, int userId, SessionObject userSession) {
+  public String updateProfileDetails(UserBO userBO, String userId, SessionObject userSession) {
     logger.info("DashBoardAndProfileServiceImpl - updateProfileDetails - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     StudyBuilderAuditEvent auditLogEvent = null;

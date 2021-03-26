@@ -37,7 +37,7 @@ public interface StudyActiveTasksDAO {
   public String deleteActiveTask(
       ActiveTaskBo activeTaskBo, SessionObject sesObj, String customStudyId);
 
-  public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId);
+  public ActiveTaskBo getActiveTaskById(String activeTaskId, String customStudyId);
 
   public List<ActivetaskFormulaBo> getActivetaskFormulas();
 

@@ -25,7 +25,6 @@ package com.fdahpstudydesigner.dao;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.ACCOUNT_LOCKED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.FAILED_ATTEMPT;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.LOCK_TIME;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -68,7 +67,7 @@ public class LoginDAOImpl implements LoginDAO {
   public LoginDAOImpl() {}
 
   @Override
-  public String changePassword(Integer userId, String newPassword, String oldPassword) {
+  public String changePassword(String userId, String newPassword, String oldPassword) {
     logger.info("LoginDAOImpl - changePassword() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -113,7 +112,7 @@ public class LoginDAOImpl implements LoginDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<UserPasswordHistory> getPasswordHistory(Integer userId) {
+  public List<UserPasswordHistory> getPasswordHistory(String userId) {
     logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
     List<UserPasswordHistory> passwordHistories = null;
     Session session = null;
@@ -221,7 +220,7 @@ public class LoginDAOImpl implements LoginDAO {
   }
 
   @Override
-  public Boolean isFrocelyLogOutUser(Integer userId) {
+  public Boolean isFrocelyLogOutUser(String userId) {
     logger.info("LoginDAOImpl - isFrocelyLogOutUser() - Starts");
     UserBO userBo = null;
     boolean result = false;
@@ -249,7 +248,7 @@ public class LoginDAOImpl implements LoginDAO {
   }
 
   @Override
-  public Boolean isUserEnabled(Integer userId) {
+  public Boolean isUserEnabled(String userId) {
     logger.info("LoginDAOImpl - isUserExists() - Starts");
     UserBO userBo = null;
     boolean result = false;
@@ -460,7 +459,7 @@ public class LoginDAOImpl implements LoginDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public String updatePasswordHistory(Integer userId, String userPassword) {
+  public String updatePasswordHistory(String userId, String userPassword) {
     logger.info("LoginDAOImpl - updatePasswordHistory() - Starts");
     List<UserPasswordHistory> passwordHistories = null;
     UserPasswordHistory savePasswordHistory = null;
