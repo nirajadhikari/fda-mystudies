@@ -2942,7 +2942,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
   @Override
-  public Boolean isAnchorDateExistsForStudy(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistsForStudy(String studyId, String customStudyId) {
     logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - starts");
     boolean isExists = false;
     Session session = null;
@@ -2987,7 +2987,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 + " and qq.active=1 and q.active=1;";
         BigInteger count =
             (BigInteger)
-                session.createSQLQuery(searchQuery).setInteger("studyId", studyId).uniqueResult();
+                session.createSQLQuery(searchQuery).setString("studyId", studyId).uniqueResult();
         if (count.intValue() > 0) {
           isExists = true;
         } else {
@@ -2999,7 +2999,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   + " and q.active=1";
           BigInteger subCount =
               (BigInteger)
-                  session.createSQLQuery(subQuery).setInteger("studyId", studyId).uniqueResult();
+                  session.createSQLQuery(subQuery).setString("studyId", studyId).uniqueResult();
           if ((subCount != null) && (subCount.intValue() > 0)) {
             isExists = true;
           }
@@ -3011,7 +3011,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 session
                     .createSQLQuery(
                         "select s.enrollmentdate_as_anchordate from studies s where s.id=:studyId ")
-                    .setInteger("studyId", studyId)
+                    .setString("studyId", studyId)
                     .uniqueResult();
         if ((isEnrollAnchorExist != ' ') && (isEnrollAnchorExist == 'Y')) {
           isExists = true;
@@ -3029,7 +3029,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
   @Override
-  public Boolean isQuestionnairesCompleted(Integer studyId) {
+  public Boolean isQuestionnairesCompleted(String studyId) {
     logger.info("StudyQuestionnaireDAOImpl - isAnchorDateExistsForStudy() - starts");
     boolean isExists = true;
     Session session = null;
@@ -3040,7 +3040,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               + " and active=1) and q.active=1";
       BigDecimal count =
           (BigDecimal)
-              session.createSQLQuery(searchQuery).setInteger("studyId", studyId).uniqueResult();
+              session.createSQLQuery(searchQuery).setString("studyId", studyId).uniqueResult();
       if ((count != null) && (count.intValue() > 0)) {
         isExists = false;
       }

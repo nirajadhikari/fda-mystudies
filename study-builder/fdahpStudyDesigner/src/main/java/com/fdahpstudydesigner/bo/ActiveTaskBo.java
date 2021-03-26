@@ -151,7 +151,7 @@ public class ActiveTaskBo implements Serializable {
   @Transient private List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
 
   @Column(name = "task_type_id")
-  private Integer taskTypeId;
+  private String taskTypeId;
 
   @Column(name = "task_title")
   private String title;
@@ -293,7 +293,7 @@ public class ActiveTaskBo implements Serializable {
     return taskMasterAttributeBos;
   }
 
-  public Integer getTaskTypeId() {
+  public String getTaskTypeId() {
     return taskTypeId;
   }
 
@@ -458,7 +458,7 @@ public class ActiveTaskBo implements Serializable {
     this.taskMasterAttributeBos = taskMasterAttributeBos;
   }
 
-  public void setTaskTypeId(Integer taskTypeId) {
+  public void setTaskTypeId(String taskTypeId) {
     this.taskTypeId = taskTypeId;
   }
 

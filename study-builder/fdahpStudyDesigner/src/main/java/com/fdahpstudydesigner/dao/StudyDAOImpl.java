@@ -37,7 +37,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -561,8 +560,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public String deleteResourceInfo(
-      Integer resourceInfoId, boolean resourceVisibility, int studyId) {
+  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility, int studyId) {
     logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -591,7 +589,7 @@ public class StudyDAOImpl implements StudyDAO {
       }
 
       String deleteQuery = " UPDATE ResourceBO RBO SET status = false  WHERE id = :resourceInfoId ";
-      resourceQuery = session.createQuery(deleteQuery).setInteger("resourceInfoId", resourceInfoId);
+      resourceQuery = session.createQuery(deleteQuery).setString("resourceInfoId", resourceInfoId);
       resourceCount = resourceQuery.executeUpdate();
 
       if (!resourceVisibility && (resourceCount > 0)) {
@@ -600,7 +598,7 @@ public class StudyDAOImpl implements StudyDAO {
         notificationQuery =
             session
                 .createQuery(deleteNotificationQuery)
-                .setInteger("resourceInfoId", resourceInfoId);
+                .setString("resourceInfoId", resourceInfoId);
         notificationQuery.executeUpdate();
       }
       transaction.commit();
@@ -1537,7 +1535,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public ConsentInfoBo getConsentInfoById(Integer consentInfoId) {
+  public ConsentInfoBo getConsentInfoById(String consentInfoId) {
     logger.info("StudyDAOImpl - getConsentInfoById() - Starts");
     ConsentInfoBo consentInfoBo = null;
     Session session = null;
@@ -2996,7 +2994,7 @@ public class StudyDAOImpl implements StudyDAO {
             if ((existedQuestionnairesStepsBoList != null)
                 && !existedQuestionnairesStepsBoList.isEmpty()) {
               for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
-                Integer destionStep = questionnairesStepsBo.getDestinationStep();
+                String destionStep = questionnairesStepsBo.getDestinationStep();
                 if (destionStep.equals(0)) {
                   destinationList.add(-1);
                 } else {
@@ -3276,7 +3274,7 @@ public class StudyDAOImpl implements StudyDAO {
             }
             if ((destinationList != null) && !destinationList.isEmpty()) {
               for (int i = 0; i < destinationList.size(); i++) {
-                int desId = 0;
+                String desId = 0;
                 if (destinationList.get(i) != -1) {
                   desId = newQuestionnairesStepsBoList.get(destinationList.get(i)).getStepId();
                 }
@@ -3285,7 +3283,7 @@ public class StudyDAOImpl implements StudyDAO {
               }
             }
             List<Integer> sequenceSubTypeList = new ArrayList<>();
-            List<Integer> destinationResList = new ArrayList<>();
+            List<String> destinationResList = new ArrayList<>();
             if ((existingQuestionResponseSubTypeList != null)
                 && !existingQuestionResponseSubTypeList.isEmpty()) {
               for (QuestionResponseSubTypeBo questionResponseSubTypeBo :
@@ -3314,7 +3312,7 @@ public class StudyDAOImpl implements StudyDAO {
             }
             if ((sequenceSubTypeList != null) && !sequenceSubTypeList.isEmpty()) {
               for (int i = 0; i < sequenceSubTypeList.size(); i++) {
-                Integer desId = null;
+                String desId = null;
                 if (sequenceSubTypeList.get(i) == null) {
                   desId = null;
                 } else if (sequenceSubTypeList.get(i).equals(-1)) {
@@ -4694,7 +4692,7 @@ public class StudyDAOImpl implements StudyDAO {
                     .setString(FdahpStudyDesignerConstants.ELIGIBILITY_ID, eligibilityBo.getId())
                     .list();
             if ((eligibilityTestList != null) && !eligibilityTestList.isEmpty()) {
-              List<Integer> eligibilityTestIds = new ArrayList<>();
+              List<String> eligibilityTestIds = new ArrayList<>();
               for (EligibilityTestBo eligibilityTestBo : eligibilityTestList) {
                 eligibilityTestIds.add(eligibilityTestBo.getId());
                 EligibilityTestBo newEligibilityTestBo =
@@ -4886,7 +4884,7 @@ public class StudyDAOImpl implements StudyDAO {
                       && !existedQuestionnairesStepsBoList.isEmpty()) {
                     for (QuestionnairesStepsBo questionnairesStepsBo :
                         existedQuestionnairesStepsBoList) {
-                      Integer destionStep = questionnairesStepsBo.getDestinationStep();
+                      String destionStep = questionnairesStepsBo.getDestinationStep();
                       if (destionStep.equals(0)) {
                         destinationList.add(-1);
                       } else {
@@ -6811,7 +6809,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Integer getEligibilityType(Integer studyId) {
+  public Integer getEligibilityType(String studyId) {
     logger.info("StudyDAOImpl - getEligibilityType() - Starts");
     Session session = null;
     String searchQuery = "";
@@ -6821,7 +6819,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       searchQuery = "SELECT e.eligibilityMechanism From EligibilityBo e WHERE e.studyId=:studyId";
       query = session.createQuery(searchQuery);
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       eligibilityType = (Integer) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getEligibilityType() - ERROR", e);
