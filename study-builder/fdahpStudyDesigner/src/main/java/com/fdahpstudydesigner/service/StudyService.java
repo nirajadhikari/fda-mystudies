@@ -55,16 +55,13 @@ public interface StudyService {
   public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject sesObj);
 
   public String deleteComprehensionTestQuestion(
-      Integer questionId, Integer studyId, SessionObject sessionObject);
+      String questionId, String studyId, SessionObject sessionObject);
 
   public String deleteConsentInfo(
       String consentInfoId, String studyId, SessionObject sessionObject, String customStudyId);
 
   public String deleteEligibilityTestQusAnsById(
-      Integer eligibilityTestId,
-      Integer studyId,
-      SessionObject sessionObject,
-      String customStudyId);
+      String eligibilityTestId, String studyId, SessionObject sessionObject, String customStudyId);
 
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 

@@ -114,7 +114,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteComprehensionTestQuestion(
-      Integer questionId, Integer studyId, SessionObject sessionObject) {
+      String questionId, String studyId, SessionObject sessionObject) {
     logger.info("StudyServiceImpl - deleteComprehensionTestQuestion() - Starts");
     String message = null;
     try {
@@ -128,7 +128,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteConsentInfo(
-      String consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId) {
+      String consentInfoId, String studyId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
     String message = null;
     try {
@@ -142,10 +142,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteEligibilityTestQusAnsById(
-      Integer eligibilityTestId,
-      Integer studyId,
-      SessionObject sessionObject,
-      String customStudyId) {
+      String eligibilityTestId, String studyId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyServiceImpl - deleteEligibilityTestQusAnsById - Starts");
     String message = FdahpStudyDesignerConstants.SUCCESS;
     try {

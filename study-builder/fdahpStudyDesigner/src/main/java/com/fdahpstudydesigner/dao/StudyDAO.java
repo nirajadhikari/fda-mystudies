@@ -54,16 +54,13 @@ public interface StudyDAO {
   public int consentInfoOrder(String studyId);
 
   public String deleteComprehensionTestQuestion(
-      Integer questionId, Integer studyId, SessionObject sessionObject);
+      String questionId, String studyId, SessionObject sessionObject);
 
   public String deleteConsentInfo(
-      String consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId);
+      String consentInfoId, String studyId, SessionObject sessionObject, String customStudyId);
 
   public String deleteEligibilityTestQusAnsById(
-      Integer eligibilityTestId,
-      Integer studyId,
-      SessionObject sessionObject,
-      String customStudyId);
+      String eligibilityTestId, String studyId, SessionObject sessionObject, String customStudyId);
 
   public boolean deleteLiveStudy(String customStudyId);
 
