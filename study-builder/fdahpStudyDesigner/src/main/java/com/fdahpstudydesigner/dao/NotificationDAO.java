@@ -38,9 +38,9 @@ public interface NotificationDAO {
 
   public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId);
 
-  public List<NotificationBO> getNotificationList(int studyId, String type);
+  public List<NotificationBO> getNotificationList(String studyId, String type);
 
-  public List<NotificationBO> getNotificationList(Integer studyId);
+  public List<NotificationBO> getNotificationList(String studyId);
 
   public List<PushNotificationBean> getPushNotificationList(String scheduledTimestamp);
 

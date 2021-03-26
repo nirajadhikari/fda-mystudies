@@ -999,7 +999,7 @@ public class StudyServiceImpl implements StudyService {
   @Override
   public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sessionObject,
       String customStudyId) {
     logger.info("StudyServiceImpl - saveOrUpdateEligibilityTestQusAns - Starts");

@@ -209,7 +209,7 @@ public class StudyQuestionnaireController {
 
             Map<String, String> values = new HashMap<>();
             QuestionnaireBo questionnaireDetails =
-                studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnairesId));
+                studyQuestionnaireService.getQuestionnaireById(questionnairesId);
             if (questionnaireDetails != null) {
               values.put(QUESTION_ID, questionnaireDetails.getShortTitle());
             }
@@ -313,7 +313,7 @@ public class StudyQuestionnaireController {
         if (!studyId.isEmpty() && !questionnaireId.isEmpty()) {
           Map<String, String> values = new HashMap<>();
           QuestionnaireBo questionnaireDetails =
-              studyQuestionnaireService.getQuestionnaireById(Integer.valueOf(questionnaireId));
+              studyQuestionnaireService.getQuestionnaireById(questionnaireId);
           if (questionnaireDetails != null) {
             values.put(QUESTION_ID, questionnaireDetails.getShortTitle());
           }
@@ -403,11 +403,7 @@ public class StudyQuestionnaireController {
         if (!stepId.isEmpty() && !questionnaireId.isEmpty() && !stepType.isEmpty()) {
           message =
               studyQuestionnaireService.deleteQuestionnaireStep(
-                  Integer.valueOf(stepId),
-                  Integer.valueOf(questionnaireId),
-                  stepType,
-                  sesObj,
-                  customStudyId);
+                  stepId, questionnaireId, stepType, sesObj, customStudyId);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             questionnaireBo =
                 studyQuestionnaireService.getQuestionnaireById(questionnaireId, customStudyId);
@@ -447,8 +443,7 @@ public class StudyQuestionnaireController {
                 jsonobject.put("isDone", isDone);
               }
               isAnchorQuestionnaire =
-                  studyQuestionnaireService.isAnchorDateExistByQuestionnaire(
-                      Integer.valueOf(questionnaireId));
+                  studyQuestionnaireService.isAnchorDateExistByQuestionnaire(questionnaireId);
               jsonobject.put("isAnchorQuestionnaire", isAnchorQuestionnaire);
             }
             String studyId =
@@ -1232,8 +1227,7 @@ public class StudyQuestionnaireController {
           request.getSession().setAttribute(sessionStudyCount + "questionnaireId", questionnaireId);
 
           boolean isAnchorQuestionnaire =
-              studyQuestionnaireService.isAnchorDateExistByQuestionnaire(
-                  Integer.valueOf(questionnaireId));
+              studyQuestionnaireService.isAnchorDateExistByQuestionnaire(questionnaireId);
           map.addAttribute("isAnchorQuestionnaire", isAnchorQuestionnaire);
         }
         if ("add".equals(actionType)) {

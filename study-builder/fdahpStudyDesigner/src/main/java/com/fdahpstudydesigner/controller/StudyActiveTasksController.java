@@ -120,10 +120,7 @@ public class StudyActiveTasksController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         message =
             studyService.markAsCompleted(
-                Integer.parseInt(studyId),
-                FdahpStudyDesignerConstants.ACTIVETASK_LIST,
-                sesObj,
-                customStudyId);
+                studyId, FdahpStudyDesignerConstants.ACTIVETASK_LIST, sesObj, customStudyId);
         map.addAttribute("_S", sessionStudyCount);
         auditRequest.setStudyId(customStudyId);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {

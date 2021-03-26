@@ -13,7 +13,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -563,7 +562,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
         /** Questionnaire Content purpose copying Start * */
         List<Integer> destinationList = new ArrayList<>();
-        Map<Integer, Integer> destionationMapList = new HashMap<>();
+        Map<Integer, String> destionationMapList = new HashMap<>();
 
         List<QuestionnairesStepsBo> existedQuestionnairesStepsBoList = null;
         List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
@@ -582,7 +581,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         if ((existedQuestionnairesStepsBoList != null)
             && !existedQuestionnairesStepsBoList.isEmpty()) {
           for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
-            Integer destionStep = questionnairesStepsBo.getDestinationStep();
+            String destionStep = questionnairesStepsBo.getDestinationStep();
             if (destionStep.equals(0)) {
               destinationList.add(-1);
             } else {
@@ -839,7 +838,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         // updating the copied destination steps for questionnaire steps
         if ((destinationList != null) && !destinationList.isEmpty()) {
           for (int i = 0; i < destinationList.size(); i++) {
-            int desId = 0;
+            String desId = null;
             if (destinationList.get(i) != -1) {
               desId = newQuestionnairesStepsBoList.get(destinationList.get(i)).getStepId();
             }
@@ -848,7 +847,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           }
         }
         List<Integer> sequenceSubTypeList = new ArrayList<>();
-        List<Integer> destinationResList = new ArrayList<>();
+        List<String> destinationResList = new ArrayList<>();
         // getting the list of all copied choice based destinations
         if ((existingQuestionResponseSubTypeList != null)
             && !existingQuestionResponseSubTypeList.isEmpty()) {
@@ -878,7 +877,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         }
         if ((sequenceSubTypeList != null) && !sequenceSubTypeList.isEmpty()) {
           for (int i = 0; i < sequenceSubTypeList.size(); i++) {
-            Integer desId = null;
+            String desId = null;
             if (sequenceSubTypeList.get(i) == null) {
               desId = null;
             } else if (sequenceSubTypeList.get(i).equals(-1)) {
@@ -903,7 +902,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         // for other type , update the destination in questionresponsetype table
         /** start * */
         List<Integer> sequenceTypeList = new ArrayList<>();
-        List<Integer> destinationResTypeList = new ArrayList<>();
+        List<String> destinationResTypeList = new ArrayList<>();
         if ((existingQuestionResponseTypeList != null)
             && !existingQuestionResponseTypeList.isEmpty()) {
           for (QuestionReponseTypeBo questionResponseTypeBo : existingQuestionResponseTypeList) {
@@ -931,7 +930,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         }
         if ((sequenceTypeList != null) && !sequenceTypeList.isEmpty()) {
           for (int i = 0; i < sequenceTypeList.size(); i++) {
-            Integer desId = null;
+            String desId = null;
             if (sequenceTypeList.get(i) == null) {
               desId = null;
             } else if (sequenceTypeList.get(i).equals(-1)) {
@@ -1762,7 +1761,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @Override
   @SuppressWarnings({"unchecked"})
   public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(
-      Session session, Integer questionId) {
+      Session session, String questionId) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionConditionalBranchingLogic() - Starts");
     List<QuestionConditionBranchBo> questionConditionBranchList = null;
     List<QuestionConditionBranchBo> newQuestionConditionBranchList = null;
@@ -1775,9 +1774,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           "From QuestionConditionBranchBo QCBO where QCBO.questionId=:questionId "
               + " order by QCBO.sequenceNo ASC";
       if (newSession != null) {
-        query = newSession.createQuery(searchQuery).setInteger("questionId", questionId);
+        query = newSession.createQuery(searchQuery).setString("questionId", questionId);
       } else {
-        query = session.createQuery(searchQuery).setInteger("questionId", questionId);
+        query = session.createQuery(searchQuery).setString("questionId", questionId);
       }
       questionConditionBranchList = query.list();
       if (session == null) {
@@ -2178,7 +2177,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           boolean isDone = true;
           while (iterator.hasNext()) {
             Object[] objects = (Object[]) iterator.next();
-            Integer formId = (Integer) objects[0];
+            String formId = (String) objects[0];
             Integer sequenceNo = (Integer) objects[2];
             Integer questionId = (Integer) objects[3];
             String questionText = (String) objects[4];
@@ -2227,7 +2226,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     List<QuestionnairesStepsBo> questionnairesStepsList = null;
     Map<String, Integer> sequenceNoMap = new HashMap<>();
     SortedMap<Integer, QuestionnaireStepBean> qTreeMap = new TreeMap<>();
-    Map<Integer, String> destinationText = new HashMap<>();
+    Map<String, String> destinationText = new HashMap<>();
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       query =
@@ -2235,11 +2234,11 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               .getNamedQuery("getQuestionnaireStepList")
               .setString("questionnaireId", questionnaireId);
       questionnairesStepsList = query.list();
-      List<Integer> instructionIdList = new ArrayList<>();
-      List<Integer> questionIdList = new ArrayList<>();
-      List<Integer> formIdList = new ArrayList<>();
-      Map<String, Integer> destinationMap = new HashMap<>();
-      Map<Integer, Boolean> formStatusMap = new HashMap<>();
+      List<String> instructionIdList = new ArrayList<>();
+      List<String> questionIdList = new ArrayList<>();
+      List<String> formIdList = new ArrayList<>();
+      Map<String, String> destinationMap = new HashMap<>();
+      Map<String, Boolean> formStatusMap = new HashMap<>();
       destinationText.put(0, "Completion Step");
       // setting the sequenceNo and destination steps to the map based on
       // the individual steps later using this map to set the destination

@@ -163,7 +163,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public int comprehensionTestQuestionOrder(Integer studyId) {
+  public int comprehensionTestQuestionOrder(String studyId) {
     logger.info("StudyDAOImpl - comprehensionTestQuestionOrder() - Starts");
     Session session = null;
     int count = 0;
@@ -174,7 +174,7 @@ public class StudyDAOImpl implements StudyDAO {
           session.createQuery(
               "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId=:studyId"
                   + " and CTQBO.active=1 order by CTQBO.sequenceNo desc");
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       query.setMaxResults(1);
       comprehensionTestQuestionBo = (ComprehensionTestQuestionBo) query.uniqueResult();
       if (comprehensionTestQuestionBo != null) {
@@ -194,7 +194,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public int consentInfoOrder(Integer studyId) {
+  public int consentInfoOrder(String studyId) {
     logger.info("StudyDAOImpl - consentInfoOrder() - Starts");
     Session session = null;
     int count = 1;
@@ -205,7 +205,7 @@ public class StudyDAOImpl implements StudyDAO {
           session.createQuery(
               "From ConsentInfoBo CIB where CIB.studyId=:studyId"
                   + " and CIB.active=1 order by CIB.sequenceNo DESC");
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       query.setMaxResults(1);
       consentInfoBo = ((ConsentInfoBo) query.uniqueResult());
       if (consentInfoBo != null) {
@@ -267,7 +267,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(
+                      .setString(
                           FdahpStudyDesignerConstants.STUDY_ID,
                           comprehensionTestQuestionBo.getStudyId())
                       .uniqueResult();
@@ -1412,7 +1412,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Checklist getchecklistInfo(Integer studyId) {
+  public Checklist getchecklistInfo(String studyId) {
     logger.info("StudyDAOImpl - getchecklistInfo() - Starts");
     Checklist checklist = null;
     Session session = null;
@@ -1421,7 +1421,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session
               .getNamedQuery("getchecklistInfo")
-              .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId);
+              .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId);
       checklist = (Checklist) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getchecklistInfo() - ERROR ", e);
@@ -1436,7 +1436,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(Integer questionId) {
+  public ComprehensionTestQuestionBo getComprehensionTestQuestionById(String questionId) {
     logger.info("StudyDAOImpl - getComprehensionTestQuestionById() - Starts");
     ComprehensionTestQuestionBo comprehensionTestQuestionBo = null;
     Session session = null;
@@ -1786,7 +1786,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public NotificationBO getNotificationByResourceId(Integer resourseId) {
+  public NotificationBO getNotificationByResourceId(String resourseId) {
     logger.info("StudyDAOImpl - getNotificationByResourceId() - Starts");
     Session session = null;
     String queryString = null;
@@ -1795,7 +1795,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       queryString = " FROM NotificationBO NBO WHERE NBO.resourceId =:resourseId ";
       query = session.createQuery(queryString);
-      query.setInteger("resourseId", resourseId);
+      query.setString("resourseId", resourseId);
       notificationBO = (NotificationBO) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getNotificationByResourceId - ERROR", e);
@@ -1810,7 +1810,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId) {
+  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId) {
     logger.info("StudyDAOImpl - getOverviewStudyPagesById() - Starts");
     Session session = null;
     List<StudyPageBo> studyPageBo = null;
@@ -1882,13 +1882,13 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public ResourceBO getResourceInfo(Integer resourceInfoId) {
+  public ResourceBO getResourceInfo(String resourceInfoId) {
     logger.info("StudyDAOImpl - getResourceInfo() - Starts");
     ResourceBO resourceBO = null;
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      query = session.getNamedQuery("getResourceInfo").setInteger("resourceInfoId", resourceInfoId);
+      query = session.getNamedQuery("getResourceInfo").setString("resourceInfoId", resourceInfoId);
       resourceBO = (ResourceBO) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getResourceInfo() - ERROR ", e);
@@ -3181,7 +3181,7 @@ public class StudyDAOImpl implements StudyDAO {
                               (QuestionsBo)
                                   session
                                       .getNamedQuery("getQuestionByFormId")
-                                      .setInteger("formId", formMappingBo.getQuestionId())
+                                      .setString("formId", formMappingBo.getQuestionId())
                                       .uniqueResult();
                           if (questionsBo != null) {
                             boolean questionFlag = false;
@@ -3577,7 +3577,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public int resourceOrder(Integer studyId) {
+  public int resourceOrder(String studyId) {
     logger.info("StudyDAOImpl - resourceOrder() - Starts");
     Session session = null;
     int count = 1;
@@ -3587,7 +3587,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session.createQuery(
               "From ResourceBO RBO where RBO.studyId=:studyId and RBO.studyProtocol = false and RBO.status=1 order by RBO.sequenceNo DESC");
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       query.setMaxResults(1);
       resourceBo = ((ResourceBO) query.uniqueResult());
       if (resourceBo != null) {
@@ -3695,7 +3695,7 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session.createQuery(
                 " from ConsentInfoBo CIBO where CIBO.studyId=:studyId and CIBO.active=1");
-        query.setInteger("studyId", consentBo.getStudyId());
+        query.setString("studyId", consentBo.getStudyId());
         consentInfoList = query.list();
         if ((consentInfoList != null) && (consentInfoList.size() > 0)) {
           for (ConsentInfoBo consentInfo : consentInfoList) {
@@ -3955,7 +3955,7 @@ public class StudyDAOImpl implements StudyDAO {
   @Override
   public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sesObj,
       String customStudyId) {
     logger.info("StudyDAOImpl - saveOrUpdateEligibilityTestQusAns - Starts");
@@ -3970,7 +3970,7 @@ public class StudyDAOImpl implements StudyDAO {
           (StudySequenceBo)
               session
                   .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                  .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId)
+                  .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId)
                   .uniqueResult();
       if ((studySequence != null) && studySequence.isEligibility()) {
         studySequence.setEligibility(false);
@@ -4508,7 +4508,7 @@ public class StudyDAOImpl implements StudyDAO {
       transaction = session.beginTransaction();
       if (StringUtils.isNotEmpty(studyId)) {
         StudyPageBo studyPageBo = new StudyPageBo();
-        studyPageBo.setStudyId(Integer.parseInt(studyId));
+        studyPageBo.setStudyId(studyId);
         pageId = (Integer) session.save(studyPageBo);
       }
       transaction.commit();
@@ -4865,7 +4865,7 @@ public class StudyDAOImpl implements StudyDAO {
                   /** Schedule Purpose creating draft End * */
                   /** Content purpose creating draft Start * */
                   List<Integer> destinationList = new ArrayList<>();
-                  Map<Integer, Integer> destionationMapList = new HashMap<>();
+                  Map<Integer, String> destionationMapList = new HashMap<>();
 
                   List<QuestionnairesStepsBo> existedQuestionnairesStepsBoList = null;
                   List<QuestionnairesStepsBo> newQuestionnairesStepsBoList = new ArrayList<>();
@@ -6344,7 +6344,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(Integer eligibilityId) {
+  public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId) {
     logger.info("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - Starts");
     Session session = null;
     List<EligibilityTestBo> eligibilityTestList = null;
@@ -6353,7 +6353,7 @@ public class StudyDAOImpl implements StudyDAO {
       eligibilityTestList =
           session
               .getNamedQuery("EligibilityTestBo.findByEligibilityId")
-              .setInteger("eligibilityId", eligibilityId)
+              .setString("eligibilityId", eligibilityId)
               .list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - viewEligibilityTestQusAnsByEligibilityId - ERROR ", e);
@@ -6478,7 +6478,7 @@ public class StudyDAOImpl implements StudyDAO {
                   .setString(
                       "enrollmentDate", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                   .setString("customStudyId", customStudyId)
-                  .setInteger("studyId", studyId)
+                  .setString("studyId", studyId)
                   .uniqueResult();
       if (count.intValue() > 0) {
         isExist = true;
@@ -6496,7 +6496,7 @@ public class StudyDAOImpl implements StudyDAO {
                     .setString(
                         "enrollmentDate", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                     .setString("customStudyId", customStudyId)
-                    .setInteger("studyId", studyId)
+                    .setString("studyId", studyId)
                     .uniqueResult();
         if ((subCount != null) && (subCount.intValue() > 0)) {
           isExist = true;

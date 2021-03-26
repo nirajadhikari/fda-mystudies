@@ -350,7 +350,7 @@ public class UsersDAOImpl implements UsersDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<Integer> getPermissionsByUserId(Integer userId) {
+  public List<Integer> getPermissionsByUserId(String userId) {
     logger.info("UsersDAOImpl - getPermissionsByUserId() - Starts");
     Session session = null;
     Query query = null;
@@ -422,14 +422,14 @@ public class UsersDAOImpl implements UsersDAO {
   }
 
   @Override
-  public UserBO getUserDetails(int userId) {
+  public UserBO getUserDetails(String userId) {
     logger.info("UsersDAOImpl - getUserDetails() - Starts");
     Session session = null;
     UserBO userBO = null;
     Query query = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      query = session.getNamedQuery("getUserById").setInteger("userId", userId);
+      query = session.getNamedQuery("getUserById").setString("userId", userId);
       userBO = (UserBO) query.uniqueResult();
       if ((userBO != null) && (userBO.getRoleId() != null)) {
         String roleName =

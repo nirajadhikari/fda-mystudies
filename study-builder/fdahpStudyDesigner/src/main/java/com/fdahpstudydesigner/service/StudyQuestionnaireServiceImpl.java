@@ -145,8 +145,8 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String deleteQuestionnaireStep(
-      Integer stepId,
-      Integer questionnaireId,
+      String stepId,
+      String questionnaireId,
       String stepType,
       SessionObject sessionObject,
       String customStudyId) {

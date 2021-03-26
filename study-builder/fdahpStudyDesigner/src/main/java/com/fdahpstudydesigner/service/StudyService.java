@@ -160,7 +160,7 @@ public interface StudyService {
 
   public String saveOrUpdateEligibilityTestQusAns(
       EligibilityTestBo eligibilityTestBo,
-      Integer studyId,
+      String studyId,
       SessionObject sessionObject,
       String customStudyId);
 
