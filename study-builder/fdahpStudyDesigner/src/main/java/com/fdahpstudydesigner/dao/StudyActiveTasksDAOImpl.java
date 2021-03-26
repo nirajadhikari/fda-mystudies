@@ -24,7 +24,6 @@
 package com.fdahpstudydesigner.dao;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_ACTIVE_TASK_DELETED;
-
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -778,7 +777,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
   @SuppressWarnings({"unchecked"})
   @Override
   public boolean validateActiveTaskAttrById(
-      Integer studyId,
+      String studyId,
       String activeTaskAttName,
       String activeTaskAttIdVal,
       String activeTaskAttIdName,
@@ -1010,7 +1009,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
               questionnaireBo =
                   session
                       .getNamedQuery("checkQuestionnaireShortTitle")
-                      .setInteger("studyId", studyId)
+                      .setString("studyId", studyId)
                       .setString("shortTitle", activeTaskAttIdVal)
                       .list();
               if ((questionnaireBo != null) && !questionnaireBo.isEmpty()) {
