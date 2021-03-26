@@ -347,7 +347,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
       query =
           session
               .createQuery(" from ActiveTaskMasterAttributeBo where taskTypeId=:activeTaskType")
-              .setParameter("activeTaskType", Integer.parseInt(activeTaskType));
+              .setParameter("activeTaskType", activeTaskType);
       taskMasterAttributeBos = query.list();
     } catch (Exception e) {
       logger.error("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - ERROR ", e);
@@ -434,7 +434,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
           query =
               session
                   .getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyId")
-                  .setInteger("studyId", Integer.parseInt(studyId));
+                  .setString("studyId", studyId);
         }
 
         activeTasks = query.list();

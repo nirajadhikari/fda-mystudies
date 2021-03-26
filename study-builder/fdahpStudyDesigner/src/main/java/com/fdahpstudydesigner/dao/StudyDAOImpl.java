@@ -5609,7 +5609,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudyBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
-                    .setInteger("id", Integer.parseInt(studyId))
+                    .setString("id", studyId)
                     .uniqueResult();
         if (studyBo != null) {
           auditRequest.setStudyId(studyBo.getCustomStudyId());
@@ -5903,18 +5903,18 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session
                 .getNamedQuery("ActiveTaskBo.getActiveTasksByByStudyIdDone")
-                .setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
+                .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId);
         completedactiveTasks = query.list();
         query =
             session
                 .getNamedQuery("getQuestionariesByStudyIdDone")
-                .setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
+                .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId);
         completedquestionnaires = query.list();
         studySequence =
             (StudySequenceBo)
                 session
                     .getNamedQuery("getStudySequenceByStudyId")
-                    .setInteger("studyId", Integer.parseInt(studyId))
+                    .setString("studyId", studyId)
                     .uniqueResult();
         if (((completedactiveTasks != null) && !completedactiveTasks.isEmpty())) {
           for (ActiveTaskBo activeTaskBo : completedactiveTasks) {
@@ -6283,7 +6283,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudyBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
-                    .setInteger("id", Integer.parseInt(studyId))
+                    .setString("id", studyId)
                     .uniqueResult();
 
         if (buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.ACTION_LUNCH)
@@ -6892,7 +6892,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudyBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
-                    .setInteger("id", Integer.parseInt(studyId))
+                    .setString("id", studyId)
                     .uniqueResult();
         studySequenceBo =
             (StudySequenceBo)

@@ -60,7 +60,7 @@ public interface UsersService {
 
   public Integer getUserPermissionByUserId(String sessionUserId);
 
-  public RoleBO getUserRole(String roleId);
+  public RoleBO getUserRole(Integer roleId);
 
   public List<RoleBO> getUserRoleList();
 }
