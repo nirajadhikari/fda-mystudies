@@ -1360,7 +1360,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public int eligibilityTestOrderCount(Integer eligibilityId) {
+  public int eligibilityTestOrderCount(String eligibilityId) {
     logger.info("StudyDAOImpl - eligibilityTestOrderCount - Starts");
     Session session = null;
     int count = 1;
@@ -1374,7 +1374,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session
               .createQuery(sb.toString())
-              .setInteger("eligibilityId", eligibilityId)
+              .setString("eligibilityId", eligibilityId)
               .setMaxResults(1);
       eligibilityTestBo = ((EligibilityTestBo) query.uniqueResult());
       if (eligibilityTestBo != null) {
@@ -1466,7 +1466,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(Integer studyId) {
+  public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(String studyId) {
     logger.info("StudyDAOImpl - getComprehensionTestQuestionList() - Starts");
     Session session = null;
     List<ComprehensionTestQuestionBo> comprehensionTestQuestionList = null;
@@ -1476,7 +1476,7 @@ public class StudyDAOImpl implements StudyDAO {
           session.createQuery(
               "From ComprehensionTestQuestionBo CTQBO where CTQBO.studyId=:studyId"
                   + " and CTQBO.active=1 order by CTQBO.sequenceNo asc");
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       comprehensionTestQuestionList = query.list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getComprehensionTestQuestionList() - Error", e);
@@ -3904,7 +3904,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudySequenceBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                    .setInteger(FdahpStudyDesignerConstants.STUDY_ID, consentInfoBo.getStudyId())
+                    .setString(FdahpStudyDesignerConstants.STUDY_ID, consentInfoBo.getStudyId())
                     .uniqueResult();
         if (consentInfoBo
             .getType()
@@ -4077,8 +4077,8 @@ public class StudyDAOImpl implements StudyDAO {
             }
             studyPageBo.setStudyId(
                 FdahpStudyDesignerUtil.isEmpty(studyPageBean.getStudyId())
-                    ? 0
-                    : Integer.parseInt(studyPageBean.getStudyId()));
+                    ? null
+                    : studyPageBean.getStudyId());
             studyPageBo.setTitle(
                 FdahpStudyDesignerUtil.isEmpty(studyPageBean.getTitle()[i])
                     ? null
@@ -6391,7 +6391,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Boolean isAnchorDateExistForEnrollment(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId) {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollment - Starts");
     Session session = null;
     Boolean isExist = false;

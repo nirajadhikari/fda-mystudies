@@ -63,7 +63,7 @@ public class UsersDAOImpl implements UsersDAO {
 
   @Override
   public String activateOrDeactivateUser(
-      String userId, int userStatus, int loginUser, SessionObject userSession) {
+      String userId, int userStatus, String loginUser, SessionObject userSession) {
     logger.info("UsersDAOImpl - activateOrDeactivateUser() - Starts");
     String msg = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
