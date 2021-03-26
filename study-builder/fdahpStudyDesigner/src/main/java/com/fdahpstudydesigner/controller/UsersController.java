@@ -322,7 +322,7 @@ public class UsersController {
               : request.getParameter("emailId");
       if (null != userSession) {
         if (StringUtils.isNotEmpty(emailId) && StringUtils.isNotEmpty(changePassworduserId)) {
-          msg = usersService.enforcePasswordChange(Integer.parseInt(changePassworduserId), emailId);
+          msg = usersService.enforcePasswordChange(changePassworduserId, emailId);
           if (StringUtils.isNotEmpty(msg)
               && msg.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             Map<String, String> values = new HashMap<>();
