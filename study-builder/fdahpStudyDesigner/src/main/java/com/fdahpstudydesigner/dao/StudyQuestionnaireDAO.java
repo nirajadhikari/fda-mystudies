@@ -43,27 +43,27 @@ import org.hibernate.Transaction;
 public interface StudyQuestionnaireDAO {
 
   public String checkFromQuestionShortTitle(
-      Integer questionnaireId,
+      String questionnaireId,
       String shortTitle,
       String questionnaireShortTitle,
       String customStudyId);
 
-  public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId);
+  public String checkQuestionnaireResponseTypeValidation(String studyId, String customStudyId);
 
   public String checkQuestionnaireShortTitle(
-      Integer studyId, String shortTitle, String customStudyId);
+      String studyId, String shortTitle, String customStudyId);
 
   public String checkQuestionnaireStepShortTitle(
-      Integer questionnaireId,
+      String questionnaireId,
       String stepType,
       String shortTitle,
       String questionnaireShortTitle,
       String customStudyId);
 
-  public String checkStatShortTitle(Integer studyId, String shortTitle, String customStudyId);
+  public String checkStatShortTitle(String studyId, String shortTitle, String customStudyId);
 
   public QuestionnaireBo copyStudyQuestionnaireBo(
-      Integer questionnaireId, String customStudyId, SessionObject sessionObject);
+      String questionnaireId, String customStudyId, SessionObject sessionObject);
 
   public String deleteFromStepQuestion(
       String formId,
@@ -118,10 +118,10 @@ public interface StudyQuestionnaireDAO {
 
   public Boolean isQuestionnairesCompleted(String studyId);
 
-  public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber, int newOrderNumber);
+  public String reOrderFormStepQuestions(String formId, int oldOrderNumber, int newOrderNumber);
 
   public String reOrderQuestionnaireSteps(
-      Integer questionnaireId, int oldOrderNumber, int newOrderNumber);
+      String questionnaireId, int oldOrderNumber, int newOrderNumber);
 
   public QuestionnairesStepsBo saveOrUpdateFromQuestionnaireStep(
       QuestionnairesStepsBo questionnairesStepsBo, SessionObject sesObj, String customStudyId);
@@ -139,9 +139,9 @@ public interface StudyQuestionnaireDAO {
       SessionObject sessionObject,
       String customStudyId);
 
-  public String validateLineChartSchedule(Integer questionnaireId, String frequency);
+  public String validateLineChartSchedule(String questionnaireId, String frequency);
 
-  public String validateRepetableFormQuestionStats(Integer formId);
+  public String validateRepetableFormQuestionStats(String formId);
 
   public String checkUniqueAnchorDateName(
       String anchordateText, String customStudyId, String anchorDateId);

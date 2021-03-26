@@ -13,6 +13,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -86,7 +87,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @SuppressWarnings("unchecked")
   @Override
   public String checkFromQuestionShortTitle(
-      Integer questionnaireId,
+      String questionnaireId,
       String shortTitle,
       String questionnaireShortTitle,
       String customStudyId) {
@@ -132,7 +133,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         query =
             session
                 .getNamedQuery("checkQuestionnaireStepShortTitle")
-                .setInteger("questionnaireId", questionnaireId)
+                .setString("questionnaireId", questionnaireId)
                 .setString("shortTitle", shortTitle);
         questionnairesStepsBo = query.list();
         if ((questionnairesStepsBo != null) && !questionnairesStepsBo.isEmpty()) {
@@ -146,7 +147,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               (BigInteger)
                   session
                       .createSQLQuery(searchQuery)
-                      .setInteger("questionnaireId", questionnaireId)
+                      .setString("questionnaireId", questionnaireId)
                       .setString("shortTitle", shortTitle)
                       .uniqueResult();
           if ((subCount != null) && (subCount.intValue() > 0)) {
@@ -167,7 +168,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
   @Override
-  public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
+  public String checkQuestionnaireResponseTypeValidation(String studyId, String customStudyId) {
     logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireResponseTypeValidation() - starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -183,7 +184,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           (BigInteger)
               session
                   .createSQLQuery(searchQuery)
-                  .setInteger("studyId", studyId)
+                  .setString("studyId", studyId)
                   .setString("questionStep", FdahpStudyDesignerConstants.QUESTION_STEP)
                   .uniqueResult();
       if ((count != null) && (count.intValue() > 0)) {
@@ -196,7 +197,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 + " and qq.active=1 and qs.step_type='Form' and qs.active=1 and f.active=1 and q.response_type=3 and q.active=1";
         questionCount =
             (BigInteger)
-                session.createSQLQuery(searchQuuery).setInteger("studyId", studyId).uniqueResult();
+                session.createSQLQuery(searchQuuery).setString("studyId", studyId).uniqueResult();
         if ((questionCount != null) && (questionCount.intValue() > 0)) {
           message = FdahpStudyDesignerConstants.SUCCESS;
         }
@@ -216,7 +217,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @SuppressWarnings("unchecked")
   @Override
   public String checkQuestionnaireShortTitle(
-      Integer studyId, String shortTitle, String customStudyId) {
+      String studyId, String shortTitle, String customStudyId) {
     logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireShortTitle() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -255,7 +256,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         query =
             session
                 .getNamedQuery("checkQuestionnaireShortTitle")
-                .setInteger("studyId", studyId)
+                .setString("studyId", studyId)
                 .setString("shortTitle", shortTitle);
         questionnaireBo = query.list();
 
@@ -266,7 +267,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           taskBo =
               session
                   .createQuery(queryString)
-                  .setInteger("studyId", studyId)
+                  .setString("studyId", studyId)
                   .setString("shortTitle", shortTitle)
                   .list();
 
@@ -289,7 +290,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @SuppressWarnings("unchecked")
   @Override
   public String checkQuestionnaireStepShortTitle(
-      Integer questionnaireId,
+      String questionnaireId,
       String stepType,
       String shortTitle,
       String questionnaireShortTitle,
@@ -336,7 +337,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         query =
             session
                 .getNamedQuery("checkQuestionnaireStepShortTitle")
-                .setInteger("questionnaireId", questionnaireId)
+                .setString("questionnaireId", questionnaireId)
                 .setString("shortTitle", shortTitle);
         questionnairesStepsBo = query.list();
         if ((questionnairesStepsBo != null) && !questionnairesStepsBo.isEmpty()) {
@@ -350,7 +351,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               (BigInteger)
                   session
                       .createSQLQuery(searchQuery)
-                      .setInteger("questionnaireId", questionnaireId)
+                      .setString("questionnaireId", questionnaireId)
                       .setString("shortTitle", shortTitle)
                       .uniqueResult();
           if ((subCount != null) && (subCount.intValue() > 0)) {
@@ -371,7 +372,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public String checkStatShortTitle(Integer studyId, String shortTitle, String customStudyId) {
+  public String checkStatShortTitle(String studyId, String shortTitle, String customStudyId) {
     logger.info("StudyQuestionnaireDAOImpl - checkQuestionnaireStepShortTitle() - starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -435,7 +436,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     + " and QSBO.active=1) and QBO.statShortName=:shortTitle ");
         questionsBo =
             query
-                .setInteger("studyId", studyId)
+                .setString("studyId", studyId)
                 .setString("stepType", FdahpStudyDesignerConstants.QUESTION_STEP)
                 .setString("shortTitle", shortTitle)
                 .list();
@@ -449,7 +450,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           questionsBo =
               session
                   .createQuery(searchQuuery)
-                  .setInteger("studyId", studyId)
+                  .setString("studyId", studyId)
                   .setString("shortTitle", shortTitle)
                   .list();
 
@@ -462,7 +463,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
                 session
                     .createQuery(taskQuery)
-                    .setInteger("studyId", studyId)
+                    .setString("studyId", studyId)
                     .setString("shortTitle", shortTitle)
                     .list();
             if ((activeTaskAtrributeValuesBos != null) && !activeTaskAtrributeValuesBos.isEmpty()) {
@@ -486,7 +487,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @SuppressWarnings("unchecked")
   @Override
   public QuestionnaireBo copyStudyQuestionnaireBo(
-      Integer questionnaireId, String customStudyId, SessionObject sessionObject) {
+      String questionnaireId, String customStudyId, SessionObject sessionObject) {
     logger.info("StudyQuestionnaireDAOImpl - copyStudyQuestionnaireBo() - Starts");
     QuestionnaireBo questionnaireBo = null;
     QuestionnaireBo newQuestionnaireBo = null;
@@ -498,7 +499,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       transaction = session.beginTransaction();
       query = session.createQuery(" From QuestionnaireBo QBO WHERE QBO.id=:questionnaireId ");
       questionnaireBo =
-          (QuestionnaireBo) query.setInteger("questionnaireId", questionnaireId).uniqueResult();
+          (QuestionnaireBo) query.setString("questionnaireId", questionnaireId).uniqueResult();
       if (questionnaireBo != null) {
         String searchQuery = null;
         newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
@@ -995,7 +996,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       query =
           session
               .getNamedQuery("getFormQuestion")
-              .setInteger("formId", formId)
+              .setString("formId", formId)
               .setString("questionId", questionId);
       formMappingBo = (FormMappingBo) query.uniqueResult();
       if (formMappingBo != null) {
@@ -3056,7 +3057,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
   @Override
-  public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber, int newOrderNumber) {
+  public String reOrderFormStepQuestions(String formId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyQuestionnaireDAOImpl - reOrderFormStepQuestions() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -3135,7 +3136,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   @SuppressWarnings("unchecked")
   @Override
   public String reOrderQuestionnaireSteps(
-      Integer questionnaireId, int oldOrderNumber, int newOrderNumber) {
+      String questionnaireId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyQuestionnaireDAOImpl - reOrderQuestionnaireSteps() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -3152,7 +3153,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId "
                       + " and QSBO.sequenceNo =:oldOrderNumber "
                       + " and QSBO.active=1")
-              .setInteger("questionnaireId", questionnaireId)
+              .setString("questionnaireId", questionnaireId)
               .setInteger("oldOrderNumber", oldOrderNumber);
       questionnairesStepsBo = (QuestionnairesStepsBo) query.uniqueResult();
       if (questionnairesStepsBo != null) {
@@ -3166,7 +3167,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           query =
               session
                   .createQuery(updateQuery)
-                  .setInteger("questionnaireId", questionnaireId)
+                  .setString("questionnaireId", questionnaireId)
                   .setInteger("newOrderNumber", newOrderNumber)
                   .setInteger("oldOrderNumber", oldOrderNumber);
           count = query.executeUpdate();
@@ -3191,7 +3192,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           query =
               session
                   .createQuery(updateQuery)
-                  .setInteger("questionnaireId", questionnaireId)
+                  .setString("questionnaireId", questionnaireId)
                   .setInteger("newOrderNumber", newOrderNumber)
                   .setInteger("oldOrderNumber", oldOrderNumber);
           count = query.executeUpdate();
@@ -3215,7 +3216,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnaireId "
                   + "and QSBO.active=1 order by QSBO.sequenceNo ASC";
           Query query = session.createQuery(searchQuery);
-          query.setInteger("questionnaireId", questionnaireId);
+          query.setString("questionnaireId", questionnaireId);
           questionnaireStepList = query.list();
           if ((null != questionnaireStepList) && !questionnaireStepList.isEmpty()) {
             if (questionnaireStepList.size() == 1) {
@@ -3258,7 +3259,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               session
                   .createSQLQuery(questionConditionResponseQuery)
                   .setParameter("type", FdahpStudyDesignerConstants.QUESTION_STEP)
-                  .setInteger("questionnaireId", questionnaireId);
+                  .setString("questionnaireId", questionnaireId);
           query.executeUpdate();
         }
         // Reset destination steps in Questionnaire Ends
@@ -4079,7 +4080,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         } else {
           addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
           addOrUpdateQuestionnairesStepsBo.setActive(true);
-          addOrUpdateQuestionnairesStepsBo.setDestinationStep(0);
+          addOrUpdateQuestionnairesStepsBo.setDestinationStep();
         }
         if ((questionnairesStepsBo.getStepShortTitle() != null)
             && !questionnairesStepsBo.getStepShortTitle().isEmpty()) {
@@ -4509,7 +4510,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
   @Override
-  public String validateLineChartSchedule(Integer questionnaireId, String frequency) {
+  public String validateLineChartSchedule(String questionnaireId, String frequency) {
     logger.info("StudyQuestionnaireDAOImpl - validateLineChartSchedule() - starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -4528,7 +4529,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               session
                   .createSQLQuery(searchQuery)
                   .setString("stepType", FdahpStudyDesignerConstants.QUESTION_STEP)
-                  .setInteger("questionnaireId", questionnaireId)
+                  .setString("questionnaireId", questionnaireId)
                   .setParameterList("timeRange", Arrays.asList(timeRange))
                   .uniqueResult();
       if ((count != null) && (count.intValue() > 0)) {
@@ -4544,7 +4545,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 session
                     .createSQLQuery(searchSubQuery)
                     .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP)
-                    .setInteger("questionnaireId", questionnaireId)
+                    .setString("questionnaireId", questionnaireId)
                     .setParameterList("timeRange", Arrays.asList(timeRange))
                     .uniqueResult();
         if ((subCount != null) && (subCount.intValue() > 0)) {
@@ -4563,7 +4564,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   }
 
   @Override
-  public String validateRepetableFormQuestionStats(Integer formId) {
+  public String validateRepetableFormQuestionStats(String formId) {
     logger.info("StudyQuestionnaireDAOImpl - validateRepetableFormQuestionStats() - starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -4574,7 +4575,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               + " and (q.add_line_chart = 'Yes' or q.use_stastic_data='Yes' or q.use_anchor_date=true)";
       BigInteger questionCount =
           (BigInteger)
-              session.createSQLQuery(searchQuery).setInteger("formId", formId).uniqueResult();
+              session.createSQLQuery(searchQuery).setString("formId", formId).uniqueResult();
       if ((questionCount != null) && (questionCount.intValue() > 0)) {
         message = FdahpStudyDesignerConstants.SUCCESS;
       }
