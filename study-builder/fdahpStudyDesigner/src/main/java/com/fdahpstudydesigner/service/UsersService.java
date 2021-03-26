@@ -35,7 +35,7 @@ public interface UsersService {
   public String activateOrDeactivateUser(
       int userId,
       int userStatus,
-      int loginUser,
+      String loginUser,
       SessionObject userSession,
       HttpServletRequest request);
 
@@ -52,7 +52,7 @@ public interface UsersService {
 
   public List<String> getActiveUserEmailIds();
 
-  public List<Integer> getPermissionsByUserId(Integer userId);
+  public List<Integer> getPermissionsByUserId(String userId);
 
   public UserBO getUserDetails(String userId);
 
