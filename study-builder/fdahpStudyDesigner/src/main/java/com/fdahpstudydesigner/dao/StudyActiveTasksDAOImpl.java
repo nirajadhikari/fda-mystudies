@@ -778,7 +778,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
   @SuppressWarnings({"unchecked"})
   @Override
   public boolean validateActiveTaskAttrById(
-      Integer studyId,
+      String studyId,
       String activeTaskAttName,
       String activeTaskAttIdVal,
       String activeTaskAttIdName,
@@ -1010,7 +1010,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
               questionnaireBo =
                   session
                       .getNamedQuery("checkQuestionnaireShortTitle")
-                      .setInteger("studyId", studyId)
+                      .setString("studyId", studyId)
                       .setString("shortTitle", activeTaskAttIdVal)
                       .list();
               if ((questionnaireBo != null) && !questionnaireBo.isEmpty()) {

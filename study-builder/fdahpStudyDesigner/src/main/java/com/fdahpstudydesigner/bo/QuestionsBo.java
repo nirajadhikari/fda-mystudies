@@ -131,7 +131,7 @@ public class QuestionsBo implements Serializable {
   private String healthkitDatatype;
 
   @Column(name = "anchor_date_id")
-  private Integer anchorDateId;
+  private String anchorDateId;
 
   @Transient private String type;
 
@@ -139,7 +139,7 @@ public class QuestionsBo implements Serializable {
 
   @Transient private Integer questionnaireId;
 
-  @Transient private Integer fromId;
+  @Transient private String fromId;
 
   @Transient QuestionnairesStepsBo questionnairesStepsBo;
 
@@ -187,7 +187,7 @@ public class QuestionsBo implements Serializable {
     return description;
   }
 
-  public Integer getFromId() {
+  public String getFromId() {
     return fromId;
   }
 
@@ -323,7 +323,7 @@ public class QuestionsBo implements Serializable {
     this.description = description;
   }
 
-  public void setFromId(Integer fromId) {
+  public void setFromId(String fromId) {
     this.fromId = fromId;
   }
 
@@ -428,11 +428,11 @@ public class QuestionsBo implements Serializable {
     this.useStasticData = useStasticData;
   }
 
-  public Integer getAnchorDateId() {
+  public String getAnchorDateId() {
     return anchorDateId;
   }
 
-  public void setAnchorDateId(Integer anchorDateId) {
+  public void setAnchorDateId(String anchorDateId) {
     this.anchorDateId = anchorDateId;
   }
 

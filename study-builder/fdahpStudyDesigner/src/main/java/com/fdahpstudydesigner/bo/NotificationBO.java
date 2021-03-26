@@ -102,7 +102,7 @@ public class NotificationBO implements Serializable {
   private String notificationType;
 
   @Column(name = "questionnarie_id")
-  private Integer questionnarieId;
+  private String questionnarieId;
 
   @Column(name = "resource_id")
   private Integer resourceId;
@@ -177,7 +177,7 @@ public class NotificationBO implements Serializable {
     return notificationType;
   }
 
-  public Integer getQuestionnarieId() {
+  public String getQuestionnarieId() {
     return questionnarieId;
   }
 
@@ -293,7 +293,7 @@ public class NotificationBO implements Serializable {
     this.notificationType = notificationType;
   }
 
-  public void setQuestionnarieId(Integer questionnarieId) {
+  public void setQuestionnarieId(String questionnarieId) {
     this.questionnarieId = questionnarieId;
   }
 

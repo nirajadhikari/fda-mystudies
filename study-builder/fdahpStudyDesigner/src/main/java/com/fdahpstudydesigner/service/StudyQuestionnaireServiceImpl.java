@@ -1093,13 +1093,13 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId) {
+  public boolean isAnchorDateExistByQuestionnaire(String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - isAnchorDateExistByQuestionnaire - Starts");
     return studyQuestionnaireDAO.isAnchorDateExistByQuestionnaire(questionnaireId);
   }
 
   @Override
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId) {
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Starts");
     return studyQuestionnaireDAO.getQuestionnaireById(questionnaireId);
   }

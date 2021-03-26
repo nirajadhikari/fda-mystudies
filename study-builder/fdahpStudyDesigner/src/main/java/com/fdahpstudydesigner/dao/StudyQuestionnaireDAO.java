@@ -73,8 +73,8 @@ public interface StudyQuestionnaireDAO {
       AuditLogEventRequest auditRequest);
 
   public String deleteQuestionnaireStep(
-      Integer stepId,
-      Integer questionnaireId,
+      String stepId,
+      String questionnaireId,
       String stepType,
       SessionObject sessionObject,
       String customStudyId);
@@ -147,25 +147,25 @@ public interface StudyQuestionnaireDAO {
   public String checkUniqueAnchorDateName(
       String anchordateText, String customStudyId, String anchorDateId);
 
-  public Integer getStudyIdByCustomStudy(Session session, String customStudyId);
+  public String getStudyIdByCustomStudy(Session session, String customStudyId);
 
   public List<AnchorDateTypeBo> getAnchorTypesByStudyId(String customStudyId);
 
-  public boolean isAnchorDateExistByQuestionnaire(Integer questionnaireId);
+  public boolean isAnchorDateExistByQuestionnaire(String questionnaireId);
 
   public String updateAnchordateInQuestionnaire(
       Session session,
       Transaction transaction,
       StudyVersionBo studyVersionBo,
-      Integer questionnaireId,
+      String questionnaireId,
       SessionObject sessionObject,
-      Integer studyId,
+      String studyId,
       Integer stepId,
-      Integer questionId,
+      String questionId,
       String stepType,
       boolean isChange);
 
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId);
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId);
 
   public QuestionsBo getQuestionById(Integer questionId);
 }
