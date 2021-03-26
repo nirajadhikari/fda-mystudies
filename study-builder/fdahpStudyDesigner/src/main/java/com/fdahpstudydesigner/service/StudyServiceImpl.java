@@ -72,7 +72,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public int comprehensionTestQuestionOrder(Integer studyId) {
+  public int comprehensionTestQuestionOrder(String studyId) {
     int count = 1;
     logger.info("StudyServiceImpl - comprehensionTestQuestionOrder() - Starts");
     try {
@@ -85,7 +85,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public int consentInfoOrder(Integer studyId) {
+  public int consentInfoOrder(String studyId) {
     int count = 1;
     logger.info("StudyServiceImpl - consentInfoOrder() - Starts");
     try {
@@ -470,7 +470,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public StudyBo getStudyById(String studyId, Integer userId) {
+  public StudyBo getStudyById(String studyId, String userId) {
     logger.info("StudyServiceImpl - getStudyById() - Starts");
     StudyBo studyBo = null;
     try {
@@ -817,10 +817,10 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public Integer saveOrDoneChecklist(
+  public String saveOrDoneChecklist(
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId) {
     logger.info("StudyServiceImpl - saveOrDoneChecklist() - Starts");
-    Integer checklistId = 0;
+    String checklistId = null;
     Checklist checklistBO = null;
     StudyBo studyBo = null;
     try {
@@ -838,7 +838,7 @@ public class StudyServiceImpl implements StudyService {
         checklist.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
       }
       checklistId = studyDAO.saveOrDoneChecklist(checklist);
-      if (!checklistId.equals(0)) {
+      if (StringUtils.isNotEmpty(checklistId)) {
         if ("save".equalsIgnoreCase(actionBut)) {
           studyDAO.markAsCompleted(
               checklist.getStudyId(),

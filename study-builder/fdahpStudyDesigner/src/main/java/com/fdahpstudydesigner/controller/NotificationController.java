@@ -24,7 +24,6 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.APP_LEVEL_NOTIFICATION_LIST_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -228,7 +228,7 @@ public class NotificationController {
   public ModelAndView saveOrUpdateOrResendNotification(
       HttpServletRequest request, NotificationBO notificationBO) {
     logger.info("NotificationController - saveOrUpdateOrResendNotification - Starts");
-    Integer notificationId = 0;
+    String notificationId = null;
     ModelAndView mav = new ModelAndView();
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     try {
@@ -295,7 +295,7 @@ public class NotificationController {
       notificationId =
           notificationService.saveOrUpdateOrResendNotification(
               notificationBO, notificationType, buttonType, sessionObject, "");
-      if (!notificationId.equals(0)) {
+      if (StringUtils.isNotEmpty(notificationId)) {
         if ((notificationBO.getNotificationId() == null) && "add".equalsIgnoreCase(buttonType)) {
           request
               .getSession()

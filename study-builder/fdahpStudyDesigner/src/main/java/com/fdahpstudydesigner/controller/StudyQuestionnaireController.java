@@ -328,10 +328,7 @@ public class StudyQuestionnaireController {
 
           message =
               studyQuestionnaireService.deletQuestionnaire(
-                  Integer.valueOf(studyId),
-                  Integer.valueOf(questionnaireId),
-                  sesObj,
-                  customStudyId);
+                  studyId, questionnaireId, sesObj, customStudyId);
           if (message == FdahpStudyDesignerConstants.SUCCESS) {
             StudyBo studyBo = studyService.getStudyInfo(studyId);
             auditRequest.setStudyVersion(studyBo.getVersion().toString());
@@ -425,8 +422,7 @@ public class StudyQuestionnaireController {
                   customStudyId);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             questionnaireBo =
-                studyQuestionnaireService.getQuestionnaireById(
-                    Integer.valueOf(questionnaireId), customStudyId);
+                studyQuestionnaireService.getQuestionnaireById(questionnaireId, customStudyId);
             if (questionnaireBo != null) {
               questionnaireBo.setStatus(false);
               questionnaireBo.setType(FdahpStudyDesignerConstants.CONTENT);
@@ -634,7 +630,7 @@ public class StudyQuestionnaireController {
           request.getSession().removeAttribute(sessionStudyCount + "actionType");
           questionnaireBo =
               studyQuestionnaireService.getQuestionnaireById(
-                  Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+                  questionnaireId, studyBo.getCustomStudyId());
           map.addAttribute("questionnaireBo", questionnaireBo);
           if ("edit".equals(actionType)) {
             map.addAttribute("actionType", "edit");
@@ -836,7 +832,7 @@ public class StudyQuestionnaireController {
           request.getSession().removeAttribute(sessionStudyCount + "actionTypeForQuestionPage");
           questionnaireBo =
               studyQuestionnaireService.getQuestionnaireById(
-                  Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+                  questionnaireId, studyBo.getCustomStudyId());
           map.addAttribute("questionnaireBo", questionnaireBo);
           if ("edit".equals(actionTypeForQuestionPage)) {
             map.addAttribute("actionTypeForQuestionPage", "edit");
@@ -1055,7 +1051,7 @@ public class StudyQuestionnaireController {
           request.getSession().removeAttribute(sessionStudyCount + "actionType");
           questionnaireBo =
               studyQuestionnaireService.getQuestionnaireById(
-                  Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+                  questionnaireId, studyBo.getCustomStudyId());
           if ("edit".equals(actionType)) {
             map.addAttribute("actionType", "edit");
             request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
@@ -1072,7 +1068,7 @@ public class StudyQuestionnaireController {
         if ((instructionId != null) && !instructionId.isEmpty() && (null != studyBo)) {
           instructionsBo =
               studyQuestionnaireService.getInstructionsBo(
-                  Integer.valueOf(instructionId),
+                  instructionId,
                   questionnaireBo.getShortTitle(),
                   studyBo.getCustomStudyId(),
                   questionnaireBo.getId());
@@ -1204,7 +1200,7 @@ public class StudyQuestionnaireController {
         if ((null != questionnaireId) && !questionnaireId.isEmpty()) {
           questionnaireBo =
               studyQuestionnaireService.getQuestionnaireById(
-                  Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+                  questionnaireId, studyBo.getCustomStudyId());
           if (questionnaireBo != null) {
             map.addAttribute(
                 "customCount", questionnaireBo.getQuestionnaireCustomScheduleBo().size());
@@ -1421,7 +1417,7 @@ public class StudyQuestionnaireController {
           request.getSession().removeAttribute(sessionStudyCount + "actionType");
           questionnaireBo =
               studyQuestionnaireService.getQuestionnaireById(
-                  Integer.valueOf(questionnaireId), studyBo.getCustomStudyId());
+                  questionnaireId, studyBo.getCustomStudyId());
           map.addAttribute("questionnaireBo", questionnaireBo);
           if ((questionnaireBo != null) && StringUtils.isNotEmpty(questionnaireBo.getFrequency())) {
             String frequency = questionnaireBo.getFrequency();

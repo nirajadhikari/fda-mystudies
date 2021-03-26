@@ -49,9 +49,9 @@ public interface StudyDAO {
 
   public String checkActiveTaskTypeValidation(Integer studyId);
 
-  public int comprehensionTestQuestionOrder(Integer studyId);
+  public int comprehensionTestQuestionOrder(String studyId);
 
-  public int consentInfoOrder(Integer studyId);
+  public int consentInfoOrder(String studyId);
 
   public String deleteComprehensionTestQuestion(
       Integer questionId, Integer studyId, SessionObject sessionObject);

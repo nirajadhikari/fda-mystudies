@@ -48,9 +48,9 @@ public interface StudyService {
 
   public String checkActiveTaskTypeValidation(Integer studyId);
 
-  public int comprehensionTestQuestionOrder(Integer studyId);
+  public int comprehensionTestQuestionOrder(String studyId);
 
-  public int consentInfoOrder(Integer studyId);
+  public int consentInfoOrder(String studyId);
 
   public boolean copyliveStudyByCustomStudyId(String customStudyId, SessionObject sesObj);
 
@@ -136,7 +136,7 @@ public interface StudyService {
 
   public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 
-  public int resourceOrder(Integer studyId);
+  public int resourceOrder(String studyId);
 
   public List<ResourceBO> resourcesSaved(Integer studyId);
 
@@ -145,7 +145,7 @@ public interface StudyService {
   public ConsentBo saveOrCompleteConsentReviewDetails(
       ConsentBo consentBo, SessionObject sesObj, String customStudyId);
 
-  public Integer saveOrDoneChecklist(
+  public String saveOrDoneChecklist(
       Checklist checklist, String actionBut, SessionObject sesObj, String customStudyId);
 
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(

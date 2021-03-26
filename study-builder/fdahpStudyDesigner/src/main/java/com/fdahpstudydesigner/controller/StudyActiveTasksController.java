@@ -186,10 +186,7 @@ public class StudyActiveTasksController {
         if (!activeTaskInfoId.isEmpty() && !studyId.isEmpty()) {
           message =
               studyActiveTasksService.deleteActiveTask(
-                  Integer.valueOf(activeTaskInfoId),
-                  Integer.valueOf(studyId),
-                  sesObj,
-                  customStudyId);
+                  activeTaskInfoId, studyId, sesObj, customStudyId);
         }
         boolean markAsComplete = true;
         actMsg =
@@ -316,11 +313,11 @@ public class StudyActiveTasksController {
         if (StringUtils.isNotEmpty(activeTaskInfoId)) {
           activeTaskBo =
               studyActiveTasksService.getActiveTaskById(
-                  Integer.parseInt(activeTaskInfoId), studyBo.getCustomStudyId());
+                  activeTaskInfoId, studyBo.getCustomStudyId());
           typeOfActiveTask = activeTaskBo.getTaskTypeId().toString();
         } else {
           activeTaskBo = new ActiveTaskBo();
-          activeTaskBo.setStudyId(Integer.parseInt(studyId));
+          activeTaskBo.setStudyId(studyId);
           activeTaskBo.setTaskTypeId(Integer.parseInt(typeOfActiveTask));
         }
         if (StringUtils.isNotEmpty(actionType)) {
@@ -644,11 +641,7 @@ public class StudyActiveTasksController {
                 : request.getParameter("activeTaskAttIdName");
         flag =
             studyActiveTasksService.validateActiveTaskAttrById(
-                Integer.parseInt(studyId),
-                activeTaskAttName,
-                activeTaskAttIdVal,
-                activeTaskAttIdName,
-                customStudyId);
+                studyId, activeTaskAttName, activeTaskAttIdVal, activeTaskAttIdName, customStudyId);
         if (flag) {
           message = FdahpStudyDesignerConstants.SUCCESS;
         }
@@ -847,7 +840,7 @@ public class StudyActiveTasksController {
           if (StringUtils.isNotEmpty(activeTaskInfoId)) {
             activeTaskBo =
                 studyActiveTasksService.getActiveTaskById(
-                    Integer.parseInt(activeTaskInfoId), studyBo.getCustomStudyId());
+                    activeTaskInfoId, studyBo.getCustomStudyId());
             map.addAttribute("activeTaskBo", activeTaskBo);
           }
           mav = new ModelAndView("viewStudyActiveTask", map);
@@ -946,8 +939,7 @@ public class StudyActiveTasksController {
         }
         if ((null != activeTaskId) && !activeTaskId.isEmpty() && (null != studyBo)) {
           activeTaskBo =
-              studyActiveTasksService.getActiveTaskById(
-                  Integer.valueOf(activeTaskId), studyBo.getCustomStudyId());
+              studyActiveTasksService.getActiveTaskById(activeTaskId, studyBo.getCustomStudyId());
           if (activeTaskBo != null) {
             map.addAttribute("customCount", activeTaskBo.getActiveTaskCustomScheduleBo().size());
             map.addAttribute("count", activeTaskBo.getActiveTaskFrequenciesList().size());

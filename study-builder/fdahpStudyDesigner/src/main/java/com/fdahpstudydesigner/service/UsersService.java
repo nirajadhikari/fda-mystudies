@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface UsersService {
 
   public String activateOrDeactivateUser(
-      int userId,
+      String userId,
       int userStatus,
       String loginUser,
       SessionObject userSession,
