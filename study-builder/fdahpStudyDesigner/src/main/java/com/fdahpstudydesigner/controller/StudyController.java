@@ -623,7 +623,7 @@ public class StudyController {
         if (StringUtils.isNotEmpty(comprehensionQuestionId) && StringUtils.isNotEmpty(studyId)) {
           message =
               studyService.deleteComprehensionTestQuestion(
-                  Integer.valueOf(comprehensionQuestionId), Integer.valueOf(studyId), sesObj);
+                  Integer.valueOf(comprehensionQuestionId), studyId, sesObj);
         }
       }
       jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
