@@ -25,6 +25,7 @@ package com.fdahpstudydesigner.dao;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.ACCOUNT_LOCKED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.FAILED_ATTEMPT;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.LOCK_TIME;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.UserAttemptsBo;
 import com.fdahpstudydesigner.bo.UserBO;
@@ -77,7 +78,7 @@ public class LoginDAOImpl implements LoginDAO {
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      query = session.getNamedQuery("getUserById").setInteger("userId", userId);
+      query = session.getNamedQuery("getUserById").setString("userId", userId);
       adminUserBO = (UserBO) query.uniqueResult();
       if ((null != adminUserBO)
           && FdahpStudyDesignerUtil.compareEncryptedPassword(
@@ -118,9 +119,9 @@ public class LoginDAOImpl implements LoginDAO {
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if ((userId != null) && (userId != 0)) {
+      if (StringUtils.isNotEmpty(userId)) {
         passwordHistories =
-            session.getNamedQuery("getPaswordHistoryByUserId").setInteger("userId", userId).list();
+            session.getNamedQuery("getPaswordHistoryByUserId").setString("userId", userId).list();
       }
 
     } catch (Exception e) {
@@ -227,10 +228,10 @@ public class LoginDAOImpl implements LoginDAO {
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if ((userId != null) && (userId != 0)) {
+      if (StringUtils.isNotEmpty(userId)) {
         userBo =
             (UserBO)
-                session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
+                session.getNamedQuery("getUserById").setString("userId", userId).uniqueResult();
         if (userBo != null) {
           result = userBo.isForceLogout();
         }
@@ -255,10 +256,10 @@ public class LoginDAOImpl implements LoginDAO {
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if ((userId != null) && (userId != 0)) {
+      if (StringUtils.isNotEmpty(userId)) {
         userBo =
             (UserBO)
-                session.getNamedQuery("getUserById").setInteger("userId", userId).uniqueResult();
+                session.getNamedQuery("getUserById").setString("userId", userId).uniqueResult();
         if (userBo != null) {
           result = userBo.isEnabled();
         }
@@ -470,9 +471,9 @@ public class LoginDAOImpl implements LoginDAO {
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      if ((userId != null) && (userId != 0)) {
+      if (StringUtils.isNotEmpty(userId)) {
         passwordHistories =
-            session.getNamedQuery("getPaswordHistoryByUserId").setInteger("userId", userId).list();
+            session.getNamedQuery("getPaswordHistoryByUserId").setString("userId", userId).list();
         if ((passwordHistories != null)
             && (passwordHistories.size() > (passwordHistoryCount - 1))) {
           for (int i = 0; i < ((passwordHistories.size() - passwordHistoryCount) + 1); i++) {

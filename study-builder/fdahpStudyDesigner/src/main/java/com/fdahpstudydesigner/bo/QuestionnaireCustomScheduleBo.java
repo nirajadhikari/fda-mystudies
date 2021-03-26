@@ -54,7 +54,7 @@ public class QuestionnaireCustomScheduleBo implements Serializable {
   private String id;
 
   @Column(name = "questionnaires_id")
-  private Integer questionnairesId;
+  private String questionnairesId;
 
   @Column(name = "is_used")
   @Type(type = "yes_no")
@@ -88,7 +88,7 @@ public class QuestionnaireCustomScheduleBo implements Serializable {
     return id;
   }
 
-  public Integer getQuestionnairesId() {
+  public String getQuestionnairesId() {
     return questionnairesId;
   }
 
@@ -112,7 +112,7 @@ public class QuestionnaireCustomScheduleBo implements Serializable {
     this.id = id;
   }
 
-  public void setQuestionnairesId(Integer questionnairesId) {
+  public void setQuestionnairesId(String questionnairesId) {
     this.questionnairesId = questionnairesId;
   }
 

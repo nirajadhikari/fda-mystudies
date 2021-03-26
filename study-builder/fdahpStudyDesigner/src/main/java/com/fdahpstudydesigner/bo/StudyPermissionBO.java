@@ -52,7 +52,7 @@ public class StudyPermissionBO implements Serializable {
   private Integer projectLead;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Id
   @GeneratedValue(generator = "system-uuid")
@@ -63,7 +63,7 @@ public class StudyPermissionBO implements Serializable {
   @Transient private String userFullName;
 
   @Column(name = "user_id")
-  private Integer userId;
+  private String userId;
 
   @Column(name = "view_permission", length = 1)
   private boolean viewPermission;
@@ -76,7 +76,7 @@ public class StudyPermissionBO implements Serializable {
     return projectLead;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -88,7 +88,7 @@ public class StudyPermissionBO implements Serializable {
     return userFullName;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
@@ -104,7 +104,7 @@ public class StudyPermissionBO implements Serializable {
     this.projectLead = projectLead;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 
@@ -116,7 +116,7 @@ public class StudyPermissionBO implements Serializable {
     this.userFullName = userFullName;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

@@ -62,7 +62,7 @@ public class StudyPageBo implements Serializable {
   private String pageId;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "title")
   private String title;
@@ -95,7 +95,7 @@ public class StudyPageBo implements Serializable {
     return pageId;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -131,7 +131,7 @@ public class StudyPageBo implements Serializable {
     this.pageId = pageId;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

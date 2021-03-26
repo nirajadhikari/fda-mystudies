@@ -85,7 +85,7 @@ public class QuestionnairesStepsBo implements Serializable {
   @Transient private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 
   @Column(name = "instruction_form_id")
-  private Integer instructionFormId;
+  private String instructionFormId;
 
   @Transient private Integer isShorTitleDuplicate = 0;
 
@@ -98,7 +98,7 @@ public class QuestionnairesStepsBo implements Serializable {
   @Transient private List<QuestionConditionBranchBo> questionConditionBranchBoList;
 
   @Column(name = "questionnaires_id")
-  private Integer questionnairesId;
+  private String questionnairesId;
 
   @Transient private QuestionReponseTypeBo questionReponseTypeBo;
 
@@ -155,7 +155,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return formQuestionMap;
   }
 
-  public Integer getInstructionFormId() {
+  public String getInstructionFormId() {
     return instructionFormId;
   }
 
@@ -175,7 +175,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return questionConditionBranchBoList;
   }
 
-  public Integer getQuestionnairesId() {
+  public String getQuestionnairesId() {
     return questionnairesId;
   }
 
@@ -247,7 +247,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.formQuestionMap = formQuestionMap;
   }
 
-  public void setInstructionFormId(Integer instructionFormId) {
+  public void setInstructionFormId(String instructionFormId) {
     this.instructionFormId = instructionFormId;
   }
 
@@ -268,7 +268,7 @@ public class QuestionnairesStepsBo implements Serializable {
     this.questionConditionBranchBoList = questionConditionBranchBoList;
   }
 
-  public void setQuestionnairesId(Integer questionnairesId) {
+  public void setQuestionnairesId(String questionnairesId) {
     this.questionnairesId = questionnairesId;
   }
 

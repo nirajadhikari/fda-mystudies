@@ -109,26 +109,30 @@ public interface StudyDAO {
 
   public ResourceBO getResourceInfo(Integer resourceInfoId);
 
-  public List<ResourceBO> getResourceList(Integer studyId);
+  public List<ResourceBO> getResourceList(String studyId);
 
-  public List<NotificationBO> getSavedNotification(Integer studyId);
+  public List<NotificationBO> getSavedNotification(String studyId);
 
-  public StudyBo getStudyById(String studyId, Integer userId);
+  public StudyBo getStudyById(String studyId, String userId);
 
-  public StudyBo getStudy(Integer id);
+  public StudyBo getStudy(String id);
 
   public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 
-  public List<StudyListBean> getStudyList(Integer userId);
+  public List<StudyListBean> getStudyList(String userId);
 
-  public List<StudyListBean> getStudyListByUserId(Integer userId);
+  public List<StudyListBean> getStudyListByUserId(String userId);
 
   public StudyBo getStudyLiveStatusByCustomId(String customStudyId);
 
-  public ResourceBO getStudyProtocol(Integer studyId);
+  public ResourceBO getStudyProtocol(String studyId);
 
   public String markAsCompleted(
-      int studyId, String markCompleted, boolean flag, SessionObject sesObj, String customStudyId);
+      String studyId,
+      String markCompleted,
+      boolean flag,
+      SessionObject sesObj,
+      String customStudyId);
 
   public String reOrderComprehensionTestQuestion(
       Integer studyId, int oldOrderNumber, int newOrderNumber);

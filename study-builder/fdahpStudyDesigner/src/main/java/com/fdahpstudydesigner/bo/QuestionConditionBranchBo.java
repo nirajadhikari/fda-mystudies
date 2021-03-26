@@ -68,7 +68,7 @@ public class QuestionConditionBranchBo implements Serializable {
   @Transient private List<QuestionConditionBranchBo> questionConditionBranchBos;
 
   @Column(name = "question_id")
-  private Integer questionId;
+  private String questionId;
 
   @Column(name = "sequence_no")
   private Integer sequenceNo;
@@ -97,7 +97,7 @@ public class QuestionConditionBranchBo implements Serializable {
     return questionConditionBranchBos;
   }
 
-  public Integer getQuestionId() {
+  public String getQuestionId() {
     return questionId;
   }
 
@@ -130,7 +130,7 @@ public class QuestionConditionBranchBo implements Serializable {
     this.questionConditionBranchBos = questionConditionBranchBos;
   }
 
-  public void setQuestionId(Integer questionId) {
+  public void setQuestionId(String questionId) {
     this.questionId = questionId;
   }
 

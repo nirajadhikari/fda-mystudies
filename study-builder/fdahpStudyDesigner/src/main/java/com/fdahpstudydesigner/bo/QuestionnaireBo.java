@@ -129,7 +129,7 @@ public class QuestionnaireBo implements Serializable {
   private Boolean status;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "study_lifetime_end")
   private String studyLifetimeEnd;
@@ -241,7 +241,7 @@ public class QuestionnaireBo implements Serializable {
     return status;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return this.studyId;
   }
 
@@ -356,7 +356,7 @@ public class QuestionnaireBo implements Serializable {
     this.status = status;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

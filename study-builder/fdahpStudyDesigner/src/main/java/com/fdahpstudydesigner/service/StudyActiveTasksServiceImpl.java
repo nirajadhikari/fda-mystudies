@@ -52,7 +52,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 
   @Override
   public String deleteActiveTask(
-      Integer activeTaskInfoId, Integer studyId, SessionObject sesObj, String customStudyId) {
+      String activeTaskInfoId, String studyId, SessionObject sesObj, String customStudyId) {
     logger.info("StudyServiceImpl - deleteActiveTask() - Starts");
     String message = null;
     ActiveTaskBo activeTaskBo = null;
@@ -69,7 +69,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
   }
 
   @Override
-  public ActiveTaskBo getActiveTaskById(Integer ativeTaskId, String customStudyId) {
+  public ActiveTaskBo getActiveTaskById(String ativeTaskId, String customStudyId) {
     logger.info("StudyActiveTasksServiceImpl - getActiveTaskById() - Starts");
     ActiveTaskBo activeTask = null;
     try {
@@ -471,7 +471,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
 
   @Override
   public boolean validateActiveTaskAttrById(
-      Integer studyId,
+      String studyId,
       String activeTaskAttName,
       String activeTaskAttIdVal,
       String activeTaskAttIdName,

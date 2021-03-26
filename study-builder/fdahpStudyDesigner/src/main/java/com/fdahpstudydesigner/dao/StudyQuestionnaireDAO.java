@@ -80,30 +80,30 @@ public interface StudyQuestionnaireDAO {
       String customStudyId);
 
   public String deleteQuestuionnaireInfo(
-      Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);
+      String studyId, String questionnaireId, SessionObject sessionObject, String customStudyId);
 
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList();
 
   public InstructionsBo getInstructionsBo(
-      Integer instructionId,
+      String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId);
+      String questionnaireId);
 
   public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(
       Session session, Integer questionId);
 
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo);
+      String questionnaireId, Integer sequenceNo);
 
   public QuestionnairesStepsBo getQuestionnaireStep(
-      Integer stepId,
+      String stepId,
       String stepType,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId);
+      String questionnaireId);
 
   public SortedMap<Integer, QuestionnaireStepBean> getQuestionnaireStepList(
       Integer questionnaireId);

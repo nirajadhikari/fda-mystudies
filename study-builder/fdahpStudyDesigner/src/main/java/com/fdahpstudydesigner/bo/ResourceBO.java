@@ -100,7 +100,7 @@ public class ResourceBO implements Serializable {
   private boolean status;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "study_protocol", length = 1)
   private boolean studyProtocol;
@@ -178,7 +178,7 @@ public class ResourceBO implements Serializable {
     return startDate;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -294,7 +294,7 @@ public class ResourceBO implements Serializable {
     this.status = status;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

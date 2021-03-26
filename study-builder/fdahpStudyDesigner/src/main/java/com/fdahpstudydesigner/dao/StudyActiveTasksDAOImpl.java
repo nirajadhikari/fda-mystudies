@@ -94,7 +94,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
       auditRequest.setStudyId(customStudyId);
       session = hibernateTemplate.getSessionFactory().openSession();
       if (activeTaskBo != null) {
-        Integer studyId = activeTaskBo.getStudyId();
+        String studyId = activeTaskBo.getStudyId();
 
         transaction = session.beginTransaction();
 
@@ -205,7 +205,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public ActiveTaskBo getActiveTaskById(Integer activeTaskId, String customStudyId) {
+  public ActiveTaskBo getActiveTaskById(String activeTaskId, String customStudyId) {
     logger.info("StudyActiveTasksDAOImpl - getActiveTaskById() - Starts");
     ActiveTaskBo activeTaskBo = null;
     Session session = null;
@@ -683,7 +683,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
             (StudySequenceBo)
                 session
                     .getNamedQuery("getStudySequenceByStudyId")
-                    .setInteger("studyId", activeTaskBo.getStudyId())
+                    .setString("studyId", activeTaskBo.getStudyId())
                     .uniqueResult();
         if (studySequence != null) {
           studySequence.setStudyExcActiveTask(false);

@@ -127,7 +127,7 @@ public class NotificationDAOImpl implements NotificationDAO {
       notificationBO = (NotificationBO) query.uniqueResult();
       if (null != notificationBO) {
         notificationBO.setNotificationId(
-            null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : 0);
+            null != notificationBO.getNotificationId() ? notificationBO.getNotificationId() : null);
         notificationBO.setNotificationText(
             null != notificationBO.getNotificationText()
                 ? notificationBO.getNotificationText()
@@ -269,7 +269,7 @@ public class NotificationDAOImpl implements NotificationDAO {
   }
 
   @Override
-  public Integer saveOrUpdateOrResendNotification(
+  public String saveOrUpdateOrResendNotification(
       NotificationBO notificationBO,
       String notificationType,
       String buttonType,
@@ -277,7 +277,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     logger.info("NotificationDAOImpl - saveOrUpdateOrResendNotification() - Starts");
     Session session = null;
     NotificationBO notificationBOUpdate = null;
-    Integer notificationId = 0;
+    String notificationId = null;
     try {
       AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);
       session = hibernateTemplate.getSessionFactory().openSession();
@@ -315,7 +315,7 @@ public class NotificationDAOImpl implements NotificationDAO {
           notificationBOUpdate.setNotificationAction(notificationBO.isNotificationAction());
         } else {
           notificationBOUpdate.setNotificationType(FdahpStudyDesignerConstants.NOTIFICATION_GT);
-          notificationBOUpdate.setStudyId(0);
+          notificationBOUpdate.setStudyId(null);
           notificationBOUpdate.setCustomStudyId("");
           notificationBOUpdate.setNotificationAction(false);
           notificationBOUpdate.setNotificationDone(true);
@@ -325,7 +325,7 @@ public class NotificationDAOImpl implements NotificationDAO {
         }
         notificationBOUpdate.setNotificationSubType(
             FdahpStudyDesignerConstants.NOTIFICATION_SUBTYPE_ANNOUNCEMENT);
-        notificationId = (Integer) session.save(notificationBOUpdate);
+        notificationId = (String) session.save(notificationBOUpdate);
       } else {
         query =
             session

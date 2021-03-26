@@ -56,7 +56,7 @@ public interface StudyActiveTasksDAO {
       ActiveTaskBo activeTaskBo, SessionObject sesObj, String customStudyId);
 
   public boolean validateActiveTaskAttrById(
-      Integer studyId,
+      String studyId,
       String activeTaskName,
       String activeTaskAttIdVal,
       String activeTaskAttIdName,

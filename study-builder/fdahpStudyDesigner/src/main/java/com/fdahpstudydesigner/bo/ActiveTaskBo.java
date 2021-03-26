@@ -144,7 +144,7 @@ public class ActiveTaskBo implements Serializable {
   private String shortTitle;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Transient private List<ActiveTaskAtrributeValuesBo> taskAttributeValueBos = new ArrayList<>();
 
@@ -281,7 +281,7 @@ public class ActiveTaskBo implements Serializable {
     return shortTitle;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return this.studyId;
   }
 
@@ -446,7 +446,7 @@ public class ActiveTaskBo implements Serializable {
     this.shortTitle = shortTitle;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

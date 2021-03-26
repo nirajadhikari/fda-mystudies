@@ -44,7 +44,7 @@ public class QuestionnairesFrequenciesBo implements Serializable {
   private String id;
 
   @Column(name = "questionnaires_id")
-  private Integer questionnairesId;
+  private String questionnairesId;
 
   @Column(name = "frequency_date")
   private String frequencyDate;
@@ -90,7 +90,7 @@ public class QuestionnairesFrequenciesBo implements Serializable {
     return isStudyLifeTime;
   }
 
-  public Integer getQuestionnairesId() {
+  public String getQuestionnairesId() {
     return questionnairesId;
   }
 
@@ -114,7 +114,7 @@ public class QuestionnairesFrequenciesBo implements Serializable {
     this.isStudyLifeTime = isStudyLifeTime;
   }
 
-  public void setQuestionnairesId(Integer questionnairesId) {
+  public void setQuestionnairesId(String questionnairesId) {
     this.questionnairesId = questionnairesId;
   }
 

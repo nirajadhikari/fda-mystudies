@@ -113,7 +113,7 @@ public class StudySequenceBo implements Serializable {
   private boolean studyExcQuestionnaries = false;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Id
   @GeneratedValue(generator = "system-uuid")
@@ -121,7 +121,7 @@ public class StudySequenceBo implements Serializable {
   @Column(name = "study_sequence_id", updatable = false, nullable = false)
   private String studySequenceId;
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -257,7 +257,7 @@ public class StudySequenceBo implements Serializable {
     this.studyExcQuestionnaries = studyExcQuestionnaries;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

@@ -43,7 +43,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "frequency_end_date")
   private String frequencyEndDate;
@@ -80,7 +80,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
     // Do nothing
   }
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return this.activeTaskId;
   }
 
@@ -104,7 +104,7 @@ public class ActiveTaskCustomScheduleBo implements Serializable {
     return used;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
+  public void setActiveTaskId(String activeTaskId) {
     this.activeTaskId = activeTaskId;
   }
 

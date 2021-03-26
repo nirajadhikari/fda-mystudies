@@ -74,7 +74,7 @@ public class EligibilityTestBo implements Serializable {
   private Boolean active = true;
 
   @Column(name = "eligibility_id")
-  private Integer eligibilityId;
+  private String eligibilityId;
 
   @Id
   @GeneratedValue(generator = "system-uuid")
@@ -113,7 +113,7 @@ public class EligibilityTestBo implements Serializable {
     return active;
   }
 
-  public Integer getEligibilityId() {
+  public String getEligibilityId() {
     return eligibilityId;
   }
 
@@ -161,7 +161,7 @@ public class EligibilityTestBo implements Serializable {
     this.active = active;
   }
 
-  public void setEligibilityId(Integer eligibilityId) {
+  public void setEligibilityId(String eligibilityId) {
     this.eligibilityId = eligibilityId;
   }
 

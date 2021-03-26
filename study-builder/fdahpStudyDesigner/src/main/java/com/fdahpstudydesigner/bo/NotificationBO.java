@@ -49,7 +49,7 @@ public class NotificationBO implements Serializable {
   @Transient private String actionPage;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "is_anchor_date", length = 1)
   private boolean anchorDate = false;
@@ -114,7 +114,7 @@ public class NotificationBO implements Serializable {
   private String scheduleTime;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "x_days")
   private Integer xDays;
@@ -129,7 +129,7 @@ public class NotificationBO implements Serializable {
     return actionPage;
   }
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return activeTaskId;
   }
 
@@ -193,7 +193,7 @@ public class NotificationBO implements Serializable {
     return scheduleTime;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -225,7 +225,7 @@ public class NotificationBO implements Serializable {
     this.actionPage = actionPage;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
+  public void setActiveTaskId(String activeTaskId) {
     this.activeTaskId = activeTaskId;
   }
 
@@ -317,7 +317,7 @@ public class NotificationBO implements Serializable {
     this.scheduleTimestamp = scheduleTimestamp;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

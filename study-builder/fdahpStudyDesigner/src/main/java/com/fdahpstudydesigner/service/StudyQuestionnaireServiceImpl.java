@@ -165,7 +165,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String deletQuestionnaire(
-      Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId) {
+      String studyId, String questionnaireId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - deletQuestionnaire - Starts");
     return studyQuestionnaireDAO.deleteQuestuionnaireInfo(
         studyId, questionnaireId, sessionObject, customStudyId);
@@ -179,10 +179,10 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public InstructionsBo getInstructionsBo(
-      Integer instructionId,
+      String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId) {
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getInstructionsBo - Starts");
     InstructionsBo instructionsBo = null;
     try {
@@ -197,7 +197,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId) {
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireById - Starts");
     QuestionnaireBo questionnaireBo = null;
     try {
@@ -298,7 +298,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo) {
+      String questionnaireId, Integer sequenceNo) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnairesStepsList - Starts");
     List<QuestionnairesStepsBo> questionnairesStepsList = null;
     try {
@@ -317,7 +317,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
       String stepType,
       String questionnaireShortTitle,
       String customStudyId,
-      Integer questionnaireId) {
+      String questionnaireId) {
     logger.info("StudyQuestionnaireServiceImpl - getQuestionnaireStep - Starts");
     QuestionnairesStepsBo questionnairesStepsBo = null;
     try {

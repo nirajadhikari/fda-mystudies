@@ -76,7 +76,7 @@ public class EligibilityBo implements Serializable {
   private String modifiedOn;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   public String getActionType() {
     return actionType;
@@ -114,7 +114,7 @@ public class EligibilityBo implements Serializable {
     return modifiedOn;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -154,7 +154,7 @@ public class EligibilityBo implements Serializable {
     this.modifiedOn = modifiedOn;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 }

@@ -40,7 +40,7 @@ public class ActiveTaskFrequencyBo implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "frequency_date")
   private String frequencyDate;
@@ -74,7 +74,7 @@ public class ActiveTaskFrequencyBo implements Serializable {
 
   public ActiveTaskFrequencyBo() {}
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return activeTaskId;
   }
 
@@ -98,8 +98,8 @@ public class ActiveTaskFrequencyBo implements Serializable {
     return isStudyLifeTime;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
-    this.activeTaskId = activeTaskId;
+  public void setActiveTaskId(String string) {
+    this.activeTaskId = string;
   }
 
   public void setFrequencyDate(String frequencyDate) {

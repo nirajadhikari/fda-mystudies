@@ -50,7 +50,7 @@ public class UserPasswordHistory {
   private String passwordHistoryId;
 
   @Column(name = "user_id")
-  private Integer userId;
+  private String userId;
 
   @Column(name = "password")
   private String userPassword;
@@ -63,7 +63,7 @@ public class UserPasswordHistory {
     return passwordHistoryId;
   }
 
-  public Integer getUserId() {
+  public String getUserId() {
     return userId;
   }
 
@@ -79,7 +79,7 @@ public class UserPasswordHistory {
     this.passwordHistoryId = passwordHistoryId;
   }
 
-  public void setUserId(Integer userId) {
+  public void setUserId(String userId) {
     this.userId = userId;
   }
 

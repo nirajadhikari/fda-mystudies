@@ -77,20 +77,20 @@ public interface StudyQuestionnaireService {
       String customStudyId);
 
   public String deletQuestionnaire(
-      Integer studyId, Integer questionnaireId, SessionObject sessionObject, String customStudyId);
+      String studyId, String questionnaireId, SessionObject sessionObject, String customStudyId);
 
   public List<HealthKitKeysInfo> getHeanlthKitKeyInfoList();
 
   public InstructionsBo getInstructionsBo(
-      Integer instructionId,
+      String instructionId,
       String questionnaireShortTitle,
       String customStudyId,
       String questionnaireId);
 
-  public QuestionnaireBo getQuestionnaireById(Integer questionnaireId, String customStudyId);
+  public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(
-      Integer questionnaireId, Integer sequenceNo);
+      String questionnaireId, Integer sequenceNo);
 
   public QuestionnairesStepsBo getQuestionnaireStep(
       Integer stepId,
