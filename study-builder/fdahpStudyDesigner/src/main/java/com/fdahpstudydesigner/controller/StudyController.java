@@ -623,7 +623,7 @@ public class StudyController {
         if (StringUtils.isNotEmpty(comprehensionQuestionId) && StringUtils.isNotEmpty(studyId)) {
           message =
               studyService.deleteComprehensionTestQuestion(
-                  Integer.valueOf(comprehensionQuestionId), studyId, sesObj);
+                  comprehensionQuestionId, studyId, sesObj);
         }
       }
       jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
@@ -726,10 +726,7 @@ public class StudyController {
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         message =
             studyService.deleteEligibilityTestQusAnsById(
-                Integer.parseInt(eligibilityTestId),
-                Integer.parseInt(studyId),
-                sesObj,
-                customStudyId);
+                eligibilityTestId, studyId, sesObj, customStudyId);
         if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
           testBos = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityId);
           if ((testBos != null) && !testBos.isEmpty()) {
