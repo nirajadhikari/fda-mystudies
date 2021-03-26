@@ -166,5 +166,5 @@ public interface StudyQuestionnaireDAO {
 
   public QuestionnaireBo getQuestionnaireById(String questionnaireId);
 
-  public QuestionsBo getQuestionById(Integer questionId);
+  public QuestionsBo getQuestionById(String questionId);
 }

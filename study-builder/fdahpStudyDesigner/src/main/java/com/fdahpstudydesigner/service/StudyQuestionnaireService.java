@@ -108,9 +108,9 @@ public interface StudyQuestionnaireService {
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 
-  public Boolean isAnchorDateExistsForStudy(Integer studyId, String customStudyId);
+  public Boolean isAnchorDateExistsForStudy(String studyId, String customStudyId);
 
-  public Boolean isQuestionnairesCompleted(Integer studyId);
+  public Boolean isQuestionnairesCompleted(String studyId);
 
   public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber, int newOrderNumber);
 

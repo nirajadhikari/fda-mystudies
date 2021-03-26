@@ -63,7 +63,7 @@ public class UsersDAOImpl implements UsersDAO {
 
   @Override
   public String activateOrDeactivateUser(
-      int userId, int userStatus, int loginUser, SessionObject userSession) {
+      String userId, int userStatus, int loginUser, SessionObject userSession) {
     logger.info("UsersDAOImpl - activateOrDeactivateUser() - Starts");
     String msg = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -498,7 +498,7 @@ public class UsersDAOImpl implements UsersDAO {
   }
 
   @Override
-  public Integer getUserPermissionByUserId(Integer sessionUserId) {
+  public Integer getUserPermissionByUserId(String sessionUserId) {
     logger.info("UsersDAOImpl - getUserPermissionByUserId() - Starts");
     Session session = null;
     Integer userId = null;

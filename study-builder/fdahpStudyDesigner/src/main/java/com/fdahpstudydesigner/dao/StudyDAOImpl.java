@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -6457,7 +6458,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public Boolean isAnchorDateExistForEnrollmentDraftStudy(Integer studyId, String customStudyId) {
+  public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId) {
     logger.info("StudyDAOImpl - isAnchorDateExistForEnrollmentDraftStudy - Starts");
     Session session = null;
     Boolean isExist = false;
@@ -6734,7 +6735,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public StudyPermissionBO getStudyPermissionBO(int studyId, int userId) {
+  public StudyPermissionBO getStudyPermissionBO(String studyId, String userId) {
     logger.info("StudyDAOImpl - getStudyPermissionBO() - Starts");
     Session session = null;
     StudyPermissionBO studyPermissionBO = null;
@@ -6744,8 +6745,8 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       searchQuery = "From StudyPermissionBO WHERE studyId=:studyId and userId=:userId ";
       query = session.createQuery(searchQuery);
-      query.setInteger("studyId", studyId);
-      query.setInteger("userId", userId);
+      query.setString("studyId", studyId);
+      query.setString("userId", userId);
       studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getStudyPermissionBO() - ERROR", e);
