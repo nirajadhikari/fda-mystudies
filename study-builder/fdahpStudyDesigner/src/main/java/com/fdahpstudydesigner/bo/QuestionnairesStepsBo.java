@@ -80,7 +80,7 @@ public class QuestionnairesStepsBo implements Serializable {
   private String createdOn;
 
   @Column(name = "destination_step")
-  private Integer destinationStep;
+  private String destinationStep;
 
   @Transient private SortedMap<Integer, QuestionnaireStepBean> formQuestionMap = new TreeMap<>();
 
@@ -147,7 +147,7 @@ public class QuestionnairesStepsBo implements Serializable {
     return createdOn;
   }
 
-  public Integer getDestinationStep() {
+  public String getDestinationStep() {
     return destinationStep;
   }
 
@@ -239,8 +239,8 @@ public class QuestionnairesStepsBo implements Serializable {
     this.createdOn = createdOn;
   }
 
-  public void setDestinationStep(Integer destinationStep) {
-    this.destinationStep = destinationStep;
+  public void setDestinationStep(String desId) {
+    this.destinationStep = desId;
   }
 
   public void setFormQuestionMap(SortedMap<Integer, QuestionnaireStepBean> formQuestionMap) {

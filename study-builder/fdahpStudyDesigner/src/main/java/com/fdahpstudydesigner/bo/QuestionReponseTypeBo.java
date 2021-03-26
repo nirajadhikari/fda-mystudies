@@ -169,7 +169,7 @@ public class QuestionReponseTypeBo implements Serializable {
   private String otherExclusive;
 
   @Column(name = "other_destination_step_id")
-  private Integer otherDestinationStepId;
+  private String otherDestinationStepId;
 
   @Column(name = "other_description")
   private String otherDescription;
@@ -503,11 +503,11 @@ public class QuestionReponseTypeBo implements Serializable {
     this.otherExclusive = otherExclusive;
   }
 
-  public Integer getOtherDestinationStepId() {
+  public String getOtherDestinationStepId() {
     return otherDestinationStepId;
   }
 
-  public void setOtherDestinationStepId(Integer otherDestinationStepId) {
+  public void setOtherDestinationStepId(String otherDestinationStepId) {
     this.otherDestinationStepId = otherDestinationStepId;
   }
 

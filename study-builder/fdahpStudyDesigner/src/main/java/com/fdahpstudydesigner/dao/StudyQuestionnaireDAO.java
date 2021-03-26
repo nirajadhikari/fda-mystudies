@@ -67,7 +67,7 @@ public interface StudyQuestionnaireDAO {
 
   public String deleteFromStepQuestion(
       Integer formId,
-      Integer questionId,
+      String questionId,
       SessionObject sessionObject,
       String customStudyId,
       AuditLogEventRequest auditRequest);
@@ -91,7 +91,7 @@ public interface StudyQuestionnaireDAO {
       String questionnaireId);
 
   public List<QuestionConditionBranchBo> getQuestionConditionalBranchingLogic(
-      Session session, Integer questionId);
+      Session session, String questionId);
 
   public QuestionnaireBo getQuestionnaireById(String questionnaireId, String customStudyId);
 
@@ -159,7 +159,7 @@ public interface StudyQuestionnaireDAO {
       String questionnaireId,
       SessionObject sessionObject,
       String studyId,
-      Integer stepId,
+      String stepId,
       String questionId,
       String stepType,
       boolean isChange);

@@ -54,7 +54,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
   private String description;
 
   @Column(name = "destination_step_id")
-  private Integer destinationStepId;
+  private String destinationStepId;
 
   @Column(name = "detail")
   private String detail;
@@ -100,7 +100,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
     return description;
   }
 
-  public Integer getDestinationStepId() {
+  public String getDestinationStepId() {
     return destinationStepId;
   }
 
@@ -156,7 +156,7 @@ public class QuestionResponseSubTypeBo implements Serializable {
     this.description = description;
   }
 
-  public void setDestinationStepId(Integer destinationStepId) {
+  public void setDestinationStepId(String destinationStepId) {
     this.destinationStepId = destinationStepId;
   }
 
