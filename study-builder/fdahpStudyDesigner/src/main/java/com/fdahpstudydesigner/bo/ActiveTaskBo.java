@@ -90,7 +90,7 @@ public class ActiveTaskBo implements Serializable {
   @Transient private String buttonText;
 
   @Column(name = "created_by")
-  private Integer createdBy;
+  private String createdBy;
 
   @Column(name = "created_date")
   private String createdDate;
@@ -130,7 +130,7 @@ public class ActiveTaskBo implements Serializable {
   private Integer live = 0;
 
   @Column(name = "modified_by")
-  private Integer modifiedBy;
+  private String modifiedBy;
 
   @Column(name = "modified_date")
   private String modifiedDate;
@@ -209,7 +209,7 @@ public class ActiveTaskBo implements Serializable {
     return buttonText;
   }
 
-  public Integer getCreatedBy() {
+  public String getCreatedBy() {
     return createdBy;
   }
 
@@ -261,7 +261,7 @@ public class ActiveTaskBo implements Serializable {
     return live;
   }
 
-  public Integer getModifiedBy() {
+  public String getModifiedBy() {
     return modifiedBy;
   }
 
@@ -374,7 +374,7 @@ public class ActiveTaskBo implements Serializable {
     this.buttonText = buttonText;
   }
 
-  public void setCreatedBy(Integer createdBy) {
+  public void setCreatedBy(String createdBy) {
     this.createdBy = createdBy;
   }
 
@@ -426,7 +426,7 @@ public class ActiveTaskBo implements Serializable {
     this.live = live;
   }
 
-  public void setModifiedBy(Integer modifiedBy) {
+  public void setModifiedBy(String modifiedBy) {
     this.modifiedBy = modifiedBy;
   }
 

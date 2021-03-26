@@ -28,7 +28,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_ACTIVE_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_ACTIVE_TASK_SECTION_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_NEW_ACTIVE_TASK_CREATED;
 import static com.fdahpstudydesigner.util.FdahpStudyDesignerConstants.ADD;
-
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
@@ -346,7 +345,7 @@ public class StudyActiveTasksController {
           map.addAttribute("_S", sessionStudyCount);
           for (ActiveTaskListBo activeTaskListBo : activeTaskListBos) {
             if (StringUtils.isNotEmpty(activeTaskListBo.getTaskName())
-                && (activeTaskListBo.getActiveTaskListId() == Integer.parseInt(typeOfActiveTask))) {
+                && (activeTaskListBo.getActiveTaskListId().equals(typeOfActiveTask))) {
               switch (activeTaskListBo.getTaskName()) {
                 case FdahpStudyDesignerConstants.FETAL_KICK_COUNTER:
                   mav = new ModelAndView("viewFetalStudyActiveTask", map);
@@ -450,7 +449,7 @@ public class StudyActiveTasksController {
     ActiveTaskBo addActiveTaskBo = null;
     List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
     String buttonText = "";
-    Integer activeTaskInfoId = 0;
+    String activeTaskInfoId = null;
     String currentPage = null;
     String customStudyId = "";
     ModelMap map = new ModelMap();

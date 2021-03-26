@@ -42,7 +42,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURCE_SECTION_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SAVED_IN_DRAFT_STATE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -743,9 +742,7 @@ public class StudyController {
                 sesObj,
                 customStudyId);
         if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
-          testBos =
-              studyService.viewEligibilityTestQusAnsByEligibilityId(
-                  Integer.parseInt(eligibilityId));
+          testBos = studyService.viewEligibilityTestQusAnsByEligibilityId(eligibilityId);
           if ((testBos != null) && !testBos.isEmpty()) {
             eligibilityTestJsonArray = new JSONArray(mapper.writeValueAsString(testBos));
           }
