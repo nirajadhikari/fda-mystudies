@@ -58,7 +58,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String checkFromQuestionShortTitle(
-      Integer questionnaireId,
+      String questionnaireId,
       String shortTitle,
       String questionnaireShortTitle,
       String customStudyId) {
@@ -68,7 +68,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public String checkQuestionnaireResponseTypeValidation(Integer studyId, String customStudyId) {
+  public String checkQuestionnaireResponseTypeValidation(String studyId, String customStudyId) {
     logger.info(
         "StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
     return studyQuestionnaireDAO.checkQuestionnaireResponseTypeValidation(studyId, customStudyId);
@@ -76,7 +76,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String checkQuestionnaireShortTitle(
-      Integer studyId, String shortTitle, String customStudyId) {
+      String studyId, String shortTitle, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - checkQuestionnaireShortTitle() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -91,7 +91,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String checkQuestionnaireStepShortTitle(
-      Integer questionnaireId,
+      String questionnaireId,
       String stepType,
       String shortTitle,
       String questionnaireShortTitle,
@@ -110,14 +110,14 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public String checkStatShortTitle(Integer studyId, String shortTitle, String customStudyId) {
+  public String checkStatShortTitle(String studyId, String shortTitle, String customStudyId) {
     logger.info("StudyQuestionnaireServiceImpl - checkStatShortTitle - Starts");
     return studyQuestionnaireDAO.checkStatShortTitle(studyId, shortTitle, customStudyId);
   }
 
   @Override
   public QuestionnaireBo copyStudyQuestionnaireBo(
-      Integer questionnaireId, String customStudyId, SessionObject sessionObject) {
+      String questionnaireId, String customStudyId, SessionObject sessionObject) {
     logger.info("StudyQuestionnaireServiceImpl - copyStudyQuestionnaireBo - Starts");
     return studyQuestionnaireDAO.copyStudyQuestionnaireBo(
         questionnaireId, customStudyId, sessionObject);
@@ -471,7 +471,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public String reOrderFormStepQuestions(Integer formId, int oldOrderNumber, int newOrderNumber) {
+  public String reOrderFormStepQuestions(String formId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyQuestionnaireServiceImpl - reOrderFormStepQuestions - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -486,7 +486,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
 
   @Override
   public String reOrderQuestionnaireSteps(
-      Integer questionnaireId, int oldOrderNumber, int newOrderNumber) {
+      String questionnaireId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyQuestionnaireServiceImpl - reOrderQuestionnaireSteps - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -1030,7 +1030,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public String validateLineChartSchedule(Integer questionnaireId, String frequency) {
+  public String validateLineChartSchedule(String questionnaireId, String frequency) {
     logger.info(
         "StudyQuestionnaireServiceImpl - checkQuestionnaireResponseTypeValidation - Starts");
     return studyQuestionnaireDAO.validateLineChartSchedule(questionnaireId, frequency);
@@ -1053,7 +1053,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
   }
 
   @Override
-  public String validateRepetableFormQuestionStats(Integer formId) {
+  public String validateRepetableFormQuestionStats(String formId) {
     logger.info("StudyQuestionnaireServiceImpl - validateRepetableFormQuestionStats - Starts");
     return studyQuestionnaireDAO.validateRepetableFormQuestionStats(formId);
   }
