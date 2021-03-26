@@ -47,7 +47,7 @@ public class AnchorDateTypeBo implements Serializable {
   private String customStudyId;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "name")
   private String name;
@@ -75,11 +75,11 @@ public class AnchorDateTypeBo implements Serializable {
     this.customStudyId = customStudyId;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

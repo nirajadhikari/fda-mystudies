@@ -120,7 +120,7 @@ public class ConsentBo implements Serializable {
   private String shortDescription;
 
   @Column(name = "study_id")
-  private Integer studyId;
+  private String studyId;
 
   @Column(name = "tagline_description")
   private String taglineDescription;
@@ -228,7 +228,7 @@ public class ConsentBo implements Serializable {
     return shortDescription;
   }
 
-  public Integer getStudyId() {
+  public String getStudyId() {
     return studyId;
   }
 
@@ -344,7 +344,7 @@ public class ConsentBo implements Serializable {
     this.shortDescription = shortDescription;
   }
 
-  public void setStudyId(Integer studyId) {
+  public void setStudyId(String studyId) {
     this.studyId = studyId;
   }
 

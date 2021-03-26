@@ -38,7 +38,7 @@ public class ComprehensionTestResponseBo implements Serializable {
   private static final long serialVersionUID = 7739882770594873383L;
 
   @Column(name = "comprehension_test_question_id")
-  private Integer comprehensionTestQuestionId;
+  private String comprehensionTestQuestionId;
 
   @Column(name = "correct_answer")
   private Boolean correctAnswer;
@@ -52,7 +52,7 @@ public class ComprehensionTestResponseBo implements Serializable {
   @Column(name = "response_option")
   private String responseOption;
 
-  public Integer getComprehensionTestQuestionId() {
+  public String getComprehensionTestQuestionId() {
     return comprehensionTestQuestionId;
   }
 
@@ -68,7 +68,7 @@ public class ComprehensionTestResponseBo implements Serializable {
     return responseOption;
   }
 
-  public void setComprehensionTestQuestionId(Integer comprehensionTestQuestionId) {
+  public void setComprehensionTestQuestionId(String comprehensionTestQuestionId) {
     this.comprehensionTestQuestionId = comprehensionTestQuestionId;
   }
 
