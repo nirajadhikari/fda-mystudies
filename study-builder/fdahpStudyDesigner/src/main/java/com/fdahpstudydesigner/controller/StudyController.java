@@ -670,9 +670,7 @@ public class StudyController {
                     .getSession()
                     .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
         if (!consentInfoId.isEmpty() && !studyId.isEmpty()) {
-          message =
-              studyService.deleteConsentInfo(
-                  Integer.valueOf(consentInfoId), Integer.valueOf(studyId), sesObj, customStudyId);
+          message = studyService.deleteConsentInfo(consentInfoId, studyId, sesObj, customStudyId);
         }
       }
       jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
@@ -3860,7 +3858,7 @@ public class StudyController {
                     : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
           }
           if (StringUtils.isNotEmpty(studyId)) {
-            StudyBo studyBo = studyService.getStudyById(studyId, 0);
+            StudyBo studyBo = studyService.getStudyById(studyId, null);
             if (studyBo != null) {
               notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
               notificationBO.setStudyId(studyId);

@@ -5209,7 +5209,7 @@ public class StudyDAOImpl implements StudyDAO {
                   // for other type , update the destination in questionresponsetype table
                   /** start * */
                   List<Integer> sequenceTypeList = new ArrayList<>();
-                  List<Integer> destinationResTypeList = new ArrayList<>();
+                  List<String> destinationResTypeList = new ArrayList<>();
                   if ((existingQuestionResponseTypeList != null)
                       && !existingQuestionResponseTypeList.isEmpty()) {
                     for (QuestionReponseTypeBo questionResponseTypeBo :
@@ -5238,7 +5238,7 @@ public class StudyDAOImpl implements StudyDAO {
                   }
                   if ((sequenceTypeList != null) && !sequenceTypeList.isEmpty()) {
                     for (int i = 0; i < sequenceTypeList.size(); i++) {
-                      Integer desId = null;
+                      String desId = null;
                       if (sequenceTypeList.get(i) == null) {
                         desId = null;
                       } else if (sequenceTypeList.get(i).equals(-1)) {
