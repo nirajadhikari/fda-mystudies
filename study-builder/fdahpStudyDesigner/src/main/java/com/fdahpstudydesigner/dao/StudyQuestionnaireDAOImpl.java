@@ -969,7 +969,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @Override
   public String deleteFromStepQuestion(
-      Integer formId,
+      String formId,
       String questionId,
       SessionObject sessionObject,
       String customStudyId,

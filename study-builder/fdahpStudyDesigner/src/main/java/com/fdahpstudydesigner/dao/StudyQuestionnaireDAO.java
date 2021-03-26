@@ -66,7 +66,7 @@ public interface StudyQuestionnaireDAO {
       Integer questionnaireId, String customStudyId, SessionObject sessionObject);
 
   public String deleteFromStepQuestion(
-      Integer formId,
+      String formId,
       String questionId,
       SessionObject sessionObject,
       String customStudyId,

@@ -2726,8 +2726,7 @@ public class StudyController {
         resourceList = studyService.resourcesWithAnchorDate(Integer.parseInt(studyId));
         if ((resourceList != null) && !resourceList.isEmpty()) {
           isAnchorDateExistsForStudy =
-              studyQuestionnaireService.isAnchorDateExistsForStudy(
-                  Integer.parseInt(studyId), customStudyId);
+              studyQuestionnaireService.isAnchorDateExistsForStudy(studyId, customStudyId);
           if (isAnchorDateExistsForStudy) {
             message = FdahpStudyDesignerConstants.SUCCESS;
           }
@@ -3694,7 +3693,7 @@ public class StudyController {
                   eligibilityTestBo, studyId, sesObj, customStudyId);
         }
         map.addAttribute("_S", sessionStudyCount);
-        if (result > 0) {
+        if (StringUtils.isNotEmpty(result)) {
           if ((eligibilityTestBo != null)
               && (FdahpStudyDesignerConstants.ACTION_TYPE_SAVE)
                   .equals(eligibilityTestBo.getType())) {

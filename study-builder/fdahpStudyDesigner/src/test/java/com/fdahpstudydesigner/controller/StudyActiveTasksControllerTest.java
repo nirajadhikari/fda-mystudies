@@ -99,7 +99,7 @@ public class StudyActiveTasksControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     ActiveTaskBo activeTaskBo = new ActiveTaskBo();
-    activeTaskBo.setTaskTypeId(123);
+    activeTaskBo.setTaskTypeId("123");
     activeTaskBo.setStudyId("678578");
     activeTaskBo.setActiveTaskFrequenciesBo(null);
     activeTaskBo.setShortTitle("ActiveTaskShortTitle");
@@ -135,7 +135,7 @@ public class StudyActiveTasksControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     ActiveTaskBo activeTaskBo = new ActiveTaskBo();
-    activeTaskBo.setTaskTypeId(1);
+    activeTaskBo.setTaskTypeId("1");
     activeTaskBo.setStudyId("678574");
     activeTaskBo.setLive(1);
     activeTaskBo.setActiveTaskFrequenciesBo(null);
@@ -188,7 +188,7 @@ public class StudyActiveTasksControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     ActiveTaskBo activeTaskBo = new ActiveTaskBo();
-    activeTaskBo.setTaskTypeId(123);
+    activeTaskBo.setTaskTypeId("123");
     activeTaskBo.setStudyId("678574");
     activeTaskBo.setActiveTaskFrequenciesBo(null);
     activeTaskBo.setShortTitle("ActiveTaskShortTitle");

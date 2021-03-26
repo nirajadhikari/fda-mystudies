@@ -57,7 +57,7 @@ public interface StudyDAO {
       Integer questionId, Integer studyId, SessionObject sessionObject);
 
   public String deleteConsentInfo(
-      Integer consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId);
+      String consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId);
 
   public String deleteEligibilityTestQusAnsById(
       Integer eligibilityTestId,

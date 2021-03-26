@@ -200,11 +200,7 @@ public class StudyQuestionnaireController {
         if (!formId.isEmpty() && !questionId.isEmpty()) {
           message =
               studyQuestionnaireService.deleteFromStepQuestion(
-                  Integer.valueOf(formId),
-                  Integer.valueOf(questionId),
-                  sesObj,
-                  customStudyId,
-                  auditRequest);
+                  formId, questionId, sesObj, customStudyId, auditRequest);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
 
             Map<String, String> values = new HashMap<>();
@@ -215,8 +211,7 @@ public class StudyQuestionnaireController {
             }
             values.put(FORM_ID, stepShortTitle);
 
-            QuestionsBo questionBo =
-                studyQuestionnaireService.getQuestionById(Integer.valueOf(questionId));
+            QuestionsBo questionBo = studyQuestionnaireService.getQuestionById(questionId);
             if (questionBo != null) {
               values.put(STEP_ID, questionBo.getShortTitle());
             }
@@ -786,7 +781,7 @@ public class StudyQuestionnaireController {
           studyBo = studyService.getStudyById(studyId, sesObj.getUserId());
           boolean isExists =
               studyQuestionnaireService.isAnchorDateExistsForStudy(
-                  Integer.valueOf(studyId), studyBo.getCustomStudyId());
+                  studyId, studyBo.getCustomStudyId());
           map.addAttribute("isAnchorDate", isExists);
           map.addAttribute(FdahpStudyDesignerConstants.STUDY_BO, studyBo);
         }

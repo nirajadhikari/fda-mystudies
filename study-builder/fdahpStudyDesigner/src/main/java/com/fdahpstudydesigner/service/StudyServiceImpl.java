@@ -128,7 +128,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteConsentInfo(
-      Integer consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId) {
+      String consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
     String message = null;
     try {

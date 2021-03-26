@@ -294,7 +294,7 @@ public class StudyDAOImpl implements StudyDAO {
   @SuppressWarnings("unchecked")
   @Override
   public String deleteConsentInfo(
-      Integer consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId) {
+      String consentInfoId, Integer studyId, SessionObject sessionObject, String customStudyId) {
     logger.info("StudyDAOImpl - deleteConsentInfo() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -340,7 +340,7 @@ public class StudyDAOImpl implements StudyDAO {
       query = session.createQuery(deleteQuery);
       query.setString("userId", sessionObject.getUserId());
       query.setString("currentDateTime", FdahpStudyDesignerUtil.getCurrentDateTime());
-      query.setInteger("consentInfoId", consentInfoId);
+      query.setString("consentInfoId", consentInfoId);
       count = query.executeUpdate();
       if (count > 0) {
         message = FdahpStudyDesignerConstants.SUCCESS;
@@ -1980,19 +1980,19 @@ public class StudyDAOImpl implements StudyDAO {
             (StudyBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
-                    .setInteger("id", Integer.parseInt(studyId))
+                    .setString("id", studyId)
                     .uniqueResult();
         studySequenceBo =
             (StudySequenceBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                    .setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId))
+                    .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId)
                     .uniqueResult();
         permissionBO =
             (StudyPermissionBO)
                 session
                     .getNamedQuery("getStudyPermissionById")
-                    .setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId))
+                    .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId)
                     .setString("userId", userId)
                     .uniqueResult();
         if (studySequenceBo != null) {
@@ -2050,7 +2050,7 @@ public class StudyDAOImpl implements StudyDAO {
         query =
             session
                 .getNamedQuery("getEligibiltyByStudyId")
-                .setInteger(FdahpStudyDesignerConstants.STUDY_ID, Integer.parseInt(studyId));
+                .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId);
         eligibilityBo = (EligibilityBo) query.uniqueResult();
       }
     } catch (Exception e) {
@@ -3490,10 +3490,9 @@ public class StudyDAOImpl implements StudyDAO {
                     && !comprehensionTestResponseList.isEmpty()) {
                   for (ComprehensionTestResponseBo comprehensionTestResponseBo :
                       comprehensionTestResponseList) {
-                    if (comprehensionTestQuestionBo.getId().intValue()
-                        == comprehensionTestResponseBo
-                            .getComprehensionTestQuestionId()
-                            .intValue()) {
+                    if (comprehensionTestQuestionBo
+                        .getId()
+                        .equals(comprehensionTestResponseBo.getComprehensionTestQuestionId())) {
                       ComprehensionTestResponseBo newComprehensionTestResponseBo =
                           SerializationUtils.clone(comprehensionTestResponseBo);
                       newComprehensionTestResponseBo.setId(null);
@@ -4778,8 +4777,8 @@ public class StudyDAOImpl implements StudyDAO {
                   QuestionnaireBo newQuestionnaireBo = SerializationUtils.clone(questionnaireBo);
                   newQuestionnaireBo.setId(null);
                   newQuestionnaireBo.setStudyId(studyDreaftBo.getId());
-                  newQuestionnaireBo.setCreatedBy(0);
-                  newQuestionnaireBo.setModifiedBy(0);
+                  newQuestionnaireBo.setCreatedBy(null);
+                  newQuestionnaireBo.setModifiedBy(null);
                   newQuestionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
                   if (studyVersionBo == null) {
                     newQuestionnaireBo.setVersion(1.0f);
@@ -5537,10 +5536,9 @@ public class StudyDAOImpl implements StudyDAO {
                       && !comprehensionTestResponseList.isEmpty()) {
                     for (ComprehensionTestResponseBo comprehensionTestResponseBo :
                         comprehensionTestResponseList) {
-                      if (comprehensionTestQuestionBo.getId().intValue()
-                          == comprehensionTestResponseBo
-                              .getComprehensionTestQuestionId()
-                              .intValue()) {
+                      if (comprehensionTestQuestionBo
+                          .getId()
+                          .equals(comprehensionTestResponseBo.getComprehensionTestQuestionId())) {
                         ComprehensionTestResponseBo newComprehensionTestResponseBo =
                             SerializationUtils.clone(comprehensionTestResponseBo);
                         newComprehensionTestResponseBo.setId(null);
@@ -6511,7 +6509,7 @@ public class StudyDAOImpl implements StudyDAO {
                       .setString(
                           "enrollmentDate", FdahpStudyDesignerConstants.ANCHOR_TYPE_ENROLLMENTDATE)
                       .setString("customStudyId", customStudyId)
-                      .setInteger("studyId", studyId)
+                      .setString("studyId", studyId)
                       .uniqueResult();
           if ((sub1Count != null) && (sub1Count.intValue() > 0)) {
             isExist = true;

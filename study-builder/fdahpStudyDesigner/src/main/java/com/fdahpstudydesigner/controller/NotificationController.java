@@ -370,7 +370,7 @@ public class NotificationController {
        * Passing 0 in below param as notifications are independent from
        * study and empty string to define it is as global notification
        */
-      notificationList = notificationService.getNotificationList(0, "");
+      notificationList = notificationService.getNotificationList(null, "");
       for (NotificationBO notification : notificationList) {
         if (!notification.isNotificationSent()
             && notification
