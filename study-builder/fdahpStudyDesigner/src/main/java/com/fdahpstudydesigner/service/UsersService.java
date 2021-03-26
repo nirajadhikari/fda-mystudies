@@ -48,7 +48,7 @@ public interface UsersService {
       SessionObject userSession,
       AuditLogEventRequest auditRequest);
 
-  public String enforcePasswordChange(Integer userId, String email);
+  public String enforcePasswordChange(String userId, String email);
 
   public List<String> getActiveUserEmailIds();
 
@@ -60,7 +60,7 @@ public interface UsersService {
 
   public Integer getUserPermissionByUserId(String sessionUserId);
 
-  public RoleBO getUserRole(int roleId);
+  public RoleBO getUserRole(String roleId);
 
   public List<RoleBO> getUserRoleList();
 }
