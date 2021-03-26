@@ -96,7 +96,7 @@ public interface StudyService {
 
   public StudyIdBean getLiveVersion(String customStudyId);
 
-  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, Integer userId);
+  public List<StudyPageBo> getOverviewStudyPagesById(String studyId, String userId);
 
   public Map<String, List<ReferenceTablesBo>> getreferenceListByCategory();
 
@@ -106,11 +106,11 @@ public interface StudyService {
 
   public List<NotificationBO> getSavedNotification(Integer studyId);
 
-  public StudyBo getStudyById(String studyId, Integer userId);
+  public StudyBo getStudyById(String studyId, String userId);
 
   public EligibilityBo getStudyEligibiltyByStudyId(String studyId);
 
-  public List<StudyListBean> getStudyList(Integer userId);
+  public List<StudyListBean> getStudyList(String userId);
 
   public List<StudyListBean> getStudyListByUserId(Integer userId);
 
@@ -164,7 +164,7 @@ public interface StudyService {
 
   public Integer saveOrUpdateResource(ResourceBO resourceBO, SessionObject sesObj);
 
-  public String saveOrUpdateStudy(StudyBo studyBo, Integer userId, SessionObject sessionObject);
+  public String saveOrUpdateStudy(StudyBo studyBo, String userId, SessionObject sessionObject);
 
   public String saveOrUpdateStudyEligibilty(
       EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
