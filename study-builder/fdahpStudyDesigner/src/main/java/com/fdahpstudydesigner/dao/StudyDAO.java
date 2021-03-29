@@ -186,7 +186,7 @@ public interface StudyDAO {
   public String validateActivityComplete(String studyId, String action);
 
   public String validateEligibilityTestKey(
-      Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
+      String eligibilityTestId, String shortTitle, String eligibilityId);
 
   public String validateStudyAction(String studyId, String buttonText);
 
@@ -194,7 +194,7 @@ public interface StudyDAO {
 
   public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId);
 
-  public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
+  public EligibilityTestBo viewEligibilityTestQusAnsById(String eligibilityTestId);
 
   public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId);
 

@@ -557,7 +557,8 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility, int studyId) {
+  public String deleteResourceInfo(
+      String resourceInfoId, boolean resourceVisibility, String studyId) {
     logger.info("StudyDAOImpl - deleteResourceInfo() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -571,7 +572,7 @@ public class StudyDAOImpl implements StudyDAO {
       String searchQuery =
           "From ResourceBO RBO where RBO.studyId=:studyId"
               + " and RBO.status=1 order by RBO.sequenceNo asc";
-      resourceBOList = session.createQuery(searchQuery).setInteger("studyId", studyId).list();
+      resourceBOList = session.createQuery(searchQuery).setString("studyId", studyId).list();
       if ((resourceBOList != null) && !resourceBOList.isEmpty()) {
         boolean isValue = false;
         for (ResourceBO resourceBO : resourceBOList) {
@@ -6245,7 +6246,7 @@ public class StudyDAOImpl implements StudyDAO {
   @SuppressWarnings("unchecked")
   @Override
   public String validateEligibilityTestKey(
-      Integer eligibilityTestId, String shortTitle, Integer eligibilityId) {
+      String eligibilityTestId, String shortTitle, String eligibilityId) {
     logger.info("StudyDAOImpl - getStudyVersionInfo() - Starts");
     Session session = null;
     List<EligibilityTestBo> eligibilityTestBos;
@@ -6256,8 +6257,8 @@ public class StudyDAOImpl implements StudyDAO {
           session
               .getNamedQuery("EligibilityTestBo.validateShortTitle")
               .setString("shortTitle", shortTitle)
-              .setInteger("eligibilityTestId", eligibilityTestId)
-              .setInteger("eligibilityId", eligibilityId);
+              .setString("eligibilityTestId", eligibilityTestId)
+              .setString("eligibilityId", eligibilityId);
       eligibilityTestBos = query.list();
       if (eligibilityTestBos.isEmpty()) {
         result = FdahpStudyDesignerConstants.SUCCESS;
@@ -6370,7 +6371,7 @@ public class StudyDAOImpl implements StudyDAO {
           (EligibilityTestBo)
               session
                   .getNamedQuery("EligibilityTestBo.findById")
-                  .setInteger("eligibilityTestId", eligibilityTestId)
+                  .setString("eligibilityTestId", eligibilityTestId)
                   .uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - viewEligibilityTestQusAnsById - ERROR ", e);
