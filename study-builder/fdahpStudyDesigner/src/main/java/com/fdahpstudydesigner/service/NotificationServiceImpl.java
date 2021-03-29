@@ -63,7 +63,7 @@ public class NotificationServiceImpl implements NotificationService {
   }
 
   @Override
-  public NotificationBO getNotification(int notificationId) {
+  public NotificationBO getNotification(String notificationId) {
     logger.info("NotificationServiceImpl - getNotification - Starts");
     NotificationBO notificationBO = null;
     try {
@@ -101,7 +101,7 @@ public class NotificationServiceImpl implements NotificationService {
   }
 
   @Override
-  public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId) {
+  public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(String notificationId) {
     logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime() - Starts");
     List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
     try {

@@ -114,7 +114,7 @@ public class NotificationDAOImpl implements NotificationDAO {
   }
 
   @Override
-  public NotificationBO getNotification(int notificationId) {
+  public NotificationBO getNotification(String notificationId) {
     logger.info("NotificationDAOImpl - getNotification() - Starts");
     Session session = null;
     String queryString = null;
@@ -167,7 +167,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId) {
+  public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(String notificationId) {
     logger.info("NotificationDAOImpl - getNotificationHistoryListNoDateTime() - Starts");
     Session session = null;
     String queryString = null;

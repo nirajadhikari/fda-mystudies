@@ -33,9 +33,9 @@ public interface NotificationService {
   public String deleteNotification(
       int notificationIdForDelete, SessionObject sessionObject, String notificationType);
 
-  public NotificationBO getNotification(int notificationId);
+  public NotificationBO getNotification(String notificationId);
 
-  public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(int notificationId);
+  public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(String notificationId);
 
   public List<NotificationBO> getNotificationList(String studyId, String type);
 

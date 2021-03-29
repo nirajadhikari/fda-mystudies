@@ -13,7 +13,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -3070,7 +3069,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       query =
           session
               .getNamedQuery("getFromByIdAndSequenceNo")
-              .setInteger("formId", formId)
+              .setString("formId", formId)
               .setInteger("oldOrderNumber", oldOrderNumber);
       formMappingBo = (FormMappingBo) query.uniqueResult();
       if (formMappingBo != null) {
@@ -3083,7 +3082,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           query =
               session
                   .createQuery(updateQuery)
-                  .setInteger("formId", formId)
+                  .setString("formId", formId)
                   .setInteger("newOrderNumber", newOrderNumber)
                   .setInteger("oldOrderNumber", oldOrderNumber);
           count = query.executeUpdate();
@@ -3105,7 +3104,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           query =
               session
                   .createQuery(updateQuery)
-                  .setInteger("formId", formId)
+                  .setString("formId", formId)
                   .setInteger("newOrderNumber", newOrderNumber)
                   .setInteger("oldOrderNumber", oldOrderNumber);
           count = query.executeUpdate();
@@ -3246,7 +3245,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               session
                   .createSQLQuery(questionResponseQuery)
                   .setParameter("type", FdahpStudyDesignerConstants.QUESTION_STEP)
-                  .setInteger("questionnaireId", questionnaireId);
+                  .setString("questionnaireId", questionnaireId);
           query.executeUpdate();
 
           String questionConditionResponseQuery =
