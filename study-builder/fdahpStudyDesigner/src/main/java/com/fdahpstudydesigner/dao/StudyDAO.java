@@ -47,7 +47,7 @@ import org.hibernate.Transaction;
 
 public interface StudyDAO {
 
-  public String checkActiveTaskTypeValidation(Integer studyId);
+  public String checkActiveTaskTypeValidation(String studyId);
 
   public int comprehensionTestQuestionOrder(String studyId);
 
@@ -66,7 +66,8 @@ public interface StudyDAO {
 
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
-  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility, int studyId);
+  public String deleteResourceInfo(
+      String resourceInfoId, boolean resourceVisibility, String studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
@@ -92,7 +93,7 @@ public interface StudyDAO {
 
   public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
-  public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
+  public List<ConsentInfoBo> getConsentInfoList(String studyId);
 
   public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 
@@ -132,12 +133,12 @@ public interface StudyDAO {
       String customStudyId);
 
   public String reOrderComprehensionTestQuestion(
-      Integer studyId, int oldOrderNumber, int newOrderNumber);
+      String studyId, int oldOrderNumber, int newOrderNumber);
 
-  public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  public String reOrderConsentInfoList(String studyId, int oldOrderNumber, int newOrderNumber);
 
   public String reorderEligibilityTestQusAns(
-      Integer eligibilityId, int oldOrderNumber, int newOrderNumber, Integer studyId);
+      String eligibilityId, int oldOrderNumber, int newOrderNumber, String studyId);
 
   public String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber);
 
