@@ -177,7 +177,7 @@ public interface StudyService {
   public String validateActivityComplete(String studyId, String action);
 
   public String validateEligibilityTestKey(
-      String eligibilityTestId, String shortTitle, Integer eligibilityId);
+      String eligibilityTestId, String shortTitle, String eligibilityId);
 
   public String validateStudyAction(String studyId, String buttonText);
 
