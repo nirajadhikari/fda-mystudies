@@ -667,7 +667,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<ResourceBO> resourcesSaved(Integer studyId) {
+  public List<ResourceBO> resourcesSaved(String studyId) {
     logger.info("StudyServiceImpl - resourcesSaved() - Starts");
     List<ResourceBO> resourceBOList = null;
     try {
@@ -680,7 +680,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
+  public List<ResourceBO> resourcesWithAnchorDate(String studyId) {
     logger.info("StudyServiceImpl - resourcesWithAnchorDate() - Starts");
     List<ResourceBO> resourceList = null;
     try {
@@ -1303,7 +1303,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String validateEligibilityTestKey(
-      Integer eligibilityTestId, String shortTitle, Integer eligibilityId) {
+      String eligibilityTestId, String shortTitle, String eligibilityId) {
     logger.info("StudyServiceImpl - validateEligibilityTestKey - Starts");
     String message = FdahpStudyDesignerConstants.SUCCESS;
     try {
