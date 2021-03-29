@@ -1355,7 +1355,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId) {
+  public EligibilityTestBo viewEligibilityTestQusAnsById(String eligibilityTestId) {
     logger.info("StudyServiceImpl - viewEligibilityTestQusAnsById - Starts");
     EligibilityTestBo eligibilityTestBo = null;
     try {
@@ -1418,7 +1418,7 @@ public class StudyServiceImpl implements StudyService {
         }
         studyDetails.setStudyStatus(studyBo.getStatus());
         if (studyBo.getCategory() != null) {
-          studyCatagory = studyDAO.getStudyCategory(Integer.valueOf(studyBo.getCategory()));
+          studyCatagory = studyDAO.getStudyCategory(studyBo.getCategory());
         }
         if (StringUtils.isNotBlank(studyCatagory)) {
           studyDetails.setStudyCategory(studyCatagory);
