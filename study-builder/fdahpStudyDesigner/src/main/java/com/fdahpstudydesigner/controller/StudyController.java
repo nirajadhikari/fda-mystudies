@@ -4945,7 +4945,7 @@ public class StudyController {
                       .getAttribute(sessionStudyCount + "actionTypeForQuestionPage");
           request.getSession().removeAttribute(sessionStudyCount + "actionTypeForQuestionPage");
         }
-        if (eligibilityTestId.equals(0)) {
+        if (eligibilityTestId.equals("")) {
           eligibilityTestId =
               (String) request.getSession().getAttribute(sessionStudyCount + "eligibilityTestId");
           request.getSession().removeAttribute(sessionStudyCount + "eligibilityTestId");

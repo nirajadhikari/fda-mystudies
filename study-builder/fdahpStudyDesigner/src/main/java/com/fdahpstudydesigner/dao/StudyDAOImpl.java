@@ -5149,7 +5149,7 @@ public class StudyDAOImpl implements StudyDAO {
                     }
                   }
                   List<Integer> sequenceSubTypeList = new ArrayList<>();
-                  List<Integer> destinationResList = new ArrayList<>();
+                  List<String> destinationResList = new ArrayList<>();
                   if ((existingQuestionResponseSubTypeList != null)
                       && !existingQuestionResponseSubTypeList.isEmpty()) {
                     for (QuestionResponseSubTypeBo questionResponseSubTypeBo :
@@ -5178,7 +5178,7 @@ public class StudyDAOImpl implements StudyDAO {
                   }
                   if ((sequenceSubTypeList != null) && !sequenceSubTypeList.isEmpty()) {
                     for (int i = 0; i < sequenceSubTypeList.size(); i++) {
-                      Integer desId = null;
+                      String desId = null;
                       if (sequenceSubTypeList.get(i) == null) {
                         desId = null;
                       } else if (sequenceSubTypeList.get(i).equals(-1)) {
