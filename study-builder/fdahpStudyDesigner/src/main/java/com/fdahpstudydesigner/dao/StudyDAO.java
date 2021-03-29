@@ -140,16 +140,16 @@ public interface StudyDAO {
   public String reorderEligibilityTestQusAns(
       String eligibilityId, int oldOrderNumber, int newOrderNumber, String studyId);
 
-  public String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  public String reOrderResourceList(String studyId, int oldOrderNumber, int newOrderNumber);
 
   public boolean resetDraftStudyByCustomStudyId(
       String customStudyId, String action, SessionObject sesObj);
 
   public int resourceOrder(String studyId);
 
-  public List<ResourceBO> resourcesSaved(Integer studyId);
+  public List<ResourceBO> resourcesSaved(String studyId);
 
-  public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
+  public List<ResourceBO> resourcesWithAnchorDate(String studyId);
 
   public ConsentBo saveOrCompleteConsentReviewDetails(
       ConsentBo consentBo, SessionObject sesObj, String customStudyId);
@@ -210,7 +210,7 @@ public interface StudyDAO {
 
   public StudyBo getStudyByLatestVersion(String customStudyId);
 
-  public String getStudyCategory(Integer id);
+  public String getStudyCategory(String id);
 
   public Integer getEligibilityType(String studyId);
 

@@ -622,7 +622,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber) {
+  public String reOrderResourceList(String studyId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyServiceImpl - reOrderResourceList() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {

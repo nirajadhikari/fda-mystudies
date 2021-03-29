@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -1620,7 +1621,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
+  public List<ConsentInfoBo> getConsentInfoList(String studyId) {
     logger.info("StudyDAOImpl - getConsentInfoList() - Starts");
     List<ConsentInfoBo> consentInfoList = null;
     Session session = null;
@@ -1629,7 +1630,7 @@ public class StudyDAOImpl implements StudyDAO {
       String searchQuery =
           "From ConsentInfoBo CIB where CIB.studyId=:studyId and CIB.active=1 order by CIB.sequenceNo asc";
       query = session.createQuery(searchQuery);
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       consentInfoList = query.list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getConsentInfoList() - ERROR ", e);
@@ -2405,7 +2406,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @Override
   public String reOrderComprehensionTestQuestion(
-      Integer studyId, int oldOrderNumber, int newOrderNumber) {
+      String studyId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyDAOImpl - reOrderComprehensionTestQuestion() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -2490,7 +2491,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber, int newOrderNumber) {
+  public String reOrderConsentInfoList(String studyId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyDAOImpl - reOrderConsentInfoList() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -2548,7 +2549,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId)
+                      .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId)
                       .uniqueResult();
           if (studySequence != null) {
             studySequence.setConsentEduInfo(false);
@@ -2574,7 +2575,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @Override
   public String reorderEligibilityTestQusAns(
-      Integer eligibilityId, int oldOrderNumber, int newOrderNumber, Integer studyId) {
+      String eligibilityId, int oldOrderNumber, int newOrderNumber, String studyId) {
     logger.info("StudyDAOImpl - reorderEligibilityTestQusAns - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -2590,7 +2591,7 @@ public class StudyDAOImpl implements StudyDAO {
       hibQuery =
           session
               .getNamedQuery("EligibilityTestBo.findByEligibilityIdAndSequenceNo")
-              .setInteger("eligibilityId", eligibilityId)
+              .setString("eligibilityId", eligibilityId)
               .setInteger("sequenceNo", oldOrderNumber);
       eligibilityTest = (EligibilityTestBo) hibQuery.uniqueResult();
       if (eligibilityTest != null) {
@@ -2637,7 +2638,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId)
+                      .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId)
                       .uniqueResult();
           if ((studySequence != null) && studySequence.isEligibility()) {
             studySequence.setEligibility(false);
@@ -2661,7 +2662,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber) {
+  public String reOrderResourceList(String studyId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyDAOImpl - reOrderResourceList() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -2719,7 +2720,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(FdahpStudyDesignerConstants.STUDY_ID, studyId)
+                      .setString(FdahpStudyDesignerConstants.STUDY_ID, studyId)
                       .uniqueResult();
           if (studySequence != null) {
             studySequence.setMiscellaneousResources(false);
@@ -3600,7 +3601,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<ResourceBO> resourcesSaved(Integer studyId) {
+  public List<ResourceBO> resourcesSaved(String studyId) {
     logger.info("StudyDAOImpl - resourcesSaved() - Starts");
     List<ResourceBO> resourceBOList = null;
     Session session = null;
@@ -3609,7 +3610,7 @@ public class StudyDAOImpl implements StudyDAO {
       String searchQuery =
           "FROM ResourceBO RBO WHERE RBO.studyId=:studyId AND RBO.action=0 AND RBO.status=1 AND RBO.studyProtocol=0";
       query = session.createQuery(searchQuery);
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       resourceBOList = query.list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - resourcesSaved() - ERROR ", e);
@@ -3624,7 +3625,7 @@ public class StudyDAOImpl implements StudyDAO {
 
   @SuppressWarnings("unchecked")
   @Override
-  public List<ResourceBO> resourcesWithAnchorDate(Integer studyId) {
+  public List<ResourceBO> resourcesWithAnchorDate(String studyId) {
     logger.info("StudyDAOImpl - resourcesWithAnchorDate() - Starts");
     List<ResourceBO> resourceList = null;
     Session session = null;
@@ -3633,7 +3634,7 @@ public class StudyDAOImpl implements StudyDAO {
       String searchQuery =
           " FROM ResourceBO RBO WHERE RBO.studyId= :studyId AND RBO.resourceType = 1 AND RBO.status = 1 ";
       query = session.createQuery(searchQuery);
-      query.setInteger("studyId", studyId);
+      query.setString("studyId", studyId);
       resourceList = query.list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - resourcesWithAnchorDate() - ERROR ", e);
@@ -6780,7 +6781,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public String getStudyCategory(Integer id) {
+  public String getStudyCategory(String id) {
     logger.info("StudyDAOImpl - getStudyCategory() - Starts");
     Session session = null;
     String searchQuery = "";
@@ -6790,7 +6791,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       searchQuery = " SELECT r.value From ReferenceTablesBo r WHERE r.id=:id ";
       query = session.createQuery(searchQuery);
-      query.setInteger("id", id);
+      query.setString("id", id);
       studyCatagory = (String) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getStudyCategory() - ERROR", e);
