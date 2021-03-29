@@ -17,6 +17,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTIO
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.FORM_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -115,7 +116,7 @@ public class StudyQuestionnaireController {
         if (StringUtils.isNotEmpty(questionnaireId) && StringUtils.isNotEmpty(customStudyId)) {
           copyQuestionnaireBo =
               studyQuestionnaireService.copyStudyQuestionnaireBo(
-                  Integer.valueOf(questionnaireId), customStudyId, sesObj);
+                  questionnaireId, customStudyId, sesObj);
         }
         if (copyQuestionnaireBo != null) {
           request.getSession().setAttribute(sessionStudyCount + "actionType", "edit");
@@ -1490,7 +1491,7 @@ public class StudyQuestionnaireController {
           newOrderNumber = Integer.valueOf(newOrderNo);
           message =
               studyQuestionnaireService.reOrderFormStepQuestions(
-                  Integer.valueOf(formId), oldOrderNumber, newOrderNumber);
+                  formId, oldOrderNumber, newOrderNumber);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             String studyId =
                 (String)
@@ -1564,7 +1565,7 @@ public class StudyQuestionnaireController {
           newOrderNumber = Integer.valueOf(newOrderNo);
           message =
               studyQuestionnaireService.reOrderQuestionnaireSteps(
-                  Integer.valueOf(questionnaireId), oldOrderNumber, newOrderNumber);
+                  questionnaireId, oldOrderNumber, newOrderNumber);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireId);
             if (qTreeMap != null) {
@@ -2615,9 +2616,7 @@ public class StudyQuestionnaireController {
                 ? ""
                 : request.getParameter("frequency");
         if (!questionnaireId.isEmpty() && !frequency.isEmpty()) {
-          message =
-              studyQuestionnaireService.validateLineChartSchedule(
-                  Integer.valueOf(questionnaireId), frequency);
+          message = studyQuestionnaireService.validateLineChartSchedule(questionnaireId, frequency);
           if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
             qTreeMap = studyQuestionnaireService.getQuestionnaireStepList(questionnaireId);
             questionnaireJsonObject = new JSONObject(mapper.writeValueAsString(qTreeMap));
@@ -2686,7 +2685,7 @@ public class StudyQuestionnaireController {
         if (((studyId != null) && !studyId.isEmpty()) && !shortTitle.isEmpty()) {
           message =
               studyQuestionnaireService.checkQuestionnaireShortTitle(
-                  Integer.valueOf(studyId), shortTitle, customStudyId);
+                  studyId, shortTitle, customStudyId);
         }
       }
       jsonobject.put("message", message);
@@ -2750,11 +2749,7 @@ public class StudyQuestionnaireController {
         if (!questionnaireId.isEmpty() && !stepType.isEmpty() && !shortTitle.isEmpty()) {
           message =
               studyQuestionnaireService.checkQuestionnaireStepShortTitle(
-                  Integer.valueOf(questionnaireId),
-                  stepType,
-                  shortTitle,
-                  questionnaireShortTitle,
-                  customStudyId);
+                  questionnaireId, stepType, shortTitle, questionnaireShortTitle, customStudyId);
         }
       }
       jsonobject.put("message", message);
@@ -2811,10 +2806,7 @@ public class StudyQuestionnaireController {
         if (!questionnaireId.isEmpty() && !shortTitle.isEmpty()) {
           message =
               studyQuestionnaireService.checkFromQuestionShortTitle(
-                  Integer.valueOf(questionnaireId),
-                  shortTitle,
-                  questionnaireShortTitle,
-                  customStudyId);
+                  questionnaireId, shortTitle, questionnaireShortTitle, customStudyId);
         }
       }
       jsonobject.put("message", message);
@@ -2861,8 +2853,7 @@ public class StudyQuestionnaireController {
                 : request.getParameter("shortTitle");
         if (!studyId.isEmpty() && !shortTitle.isEmpty()) {
           message =
-              studyQuestionnaireService.checkStatShortTitle(
-                  Integer.valueOf(studyId), shortTitle, customStudyId);
+              studyQuestionnaireService.checkStatShortTitle(studyId, shortTitle, customStudyId);
         }
       }
       jsonobject.put("message", message);
@@ -2893,8 +2884,7 @@ public class StudyQuestionnaireController {
                 ? ""
                 : request.getParameter("formId");
         if (!formId.isEmpty()) {
-          message =
-              studyQuestionnaireService.validateRepetableFormQuestionStats(Integer.valueOf(formId));
+          message = studyQuestionnaireService.validateRepetableFormQuestionStats(formId);
         }
       }
       jsonobject.put("message", message);
