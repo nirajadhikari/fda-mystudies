@@ -498,10 +498,10 @@ public class UsersDAOImpl implements UsersDAO {
   }
 
   @Override
-  public Integer getUserPermissionByUserId(String sessionUserId) {
+  public String getUserPermissionByUserId(String sessionUserId) {
     logger.info("UsersDAOImpl - getUserPermissionByUserId() - Starts");
     Session session = null;
-    Integer userId = null;
+    String userId = null;
     Query query = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
@@ -513,7 +513,7 @@ public class UsersDAOImpl implements UsersDAO {
                       + "= (select up.permission_id from user_permissions up where "
                       + "up.permissions = 'ROLE_SUPERADMIN')) and u.user_id =:sessionUserId ")
               .setParameter("sessionUserId", sessionUserId);
-      userId = (Integer) query.uniqueResult();
+      userId = (String) query.uniqueResult();
     } catch (Exception e) {
       logger.error("UsersDAOImpl - getUserPermissionByUserId() - ERROR", e);
     }
@@ -522,14 +522,14 @@ public class UsersDAOImpl implements UsersDAO {
   }
 
   @Override
-  public RoleBO getUserRole(String roleId) {
+  public RoleBO getUserRole(Integer roleId) {
     logger.info("UsersDAOImpl - getUserRole() - Starts");
     Session session = null;
     RoleBO roleBO = null;
     Query query = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      query = session.getNamedQuery("getUserRoleByRoleId").setString("roleId", roleId);
+      query = session.getNamedQuery("getUserRoleByRoleId").setInteger("roleId", roleId);
       roleBO = (RoleBO) query.uniqueResult();
     } catch (Exception e) {
       logger.error("UsersDAOImpl - getUserRole() - ERROR", e);

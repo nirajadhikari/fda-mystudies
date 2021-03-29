@@ -24,6 +24,7 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.APP_LEVEL_NOTIFICATION_LIST_VIEWED;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
@@ -132,7 +133,7 @@ public class NotificationController {
         if (!"".equals(notificationId)) {
           // Fetching notification detail from notification table by
           // Id.
-          notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+          notificationBO = notificationService.getNotification((notificationId));
           // Fetching notification history of last sent detail from
           // notification table by Id.
           notificationHistoryNoDateTime =

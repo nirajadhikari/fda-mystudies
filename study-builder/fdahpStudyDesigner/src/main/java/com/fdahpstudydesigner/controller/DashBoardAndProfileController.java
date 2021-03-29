@@ -24,6 +24,7 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.ACCOUNT_DETAILS_VIEWED;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bo.RoleBO;
@@ -194,7 +195,7 @@ public class DashBoardAndProfileController {
     RoleBO roleBO = null;
     String sucMsg = "";
     String errMsg = "";
-    Integer userId = 0;
+    String userId = null;
     String accountManager = "";
     try {
       AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);

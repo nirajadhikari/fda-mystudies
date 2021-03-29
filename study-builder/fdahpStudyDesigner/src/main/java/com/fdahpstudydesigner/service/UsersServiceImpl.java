@@ -294,9 +294,9 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public Integer getUserPermissionByUserId(String sessionUserId) {
+  public String getUserPermissionByUserId(String sessionUserId) {
     logger.info("UsersServiceImpl - getUserPermissionByUserId() - Starts");
-    Integer userId = null;
+    String userId = null;
     try {
       userId = usersDAO.getUserPermissionByUserId(sessionUserId);
     } catch (Exception e) {
@@ -307,7 +307,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public RoleBO getUserRole(String roleId) {
+  public RoleBO getUserRole(Integer roleId) {
     logger.info("UsersServiceImpl - getUserRole() - Starts");
     RoleBO roleBO = null;
     try {
