@@ -66,7 +66,7 @@ public class StudyServiceImpl implements StudyService {
   private StudyDAO studyDAO;
 
   @Override
-  public String checkActiveTaskTypeValidation(Integer studyId) {
+  public String checkActiveTaskTypeValidation(String studyId) {
     logger.info("StudyServiceImpl - checkActiveTaskTypeValidation - Starts");
     return studyDAO.checkActiveTaskTypeValidation(studyId);
   }
@@ -170,7 +170,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String deleteResourceInfo(
-      String resourceInfoId, SessionObject sesObj, String customStudyId, int studyId) {
+      String resourceInfoId, SessionObject sesObj, String customStudyId, String studyId) {
     logger.info("StudyServiceImpl - deleteConsentInfo() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     ResourceBO resourceBO = null;
@@ -312,7 +312,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public List<ConsentInfoBo> getConsentInfoList(Integer studyId) {
+  public List<ConsentInfoBo> getConsentInfoList(String studyId) {
     logger.info("StudyServiceImpl - getConsentInfoList() - Starts");
     List<ConsentInfoBo> consentInfoList = null;
     try {
@@ -580,7 +580,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String reOrderComprehensionTestQuestion(
-      Integer studyId, int oldOrderNumber, int newOrderNumber) {
+      String studyId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyServiceImpl - reOrderComprehensionTestQuestion() - Starts");
     String message = FdahpStudyDesignerConstants.SUCCESS;
     try {
@@ -593,7 +593,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber, int newOrderNumber) {
+  public String reOrderConsentInfoList(String studyId, int oldOrderNumber, int newOrderNumber) {
     logger.info("StudyServiceImpl - reOrderConsentInfoList() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
@@ -607,7 +607,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String reorderEligibilityTestQusAns(
-      Integer eligibilityId, int oldOrderNumber, int newOrderNumber, Integer studyId) {
+      String eligibilityId, int oldOrderNumber, int newOrderNumber, String studyId) {
     logger.info("StudyServiceImpl - reorderEligibilityTestQusAns - Starts");
     String message = FdahpStudyDesignerConstants.SUCCESS;
     try {

@@ -30,6 +30,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_ACCOUNT_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_RECORD_DEACTIVATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_RECORD_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.EDITED_USER_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.UserIdAccessLevelInfo;
 import com.fdahpstudydesigner.bo.RoleBO;
@@ -306,7 +307,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public RoleBO getUserRole(int roleId) {
+  public RoleBO getUserRole(String roleId) {
     logger.info("UsersServiceImpl - getUserRole() - Starts");
     RoleBO roleBO = null;
     try {

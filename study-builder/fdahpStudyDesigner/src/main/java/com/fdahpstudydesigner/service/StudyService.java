@@ -46,7 +46,7 @@ import java.util.Map;
 
 public interface StudyService {
 
-  public String checkActiveTaskTypeValidation(Integer studyId);
+  public String checkActiveTaskTypeValidation(String studyId);
 
   public int comprehensionTestQuestionOrder(String studyId);
 
@@ -66,7 +66,7 @@ public interface StudyService {
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
   public String deleteResourceInfo(
-      String resourceInfoId, SessionObject sesObj, String customStudyId, int studyId);
+      String resourceInfoId, SessionObject sesObj, String customStudyId, String studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
@@ -87,7 +87,7 @@ public interface StudyService {
 
   public List<ConsentInfoBo> getConsentInfoDetailsListByStudyId(String studyId);
 
-  public List<ConsentInfoBo> getConsentInfoList(Integer studyId);
+  public List<ConsentInfoBo> getConsentInfoList(String studyId);
 
   public List<ConsentMasterInfoBo> getConsentMasterInfoList();
 
@@ -126,22 +126,22 @@ public interface StudyService {
       String studyId, String markCompleted, SessionObject sesObj, String customStudyId);
 
   public String reOrderComprehensionTestQuestion(
-      Integer studyId, int oldOrderNumber, int newOrderNumber);
+      String studyId, int oldOrderNumber, int newOrderNumber);
 
-  public String reOrderConsentInfoList(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  public String reOrderConsentInfoList(String studyId, int oldOrderNumber, int newOrderNumber);
 
   public String reorderEligibilityTestQusAns(
-      Integer eligibilityId, int oldOrderNumber, int newOrderNumber, Integer studyId);
+      String eligibilityId, int oldOrderNumber, int newOrderNumber, String studyId);
 
-  public String reOrderResourceList(Integer studyId, int oldOrderNumber, int newOrderNumber);
+  public String reOrderResourceList(String studyId, int oldOrderNumber, int newOrderNumber);
 
   public boolean resetDraftStudyByCustomStudyId(String customStudyId);
 
   public int resourceOrder(String studyId);
 
-  public List<ResourceBO> resourcesSaved(Integer studyId);
+  public List<ResourceBO> resourcesSaved(String studyId);
 
-  public List<ResourceBO> resourcesWithAnchorDate(Integer studyId);
+  public List<ResourceBO> resourcesWithAnchorDate(String studyId);
 
   public ConsentBo saveOrCompleteConsentReviewDetails(
       ConsentBo consentBo, SessionObject sesObj, String customStudyId);
@@ -177,7 +177,7 @@ public interface StudyService {
   public String validateActivityComplete(String studyId, String action);
 
   public String validateEligibilityTestKey(
-      Integer eligibilityTestId, String shortTitle, Integer eligibilityId);
+      String eligibilityTestId, String shortTitle, Integer eligibilityId);
 
   public String validateStudyAction(String studyId, String buttonText);
 
@@ -185,7 +185,7 @@ public interface StudyService {
 
   public List<EligibilityTestBo> viewEligibilityTestQusAnsByEligibilityId(String eligibilityId);
 
-  public EligibilityTestBo viewEligibilityTestQusAnsById(Integer eligibilityTestId);
+  public EligibilityTestBo viewEligibilityTestQusAnsById(String eligibilityTestId);
 
   public Boolean isAnchorDateExistForEnrollment(String studyId, String customStudyId);
 
