@@ -132,12 +132,11 @@ public class NotificationController {
         if (!"".equals(notificationId)) {
           // Fetching notification detail from notification table by
           // Id.
-          notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+          notificationBO = notificationService.getNotification(notificationId);
           // Fetching notification history of last sent detail from
           // notification table by Id.
           notificationHistoryNoDateTime =
-              notificationService.getNotificationHistoryListNoDateTime(
-                  Integer.parseInt(notificationId));
+              notificationService.getNotificationHistoryListNoDateTime(notificationId);
           // Spring security reason we have different method for
           // edit/resend/addOrCopy of notification as these section
           // are editable.
@@ -199,12 +198,11 @@ public class NotificationController {
         if (!"".equals(notificationId)) {
           // Fetching notification detail from notification table by
           // Id
-          notificationBO = notificationService.getNotification(Integer.parseInt(notificationId));
+          notificationBO = notificationService.getNotification(notificationId);
           // Fetching notification history of last sent detail from
           // notification table by Id
           notificationHistoryNoDateTime =
-              notificationService.getNotificationHistoryListNoDateTime(
-                  Integer.parseInt(notificationId));
+              notificationService.getNotificationHistoryListNoDateTime(notificationId);
           // Spring security reason we have different method for view
           // section
           if ("view".equals(actionType)) {
