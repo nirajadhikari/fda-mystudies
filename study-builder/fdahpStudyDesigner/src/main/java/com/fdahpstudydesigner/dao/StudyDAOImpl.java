@@ -37,7 +37,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -1520,7 +1519,7 @@ public class StudyDAOImpl implements StudyDAO {
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       query = session.createQuery("from ConsentBo CBO where CBO.studyId=:studyId");
-      query.setInteger("studyId", Integer.valueOf(studyId));
+      query.setString("studyId", studyId);
       consentBo = (ConsentBo) query.uniqueResult();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - saveOrCompleteConsentReviewDetails() :: ERROR", e);
@@ -1587,7 +1586,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session.createQuery(
               " from ConsentInfoBo CIBO where CIBO.studyId=:studyId and CIBO.active=1 ORDER BY CIBO.sequenceNo ");
-      query.setInteger("studyId", Integer.valueOf(studyId));
+      query.setString("studyId", studyId);
       consentInfoBoList = query.list();
       if ((null != consentInfoBoList) && (consentInfoBoList.size() > 0)) {
         for (ConsentInfoBo consentInfoBo : consentInfoBoList) {
@@ -5632,7 +5631,7 @@ public class StudyDAOImpl implements StudyDAO {
                         + " and ab.frequency=:frequencyTime and a.isLaunchStudy=1"
                         + " and active=1"
                         + " and ab.shortTitle NOT IN(SELECT shortTitle from QuestionnaireBo WHERE active=1 AND live=1 AND customStudyId=:customStudyId) ");
-            query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
+            query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyId);
             query.setParameter(
                 "frequencyTime", FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME);
             query.setParameter("customStudyId", studyBo.getCustomStudyId());
@@ -5656,7 +5655,7 @@ public class StudyDAOImpl implements StudyDAO {
                         + " and ab.frequency=:frequencyTime and a.isLaunchStudy=1"
                         + " and active=1"
                         + " and ab.shortTitle NOT IN (SELECT shortTitle from ActiveTaskBo WHERE active=1 AND live=1 AND customStudyId=:customStudyId) ");
-            query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, Integer.valueOf(studyId));
+            query.setParameter(FdahpStudyDesignerConstants.IMP_VALUE, studyId);
             query.setParameter(
                 "frequencyTime", FdahpStudyDesignerConstants.FREQUENCY_TYPE_ONE_TIME);
             query.setParameter("customStudyId", studyBo.getCustomStudyId());

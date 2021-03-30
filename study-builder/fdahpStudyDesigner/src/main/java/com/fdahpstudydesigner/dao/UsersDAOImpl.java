@@ -197,7 +197,7 @@ public class UsersDAOImpl implements UsersDAO {
                       " FROM StudyPermissionBO UBO where UBO.studyId=:studyId"
                           + " AND UBO.userId=:userId")
                   .setParameter("userId", userId)
-                  .setParameter("studyId", Integer.valueOf(selectedStudy[i]));
+                  .setParameter("studyId", selectedStudy[i]);
           studyPermissionBO = (StudyPermissionBO) query.uniqueResult();
           if (null != studyPermissionBO) {
             studyPermissionBO.setViewPermission("1".equals(permissionValue[i]) ? true : false);
