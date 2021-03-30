@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -123,7 +124,7 @@ public class StudyDAOImpl implements StudyDAO {
   }
 
   @Override
-  public String checkActiveTaskTypeValidation(Integer studyId) {
+  public String checkActiveTaskTypeValidation(String studyId) {
     logger.info("StudyDAOImpl - checkActiveTaskTypeValidation() - starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     Session session = null;
@@ -144,7 +145,7 @@ public class StudyDAOImpl implements StudyDAO {
           (BigInteger)
               session
                   .createSQLQuery(searchQuery)
-                  .setInteger("studyId", studyId)
+                  .setString("studyId", studyId)
                   .setParameterList("taskNameList", taskNameList)
                   .uniqueResult();
       if ((count != null) && (count.intValue() > 0)) {
@@ -1814,7 +1815,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       if (StringUtils.isNotEmpty(studyId)) {
         query = session.createQuery("from StudyPageBo where studyId=:studyId");
-        query.setInteger("studyId", Integer.valueOf(studyId));
+        query.setString("studyId", studyId);
         studyPageBo = query.list();
       }
     } catch (Exception e) {
@@ -2100,7 +2101,7 @@ public class StudyDAOImpl implements StudyDAO {
               query =
                   session
                       .createQuery("from ReferenceTablesBo where id in(:category)")
-                      .setParameter("category", Integer.parseInt(bean.getCategory()));
+                      .setParameter("category", bean.getCategory());
               referenceTablesBos = query.list();
               if ((referenceTablesBos != null) && !referenceTablesBos.isEmpty()) {
                 bean.setCategory(referenceTablesBos.get(0).getValue());
@@ -3313,9 +3314,9 @@ public class StudyDAOImpl implements StudyDAO {
                 String desId = null;
                 if (sequenceSubTypeList.get(i) == null) {
                   desId = null;
-                } else if (sequenceSubTypeList.get(i).equals(-1)) {
-                  desId = 0;
-                } else {
+                } /*else if (sequenceSubTypeList.get(i).equals(-1)) {
+                    desId = 0;
+                  } */ else {
                   for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
                     if (sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())) {
                       desId = questionnairesStepsBo.getStepId();
@@ -4180,7 +4181,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
 
-      if (studyBo.getId() == null) {
+      if (StringUtils.isEmpty(studyBo.getId())) {
         studyBo.setCreatedBy(studyBo.getUserId());
         appId = studyBo.getAppId().toUpperCase();
         studyBo.setAppId(appId);
@@ -5181,8 +5182,8 @@ public class StudyDAOImpl implements StudyDAO {
                       String desId = null;
                       if (sequenceSubTypeList.get(i) == null) {
                         desId = null;
-                      } else if (sequenceSubTypeList.get(i).equals(-1)) {
-                        desId = 0;
+                        /*    } else if (sequenceSubTypeList.get(i).equals(-1)) {
+                        desId = 0;*/
                       } else {
                         for (QuestionnairesStepsBo questionnairesStepsBo :
                             newQuestionnairesStepsBoList) {
@@ -5239,8 +5240,8 @@ public class StudyDAOImpl implements StudyDAO {
                       String desId = null;
                       if (sequenceTypeList.get(i) == null) {
                         desId = null;
-                      } else if (sequenceTypeList.get(i).equals(-1)) {
-                        desId = 0;
+                        /*    } else if (sequenceTypeList.get(i).equals(-1)) {
+                        desId = 0;*/
                       } else {
                         for (QuestionnairesStepsBo questionnairesStepsBo :
                             newQuestionnairesStepsBoList) {

@@ -13,6 +13,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -880,9 +881,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             String desId = null;
             if (sequenceSubTypeList.get(i) == null) {
               desId = null;
-            } else if (sequenceSubTypeList.get(i).equals(-1)) {
-              desId = 0;
-            } else {
+            } /*else if (sequenceSubTypeList.get(i).equals(-1)) {
+                desId = 0;
+              } */ else {
               for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
                 if (sequenceSubTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())) {
                   desId = questionnairesStepsBo.getStepId();
@@ -933,9 +934,9 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             String desId = null;
             if (sequenceTypeList.get(i) == null) {
               desId = null;
-            } else if (sequenceTypeList.get(i).equals(-1)) {
-              desId = 0;
-            } else {
+            } /* else if (sequenceTypeList.get(i).equals(-1)) {
+                desId = 0;
+              }*/ else {
               for (QuestionnairesStepsBo questionnairesStepsBo : newQuestionnairesStepsBoList) {
                 if (sequenceTypeList.get(i).equals(questionnairesStepsBo.getSequenceNo())) {
                   desId = questionnairesStepsBo.getStepId();
@@ -1257,7 +1258,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           session.createQuery(searchQuery).setString("questionnaireId", questionnaireId).list();
       if ((null != questionnaireStepList) && !questionnaireStepList.isEmpty()) {
         if (questionnaireStepList.size() == 1) {
-          questionnaireStepList.get(0).setDestinationStep(0);
+          questionnaireStepList.get(0).setDestinationStep(null);
           questionnaireStepList.get(0).setSequenceNo(1);
           session.update(questionnaireStepList.get(0));
         } else {
@@ -1269,7 +1270,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             questionnaireStepList.get(i).setSequenceNo(i + 1);
             session.update(questionnaireStepList.get(i));
           }
-          questionnaireStepList.get(i).setDestinationStep(0);
+          questionnaireStepList.get(i).setDestinationStep(null);
           questionnaireStepList.get(i).setSequenceNo(i + 1);
           session.update(questionnaireStepList.get(i));
         }
@@ -2239,7 +2240,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       List<String> formIdList = new ArrayList<>();
       Map<String, String> destinationMap = new HashMap<>();
       Map<String, Boolean> formStatusMap = new HashMap<>();
-      destinationText.put(0, "Completion Step");
+      destinationText.put(null, "Completion Step");
       // setting the sequenceNo and destination steps to the map based on
       // the individual steps later using this map to set the destination
       // step name
@@ -3219,7 +3220,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           questionnaireStepList = query.list();
           if ((null != questionnaireStepList) && !questionnaireStepList.isEmpty()) {
             if (questionnaireStepList.size() == 1) {
-              questionnaireStepList.get(0).setDestinationStep(0);
+              questionnaireStepList.get(0).setDestinationStep(null);
               questionnaireStepList.get(0).setSequenceNo(1);
               session.update(questionnaireStepList.get(0));
             } else {
@@ -3231,7 +3232,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                 questionnaireStepList.get(i).setSequenceNo(i + 1);
                 session.update(questionnaireStepList.get(i));
               }
-              questionnaireStepList.get(i).setDestinationStep(0);
+              questionnaireStepList.get(i).setDestinationStep(null);
               questionnaireStepList.get(i).setSequenceNo(i + 1);
               session.update(questionnaireStepList.get(i));
             }
@@ -3293,7 +3294,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         } else {
           addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
           addOrUpdateQuestionnairesStepsBo.setActive(true);
-          addOrUpdateQuestionnairesStepsBo.setDestinationStep(0);
+          addOrUpdateQuestionnairesStepsBo.setDestinationStep(null);
         }
         if ((questionnairesStepsBo.getStepShortTitle() != null)
             && !questionnairesStepsBo.getStepShortTitle().isEmpty()) {
@@ -3437,7 +3438,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         } else {
           questionnairesStepsBo = new QuestionnairesStepsBo();
           questionnairesStepsBo.setActive(true);
-          questionnairesStepsBo.setDestinationStep(0);
+          questionnairesStepsBo.setDestinationStep(null);
         }
         questionnairesStepsBo.setQuestionnairesId(instructionsBo.getQuestionnaireId());
         questionnairesStepsBo.setInstructionFormId(instructionsBo.getId());
@@ -4079,7 +4080,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
         } else {
           addOrUpdateQuestionnairesStepsBo = new QuestionnairesStepsBo();
           addOrUpdateQuestionnairesStepsBo.setActive(true);
-          addOrUpdateQuestionnairesStepsBo.setDestinationStep();
+          addOrUpdateQuestionnairesStepsBo.setDestinationStep(null);
         }
         if ((questionnairesStepsBo.getStepShortTitle() != null)
             && !questionnairesStepsBo.getStepShortTitle().isEmpty()) {
