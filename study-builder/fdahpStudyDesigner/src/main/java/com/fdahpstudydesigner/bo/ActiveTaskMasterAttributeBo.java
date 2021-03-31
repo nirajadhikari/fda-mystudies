@@ -64,7 +64,7 @@ public class ActiveTaskMasterAttributeBo implements Serializable {
   private Integer orderByTaskType;
 
   @Column(name = "task_type_id")
-  private Integer taskTypeId;
+  private String taskTypeId;
 
   public String getAttributeDataType() {
     return attributeDataType;
@@ -90,7 +90,7 @@ public class ActiveTaskMasterAttributeBo implements Serializable {
     return orderByTaskType;
   }
 
-  public Integer getTaskTypeId() {
+  public String getTaskTypeId() {
     return taskTypeId;
   }
 
@@ -126,7 +126,7 @@ public class ActiveTaskMasterAttributeBo implements Serializable {
     this.orderByTaskType = orderByTaskType;
   }
 
-  public void setTaskTypeId(Integer taskTypeId) {
+  public void setTaskTypeId(String taskTypeId) {
     this.taskTypeId = taskTypeId;
   }
 }

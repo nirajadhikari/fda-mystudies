@@ -81,19 +81,19 @@
                 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                       data-placement="top"
                       title="View"
-                      onclick="viewQuestionnaires(${questionnaryInfo.id});"></span>
+                      onclick="viewQuestionnaires('${questionnaryInfo.id}');"></span>
                 <span
                     class="${questionnaryInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Edit"
-                    onclick="editQuestionnaires(${questionnaryInfo.id});"></span>
+                    onclick="editQuestionnaires('${questionnaryInfo.id}')"></span>
                 <span
                     class="sprites_icon copy  mr-lg<c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Copy"
-                    onclick="copyQuestionnaire(${questionnaryInfo.id});"></span>
+                    onclick="copyQuestionnaire('${questionnaryInfo.id}');"></span>
                 <span
                     class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Delete"
-                    onclick="deleteQuestionnaire(${questionnaryInfo.id});"></span>
+                    onclick="deleteQuestionnaire('${questionnaryInfo.id}');"></span>
               </td>
             </tr>
           </c:forEach>
@@ -115,6 +115,7 @@
 </form:form>
 <script>
   $(document).ready(function () {
+	  debugger;
 	$('.studyClass').addClass("active");
     $('[data-toggle="tooltip"]').tooltip();
     $(".menuNav li.active").removeClass('active');
@@ -148,6 +149,7 @@
   });
 
   function editQuestionnaires(questionnaryId) {
+	  debugger;
     console.log("consentInfoId:" + questionnaryId);
     if (questionnaryId != null && questionnaryId != '' && typeof questionnaryId != 'undefined') {
       $("#actionType").val('edit');

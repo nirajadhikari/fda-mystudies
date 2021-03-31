@@ -88,15 +88,15 @@
               <td>
                 <span class="sprites_icon preview-g mr-lg" data-toggle="tooltip"
                       data-placement="top"
-                      title="View" onclick="viewConsentInfo(${consentInfo.id});"></span>
+                      title="View" onclick="viewConsentInfo('${consentInfo.id}');"></span>
                 <span
                     class="${consentInfo.status?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Edit"
-                    onclick="editConsentInfo(${consentInfo.id});"></span>
+                    onclick="editConsentInfo('${consentInfo.id}');"></span>
                 <span
                     class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Delete"
-                    onclick="deleteConsentInfo(${consentInfo.id});"></span>
+                    onclick="deleteConsentInfo('${consentInfo.id}');"></span>
               </td>
             </tr>
           </c:forEach>

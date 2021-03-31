@@ -523,7 +523,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     InstructionsBo addOrUpdateInstructionsBo = null;
     try {
       if (null != instructionsBo) {
-        if (instructionsBo.getId() != null) {
+        if (StringUtils.isNotEmpty(instructionsBo.getId())) {
           addOrUpdateInstructionsBo =
               studyQuestionnaireDAO.getInstructionsBo(
                   instructionsBo.getId(), "", customStudyId, instructionsBo.getQuestionnaireId());
@@ -918,7 +918,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     try {
       QuestionsBo addQuestionsBo = null;
       if ((questionnairesStepsBo != null) && (questionnairesStepsBo.getQuestionsBo() != null)) {
-        if (questionnairesStepsBo.getQuestionsBo().getId() != null) {
+        if (StringUtils.isNotEmpty(questionnairesStepsBo.getQuestionsBo().getId())) {
           addQuestionsBo =
               studyQuestionnaireDAO.getQuestionsById(
                   questionnairesStepsBo.getQuestionsBo().getId(), null, customStudyId);

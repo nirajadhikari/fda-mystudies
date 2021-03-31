@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -3836,7 +3837,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       session.saveOrUpdate(comprehensionTestQuestionBo);
-      if ((comprehensionTestQuestionBo.getId() != null)
+      if ((StringUtils.isNotEmpty(comprehensionTestQuestionBo.getId()))
           && (comprehensionTestQuestionBo.getResponseList() != null)
           && !comprehensionTestQuestionBo.getResponseList().isEmpty()) {
         String deleteQuery =
@@ -4018,7 +4019,7 @@ public class StudyDAOImpl implements StudyDAO {
             (StudyBo)
                 session
                     .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
-                    .setInteger("id", Integer.parseInt(studyPageBean.getStudyId()))
+                    .setString("id", studyPageBean.getStudyId())
                     .uniqueResult();
         if (studyBo != null) {
           studyBo.setMediaLink(studyPageBean.getMediaLink());
@@ -4092,9 +4093,7 @@ public class StudyDAOImpl implements StudyDAO {
               (StudySequenceBo)
                   session
                       .getNamedQuery(FdahpStudyDesignerConstants.STUDY_SEQUENCE_BY_ID)
-                      .setInteger(
-                          FdahpStudyDesignerConstants.STUDY_ID,
-                          Integer.parseInt(studyPageBean.getStudyId()))
+                      .setString(FdahpStudyDesignerConstants.STUDY_ID, studyPageBean.getStudyId())
                       .uniqueResult();
           if (studySequence != null) {
             if ((studyPageBean.getActionType() != null)
@@ -4325,7 +4324,7 @@ public class StudyDAOImpl implements StudyDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       if (null != eligibilityBo) {
-        if (eligibilityBo.getId() != null) {
+        if (StringUtils.isNotEmpty(eligibilityBo.getId())) {
           eligibilityBoUpdate =
               (EligibilityBo)
                   session

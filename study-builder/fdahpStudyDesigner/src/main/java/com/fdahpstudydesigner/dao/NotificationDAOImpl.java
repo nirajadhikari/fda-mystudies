@@ -33,6 +33,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_NOTIFIC
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NEW_NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.OLD_NOTIFICATION_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
@@ -282,7 +283,7 @@ public class NotificationDAOImpl implements NotificationDAO {
       AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      if (notificationBO.getNotificationId() == null) {
+      if (StringUtils.isEmpty(notificationBO.getNotificationId())) {
         notificationBOUpdate = new NotificationBO();
         notificationBOUpdate.setNotificationText(notificationBO.getNotificationText().trim());
         notificationBOUpdate.setCreatedBy(notificationBO.getCreatedBy());

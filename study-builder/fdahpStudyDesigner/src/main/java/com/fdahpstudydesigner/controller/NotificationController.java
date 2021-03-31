@@ -284,7 +284,7 @@ public class NotificationController {
         notificationBO.setScheduleTimestamp(null);
         notificationBO.setNotificationScheduleType("0");
       }
-      if (null == notificationBO.getNotificationId()) {
+      if (StringUtils.isEmpty(notificationBO.getNotificationId())) {
         notificationBO.setCreatedBy(sessionObject.getUserId());
         notificationBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
       } else {
@@ -295,7 +295,8 @@ public class NotificationController {
           notificationService.saveOrUpdateOrResendNotification(
               notificationBO, notificationType, buttonType, sessionObject, "");
       if (StringUtils.isNotEmpty(notificationId)) {
-        if ((notificationBO.getNotificationId() == null) && "add".equalsIgnoreCase(buttonType)) {
+        if (StringUtils.isEmpty(notificationBO.getNotificationId())
+            && "add".equalsIgnoreCase(buttonType)) {
           request
               .getSession()
               .setAttribute(
@@ -316,7 +317,8 @@ public class NotificationController {
                   propMap.get("resend.notification.success.message"));
         }
       } else {
-        if ((notificationBO.getNotificationId() == null) && "add".equalsIgnoreCase(buttonType)) {
+        if (StringUtils.isEmpty(notificationBO.getNotificationId())
+            && "add".equalsIgnoreCase(buttonType)) {
           request
               .getSession()
               .setAttribute(

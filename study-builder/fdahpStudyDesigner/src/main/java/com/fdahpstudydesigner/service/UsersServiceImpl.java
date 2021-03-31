@@ -49,6 +49,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,7 +141,7 @@ public class UsersServiceImpl implements UsersService {
     UserBO userBO3 = null;
 
     try {
-      if (null == userBO.getUserId()) {
+      if (StringUtils.isEmpty(userBO.getUserId())) {
         addFlag = true;
         userBO2 = new UserBO();
         userBO2.setFirstName(null != userBO.getFirstName() ? userBO.getFirstName().trim() : "");

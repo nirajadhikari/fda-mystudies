@@ -2924,10 +2924,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                   + " and QBO.active=1 and QBO.live=1 order by QBO.createdDate DESC";
           query = session.createQuery(searchQuery).setString("studyId", studyId);
         } else {
-          query =
-              session
-                  .getNamedQuery("getQuestionariesByStudyId")
-                  .setInteger("studyId", Integer.parseInt(studyId));
+          query = session.getNamedQuery("getQuestionariesByStudyId").setString("studyId", studyId);
         }
         questionnaires = query.list();
       }

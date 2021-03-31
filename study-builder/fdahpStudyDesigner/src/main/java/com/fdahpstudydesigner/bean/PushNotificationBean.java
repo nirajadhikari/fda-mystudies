@@ -26,7 +26,7 @@ package com.fdahpstudydesigner.bean;
 public class PushNotificationBean {
 
   private String customStudyId = "";
-  private Integer notificationId = 0;
+  private String notificationId = "";
   private String notificationSubType = "Announcement";
   private String notificationText = "";
   private String notificationTitle = "";

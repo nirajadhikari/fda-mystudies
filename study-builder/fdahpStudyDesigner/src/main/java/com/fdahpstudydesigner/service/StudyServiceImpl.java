@@ -871,7 +871,7 @@ public class StudyServiceImpl implements StudyService {
     ComprehensionTestQuestionBo updateComprehensionTestQuestionBo = null;
     try {
       if (comprehensionTestQuestionBo != null) {
-        if (comprehensionTestQuestionBo.getId() != null) {
+        if (StringUtils.isNotEmpty(comprehensionTestQuestionBo.getId())) {
           updateComprehensionTestQuestionBo =
               studyDAO.getComprehensionTestQuestionById(comprehensionTestQuestionBo.getId());
         } else {
@@ -935,7 +935,7 @@ public class StudyServiceImpl implements StudyService {
     ConsentInfoBo updateConsentInfoBo = null;
     try {
       if (consentInfoBo != null) {
-        if (consentInfoBo.getId() != null) {
+        if (StringUtils.isNotEmpty(consentInfoBo.getId())) {
           updateConsentInfoBo = studyDAO.getConsentInfoById(consentInfoBo.getId());
           updateConsentInfoBo.setModifiedBy(sessionObject.getUserId());
           updateConsentInfoBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());

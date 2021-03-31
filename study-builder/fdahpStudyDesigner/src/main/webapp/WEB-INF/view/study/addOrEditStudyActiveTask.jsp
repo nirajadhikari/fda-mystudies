@@ -128,6 +128,7 @@
         $('.activeText').text(
             "The task collects data that can be used to assess visuospatial memory and executive function.");
       }
+      debugger;
       var typeOfActiveTask = $(this).val();
       var activeTaskInfoId = $(this).attr('taskId');
       $('.changeContent').empty();
@@ -142,6 +143,7 @@
     }
 
     function loadSelectedATask(typeOfActiveTask, activeTaskInfoId, actionType) {
+        debugger;
       $(".changeContent").load(
           "/studybuilder/adminStudies/navigateContentActiveTask.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}",
           {
