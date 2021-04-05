@@ -2879,6 +2879,7 @@
           success: function (data) {
             var message = data.message;
             if (message == "SUCCESS") {
+            	debugger
               var activeTaskId = data.activeTaskId;
               var activeTaskFrequenceId = data.activeTaskFrequenceId;
               $("#activeTaskId, #taskId,#taskContentId,.activeTaskIdClass").val(activeTaskId);

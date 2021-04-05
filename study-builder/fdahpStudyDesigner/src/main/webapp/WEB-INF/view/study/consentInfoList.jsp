@@ -329,17 +329,17 @@
         } else {
           datarow.push(obj.visualStep);
         }
-        var actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewConsentInfo("
-            + parseInt(obj.id) + ");'></span>";
+        var actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewConsentInfo(\""
+            + obj.id + "\");'></span>";
         if (obj.status) {
-          actions += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editConsentInfo(" + parseInt(obj.id)
-              + ");'></span>"
+          actions += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editConsentInfo(\"" +  obj.id
+              + "\");'></span>"
         } else {
-          actions += "<span class='sprites_icon edit-inc-draft mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editConsentInfo("
-              + parseInt(obj.id) + ");'></span>";
+          actions += "<span class='sprites_icon edit-inc-draft mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editConsentInfo(\""
+              +  obj.id + "\");'></span>";
         }
-        actions += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteConsentInfo(" + parseInt(obj.id)
-            + ");'></span>";
+        actions += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteConsentInfo(\"" +  obj.id
+            + "\");'></span>";
         datarow.push(actions);
         $('#consent_list').DataTable().row.add(datarow);
       });

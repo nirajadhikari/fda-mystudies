@@ -165,7 +165,7 @@ public class ActiveTaskBo implements Serializable {
   private String scheduleType = "";
 
   @Column(name = "anchor_date_id")
-  private Integer anchorDateId;
+  private String anchorDateId;
 
   @Transient private boolean versionFlag = false;
 
@@ -486,11 +486,11 @@ public class ActiveTaskBo implements Serializable {
     this.scheduleType = scheduleType;
   }
 
-  public Integer getAnchorDateId() {
+  public String getAnchorDateId() {
     return anchorDateId;
   }
 
-  public void setAnchorDateId(Integer anchorDateId) {
+  public void setAnchorDateId(String anchorDateId) {
     this.anchorDateId = anchorDateId;
   }
 }

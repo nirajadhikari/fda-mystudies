@@ -240,7 +240,7 @@ public class StudyActiveTasksServiceImpl implements StudyActiveTasksService {
     ActiveTaskBo updateActiveTaskBo = null;
     try {
       if (activeTaskBo != null) {
-        if (activeTaskBo.getId() != null) {
+        if (StringUtils.isNotEmpty(activeTaskBo.getId())) {
           updateActiveTaskBo =
               studyActiveTasksDAO.getActiveTaskById(activeTaskBo.getId(), customStudyId);
           updateActiveTaskBo.setModifiedBy(sessionObject.getUserId());
