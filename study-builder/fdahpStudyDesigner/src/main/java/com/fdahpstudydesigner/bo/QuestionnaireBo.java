@@ -149,7 +149,7 @@ public class QuestionnaireBo implements Serializable {
   private String scheduleType = "";
 
   @Column(name = "anchor_date_id")
-  private Integer anchorDateId;
+  private String anchorDateId;
 
   @Transient private boolean anchorQuestionnaireExist = false;
 
@@ -388,11 +388,11 @@ public class QuestionnaireBo implements Serializable {
     this.scheduleType = scheduleType;
   }
 
-  public Integer getAnchorDateId() {
+  public String getAnchorDateId() {
     return anchorDateId;
   }
 
-  public void setAnchorDateId(Integer anchorDateId) {
+  public void setAnchorDateId(String anchorDateId) {
     this.anchorDateId = anchorDateId;
   }
 
