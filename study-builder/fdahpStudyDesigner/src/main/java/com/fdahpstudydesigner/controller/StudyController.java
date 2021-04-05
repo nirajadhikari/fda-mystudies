@@ -42,7 +42,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURCE_SECTION_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SAVED_IN_DRAFT_STATE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -2870,7 +2869,8 @@ public class StudyController {
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
         if (consentInfoBo != null) {
-          if ((consentInfoBo.getStudyId() != null) && (consentInfoBo.getId() == null)) {
+          if ((consentInfoBo.getStudyId() != null)
+              && (StringUtils.isEmpty(consentInfoBo.getId()))) {
             int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
             consentInfoBo.setSequenceNo(order);
           }
@@ -3205,7 +3205,7 @@ public class StudyController {
           && sesObj.getStudySession().contains(sessionStudyCount)) {
         int order = 0;
         if (comprehensionTestQuestionBo != null) {
-          if (comprehensionTestQuestionBo.getId() != null) {
+          if (StringUtils.isNotEmpty(comprehensionTestQuestionBo.getId())) {
             comprehensionTestQuestionBo.setModifiedBy(sesObj.getUserId());
             comprehensionTestQuestionBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
             comprehensionTestQuestionBo.setStatus(true);
@@ -3224,7 +3224,7 @@ public class StudyController {
               studyService.saveOrUpdateComprehensionTestQuestion(comprehensionTestQuestionBo);
           map.addAttribute("_S", sessionStudyCount);
           if (addComprehensionTestQuestionBo != null) {
-            if (addComprehensionTestQuestionBo.getId() != null && order == 0) {
+            if (StringUtils.isNotEmpty(addComprehensionTestQuestionBo.getId()) && order == 0) {
               request
                   .getSession()
                   .setAttribute(
@@ -3275,7 +3275,8 @@ public class StudyController {
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
         if (consentInfoBo != null) {
-          if ((consentInfoBo.getStudyId() != null) && (consentInfoBo.getId() == null)) {
+          if ((consentInfoBo.getStudyId() != null)
+              && (StringUtils.isEmpty(consentInfoBo.getId()))) {
             int order = studyService.consentInfoOrder(consentInfoBo.getStudyId());
             consentInfoBo.setSequenceNo(order);
           }

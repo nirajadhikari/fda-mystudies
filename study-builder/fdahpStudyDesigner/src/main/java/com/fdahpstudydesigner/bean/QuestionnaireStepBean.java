@@ -31,7 +31,7 @@ public class QuestionnaireStepBean {
   private String destinationText;
   Map<Integer, QuestionnaireStepBean> fromMap;
   private String lineChart;
-  private Integer questionInstructionId;
+  private String questionInstructionId;
   private Integer responseType;
   private String responseTypeText;
   private Integer sequenceNo;
@@ -74,11 +74,11 @@ public class QuestionnaireStepBean {
     this.lineChart = lineChart;
   }
 
-  public Integer getQuestionInstructionId() {
+  public String getQuestionInstructionId() {
     return questionInstructionId;
   }
 
-  public void setQuestionInstructionId(Integer questionInstructionId) {
+  public void setQuestionInstructionId(String questionInstructionId) {
     this.questionInstructionId = questionInstructionId;
   }
 

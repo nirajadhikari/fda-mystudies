@@ -149,7 +149,6 @@
   });
 
   function editQuestionnaires(questionnaryId) {
-	  debugger;
     console.log("consentInfoId:" + questionnaryId);
     if (questionnaryId != null && questionnaryId != '' && typeof questionnaryId != 'undefined') {
       $("#actionType").val('edit');

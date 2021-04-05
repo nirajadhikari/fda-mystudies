@@ -588,7 +588,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     QuestionsBo addQuestionsBo = null;
     try {
       if (null != questionsBo) {
-        if (questionsBo.getId() != null) {
+        if (StringUtils.isNotEmpty(questionsBo.getId())) {
           addQuestionsBo =
               studyQuestionnaireDAO.getQuestionsById(questionsBo.getId(), null, customStudyId);
         } else {

@@ -45,7 +45,7 @@ public class NotificationHistoryBO implements Serializable {
   private String historyId;
 
   @Column(name = "notification_id")
-  private Integer notificationId;
+  private String notificationId;
 
   @Column(name = "notification_sent_date_time")
   private String notificationSentDateTime;
@@ -56,7 +56,7 @@ public class NotificationHistoryBO implements Serializable {
     return historyId;
   }
 
-  public Integer getNotificationId() {
+  public String getNotificationId() {
     return notificationId;
   }
 
@@ -72,7 +72,7 @@ public class NotificationHistoryBO implements Serializable {
     this.historyId = historyId;
   }
 
-  public void setNotificationId(Integer notificationId) {
+  public void setNotificationId(String notificationId) {
     this.notificationId = notificationId;
   }
 

@@ -265,17 +265,17 @@
                           <div class="ellipse-hover-icon"
                                onmouseleave="ellipseUnHover(this);">
                             <span class="sprites_icon preview-g mr-sm"data-toggle="tooltip" data-placement="top" title="View"
-                                  onclick="viewQuestion(${entry.value.questionInstructionId});"></span>
+                                  onclick="viewQuestion('${entry.value.questionInstructionId}');"></span>
                             <span
                                 class="${entry.value.status?'edit-inc':'edit-inc-draft mr-md'} mr-sm <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
                                 data-toggle="tooltip" data-placement="top" title="Edit"
                                 <c:if
-                                    test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion(${entry.value.questionInstructionId});"</c:if>></span>
+                                    test="${actionTypeForQuestionPage ne 'view'}">onclick="editQuestion('${entry.value.questionInstructionId}');"</c:if>></span>
                             <span
                                 class="sprites_icon delete <c:if test="${actionTypeForQuestionPage eq 'view'}"> cursor-none-without-event </c:if>"
                                 data-toggle="tooltip" data-placement="top" title="Delete"
                                 <c:if
-                                    test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion(${entry.value.stepId},${entry.value.questionInstructionId})"</c:if>></span>
+                                    test="${actionTypeForQuestionPage ne 'view'}">onclick="deletQuestion('${entry.value.stepId}','${entry.value.questionInstructionId}')"</c:if>></span>
                           </div>
                         </div>
                       </div>

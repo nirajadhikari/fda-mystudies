@@ -41,11 +41,11 @@ public class PushNotificationBean {
     this.customStudyId = customStudyId;
   }
 
-  public Integer getNotificationId() {
+  public String getNotificationId() {
     return notificationId;
   }
 
-  public void setNotificationId(Integer notificationId) {
+  public void setNotificationId(String notificationId) {
     this.notificationId = notificationId;
   }
 

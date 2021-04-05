@@ -13,7 +13,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -2180,7 +2179,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             Object[] objects = (Object[]) iterator.next();
             String formId = (String) objects[0];
             Integer sequenceNo = (Integer) objects[2];
-            Integer questionId = (Integer) objects[3];
+            String questionId = (String) objects[3];
             String questionText = (String) objects[4];
             Integer responseType = (Integer) objects[5];
             String lineChart = (String) objects[6];
@@ -2368,7 +2367,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
             Object[] objects = (Object[]) result.get(j);
             String formId = (String) objects[0];
             Integer sequenceNo = (Integer) objects[2];
-            Integer questionId = (Integer) objects[3];
+            String questionId = (String) objects[3];
             String questionText = (String) objects[4];
             Integer responseType = (Integer) objects[5];
             String lineChart = (String) objects[6];
@@ -2630,7 +2629,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     QuestionReponseTypeBo addOrUpdateQuestionsResponseTypeBo = null;
     try {
       if ((questionsResponseTypeBo != null) && (session != null)) {
-        if (questionsResponseTypeBo.getResponseTypeId() != null) {
+        if (StringUtils.isNotEmpty(questionsResponseTypeBo.getResponseTypeId())) {
           addOrUpdateQuestionsResponseTypeBo =
               (QuestionReponseTypeBo)
                   session.get(
@@ -3284,7 +3283,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       if (questionnairesStepsBo != null) {
-        if (questionnairesStepsBo.getStepId() != null) {
+        if (StringUtils.isNotEmpty(questionnairesStepsBo.getStepId())) {
           addOrUpdateQuestionnairesStepsBo =
               (QuestionnairesStepsBo)
                   session.get(QuestionnairesStepsBo.class, questionnairesStepsBo.getStepId());
@@ -3426,7 +3425,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       if ((instructionsBo != null)
           && (instructionsBo.getId() != null)
           && (instructionsBo.getQuestionnairesStepsBo() != null)) {
-        if (instructionsBo.getQuestionnairesStepsBo().getStepId() != null) {
+        if (StringUtils.isNotEmpty(instructionsBo.getQuestionnairesStepsBo().getStepId())) {
           questionnairesStepsBo =
               (QuestionnairesStepsBo)
                   session.get(
@@ -4070,7 +4069,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
       if (questionnairesStepsBo != null) {
-        if (questionnairesStepsBo.getStepId() != null) {
+        if (StringUtils.isNotEmpty(questionnairesStepsBo.getStepId())) {
           addOrUpdateQuestionnairesStepsBo =
               (QuestionnairesStepsBo)
                   session.get(QuestionnairesStepsBo.class, questionnairesStepsBo.getStepId());
