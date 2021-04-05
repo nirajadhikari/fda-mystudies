@@ -3405,7 +3405,7 @@ public class StudyController {
             resourceBO.setResourceType(false);
           }
           if ((resourceBO.getStudyId() != null)
-              && (resourceBO.getId() == null)
+              && (StringUtils.isEmpty(resourceBO.getId()))
               && !resourceBO.isStudyProtocol()) {
             int order = studyService.resourceOrder(resourceBO.getStudyId());
             resourceBO.setSequenceNo(order);

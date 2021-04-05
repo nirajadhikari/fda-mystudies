@@ -455,20 +455,21 @@ var markAsComplete = "${markAsComplete}"
         var actions='';
         var objStatus=(typeof obj.status ? 'edit-inc' : 'edit-inc-draft mr-md');
         if( obj.status===true){
-         actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewComprehensionQuestion("
-            + parseInt(obj.id) + ");'></span>"
-            + "<span class='sprites_icon mr-lg edit-inc' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editComprehensionQuestion(" + parseInt(obj.id)
-            + ");'>"
-            + "</span><span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteComprehensionQuestion("
-            + parseInt(obj.id) + ");'>"
+         actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewComprehensionQuestion(\""
+            + obj.id + "\");'></span>"
+            + "<span class='sprites_icon mr-lg edit-inc' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editComprehensionQuestion(\"" 
+            + obj.id
+            + "\");'>"
+            + "</span><span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteComprehensionQuestion(\""
+            + obj.id + "\");'>"
             + "</span>";
         }else{
-        	    actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewComprehensionQuestion("
-                   + parseInt(obj.id) + ");'></span>"
-                   + "<span class='sprites_icon mr-lg edit-inc-draft mr-md' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editComprehensionQuestion(" + parseInt(obj.id)
-                   + ");'>"
-                   + "</span><span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteComprehensionQuestion("
-                   + parseInt(obj.id) + ");'>"
+        	    actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewComprehensionQuestion(\""
+                   + obj.id + "\");'></span>"
+                   + "<span class='sprites_icon mr-lg edit-inc-draft mr-md' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editComprehensionQuestion(\"" + obj.id
+                   + "\");'>"
+                   + "</span><span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteComprehensionQuestion(\""
+                   + obj.id + "\");'>"
                    + "</span>";
         	    markAsComplete="false";
             }

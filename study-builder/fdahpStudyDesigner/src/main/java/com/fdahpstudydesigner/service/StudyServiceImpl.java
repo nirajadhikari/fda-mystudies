@@ -1079,7 +1079,7 @@ public class StudyServiceImpl implements StudyService {
     Boolean updateResource = false;
     try {
       studyBo = studyDAO.getStudyById(resourceBO.getStudyId().toString(), sesObj.getUserId());
-      if (null == resourceBO.getId()) {
+      if (StringUtils.isEmpty(resourceBO.getId())) {
         resourceBO2 = new ResourceBO();
         resourceBO2.setSequenceNo(resourceBO.getSequenceNo());
         resourceBO2.setStudyId(resourceBO.getStudyId());

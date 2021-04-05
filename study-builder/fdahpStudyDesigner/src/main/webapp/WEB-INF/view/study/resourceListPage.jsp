@@ -78,15 +78,15 @@
                 <span class="sprites_icon preview-g mr-lg"
                       data-toggle="tooltip"
                       data-placement="top" title="View" id="viewRes"
-                      onclick="viewResourceInfo(${resourceInfo.id});"></span>
+                      onclick="viewResourceInfo('${resourceInfo.id}');"></span>
                 <span
                     class="${resourceInfo.action?'edit-inc':'edit-inc-draft mr-md'} mr-lg <c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Edit" id="editRes"
-                    onclick="editResourceInfo(${resourceInfo.id});"></span>
+                    onclick="editResourceInfo('${resourceInfo.id}');"></span>
                 <span
                     class="sprites_icon copy delete <c:if test="${not empty permission}"> cursor-none </c:if>"
                     data-toggle="tooltip" data-placement="top" title="Delete" id="delRes"
-                    onclick="deleteResourceInfo(${resourceInfo.id});"></span>
+                    onclick="deleteResourceInfo('${resourceInfo.id}');"></span>
               </td>
             </tr>
           </c:forEach>
