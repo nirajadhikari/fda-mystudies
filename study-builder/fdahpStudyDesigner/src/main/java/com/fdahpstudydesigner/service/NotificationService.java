@@ -31,7 +31,7 @@ import java.util.List;
 public interface NotificationService {
 
   public String deleteNotification(
-      int notificationIdForDelete, SessionObject sessionObject, String notificationType);
+      String notificationId, SessionObject sessionObject, String notificationType);
 
   public NotificationBO getNotification(String notificationId);
 

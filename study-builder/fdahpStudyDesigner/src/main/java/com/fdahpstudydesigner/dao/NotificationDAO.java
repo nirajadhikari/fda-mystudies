@@ -32,7 +32,7 @@ import java.util.List;
 public interface NotificationDAO {
 
   public String deleteNotification(
-      int notificationIdForDelete, SessionObject sessionObject, String notificationType);
+      String notificationIdForDelete, SessionObject sessionObject, String notificationType);
 
   public NotificationBO getNotification(String notificationId);
 

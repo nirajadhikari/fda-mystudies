@@ -17,7 +17,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTIO
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.FORM_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.FormulaInfoBean;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
@@ -2338,7 +2337,7 @@ public class StudyQuestionnaireController {
                     request
                         .getSession()
                         .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.STUDY_ID);
-            if (questionnaireBo.getId() != null) {
+            if (StringUtils.isNotEmpty(questionnaireBo.getId())) {
               questionnaireBo.setModifiedBy(sesObj.getUserId());
               questionnaireBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
               if (questionnaireBo.getStatus()) {

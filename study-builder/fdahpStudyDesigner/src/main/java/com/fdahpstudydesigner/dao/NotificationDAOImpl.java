@@ -33,7 +33,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_NOTIFIC
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NEW_NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.NOTIFICATION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.OLD_NOTIFICATION_ID;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.PushNotificationBean;
 import com.fdahpstudydesigner.bo.NotificationBO;
@@ -77,7 +76,7 @@ public class NotificationDAOImpl implements NotificationDAO {
 
   @Override
   public String deleteNotification(
-      int notificationIdForDelete, SessionObject sessionObject, String notificationType) {
+      String notificationIdForDelete, SessionObject sessionObject, String notificationType) {
     logger.info("NotificationDAOImpl - deleteNotification() - Starts");
     Session session = null;
     String message = FdahpStudyDesignerConstants.FAILURE;
@@ -86,7 +85,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
-      if (notificationIdForDelete != 0) {
+      if (notificationIdForDelete != null) {
         queryString =
             "update NotificationBO NBO set NBO.modifiedBy = :userId "
                 + ", NBO.modifiedOn = now(), NBO.notificationStatus = 1 ,NBO.notificationDone = 1 ,NBO.notificationAction = 1 where NBO.notificationId =:notificationId";

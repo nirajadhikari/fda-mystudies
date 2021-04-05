@@ -24,7 +24,6 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.APP_LEVEL_NOTIFICATION_LIST_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
@@ -76,8 +75,7 @@ public class NotificationController {
         // notification(global/study) that has been requested for
         // delete.
         message =
-            notificationService.deleteNotification(
-                Integer.parseInt(notificationId), sessionObject, notificationType);
+            notificationService.deleteNotification(notificationId, sessionObject, notificationType);
         if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
           request
               .getSession()

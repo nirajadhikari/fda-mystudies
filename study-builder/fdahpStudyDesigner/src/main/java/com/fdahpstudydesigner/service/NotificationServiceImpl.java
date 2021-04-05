@@ -48,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
 
   @Override
   public String deleteNotification(
-      int notificationIdForDelete, SessionObject sessionObject, String notificationType) {
+      String notificationIdForDelete, SessionObject sessionObject, String notificationType) {
     logger.info("NotificationServiceImpl - deleteNotification - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {

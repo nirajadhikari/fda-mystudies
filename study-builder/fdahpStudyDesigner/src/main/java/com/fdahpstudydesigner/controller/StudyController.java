@@ -860,7 +860,7 @@ public class StudyController {
           String notificationType = FdahpStudyDesignerConstants.STUDYLEVEL;
           message =
               notificationService.deleteNotification(
-                  Integer.parseInt(notificationId), sessionObject, notificationType);
+                  notificationId, sessionObject, notificationType);
           if (message.equals(FdahpStudyDesignerConstants.SUCCESS)) {
             request
                 .getSession()

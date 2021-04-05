@@ -709,7 +709,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
     QuestionnaireBo addQuestionnaireBo = null;
     try {
       if (null != questionnaireBo) {
-        if (questionnaireBo.getId() != null) {
+        if (StringUtils.isNotEmpty(questionnaireBo.getId())) {
           addQuestionnaireBo =
               studyQuestionnaireDAO.getQuestionnaireById(questionnaireBo.getId(), customStudyId);
         } else {
