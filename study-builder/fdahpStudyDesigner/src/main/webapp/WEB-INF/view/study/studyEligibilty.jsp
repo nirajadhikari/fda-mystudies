@@ -498,6 +498,7 @@
 
 
   function addOrEditOrViewQA(actionTypeForQuestionPage, eligibilityTestId) {
+	  debugger
     var form = $('#viewQAFormId');
     var input = document.createElement("input");
     input.setAttribute('type', "hidden");
@@ -631,15 +632,15 @@
                     chkDone=false;
                 }
                 var actions = '<span class="sprites_icon preview-g mr-lg viewIcon" data-toggle="tooltip" data-placement="top" title="View" etId="'
-                    + parseInt(obj.id) + '"></span> '
+                    + obj.id + '"></span> '
                     + '<span class="'
                     + (DOMPurify.sanitize(obj.status) ? "edit-inc"
                         : "edit-inc-draft")
                     + ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'
-                    + parseInt(obj.id)
+                    + obj.id
                     + '"></span>'
-                    + '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns('
-                    + parseInt(obj.id) + ',this)"></span> '
+                    + '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns(\''
+                    + obj.id + '\',this)"></span> '
                      datarow.push(actions);
                 $('#consent_list').DataTable().row.add(datarow);
               });

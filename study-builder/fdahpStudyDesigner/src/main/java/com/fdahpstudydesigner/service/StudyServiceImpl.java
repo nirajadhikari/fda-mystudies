@@ -1004,7 +1004,7 @@ public class StudyServiceImpl implements StudyService {
     Integer seqCount = 0;
     try {
       if (eligibilityTestBo != null) {
-        if (null == eligibilityTestBo.getId()) {
+        if (StringUtils.isEmpty(eligibilityTestBo.getId())) {
           seqCount = studyDAO.eligibilityTestOrderCount(eligibilityTestBo.getEligibilityId());
           eligibilityTestBo.setSequenceNo(seqCount);
         }

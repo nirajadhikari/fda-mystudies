@@ -37,7 +37,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -3978,14 +3977,15 @@ public class StudyDAOImpl implements StudyDAO {
 
         eligibilityTestBo.setStatus(true);
       }
-      if (null != eligibilityTestBo.getId()) {
+      if (StringUtils.isNotEmpty(eligibilityTestBo.getId())) {
         saveEligibilityTestBo =
             (EligibilityTestBo) session.get(EligibilityTestBo.class, eligibilityTestBo.getId());
         session.evict(saveEligibilityTestBo);
         eligibilityTestBo.setUsed(saveEligibilityTestBo.isUsed());
+        session.update(eligibilityTestBo);
+      } else {
+        session.save(eligibilityTestBo);
       }
-      session.saveOrUpdate(eligibilityTestBo);
-
       eligibilityTestId = eligibilityTestBo.getId();
       trans.commit();
     } catch (Exception e) {
@@ -4355,7 +4355,11 @@ public class StudyDAOImpl implements StudyDAO {
               && !("mark").equals(eligibilityBo.getActionType())) {
             studySequence.setEligibility(false);
           }
-          session.saveOrUpdate(eligibilityBoUpdate);
+          if (StringUtils.isEmpty(eligibilityBo.getId())) {
+            session.save(eligibilityBoUpdate);
+          } else {
+            session.update(eligibilityBoUpdate);
+          }
         }
 
         result =

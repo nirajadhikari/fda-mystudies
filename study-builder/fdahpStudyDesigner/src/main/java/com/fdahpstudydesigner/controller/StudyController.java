@@ -3576,7 +3576,7 @@ public class StudyController {
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
         if (eligibilityBo != null) {
-          if (eligibilityBo.getId() != null) {
+          if (StringUtils.isNotEmpty(eligibilityBo.getId())) {
             eligibilityBo.setModifiedBy(sesObj.getUserId());
             eligibilityBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           } else {
@@ -3669,7 +3669,7 @@ public class StudyController {
           && sesObj.getStudySession().contains(sessionStudyCount)) {
         int seqCount = 0;
         if (eligibilityTestBo != null) {
-          if (eligibilityTestBo.getId() != null) {
+          if (StringUtils.isNotEmpty(eligibilityTestBo.getId())) {
             seqCount = eligibilityTestBo.getSequenceNo();
           }
           customStudyId =
@@ -4928,10 +4928,10 @@ public class StudyController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityTestId"))
                 ? ""
                 : request.getParameter("eligibilityTestId");
-        Integer eligibilityId =
+        String eligibilityId =
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("eligibilityId"))
-                ? 0
-                : Integer.parseInt(request.getParameter("eligibilityId"));
+                ? ""
+                : request.getParameter("eligibilityId");
         if (StringUtils.isEmpty(studyId)) {
           studyId =
               FdahpStudyDesignerUtil.isEmpty(
@@ -4952,9 +4952,9 @@ public class StudyController {
               (String) request.getSession().getAttribute(sessionStudyCount + "eligibilityTestId");
           request.getSession().removeAttribute(sessionStudyCount + "eligibilityTestId");
         }
-        if (eligibilityId.equals(0)) {
+        if (eligibilityId.equals("")) {
           eligibilityId =
-              (Integer) request.getSession().getAttribute(sessionStudyCount + "eligibilityId");
+              (String) request.getSession().getAttribute(sessionStudyCount + "eligibilityId");
           request.getSession().removeAttribute(sessionStudyCount + "eligibilityId");
         }
         String permission =
