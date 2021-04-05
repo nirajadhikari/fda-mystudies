@@ -209,9 +209,9 @@ public class NotificationDAOImpl implements NotificationDAO {
         notificationList = query.list();
       } else {
         queryString =
-            "from NotificationBO NBO where NBO.studyId = :studyId "
+            "from NotificationBO NBO where NBO.studyId IS NULL"
                 + " and NBO.notificationType = 'GT' and NBO.notificationStatus = 0 order by NBO.notificationId desc";
-        query = session.createQuery(queryString).setParameter("studyId", studyId);
+        query = session.createQuery(queryString);
         notificationList = query.list();
       }
     } catch (Exception e) {
