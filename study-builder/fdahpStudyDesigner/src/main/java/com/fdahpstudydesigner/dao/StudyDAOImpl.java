@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -4010,7 +4011,7 @@ public class StudyDAOImpl implements StudyDAO {
     int titleLength = 0;
     StudySequenceBo studySequence = null;
     StudyBo studyBo = null;
-    List<Integer> pageIdList = new ArrayList<>();
+    List<String> pageIdList = new ArrayList<>();
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       transaction = session.beginTransaction();
@@ -4033,7 +4034,7 @@ public class StudyDAOImpl implements StudyDAO {
           String pageIdArr = null;
           for (int j = 0; j < studyPageBean.getPageId().length; j++) {
             if (FdahpStudyDesignerUtil.isNotEmpty(studyPageBean.getPageId()[j])) {
-              pageIdList.add(Integer.valueOf(studyPageBean.getPageId()[j]));
+              pageIdList.add(studyPageBean.getPageId()[j]);
             }
           }
           if (!pageIdList.isEmpty()) {
