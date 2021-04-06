@@ -498,7 +498,6 @@
 
 
   function addOrEditOrViewQA(actionTypeForQuestionPage, eligibilityTestId) {
-	  debugger
     var form = $('#viewQAFormId');
     var input = document.createElement("input");
     input.setAttribute('type', "hidden");
