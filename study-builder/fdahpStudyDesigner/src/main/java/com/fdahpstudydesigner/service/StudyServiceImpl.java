@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -1476,5 +1477,16 @@ public class StudyServiceImpl implements StudyService {
     }
     logger.info("StudyServiceImpl - getConsentList() - Ends");
     return consentBoList;
+  }
+
+  @Override
+  public String cloneStudy(String studyId, String userId, SessionObject sessionObject) {
+    StudyBo studyBo = studyDAO.getStudy(studyId);
+    StudyBo clonedStudy = ObjectUtils.clone(studyBo);
+    clonedStudy.setId(null);
+
+    studyDAO.saveOrUpdateStudy(clonedStudy, sessionObject);
+
+    return clonedStudy.getId();
   }
 }

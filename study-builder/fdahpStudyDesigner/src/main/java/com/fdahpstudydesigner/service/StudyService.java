@@ -203,4 +203,6 @@ public interface StudyService {
   public StudyBo getStudyInfo(String studyId);
 
   public List<ConsentBo> getConsentList(String customStudyId);
+
+  public String cloneStudy(String studyId, String userId, SessionObject sessionObject);
 }
