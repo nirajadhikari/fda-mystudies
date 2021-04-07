@@ -4885,7 +4885,7 @@ public class StudyDAOImpl implements StudyDAO {
                     for (QuestionnairesStepsBo questionnairesStepsBo :
                         existedQuestionnairesStepsBoList) {
                       String destionStep = questionnairesStepsBo.getDestinationStep();
-                      if (destionStep.equals(0)) {
+                      if (destionStep == null) {
                         destinationList.add(-1);
                       } else {
                         for (int i = 0; i < existedQuestionnairesStepsBoList.size(); i++) {
