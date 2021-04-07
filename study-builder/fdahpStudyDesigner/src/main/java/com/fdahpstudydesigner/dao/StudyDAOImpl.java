@@ -37,7 +37,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -1708,10 +1707,10 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - getLiveVersion() - Starts");
     Session session = null;
     StudyVersionBo studyVersionBo = null;
-    Integer consentStudyId = null;
+    String consentStudyId = null;
     StudyIdBean studyIdBean = new StudyIdBean();
-    Integer activetaskStudyId = null;
-    Integer questionnarieStudyId = null;
+    String activetaskStudyId = null;
+    String questionnarieStudyId = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
       if (StringUtils.isNotEmpty(customStudyId)) {
@@ -1725,7 +1724,7 @@ public class StudyDAOImpl implements StudyDAO {
           queryString =
               "SELECT s.study_id FROM active_task s where s.custom_study_id=:customStudyId and is_live =1";
           activetaskStudyId =
-              (Integer)
+              (String)
                   session
                       .createSQLQuery(queryString)
                       .setString("customStudyId", customStudyId)
@@ -1735,7 +1734,7 @@ public class StudyDAOImpl implements StudyDAO {
           queryString =
               "SELECT s.study_id FROM questionnaires s where s.custom_study_id=:customStudyId and is_live =1";
           questionnarieStudyId =
-              (Integer)
+              (String)
                   session
                       .createSQLQuery(queryString)
                       .setString("customStudyId", customStudyId)
@@ -1745,7 +1744,7 @@ public class StudyDAOImpl implements StudyDAO {
           queryString =
               "SELECT s.study_id FROM consent s where s.custom_study_id=:customStudyId and round(s.version, 1) =:consentVersion";
           consentStudyId =
-              (Integer)
+              (String)
                   session
                       .createSQLQuery(queryString)
                       .setString("customStudyId", customStudyId)
@@ -1757,7 +1756,7 @@ public class StudyDAOImpl implements StudyDAO {
             queryString =
                 "SELECT s.study_id FROM consent_info s where s.custom_study_id=:customStudyId and round(s.version, 1) =:consentVersion";
             consentStudyId =
-                (Integer)
+                (String)
                     session
                         .createSQLQuery(queryString)
                         .setString("customStudyId", customStudyId)
@@ -4886,7 +4885,7 @@ public class StudyDAOImpl implements StudyDAO {
                     for (QuestionnairesStepsBo questionnairesStepsBo :
                         existedQuestionnairesStepsBoList) {
                       String destionStep = questionnairesStepsBo.getDestinationStep();
-                      if (destionStep.equals(0)) {
+                      if (destionStep == null) {
                         destinationList.add(-1);
                       } else {
                         for (int i = 0; i < existedQuestionnairesStepsBoList.size(); i++) {

@@ -13,6 +13,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -3996,8 +3997,13 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                     .setString("customStudyId", customStudyId)
                     .uniqueResult();
         if (studyBo != null) {
-          queryString = " From StudyBo where id=" + questionnaireBo.getStudyId();
-          StudyBo draftStudyBo = (StudyBo) session.createQuery(queryString).uniqueResult();
+          queryString = " From StudyBo where id=:studyId";
+          StudyBo draftStudyBo =
+              (StudyBo)
+                  session
+                      .createQuery(queryString)
+                      .setString("studyId", questionnaireBo.getStudyId())
+                      .uniqueResult();
           NotificationBO notificationBO = null;
           queryString =
               "From NotificationBO where questionnarieId=:questionnarieId "
