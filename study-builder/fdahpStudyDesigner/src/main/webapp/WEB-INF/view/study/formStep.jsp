@@ -768,14 +768,14 @@
             '<div class="ellipse-hover-icon" onmouseleave="ellipseUnHover(this);">' +
             '  <span class="sprites_icon preview-g mr-sm" data-toggle="tooltip" data-placement="top" title="View"></span>';
         if (value.status) {
-          dynamicAction += '<span class="sprites_icon edit-g mr-sm" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestion('
-              + parseInt(value.questionInstructionId) + ');"></span>';
+          dynamicAction += '<span class="sprites_icon edit-g mr-sm" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestion(\''
+              + value.questionInstructionId + '\');"></span>';
         } else {
-          dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestion('
-              + parseInt(value.questionInstructionId) + ');"></span>';
+          dynamicAction += '<span class="edit-inc-draft mr-md mr-sm" data-toggle="tooltip" data-placement="top" title="Edit" onclick="editQuestion(\''
+              + value.questionInstructionId + '\');"></span>';
         }
-        dynamicAction += '<span class="sprites_icon delete" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deletQuestion(' + parseInt(value.stepId)
-            + ',' + parseInt(value.questionInstructionId) + ')"></span>' +
+        dynamicAction += '<span class="sprites_icon delete" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deletQuestion(\'' + value.stepId
+            + '\',\'' + value.questionInstructionId + '\')"></span>' +
             '</div>' +
             '</div></div>';
         datarow.push(dynamicAction);
