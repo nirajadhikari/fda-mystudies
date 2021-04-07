@@ -1,7 +1,9 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
+import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.StudyBo;
+import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.dao.StudyDAO;
@@ -19,13 +21,29 @@ public class StudyExportService {
 
   public void exportStudy(String studyId) throws SQLException {
     List<String> insertSqlStatements = new ArrayList<>();
+
     StudyBo studyBo = studyDao.getStudy(studyId);
 
-    addStudyInsertSql(studyBo, insertSqlStatements);
+    addStudiesInsertSql(studyBo, insertSqlStatements);
+
+    /*StudyPermissionBO studyPermissionBo =
+        studyDao.getStudyPermissionBO(studyBo.getId(), studyBo.getUserId());
+    StudySequenceBo studySequenceBo = studyDao.getStudySequenceByStudyId(studyBo.getId());
+    AnchorDateTypeBo anchorDate = studyDao.getAnchorDateDetails(studyBo.getId());
+    List<StudyPageBo> studypageList =
+        studyDao.getOverviewStudyPagesById(studyBo.getId(), studyBo.getUserId());
+    EligibilityBo eligibilityBo = studyDao.getStudyEligibiltyByStudyId(studyBo.getId());
+
+    addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements);
+    addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
+    addAnchorDateInsertSql(anchorDate, insertSqlStatements);
+    addStudypagesListInsertSql(studypageList, insertSqlStatements);
+    addEligibilityInsertSql(eligibilityBo, insertSqlStatements);*/
   }
 
-  private void addStudyInsertSql(StudyBo studyBo, List<String> insertSqlStatements)
+  private void addStudiesInsertSql(StudyBo studyBo, List<String> insertSqlStatements)
       throws SQLException {
+
     String studiesInsertQuery =
         prepareInsertQuery(
             StudyExportSqlQueries.STUDIES,
@@ -64,21 +82,11 @@ public class StudyExportService {
             studyBo.getType(),
             studyBo.getVersion());
 
-    StudyPermissionBO studyPermissionBo =
-        studyDao.getStudyPermissionBO(studyBo.getId(), studyBo.getUserId());
+    insertSqlStatements.add(studiesInsertQuery);
+  }
 
-    String studyPermissionsInsertQuery =
-        prepareInsertQuery(
-            StudyExportSqlQueries.STUDY_PERMISSION,
-            studyPermissionBo.getStudyPermissionId(),
-            studyPermissionBo.getDelFlag(),
-            studyPermissionBo.getProjectLead(),
-            studyPermissionBo.getStudyId(),
-            studyPermissionBo.getUserId(),
-            studyPermissionBo.isViewPermission());
-
-    StudySequenceBo studySequenceBo = studyDao.getStudySequenceByStudyId(studyBo.getId());
-
+  private void addStudySequenceInsertSql(
+      StudySequenceBo studySequenceBo, List<String> insertSqlStatements) throws SQLException {
     String studySequeneInsertQuery =
         prepareInsertQuery(
             StudyExportSqlQueries.STUDY_SEQUENCE,
@@ -100,19 +108,79 @@ public class StudyExportService {
             studySequenceBo.isStudyExcActiveTask(),
             studySequenceBo.isStudyExcQuestionnaries(),
             studySequenceBo.getStudyId());
-
-    AnchorDateTypeBo anchorDate = studyDao.getAnchorDateDetails(studyBo.getId());
-
-    /*String anchorDateTypeInsertQuery =
-    prepareInsertQuery(
-        StudyExportSqlQueries.STUDY_SEQUENCE,
-        studySequenceBo.getStudySequenceId(),
-        studySequenceBo.isActions(),
-        );*/
-
-    insertSqlStatements.add(studiesInsertQuery);
-    insertSqlStatements.add(studyPermissionsInsertQuery);
     insertSqlStatements.add(studySequeneInsertQuery);
+  }
+
+  private void addAnchorDateInsertSql(AnchorDateTypeBo anchorDate, List<String> insertSqlStatements)
+      throws SQLException {
+    String anchorDateTypeInsertQuery =
+        prepareInsertQuery(
+            StudyExportSqlQueries.ANCHORDATE_TYPE,
+            anchorDate.getId(),
+            anchorDate.getCustomStudyId(),
+            anchorDate.getHasAnchortypeDraft(),
+            anchorDate.getName(),
+            anchorDate.getStudyId(),
+            anchorDate.getVersion());
+
+    insertSqlStatements.add(anchorDateTypeInsertQuery);
+  }
+
+  private void addStudypagesListInsertSql(
+      List<StudyPageBo> studypageList, List<String> insertSqlStatements) throws SQLException {
+    List<String> studyPageBoInsertQueryList = new ArrayList<>();
+    for (StudyPageBo studyPageBo : studypageList) {
+      String studyPageBoInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.STUDY_PAGE,
+              studyPageBo.getPageId(),
+              studyPageBo.getCreatedBy(),
+              studyPageBo.getCreatedOn(),
+              studyPageBo.getDescription(),
+              studyPageBo.getImagePath(),
+              studyPageBo.getModifiedBy(),
+              studyPageBo.getModifiedOn(),
+              studyPageBo.getStudyId(),
+              studyPageBo.getTitle(),
+              studyPageBo);
+
+      insertSqlStatements.add(studyPageBoInsertQuery);
+    }
+    insertSqlStatements.addAll(studyPageBoInsertQueryList);
+  }
+
+  private void addEligibilityInsertSql(
+      EligibilityBo eligibilityBo, List<String> insertSqlStatements) throws SQLException {
+    String eligibilityInsertQuery =
+        prepareInsertQuery(
+            StudyExportSqlQueries.ELIGIBILITY,
+            eligibilityBo.getId(),
+            eligibilityBo.getCreatedBy(),
+            eligibilityBo.getCreatedOn(),
+            eligibilityBo.getEligibilityMechanism(),
+            eligibilityBo.getFailureOutcomeText(),
+            eligibilityBo.getInstructionalText(),
+            eligibilityBo.getModifiedBy(),
+            eligibilityBo.getModifiedOn(),
+            eligibilityBo.getStudyId());
+
+    insertSqlStatements.add(eligibilityInsertQuery);
+  }
+
+  private void addStudyPermissionInsertQuery(
+      StudyPermissionBO studyPermissionBo, List<String> insertSqlStatements) throws SQLException {
+
+    String studyPermissionsInsertQuery =
+        prepareInsertQuery(
+            StudyExportSqlQueries.STUDY_PERMISSION,
+            studyPermissionBo.getStudyPermissionId(),
+            studyPermissionBo.getDelFlag(),
+            studyPermissionBo.getProjectLead(),
+            studyPermissionBo.getStudyId(),
+            studyPermissionBo.getUserId(),
+            studyPermissionBo.isViewPermission());
+
+    insertSqlStatements.add(studyPermissionsInsertQuery);
   }
 
   private String prepareInsertQuery(String sqlQuery, Object... values) throws SQLException {
@@ -122,17 +190,17 @@ public class StudyExportService {
             .replace("`", "")
             .split(",");
 
-    /* if (columns.length != values.length) {
+    if (columns.length != values.length) {
       throw new SQLException("Column count doesn't match value count.");
-    }*/
+    }
 
     int i = 0;
     for (Object column : columns) {
-      if (values[i] instanceof Integer) {
-        sqlQuery = sqlQuery.replaceFirst("<" + column + ">", (String) values[i]);
-      } else {
-        sqlQuery = sqlQuery.replaceFirst("<" + column + ">", "'" + values[i] + "'");
-      }
+      /*if (values[i] instanceof Integer) {
+        sqlQuery = sqlQuery.replaceFirst("<" + column + ">", values[i]);
+      } else {*/
+      sqlQuery = sqlQuery.replace("{" + column + "}", "'" + values[i] + "'");
+      // }
 
       i++;
     }
@@ -140,10 +208,17 @@ public class StudyExportService {
     return sqlQuery;
   }
 
-  public static void main(String[] args) throws SQLException {
+  /* public static void main(String[] args) throws SQLException {
     StudyExportService export = new StudyExportService();
 
-    String query = export.prepareInsertQuery(StudyExportSqlQueries.STUDIES, "1");
-    System.out.println(query);
-  }
+    String sqlQuery = StudyExportSqlQueries.STUDY_SEQUENCE;
+    String columns = sqlQuery.substring(sqlQuery.indexOf('(') + 1, sqlQuery.indexOf(")"));
+
+    System.out.println(columns);
+     .replace("`", "")
+    .split(",");
+
+    //    String query = export.prepareInsertQuery(StudyExportSqlQueries.STUDIES, "1");
+    //    System.out.println(query);
+  }*/
 }

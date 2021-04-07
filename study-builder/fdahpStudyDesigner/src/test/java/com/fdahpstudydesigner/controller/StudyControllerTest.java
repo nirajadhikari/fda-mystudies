@@ -56,6 +56,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudySessionBean;
@@ -1297,6 +1298,28 @@ public class StudyControllerTest extends BaseMockIT {
 
     verifyAuditEventCall(STUDY_METADATA_SEND_OPERATION_FAILED);
     verifyAuditEventCall(STUDY_METADATA_SEND_FAILED);
+  }
+
+  @Test
+  public void shouldCreateInsertSqlQueries() throws Exception {
+    HttpHeaders headers = getCommonHeaders();
+    SessionObject session = getSessionObject();
+    session.setUserId(USER_ID_VALUE);
+    session.setStudySession(new ArrayList<>(Arrays.asList(0)));
+    session.setSessionId(UUID.randomUUID().toString());
+    session.setAccessLevel(UserAccessLevel.SUPER_ADMIN.getValue());
+
+    HashMap<String, Object> sessionAttributes = getSessionAttributes();
+    sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
+
+    mockMvc
+        .perform(
+            post("/adminStudies/exportStudy")
+                .param(FdahpStudyDesignerConstants.STUDY_ID, "678574")
+                .headers(headers)
+                .sessionAttrs(sessionAttributes))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 
   public static String readJsonFile(String filepath) throws IOException {

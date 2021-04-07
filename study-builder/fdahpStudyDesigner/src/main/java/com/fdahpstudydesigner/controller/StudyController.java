@@ -42,6 +42,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURCE_SECTION_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SAVED_IN_DRAFT_STATE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_VIEWED;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -69,6 +70,7 @@ import com.fdahpstudydesigner.common.StudyBuilderAuditEventHelper;
 import com.fdahpstudydesigner.mapper.AuditEventMapper;
 import com.fdahpstudydesigner.service.NotificationService;
 import com.fdahpstudydesigner.service.OAuthService;
+import com.fdahpstudydesigner.service.StudyExportService;
 import com.fdahpstudydesigner.service.StudyQuestionnaireService;
 import com.fdahpstudydesigner.service.StudyService;
 import com.fdahpstudydesigner.service.UsersService;
@@ -132,6 +134,8 @@ public class StudyController {
   @Autowired private StudyBuilderAuditEventHelper auditLogEventHelper;
 
   @Autowired private OAuthService oauthService;
+
+  @Autowired private StudyExportService studyExportService;
 
   @RequestMapping("/adminStudies/actionList.do")
   public ModelAndView actionList(HttpServletRequest request) {
@@ -5223,5 +5227,54 @@ public class StudyController {
       logger.error("StudyController - submitResponseToResponseServer() - ERROR ", e);
     }
     logger.info("StudyController - submitResponseToResponseServer() - Ends ");
+  }
+
+  @RequestMapping(value = "/adminStudies/exportStudy", method = RequestMethod.POST)
+  public ModelAndView exportStudy(HttpServletRequest request, HttpServletResponse response) {
+    logger.info("StudyController - updateStudyActionOnAction() - Starts");
+    JSONObject jsonobject = new JSONObject();
+    PrintWriter out = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    String successMessage = "";
+    StudyDetailsBean studyDetails = null;
+    try {
+      SessionObject sesObj =
+          (SessionObject)
+              request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+      Integer sessionStudyCount =
+          StringUtils.isNumeric(request.getParameter("_S"))
+              ? Integer.parseInt(request.getParameter("_S"))
+              : 0;
+      if ((sesObj != null)
+          && (sesObj.getStudySession() != null)
+          && sesObj.getStudySession().contains(sessionStudyCount)) {
+        String studyId =
+            FdahpStudyDesignerUtil.isEmpty(
+                    request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+                ? ""
+                : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+        String customStudyId =
+            (String)
+                request
+                    .getSession()
+                    .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
+        String buttonText =
+            FdahpStudyDesignerUtil.isEmpty(
+                    request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))
+                ? ""
+                : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
+        if (StringUtils.isNotEmpty(studyId)) {
+          studyExportService.exportStudy(studyId);
+        }
+      }
+      jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
+      response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
+      out = response.getWriter();
+      out.print(jsonobject);
+    } catch (Exception e) {
+      logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
+    }
+    logger.info("StudyController - updateStudyActionOnAction() - Ends");
+    return null;
   }
 }
