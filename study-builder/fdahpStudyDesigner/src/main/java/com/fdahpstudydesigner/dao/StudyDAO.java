@@ -25,6 +25,7 @@ package com.fdahpstudydesigner.dao;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
@@ -39,6 +40,7 @@ import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.HashMap;
 import java.util.List;
@@ -217,4 +219,8 @@ public interface StudyDAO {
   public boolean validateStudyActions(String studyId);
 
   public List<ConsentBo> getConsentList(String customStudyId);
+
+  public StudySequenceBo getStudySequenceByStudyId(String studyId);
+
+  public AnchorDateTypeBo getAnchorDateDetails(String studyId);
 }

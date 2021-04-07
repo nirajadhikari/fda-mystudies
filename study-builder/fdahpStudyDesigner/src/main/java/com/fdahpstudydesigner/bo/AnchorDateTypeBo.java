@@ -28,11 +28,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "anchordate_type")
+@NamedQueries({
+  @NamedQuery(
+      name = "getAnchorDateType",
+      query = "SELECT ADB FROM AnchorDateTypeBo ADB WHERE CBO.studyId =:studyId"),
+})
 public class AnchorDateTypeBo implements Serializable {
 
   private static final long serialVersionUID = 1L;

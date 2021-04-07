@@ -6977,4 +6977,53 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - getConsentList() - Ends");
     return consentBoList;
   }
+
+  @Override
+  public StudySequenceBo getStudySequenceByStudyId(String studyId) {
+
+    logger.info("StudyDAOImpl - getStudy() - Starts");
+    Session session = null;
+    StudySequenceBo studySequence = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      studySequence =
+          (StudySequenceBo)
+              session
+                  .getNamedQuery("getStudySequenceByStudyId")
+                  .setString("studyId", studyId)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudy() - ERROR", e);
+    } finally {
+      if ((null != session) && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudy() - Ends");
+    return studySequence;
+  }
+
+  @Override
+  public AnchorDateTypeBo getAnchorDateDetails(String studyId) {
+    logger.info("StudyDAOImpl - getStudy() - Starts");
+    Session session = null;
+    AnchorDateTypeBo anchorDatetype = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      anchorDatetype =
+          (AnchorDateTypeBo)
+              session
+                  .getNamedQuery("getAnchorDateType")
+                  .setString("studyId", studyId)
+                  .uniqueResult();
+    } catch (Exception e) {
+      logger.error("StudyDAOImpl - getStudy() - ERROR", e);
+    } finally {
+      if ((null != session) && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - getStudy() - Ends");
+    return anchorDatetype;
+  }
 }
