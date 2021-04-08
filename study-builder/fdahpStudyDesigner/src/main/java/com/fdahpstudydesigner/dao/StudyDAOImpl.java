@@ -37,6 +37,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_REVIEW_
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SETTINGS_SAVED_OR_UPDATED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.UPDATES_PUBLISHED_TO_STUDY;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.DynamicBean;
 import com.fdahpstudydesigner.bean.DynamicFrequencyBean;
@@ -1488,7 +1489,7 @@ public class StudyDAOImpl implements StudyDAO {
   @SuppressWarnings("unchecked")
   @Override
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
-      Integer comprehensionQuestionId) {
+      String comprehensionQuestionId) {
     logger.info("StudyDAOImpl - deleteComprehensionTestQuestion() - Starts");
     Session session = null;
     List<ComprehensionTestResponseBo> comprehensionTestResponseList = null;
@@ -1497,7 +1498,7 @@ public class StudyDAOImpl implements StudyDAO {
       query =
           session.createQuery(
               "From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId=:questionId");
-      query.setInteger("questionId", comprehensionQuestionId);
+      query.setString("questionId", comprehensionQuestionId);
       comprehensionTestResponseList = query.list();
     } catch (Exception e) {
       logger.error("StudyDAOImpl - deleteComprehensionTestQuestion() - ERROR ", e);

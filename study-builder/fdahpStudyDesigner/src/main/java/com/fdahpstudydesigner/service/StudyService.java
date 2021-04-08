@@ -79,7 +79,7 @@ public interface StudyService {
   public List<ComprehensionTestQuestionBo> getComprehensionTestQuestionList(String studyId);
 
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
-      Integer comprehensionQuestionId);
+      String comprehensionQuestionId);
 
   public ConsentBo getConsentDetailsByStudyId(String studyId);
 

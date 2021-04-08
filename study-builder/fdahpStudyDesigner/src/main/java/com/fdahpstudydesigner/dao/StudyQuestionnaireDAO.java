@@ -114,6 +114,8 @@ public interface StudyQuestionnaireDAO {
 
   public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId, Boolean isLive);
 
+  public List<QuestionnaireBo> getStudyQuestionnairesByStudyId(String studyId);
+
   public Boolean isAnchorDateExistsForStudy(String studyId, String customStudyId);
 
   public Boolean isQuestionnairesCompleted(String studyId);
@@ -167,4 +169,6 @@ public interface StudyQuestionnaireDAO {
   public QuestionnaireBo getQuestionnaireById(String questionnaireId);
 
   public QuestionsBo getQuestionById(String questionId);
+
+  public List<QuestionnairesStepsBo> getQuestionnairesStepsList(List<String> questionnaireIds);
 }
