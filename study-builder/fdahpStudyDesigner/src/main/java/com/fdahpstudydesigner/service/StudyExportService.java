@@ -7,11 +7,14 @@ import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
+import com.fdahpstudydesigner.dao.NotificationDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.StudyExportSqlQueries;
@@ -31,6 +34,8 @@ public class StudyExportService {
   @Autowired StudyDAO studyDao;
 
   @Autowired StudyQuestionnaireDAO studyQuestionnaireDAO;
+
+  @Autowired NotificationDAO notificationDAO;
 
   public String exportStudy(String studyId) {
     List<String> insertSqlStatements = new ArrayList<>();
@@ -67,6 +72,10 @@ public class StudyExportService {
 
     List<String> questionnaireIds = new ArrayList<>();
 
+    List<NotificationBO> notificationBOs = notificationDAO.getNotificationList(studyBo.getId());
+
+    List<ResourceBO> resourceBOs = studyDao.getResourceList(studyBo.getId());
+
     if (CollectionUtils.isNotEmpty(questionnairesList)) {
       for (QuestionnaireBo questionnaireBo : questionnairesList) {
         questionnaireIds.add(questionnaireBo.getId());
@@ -77,9 +86,12 @@ public class StudyExportService {
       addStudiesInsertSql(studyBo, insertSqlStatements);
       addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements);
       addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
+      addNotificationInsertSql(notificationBOs, insertSqlStatements);
+      addResourceInsertSql(resourceBOs, insertSqlStatements);
       addAnchorDateInsertSql(anchorDate, insertSqlStatements);
       addStudypagesListInsertSql(studypageList, insertSqlStatements);
       addEligibilityInsertSql(eligibilityBo, insertSqlStatements);
+
     } catch (SQLException e) {
       logger.error(String.format("export study failed due to %s", e.getMessage()), e);
     }
@@ -238,6 +250,91 @@ public class StudyExportService {
             eligibilityBo.getStudyId());
 
     insertSqlStatements.add(eligibilityInsertQuery);
+  }
+
+  private void addNotificationInsertSql(
+      List<NotificationBO> notificationBOs, List<String> insertSqlStatements) throws SQLException {
+
+    if (CollectionUtils.isEmpty(notificationBOs)) {
+      return;
+    }
+    List<String> notificationBoBoInsertQueryList = new ArrayList<>();
+    for (NotificationBO notificationBO : notificationBOs) {
+
+      String notificationBoInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.NOTIFICATION,
+              notificationBO.getNotificationId(),
+              notificationBO.getActiveTaskId(),
+              notificationBO.isAnchorDate(),
+              notificationBO.getAppId(),
+              notificationBO.getCreatedBy(),
+              notificationBO.getCreatedOn(),
+              notificationBO.getCustomStudyId(),
+              notificationBO.getModifiedBy(),
+              notificationBO.getModifiedOn(),
+              notificationBO.isNotificationAction(),
+              notificationBO.isNotificationDone(),
+              notificationBO.getNotificationScheduleType(),
+              notificationBO.isNotificationSent(),
+              notificationBO.isNotificationStatus(),
+              notificationBO.getNotificationSubType(),
+              notificationBO.getNotificationText(),
+              notificationBO.getNotificationType(),
+              notificationBO.getQuestionnarieId(),
+              notificationBO.getResourceId(),
+              notificationBO.getScheduleDate(),
+              notificationBO.getScheduleTime(),
+              notificationBO.getStudyId(),
+              notificationBO.getxDays(),
+              notificationBO.getScheduleTimestamp());
+
+      notificationBoBoInsertQueryList.add(notificationBoInsertQuery);
+    }
+    insertSqlStatements.addAll(notificationBoBoInsertQueryList);
+  }
+
+  private void addResourceInsertSql(List<ResourceBO> resourceBOs, List<String> insertSqlStatements)
+      throws SQLException {
+
+    if (CollectionUtils.isEmpty(resourceBOs)) {
+      return;
+    }
+    List<String> resourceBoInsertQueryList = new ArrayList<>();
+    for (ResourceBO resourceBO : resourceBOs) {
+
+      String resourceBoInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.RESOURCES,
+              resourceBO.getId(),
+              resourceBO.isAction(),
+              resourceBO.getAnchorDateId(),
+              resourceBO.getCreatedBy(),
+              resourceBO.getCreatedOn(),
+              resourceBO.getEndDate(),
+              resourceBO.getModifiedBy(),
+              resourceBO.getModifiedOn(),
+              resourceBO.getPdfName(),
+              resourceBO.getPdfUrl(),
+              resourceBO.getResourceText(),
+              resourceBO.isResourceType(),
+              resourceBO.isResourceVisibility(),
+              resourceBO.getRichText(),
+              resourceBO.getSequenceNo(),
+              resourceBO.getStartDate(),
+              resourceBO.isStatus(),
+              resourceBO.getStudyId(),
+              resourceBO.isStudyProtocol(),
+              resourceBO.isTextOrPdf(),
+              resourceBO.getTimePeriodFromDays(),
+              resourceBO.getTimePeriodToDays(),
+              resourceBO.getTitle(),
+              resourceBO.isxDaysSign(),
+              resourceBO.isyDaysSign());
+
+      resourceBoInsertQueryList.add(resourceBoInsertQuery);
+    }
+    insertSqlStatements.addAll(resourceBoInsertQueryList);
   }
 
   private void addStudyPermissionInsertQuery(

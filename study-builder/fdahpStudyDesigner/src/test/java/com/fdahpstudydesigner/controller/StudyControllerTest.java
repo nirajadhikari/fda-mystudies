@@ -56,7 +56,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudySessionBean;
@@ -1307,7 +1306,7 @@ public class StudyControllerTest extends BaseMockIT {
   public void shouldCreateInsertSqlQueries() throws Exception {
 
     mockMvc
-        .perform(post("/studies/402880a0787e758401787e771b410001/export"))
+        .perform(post("/studies/4028809778b0f7490178b0fdb42a0003/export"))
         .andDo(print())
         .andExpect(status().isOk());
   }
