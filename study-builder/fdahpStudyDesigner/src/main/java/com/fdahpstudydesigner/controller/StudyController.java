@@ -5231,13 +5231,13 @@ public class StudyController {
   }
 
   @RequestMapping(value = "/studies/{studyId}/export", method = RequestMethod.POST)
-  public ModelAndView exportStudy(
+  public String exportStudy(
       HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId) {
     logger.info("StudyController - exportStudy() - Starts");
 
     String filePath = studyExportService.exportStudy(studyId);
 
     logger.info("StudyController - exportStudy() - Ends");
-    return null;
+    return StringUtils.defaultString(filePath);
   }
 }

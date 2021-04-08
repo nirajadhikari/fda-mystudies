@@ -5050,7 +5050,23 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
 
   @Override
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(List<String> questionnaireIds) {
-    // TODO Auto-generated method stub
-    return null;
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Starts");
+    Session session = null;
+    List<QuestionnairesStepsBo> questionnairesStepsList = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      query =
+          session
+              .getNamedQuery("getQuestionnaireStepsByquestionnairesId")
+              .setParameter("questionnairesIds", questionnaireIds);
+      questionnairesStepsList = query.list();
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionnairesStepsList;
   }
 }
