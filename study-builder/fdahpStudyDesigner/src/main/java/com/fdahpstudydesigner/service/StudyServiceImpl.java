@@ -699,7 +699,7 @@ public class StudyServiceImpl implements StudyService {
     logger.info("INFO: StudyServiceImpl - saveOrCompleteConsentReviewDetails() :: Starts");
     ConsentBo updateConsentBo = null;
     try {
-      if (consentBo.getId() != null) {
+      if (StringUtils.isNotEmpty(consentBo.getId())) {
         updateConsentBo = studyDAO.getConsentDetailsByStudyId(consentBo.getStudyId().toString());
       } else {
         updateConsentBo = new ConsentBo();

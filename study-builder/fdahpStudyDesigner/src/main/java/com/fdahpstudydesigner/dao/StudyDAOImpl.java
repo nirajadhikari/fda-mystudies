@@ -2993,7 +2993,7 @@ public class StudyDAOImpl implements StudyDAO {
                 && !existedQuestionnairesStepsBoList.isEmpty()) {
               for (QuestionnairesStepsBo questionnairesStepsBo : existedQuestionnairesStepsBoList) {
                 String destionStep = questionnairesStepsBo.getDestinationStep();
-                if (destionStep.equals(0)) {
+                if (destionStep.equals("0")) {
                   destinationList.add(-1);
                 } else {
                   for (int i = 0; i < existedQuestionnairesStepsBoList.size(); i++) {
@@ -3272,7 +3272,7 @@ public class StudyDAOImpl implements StudyDAO {
             }
             if ((destinationList != null) && !destinationList.isEmpty()) {
               for (int i = 0; i < destinationList.size(); i++) {
-                String desId = null;
+                String desId = String.valueOf(0);
                 if (destinationList.get(i) != -1) {
                   desId = newQuestionnairesStepsBoList.get(destinationList.get(i)).getStepId();
                 }
@@ -3289,7 +3289,7 @@ public class StudyDAOImpl implements StudyDAO {
                 if (questionResponseSubTypeBo.getDestinationStepId() == null) {
                   sequenceSubTypeList.add(null);
                 } else if ((questionResponseSubTypeBo.getDestinationStepId() != null)
-                    && questionResponseSubTypeBo.getDestinationStepId().equals(0)) {
+                    && questionResponseSubTypeBo.getDestinationStepId().equals("0")) {
                   sequenceSubTypeList.add(-1);
                 } else {
                   if ((existedQuestionnairesStepsBoList != null)
@@ -5142,7 +5142,7 @@ public class StudyDAOImpl implements StudyDAO {
                   }
                   if ((destinationList != null) && !destinationList.isEmpty()) {
                     for (int i = 0; i < destinationList.size(); i++) {
-                      String desId = null;
+                      String desId = String.valueOf(0);
                       if (destinationList.get(i) != -1) {
                         desId =
                             newQuestionnairesStepsBoList.get(destinationList.get(i)).getStepId();
@@ -5160,7 +5160,7 @@ public class StudyDAOImpl implements StudyDAO {
                       if (questionResponseSubTypeBo.getDestinationStepId() == null) {
                         sequenceSubTypeList.add(null);
                       } else if ((questionResponseSubTypeBo.getDestinationStepId() != null)
-                          && questionResponseSubTypeBo.getDestinationStepId().equals(0)) {
+                          && questionResponseSubTypeBo.getDestinationStepId().equals("0")) {
                         sequenceSubTypeList.add(-1);
                       } else {
                         if ((existedQuestionnairesStepsBoList != null)
@@ -5218,7 +5218,7 @@ public class StudyDAOImpl implements StudyDAO {
                       if (questionResponseTypeBo.getOtherDestinationStepId() == null) {
                         sequenceTypeList.add(null);
                       } else if ((questionResponseTypeBo.getOtherDestinationStepId() != null)
-                          && questionResponseTypeBo.getOtherDestinationStepId().equals(0)) {
+                          && questionResponseTypeBo.getOtherDestinationStepId().equals("0")) {
                         sequenceTypeList.add(-1);
                       } else {
                         if ((existedQuestionnairesStepsBoList != null)
