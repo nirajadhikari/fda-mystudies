@@ -71,6 +71,7 @@ import com.fdahpstudydesigner.common.JsonUtils;
 import com.fdahpstudydesigner.common.PathMappingUri;
 import com.fdahpstudydesigner.common.UserAccessLevel;
 import com.fdahpstudydesigner.dao.NotificationDAOImpl;
+import com.fdahpstudydesigner.service.StudyExportService;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -110,6 +111,8 @@ public class StudyControllerTest extends BaseMockIT {
   private static final String TEST_STUDY_ID_STRING = "678680";
 
   @Autowired NotificationDAOImpl notificationDaoImpl;
+
+  @Autowired StudyExportService studyExportService;
 
   private static final String OAUTH_TOKEN = "/oauth2/token";
 
@@ -1302,22 +1305,9 @@ public class StudyControllerTest extends BaseMockIT {
 
   @Test
   public void shouldCreateInsertSqlQueries() throws Exception {
-    HttpHeaders headers = getCommonHeaders();
-    SessionObject session = getSessionObject();
-    session.setUserId(USER_ID_VALUE);
-    session.setStudySession(new ArrayList<>(Arrays.asList(0)));
-    session.setSessionId(UUID.randomUUID().toString());
-    session.setAccessLevel(UserAccessLevel.SUPER_ADMIN.getValue());
-
-    HashMap<String, Object> sessionAttributes = getSessionAttributes();
-    sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     mockMvc
-        .perform(
-            post("/adminStudies/exportStudy")
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678574")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
+        .perform(post("/studies/402880a0787e758401787e771b410001/export"))
         .andDo(print())
         .andExpect(status().isOk());
   }

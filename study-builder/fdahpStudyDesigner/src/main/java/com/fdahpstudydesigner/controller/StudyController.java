@@ -110,6 +110,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
@@ -5229,52 +5230,14 @@ public class StudyController {
     logger.info("StudyController - submitResponseToResponseServer() - Ends ");
   }
 
-  @RequestMapping(value = "/adminStudies/exportStudy", method = RequestMethod.POST)
-  public ModelAndView exportStudy(HttpServletRequest request, HttpServletResponse response) {
-    logger.info("StudyController - updateStudyActionOnAction() - Starts");
-    JSONObject jsonobject = new JSONObject();
-    PrintWriter out = null;
-    String message = FdahpStudyDesignerConstants.FAILURE;
-    String successMessage = "";
-    StudyDetailsBean studyDetails = null;
-    try {
-      SessionObject sesObj =
-          (SessionObject)
-              request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-      Integer sessionStudyCount =
-          StringUtils.isNumeric(request.getParameter("_S"))
-              ? Integer.parseInt(request.getParameter("_S"))
-              : 0;
-      if ((sesObj != null)
-          && (sesObj.getStudySession() != null)
-          && sesObj.getStudySession().contains(sessionStudyCount)) {
-        String studyId =
-            FdahpStudyDesignerUtil.isEmpty(
-                    request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
-                ? ""
-                : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
-        String customStudyId =
-            (String)
-                request
-                    .getSession()
-                    .getAttribute(sessionStudyCount + FdahpStudyDesignerConstants.CUSTOM_STUDY_ID);
-        String buttonText =
-            FdahpStudyDesignerUtil.isEmpty(
-                    request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT))
-                ? ""
-                : request.getParameter(FdahpStudyDesignerConstants.BUTTON_TEXT);
-        if (StringUtils.isNotEmpty(studyId)) {
-          studyExportService.exportStudy(studyId);
-        }
-      }
-      jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
-      response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
-      out = response.getWriter();
-      out.print(jsonobject);
-    } catch (Exception e) {
-      logger.error("StudyController - updateStudyActionOnAction() - ERROR", e);
-    }
-    logger.info("StudyController - updateStudyActionOnAction() - Ends");
+  @RequestMapping(value = "/studies/{studyId}/export", method = RequestMethod.POST)
+  public ModelAndView exportStudy(
+      HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId) {
+    logger.info("StudyController - exportStudy() - Starts");
+
+    String filePath = studyExportService.exportStudy(studyId);
+
+    logger.info("StudyController - exportStudy() - Ends");
     return null;
   }
 }

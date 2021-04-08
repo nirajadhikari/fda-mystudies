@@ -256,7 +256,7 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
-      Integer comprehensionQuestionId) {
+      String comprehensionQuestionId) {
     logger.info("StudyServiceImpl - getComprehensionTestResponseList() - Starts");
     List<ComprehensionTestResponseBo> comprehensionTestResponseLsit = null;
     try {
