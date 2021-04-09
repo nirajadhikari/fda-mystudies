@@ -24,6 +24,7 @@
 package com.fdahpstudydesigner.dao;
 
 import com.fdahpstudydesigner.bean.ActiveStatisticsBean;
+import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskListBo;
 import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
@@ -64,4 +65,9 @@ public interface StudyActiveTasksDAO {
 
   public List<ActiveStatisticsBean> validateActiveTaskStatIds(
       String customStudyId, List<ActiveStatisticsBean> activeStatisticsBeans);
+
+  public List<ActiveTaskBo> getStudyActiveTaskByStudyId(String studyId);
+
+  public List<ActiveTaskAtrributeValuesBo> getActiveTaskAtrributeValuesByActiveTaskId(
+      List<String> activeTaskId);
 }

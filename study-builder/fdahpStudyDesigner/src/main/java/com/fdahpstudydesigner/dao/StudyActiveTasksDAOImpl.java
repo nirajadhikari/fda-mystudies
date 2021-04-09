@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
@@ -1103,5 +1104,57 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
     }
     logger.info("StudyActiveTasksDAOImpl - validateActiveTaskStatIds() - Ends");
     return activeStatisticsBeans;
+  }
+
+  @Override
+  public List<ActiveTaskBo> getStudyActiveTaskByStudyId(String studyId) {
+    logger.info("StudyActiveTasksDAOImpl - getStudyActiveTaskByStudyId() - Starts");
+    Session session = null;
+    List<ActiveTaskBo> activeTaskBos = null;
+    String searchQuery = "";
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (StringUtils.isNotEmpty(studyId)) {
+        searchQuery = "SELECT ATB FROM ActiveTaskBo ATB where ATB.studyId =:studyId";
+        query = session.createQuery(searchQuery).setParameter("studyId", studyId);
+        activeTaskBos = query.list();
+      }
+    } catch (Exception e) {
+      logger.error("StudyActiveTasksDAOImpl - getStudyActiveTaskByStudyId() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    logger.info("StudyActiveTasksDAOImpl - getStudyActiveTaskByStudyId() - Ends");
+    return activeTaskBos;
+  }
+
+  @Override
+  public List<ActiveTaskAtrributeValuesBo> getActiveTaskAtrributeValuesByActiveTaskId(
+      List<String> activeTaskIds) {
+    logger.info("StudyActiveTasksDAOImpl - getActiveTaskAtrributeValuesByActiveTaskId() - Starts");
+    Session session = null;
+    List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (CollectionUtils.isNotEmpty(activeTaskIds)) {
+        query =
+            session
+                .createQuery(
+                    "from ActiveTaskAtrributeValuesBo where activeTaskId IN (:activeTaskIds)")
+                .setParameterList("activeTaskIds", activeTaskIds);
+        activeTaskAtrributeValuesBos = query.list();
+      }
+    } catch (Exception e) {
+      logger.error(
+          "StudyActiveTasksDAOImpl - getActiveTaskAtrributeValuesByActiveTaskId() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    logger.info("StudyActiveTasksDAOImpl - getActiveTaskAtrributeValuesByActiveTaskId() - Ends");
+    return activeTaskAtrributeValuesBos;
   }
 }

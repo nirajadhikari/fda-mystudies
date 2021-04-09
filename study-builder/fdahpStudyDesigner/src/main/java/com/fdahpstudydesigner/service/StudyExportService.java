@@ -1,5 +1,7 @@
 package com.fdahpstudydesigner.service;
 
+import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -15,6 +17,7 @@ import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.dao.NotificationDAO;
+import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.StudyExportSqlQueries;
@@ -36,6 +39,8 @@ public class StudyExportService {
   @Autowired StudyQuestionnaireDAO studyQuestionnaireDAO;
 
   @Autowired NotificationDAO notificationDAO;
+
+  @Autowired StudyActiveTasksDAO studyActiveTasksDAO;
 
   public String exportStudy(String studyId) {
     List<String> insertSqlStatements = new ArrayList<>();
@@ -70,17 +75,29 @@ public class StudyExportService {
     List<QuestionnaireBo> questionnairesList =
         studyQuestionnaireDAO.getStudyQuestionnairesByStudyId(studyBo.getId());
 
-    List<String> questionnaireIds = new ArrayList<>();
-
     List<NotificationBO> notificationBOs = notificationDAO.getNotificationList(studyBo.getId());
 
     List<ResourceBO> resourceBOs = studyDao.getResourceList(studyBo.getId());
 
+    List<ActiveTaskBo> activeTaskBos =
+        studyActiveTasksDAO.getStudyActiveTaskByStudyId(studyBo.getId());
+
+    List<String> questionnaireIds = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(questionnairesList)) {
       for (QuestionnaireBo questionnaireBo : questionnairesList) {
         questionnaireIds.add(questionnaireBo.getId());
       }
     }
+
+    List<String> activeTaskIds = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(activeTaskBos)) {
+      for (ActiveTaskBo activeTaskBo : activeTaskBos) {
+        activeTaskIds.add(activeTaskBo.getId());
+      }
+    }
+
+    List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
+        studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
 
     try {
       addStudiesInsertSql(studyBo, insertSqlStatements);
@@ -88,6 +105,9 @@ public class StudyExportService {
       addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
       addNotificationInsertSql(notificationBOs, insertSqlStatements);
       addResourceInsertSql(resourceBOs, insertSqlStatements);
+      addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
+      addActiveTaskAtrributeValuesInsertSql(activeTaskAtrributeValuesBos, insertSqlStatements);
+
       addAnchorDateInsertSql(anchorDate, insertSqlStatements);
       addStudypagesListInsertSql(studypageList, insertSqlStatements);
       addEligibilityInsertSql(eligibilityBo, insertSqlStatements);
@@ -292,6 +312,84 @@ public class StudyExportService {
       notificationBoBoInsertQueryList.add(notificationBoInsertQuery);
     }
     insertSqlStatements.addAll(notificationBoBoInsertQueryList);
+  }
+
+  private void addStudyActiveTaskInsertSql(
+      List<ActiveTaskBo> activeTaskBos, List<String> insertSqlStatements) throws SQLException {
+
+    if (CollectionUtils.isEmpty(activeTaskBos)) {
+      return;
+    }
+    List<String> activeTaskBoInsertQueryList = new ArrayList<>();
+    for (ActiveTaskBo activeTaskBo : activeTaskBos) {
+
+      String activeTaskBoInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.ACTIVETASK_SQL,
+              activeTaskBo.getId(),
+              activeTaskBo.isAction(),
+              activeTaskBo.getActive(),
+              activeTaskBo.getActiveTaskLifetimeEnd(),
+              activeTaskBo.getActiveTaskLifetimeStart(),
+              activeTaskBo.getAnchorDateId(),
+              activeTaskBo.getCreatedBy(),
+              activeTaskBo.getCreatedDate(),
+              activeTaskBo.getCustomStudyId(),
+              activeTaskBo.getDayOfTheWeek(),
+              activeTaskBo.getDisplayName(),
+              activeTaskBo.getDuration(),
+              activeTaskBo.getFrequency(),
+              activeTaskBo.getInstruction(),
+              activeTaskBo.getIsChange(),
+              activeTaskBo.getLive(),
+              activeTaskBo.getModifiedBy(),
+              activeTaskBo.getModifiedDate(),
+              activeTaskBo.getRepeatActiveTask(),
+              activeTaskBo.getScheduleType(),
+              activeTaskBo.getShortTitle(),
+              activeTaskBo.getStudyId(),
+              activeTaskBo.getTaskTypeId(),
+              activeTaskBo.getTitle(),
+              activeTaskBo.getVersion());
+
+      activeTaskBoInsertQueryList.add(activeTaskBoInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskBoInsertQueryList);
+  }
+
+  private void addActiveTaskAtrributeValuesInsertSql(
+      List<ActiveTaskAtrributeValuesBo> activeTaskAttributeBos, List<String> insertSqlStatements)
+      throws SQLException {
+
+    if (CollectionUtils.isEmpty(activeTaskAttributeBos)) {
+      return;
+    }
+    List<String> activeTaskAtrributeInsertQueryList = new ArrayList<>();
+    for (ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo : activeTaskAttributeBos) {
+
+      String activeTaskAtrributeInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.ACTIVETASK_ATTRIBUTES_VALUES,
+              activeTaskAtrributeValuesBo.getAttributeValueId(),
+              activeTaskAtrributeValuesBo.getActive(),
+              activeTaskAtrributeValuesBo.getActiveTaskId(),
+              activeTaskAtrributeValuesBo.getActiveTaskMasterAttrId(),
+              activeTaskAtrributeValuesBo.isAddToLineChart(),
+              activeTaskAtrributeValuesBo.getAttributeVal(),
+              activeTaskAtrributeValuesBo.getDisplayNameStat(),
+              activeTaskAtrributeValuesBo.getDisplayUnitStat(),
+              activeTaskAtrributeValuesBo.getFormulaAppliedStat(),
+              activeTaskAtrributeValuesBo.getIdentifierNameStat(),
+              activeTaskAtrributeValuesBo.getRollbackChat(),
+              activeTaskAtrributeValuesBo.getTimeRangeChart(),
+              activeTaskAtrributeValuesBo.getTimeRangeStat(),
+              activeTaskAtrributeValuesBo.getTitleChat(),
+              activeTaskAtrributeValuesBo.getUploadTypeStat(),
+              activeTaskAtrributeValuesBo.isUseForStatistic());
+
+      activeTaskAtrributeInsertQueryList.add(activeTaskAtrributeInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskAtrributeInsertQueryList);
   }
 
   private void addResourceInsertSql(List<ResourceBO> resourceBOs, List<String> insertSqlStatements)
