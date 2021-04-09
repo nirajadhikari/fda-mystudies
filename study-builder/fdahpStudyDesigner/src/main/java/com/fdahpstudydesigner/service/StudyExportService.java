@@ -91,6 +91,9 @@ public class StudyExportService {
       }
     }
 
+    List<QuestionnairesStepsBo> questionnairesStepsList =
+        studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireIds);
+
     List<String> activeTaskIds = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(activeTaskBos)) {
       for (ActiveTaskBo activeTaskBo : activeTaskBos) {
@@ -100,15 +103,11 @@ public class StudyExportService {
 
     List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
         studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
-    List<QuestionnairesStepsBo> questionnairesStepsList =
-        studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireIds);
 
     try {
       addStudiesInsertSql(studyBo, insertSqlStatements);
       addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements);
       addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
-      addNotificationInsertSql(notificationBOs, insertSqlStatements);
-      addResourceInsertSql(resourceBOs, insertSqlStatements);
       addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
       addActiveTaskAtrributeValuesInsertSql(activeTaskAtrributeValuesBos, insertSqlStatements);
 

@@ -26,6 +26,9 @@ import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
+import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
+import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
@@ -35,12 +38,18 @@ import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
+import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
+import com.fdahpstudydesigner.bo.StudySequenceBo;
+import com.fdahpstudydesigner.dao.NotificationDAO;
+import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
+import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.SessionObject;
@@ -51,9 +60,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +73,13 @@ public class StudyServiceImpl implements StudyService {
 
   private static Logger logger = Logger.getLogger(StudyServiceImpl.class);
 
-  private StudyDAO studyDAO;
+  @Autowired private StudyDAO studyDAO;
+
+  @Autowired private StudyQuestionnaireDAO studyQuestionnaireDAO;
+
+  @Autowired private NotificationDAO notificationDAO;
+
+  @Autowired private StudyActiveTasksDAO studyActiveTasksDAO;
 
   @Override
   public String checkActiveTaskTypeValidation(String studyId) {
@@ -1480,13 +1495,68 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public String cloneStudy(String studyId, String userId, SessionObject sessionObject) {
+  public String replicateStudy(String studyId, SessionObject sessionObject) {
     StudyBo studyBo = studyDAO.getStudy(studyId);
-    StudyBo clonedStudy = ObjectUtils.clone(studyBo);
-    clonedStudy.setId(null);
 
-    studyDAO.saveOrUpdateStudy(clonedStudy, sessionObject);
+    StudyPermissionBO studyPermissionBo =
+        studyDAO.getStudyPermissionBO(studyBo.getId(), sessionObject.getUserId());
 
-    return clonedStudy.getId();
+    StudySequenceBo studySequenceBo = studyDAO.getStudySequenceByStudyId(studyBo.getId());
+    AnchorDateTypeBo anchorDate = studyDAO.getAnchorDateDetails(studyBo.getId());
+
+    List<StudyPageBo> studypageList =
+        studyDAO.getOverviewStudyPagesById(studyBo.getId(), sessionObject.getUserId());
+
+    EligibilityBo eligibilityBo = studyDAO.getStudyEligibiltyByStudyId(studyBo.getId());
+
+    List<EligibilityTestBo> eligibilityBoList = null;
+    if (eligibilityBo != null) {
+      eligibilityBoList = studyDAO.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+    }
+
+    List<ConsentBo> consentBoList = studyDAO.getConsentList(studyBo.getCustomStudyId());
+
+    List<ConsentInfoBo> consentInfoBoList = studyDAO.getConsentInfoList(studyBo.getId());
+
+    List<ConsentMasterInfoBo> consentMasterInfoList = studyDAO.getConsentMasterInfoList();
+
+    List<ComprehensionTestQuestionBo> comprehensionTestQuestionBoList =
+        studyDAO.getComprehensionTestQuestionList(studyBo.getId());
+
+    List<QuestionnaireBo> questionnairesList =
+        studyQuestionnaireDAO.getStudyQuestionnairesByStudyId(studyBo.getId());
+
+    List<NotificationBO> notificationBOs = notificationDAO.getNotificationList(studyBo.getId());
+
+    List<ResourceBO> resourceBOs = studyDAO.getResourceList(studyBo.getId());
+
+    List<ActiveTaskBo> activeTaskBos =
+        studyActiveTasksDAO.getStudyActiveTaskByStudyId(studyBo.getId());
+
+    List<String> questionnaireIds = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(questionnairesList)) {
+      for (QuestionnaireBo questionnaireBo : questionnairesList) {
+        questionnaireIds.add(questionnaireBo.getId());
+      }
+    }
+
+    List<QuestionnairesStepsBo> questionnairesStepsList =
+        studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireIds);
+
+    List<String> activeTaskIds = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(activeTaskBos)) {
+      for (ActiveTaskBo activeTaskBo : activeTaskBos) {
+        activeTaskIds.add(activeTaskBo.getId());
+      }
+    }
+
+    List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
+        studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
+
+    studyBo.setId(null);
+    studyBo.setCustomStudyId(("copy of " + studyBo.getCustomStudyId()).substring(0, 255));
+    studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
+
+    return studyBo.getId();
   }
 }

@@ -204,5 +204,5 @@ public interface StudyService {
 
   public List<ConsentBo> getConsentList(String customStudyId);
 
-  public String cloneStudy(String studyId, String userId, SessionObject sessionObject);
+  public String replicateStudy(String studyId, SessionObject sessionObject);
 }
