@@ -53,7 +53,7 @@ public interface UsersDAO {
 
   public String getUserPermissionByUserId(String sessionUserId);
 
-  public RoleBO getUserRole(Integer roleId);
+  public RoleBO getUserRole(String roleId);
 
   public List<RoleBO> getUserRoleList();
 }

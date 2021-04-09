@@ -522,14 +522,14 @@ public class UsersDAOImpl implements UsersDAO {
   }
 
   @Override
-  public RoleBO getUserRole(Integer roleId) {
+  public RoleBO getUserRole(String roleId) {
     logger.info("UsersDAOImpl - getUserRole() - Starts");
     Session session = null;
     RoleBO roleBO = null;
     Query query = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      query = session.getNamedQuery("getUserRoleByRoleId").setInteger("roleId", roleId);
+      query = session.getNamedQuery("getUserRoleByRoleId").setString("roleId", roleId);
       roleBO = (RoleBO) query.uniqueResult();
     } catch (Exception e) {
       logger.error("UsersDAOImpl - getUserRole() - ERROR", e);

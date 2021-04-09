@@ -110,7 +110,7 @@ public class UserBO implements Serializable {
   private String phoneNumber;
 
   @Column(name = "role_id")
-  private Integer roleId;
+  private String roleId;
 
   @Transient private String roleName;
 
@@ -187,7 +187,7 @@ public class UserBO implements Serializable {
     return phoneNumber;
   }
 
-  public Integer getRoleId() {
+  public String getRoleId() {
     return roleId;
   }
 
@@ -311,7 +311,7 @@ public class UserBO implements Serializable {
     this.phoneNumber = phoneNumber;
   }
 
-  public void setRoleId(Integer roleId) {
+  public void setRoleId(String roleId) {
     this.roleId = roleId;
   }
 
