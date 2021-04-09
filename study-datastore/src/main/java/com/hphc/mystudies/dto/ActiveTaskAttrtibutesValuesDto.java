@@ -26,10 +26,10 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -39,9 +39,10 @@ public class ActiveTaskAttrtibutesValuesDto implements Serializable {
   private static final long serialVersionUID = -6725947033876179386L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "active_task_attribute_id")
-  private Integer attributeValueId;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "active_task_attribute_id", updatable = false, nullable = false)
+  private String attributeValueId;
 
   @Column(name = "active_task_id")
   private Integer activeTaskId;
@@ -101,11 +102,11 @@ public class ActiveTaskAttrtibutesValuesDto implements Serializable {
 
   @Transient private String activityStepKey;
 
-  public Integer getAttributeValueId() {
+  public String getAttributeValueId() {
     return attributeValueId;
   }
 
-  public void setAttributeValueId(Integer attributeValueId) {
+  public void setAttributeValueId(String attributeValueId) {
     this.attributeValueId = attributeValueId;
   }
 

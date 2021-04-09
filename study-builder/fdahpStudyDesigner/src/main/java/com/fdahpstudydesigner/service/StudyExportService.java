@@ -11,6 +11,7 @@ import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
@@ -43,6 +44,7 @@ public class StudyExportService {
   @Autowired StudyActiveTasksDAO studyActiveTasksDAO;
 
   public String exportStudy(String studyId) {
+
     List<String> insertSqlStatements = new ArrayList<>();
 
     StudyBo studyBo = studyDao.getStudy(studyId);
@@ -98,6 +100,8 @@ public class StudyExportService {
 
     List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
         studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
+    List<QuestionnairesStepsBo> questionnairesStepsList =
+        studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireIds);
 
     try {
       addStudiesInsertSql(studyBo, insertSqlStatements);
@@ -111,6 +115,16 @@ public class StudyExportService {
       addAnchorDateInsertSql(anchorDate, insertSqlStatements);
       addStudypagesListInsertSql(studypageList, insertSqlStatements);
       addEligibilityInsertSql(eligibilityBo, insertSqlStatements);
+      addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements);
+      addConsentBoListInsertSql(consentBoList, insertSqlStatements);
+      addConsentInfoBoListInsertSql(consentInfoBoList, insertSqlStatements);
+      addConsentMasterInfoBoListInsertSql(consentMasterInfoList, insertSqlStatements);
+      addComprehensionTestQuestionListInsertSql(
+          comprehensionTestQuestionBoList, insertSqlStatements);
+      addQuestionnaireBoListInsertSql(questionnairesList, insertSqlStatements);
+      addQuestionnairesStepsListInsertSql(questionnairesStepsList, insertSqlStatements);
+      addNotificationInsertSql(notificationBOs, insertSqlStatements);
+      addResourceInsertSql(resourceBOs, insertSqlStatements);
 
     } catch (SQLException e) {
       logger.error(String.format("export study failed due to %s", e.getMessage()), e);
@@ -120,6 +134,40 @@ public class StudyExportService {
     }
 
     return null;
+  }
+
+  private void addQuestionnairesStepsListInsertSql(
+      List<QuestionnairesStepsBo> questionnairesStepsList, List<String> insertSqlStatements)
+      throws SQLException {
+    if (CollectionUtils.isEmpty(questionnairesStepsList)) {
+      return;
+    }
+
+    List<String> questionnaireStepsBoInsertQueryList = new ArrayList<>();
+    for (QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsList) {
+      String questionnaireStepsBoInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.QUESTIONNAIRES_STEPS,
+              questionnairesStepsBo.getStepId(),
+              questionnairesStepsBo.getActive(),
+              questionnairesStepsBo.getCreatedBy(),
+              questionnairesStepsBo.getCreatedOn(),
+              questionnairesStepsBo.getDestinationStep(),
+              questionnairesStepsBo.getInstructionFormId(),
+              questionnairesStepsBo.getModifiedBy(),
+              questionnairesStepsBo.getModifiedOn(),
+              questionnairesStepsBo.getQuestionnairesId(),
+              questionnairesStepsBo.getRepeatable(),
+              questionnairesStepsBo.getRepeatableText(),
+              questionnairesStepsBo.getSequenceNo(),
+              questionnairesStepsBo.getSkiappable(),
+              questionnairesStepsBo.getStatus(),
+              questionnairesStepsBo.getStepShortTitle(),
+              questionnairesStepsBo.getStepType());
+
+      questionnaireStepsBoInsertQueryList.add(questionnaireStepsBoInsertQuery);
+    }
+    insertSqlStatements.addAll(questionnaireStepsBoInsertQueryList);
   }
 
   private void addStudiesInsertSql(StudyBo studyBo, List<String> insertSqlStatements)
@@ -244,7 +292,7 @@ public class StudyExportService {
               studyPageBo.getTitle(),
               studyPageBo);
 
-      insertSqlStatements.add(studyPageBoInsertQuery);
+      studyPageBoInsertQueryList.add(studyPageBoInsertQuery);
     }
     insertSqlStatements.addAll(studyPageBoInsertQueryList);
   }
@@ -461,7 +509,6 @@ public class StudyExportService {
     if (CollectionUtils.isEmpty(eligibilityTestBoList)) {
       return;
     }
-
     List<String> eligibilityTestBoInsertQueryList = new ArrayList<>();
     for (EligibilityTestBo eligibilityTestBo : eligibilityTestBoList) {
 
@@ -480,16 +527,21 @@ public class StudyExportService {
               eligibilityTestBo.getStatus(),
               eligibilityTestBo.isUsed());
 
-      insertSqlStatements.add(eligibilityTestBoBoInsertQuery);
+      eligibilityTestBoInsertQueryList.add(eligibilityTestBoBoInsertQuery);
     }
     insertSqlStatements.addAll(eligibilityTestBoInsertQueryList);
   }
 
   private void addConsentBoListInsertSql(
       List<ConsentBo> consentBoList, List<String> insertSqlStatements) throws SQLException {
+
+    if (CollectionUtils.isEmpty(consentBoList)) {
+      return;
+    }
+
     List<String> consentBoListInsertQuery = new ArrayList<>();
     for (ConsentBo consentBo : consentBoList) {
-      String consent =
+      String consentInsertSql =
           prepareInsertQuery(
               StudyExportSqlQueries.CONSENT,
               consentBo.getId(),
@@ -520,16 +572,21 @@ public class StudyExportService {
               consentBo.getVersion(),
               consentBo.getEnrollAgain());
 
-      insertSqlStatements.add(consent);
+      consentBoListInsertQuery.add(consentInsertSql);
     }
     insertSqlStatements.addAll(consentBoListInsertQuery);
   }
 
   private void addConsentInfoBoListInsertSql(
       List<ConsentInfoBo> consentInfoBoList, List<String> insertSqlStatements) throws SQLException {
-    List<String> studyPageBoInsertQueryList = new ArrayList<>();
+
+    if (CollectionUtils.isEmpty(consentInfoBoList)) {
+      return;
+    }
+
+    List<String> consentInfoInsertQueryList = new ArrayList<>();
     for (ConsentInfoBo consentInfoBo : consentInfoBoList) {
-      String consentInfo =
+      String consentInfoInsertSql =
           prepareInsertQuery(
               StudyExportSqlQueries.CONSENT_INFO,
               consentInfoBo.getId(),
@@ -554,35 +611,45 @@ public class StudyExportService {
               consentInfoBo.getVersion(),
               consentInfoBo.getVisualStep());
 
-      insertSqlStatements.add(consentInfo);
+      consentInfoInsertQueryList.add(consentInfoInsertSql);
     }
-    insertSqlStatements.addAll(studyPageBoInsertQueryList);
+    insertSqlStatements.addAll(consentInfoInsertQueryList);
   }
 
   private void addConsentMasterInfoBoListInsertSql(
       List<ConsentMasterInfoBo> consentMasterInfoBoList, List<String> insertSqlStatements)
       throws SQLException {
-    List<String> studyPageBoInsertQueryList = new ArrayList<>();
+
+    if (CollectionUtils.isEmpty(consentMasterInfoBoList)) {
+      return;
+    }
+
+    List<String> consentMasterInfoInsertQueryList = new ArrayList<>();
     for (ConsentMasterInfoBo consentMasterInfoBo : consentMasterInfoBoList) {
-      String consentMasterInfo =
+      String consentMasterInfoInsertQuery =
           prepareInsertQuery(
               StudyExportSqlQueries.CONSENT_MASTER_INFO,
               consentMasterInfoBo.getId(),
               consentMasterInfoBo.getTitle(),
               consentMasterInfoBo.getType());
 
-      insertSqlStatements.add(consentMasterInfo);
+      consentMasterInfoInsertQueryList.add(consentMasterInfoInsertQuery);
     }
-    insertSqlStatements.addAll(studyPageBoInsertQueryList);
+    insertSqlStatements.addAll(consentMasterInfoInsertQueryList);
   }
 
   private void addComprehensionTestQuestionListInsertSql(
       List<ComprehensionTestQuestionBo> comprehensionTestQuestionList,
       List<String> insertSqlStatements)
       throws SQLException {
+
+    if (CollectionUtils.isEmpty(comprehensionTestQuestionList)) {
+      return;
+    }
+
     List<String> comprehensionTestQuestionInsertQueryList = new ArrayList<>();
     for (ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList) {
-      String consentMasterInfo =
+      String comprehensionTestQuestionInsertQuery =
           prepareInsertQuery(
               StudyExportSqlQueries.COMREHENSION_TEST_QUESTIONS,
               comprehensionTestQuestionBo.getId(),
@@ -597,7 +664,7 @@ public class StudyExportService {
               comprehensionTestQuestionBo.getStructureOfCorrectAns(),
               comprehensionTestQuestionBo.getStudyId());
 
-      insertSqlStatements.add(consentMasterInfo);
+      comprehensionTestQuestionInsertQueryList.add(comprehensionTestQuestionInsertQuery);
     }
     insertSqlStatements.addAll(comprehensionTestQuestionInsertQueryList);
   }
@@ -605,6 +672,11 @@ public class StudyExportService {
   private void addQuestionnaireBoListInsertSql(
       List<QuestionnaireBo> questionnairesList, List<String> insertSqlStatements)
       throws SQLException {
+
+    if (CollectionUtils.isEmpty(questionnairesList)) {
+      return;
+    }
+
     List<String> questionnairesBoInsertQueryList = new ArrayList<>();
     for (QuestionnaireBo questionnaireBo : questionnairesList) {
       String questionnairesBoInsertQuery =
@@ -633,7 +705,7 @@ public class StudyExportService {
               questionnaireBo.getTitle(),
               questionnaireBo.getVersion());
 
-      insertSqlStatements.add(questionnairesBoInsertQuery);
+      questionnairesBoInsertQueryList.add(questionnairesBoInsertQuery);
     }
     insertSqlStatements.addAll(questionnairesBoInsertQueryList);
   }
@@ -651,7 +723,6 @@ public class StudyExportService {
 
     int i = 0;
     for (Object column : columns) {
-
       column = ((String) column).trim();
       if (values[i] instanceof String) {
         sqlQuery = sqlQuery.replace("<" + column + ">", "'" + values[i] + "'");
@@ -664,18 +735,4 @@ public class StudyExportService {
 
     return sqlQuery;
   }
-
-  /* public static void main(String[] args) throws SQLException {
-    StudyExportService export = new StudyExportService();
-
-    String sqlQuery = StudyExportSqlQueries.STUDY_SEQUENCE;
-    String columns = sqlQuery.substring(sqlQuery.indexOf('(') + 1, sqlQuery.indexOf(")"));
-
-    System.out.println(columns);
-     .replace("`", "")
-    .split(",");
-
-    //    String query = export.prepareInsertQuery(StudyExportSqlQueries.STUDIES, "1");
-    //    System.out.println(query);
-  }*/
 }

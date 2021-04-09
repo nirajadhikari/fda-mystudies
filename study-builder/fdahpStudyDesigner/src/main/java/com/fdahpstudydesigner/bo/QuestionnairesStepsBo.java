@@ -61,14 +61,14 @@ import org.hibernate.annotations.GenericGenerator;
       name = "getForwardQuestionnaireSteps",
       query =
           "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.sequenceNo >:sequenceNo and QSBO.active=1 order by QSBO.sequenceNo ASC"),
-  /* @NamedQuery(
-  name = "getQuestionnaireStepsByType",
-  query =
-      "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.stepType=:stepType and QSBO.active=1"),*/
   @NamedQuery(
       name = "getQuestionnaireStepsByType",
       query =
           "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId=:questionnairesId and QSBO.stepType=:stepType and QSBO.active=1"),
+  @NamedQuery(
+      name = "getQuestionnaireStepsByquestionnairesId",
+      query =
+          "From QuestionnairesStepsBo QSBO where QSBO.questionnairesId IN (:questionnairesIds)  and QSBO.active=1"),
 })
 public class QuestionnairesStepsBo implements Serializable {
 
