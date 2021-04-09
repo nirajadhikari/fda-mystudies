@@ -54,7 +54,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
   private String activeTaskId;
 
   @Column(name = "active_task_master_attr_id")
-  private Integer activeTaskMasterAttrId;
+  private String activeTaskMasterAttrId;
 
   @Transient private boolean addToDashboard = false;
 
@@ -112,7 +112,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
     return activeTaskId;
   }
 
-  public Integer getActiveTaskMasterAttrId() {
+  public String getActiveTaskMasterAttrId() {
     return activeTaskMasterAttrId;
   }
 
@@ -184,7 +184,7 @@ public class ActiveTaskAtrributeValuesBo implements Serializable {
     this.activeTaskId = activeTaskId;
   }
 
-  public void setActiveTaskMasterAttrId(Integer activeTaskMasterAttrId) {
+  public void setActiveTaskMasterAttrId(String activeTaskMasterAttrId) {
     this.activeTaskMasterAttrId = activeTaskMasterAttrId;
   }
 

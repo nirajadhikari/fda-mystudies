@@ -108,7 +108,7 @@ public class ConsentInfoDto implements Serializable {
   private Boolean active = true;
 
   @Column(name = "consent_item_title_id")
-  private Integer consentItemTitleId;
+  private String consentItemTitleId;
 
   @Column(name = "version")
   private Float version = 0f;
@@ -255,11 +255,11 @@ public class ConsentInfoDto implements Serializable {
     this.status = status;
   }
 
-  public Integer getConsentItemTitleId() {
+  public String getConsentItemTitleId() {
     return consentItemTitleId;
   }
 
-  public void setConsentItemTitleId(Integer consentItemTitleId) {
+  public void setConsentItemTitleId(String consentItemTitleId) {
     this.consentItemTitleId = consentItemTitleId;
   }
 

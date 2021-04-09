@@ -56,7 +56,7 @@ public class ConsentInfoBo implements Serializable {
   private String briefSummary;
 
   @Column(name = "consent_item_title_id")
-  private Integer consentItemTitleId;
+  private String consentItemTitleId;
 
   @Column(name = "consent_item_type")
   private String consentItemType;
@@ -125,7 +125,7 @@ public class ConsentInfoBo implements Serializable {
     return briefSummary;
   }
 
-  public Integer getConsentItemTitleId() {
+  public String getConsentItemTitleId() {
     return consentItemTitleId;
   }
 
@@ -213,7 +213,7 @@ public class ConsentInfoBo implements Serializable {
     this.briefSummary = briefSummary;
   }
 
-  public void setConsentItemTitleId(Integer consentItemTitleId) {
+  public void setConsentItemTitleId(String consentItemTitleId) {
     this.consentItemTitleId = consentItemTitleId;
   }
 
