@@ -11,6 +11,7 @@ import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
+import com.fdahpstudydesigner.bo.QuestionnairesFrequenciesBo;
 import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
@@ -705,7 +706,30 @@ public class StudyExportService {
               questionnaireBo.getTitle(),
               questionnaireBo.getVersion());
 
+      List<String> questionnairesFrequenciesBoInsertQueryList = new ArrayList<>();
+      if (CollectionUtils.isEmpty(questionnaireBo.getQuestionnairesFrequenciesList())) {
+        return;
+      }
+
+      for (QuestionnairesFrequenciesBo questionnairesFrequenciesBo :
+          questionnaireBo.getQuestionnairesFrequenciesList()) {
+        String questionnairesFrequenciesBoInsertQuery =
+            prepareInsertQuery(
+                StudyExportSqlQueries.QUESTIONNAIRES_FREQUENCIES,
+                questionnairesFrequenciesBo.getId(),
+                questionnairesFrequenciesBo.getFrequencyDate(),
+                questionnairesFrequenciesBo.getFrequencyTime(),
+                questionnairesFrequenciesBo.getIsLaunchStudy(),
+                questionnairesFrequenciesBo.getIsStudyLifeTime(),
+                questionnairesFrequenciesBo.getQuestionnairesId(),
+                questionnairesFrequenciesBo.getTimePeriodFromDays(),
+                questionnairesFrequenciesBo.getTimePeriodToDays(),
+                questionnairesFrequenciesBo.isxDaysSign(),
+                questionnairesFrequenciesBo.isyDaysSign());
+        questionnairesFrequenciesBoInsertQueryList.add(questionnairesFrequenciesBoInsertQuery);
+      }
       questionnairesBoInsertQueryList.add(questionnairesBoInsertQuery);
+      questionnairesBoInsertQueryList.addAll(questionnairesFrequenciesBoInsertQueryList);
     }
     insertSqlStatements.addAll(questionnairesBoInsertQueryList);
   }
