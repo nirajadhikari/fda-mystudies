@@ -26,9 +26,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "active_task_custom_frequencies")
@@ -37,9 +37,10 @@ public class ActiveTaskCustomFrequenciesDto implements Serializable {
   private static final long serialVersionUID = -2349155974706024005L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Integer id;
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", updatable = false, nullable = false)
+  private String id;
 
   @Column(name = "frequency_start_date")
   private String frequencyStartDate;
@@ -68,11 +69,11 @@ public class ActiveTaskCustomFrequenciesDto implements Serializable {
   @Column(name = "time_period_to_days")
   private Integer timePeriodToDays;
 
-  public Integer getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Integer id) {
+  public void setId(String id) {
     this.id = id;
   }
 
