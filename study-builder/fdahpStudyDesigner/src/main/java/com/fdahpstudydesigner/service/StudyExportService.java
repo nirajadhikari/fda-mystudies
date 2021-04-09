@@ -143,6 +143,10 @@ public class StudyExportService {
       addStudiesInsertSql(studyBo, insertSqlStatements);
       addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements);
       addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
+
+      addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
+      addActiveTaskAtrributeValuesInsertSql(activeTaskAtrributeValuesBos, insertSqlStatements);
+
       addAnchorDateInsertSql(anchorDate, insertSqlStatements);
       addStudypagesListInsertSql(studypageList, insertSqlStatements);
       addEligibilityInsertSql(eligibilityBo, insertSqlStatements);

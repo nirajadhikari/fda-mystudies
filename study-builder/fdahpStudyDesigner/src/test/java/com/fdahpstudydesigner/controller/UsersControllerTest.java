@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import com.fdahpstudydesigner.bo.UserBO;
 import com.fdahpstudydesigner.common.BaseMockIT;
 import com.fdahpstudydesigner.common.PathMappingUri;
@@ -180,7 +181,7 @@ public class UsersControllerTest extends BaseMockIT {
   public void shouldUpdateUserDetails() throws Exception {
     HttpHeaders headers = getCommonHeaders();
     UserBO userBo = new UserBO();
-    userBo.setRoleId(1);
+    userBo.setRoleId("1");
     userBo.setUserEmail("superunittest@grr.la");
 
     MockHttpServletRequestBuilder requestBuilder =
@@ -216,7 +217,7 @@ public class UsersControllerTest extends BaseMockIT {
     userBo.setFirstName("new_user_first_name");
     userBo.setLastName("new_user_last_name");
     userBo.setPhoneNumber("654665146432");
-    userBo.setRoleId(2);
+    userBo.setRoleId("2");
 
     MockHttpServletRequestBuilder requestBuilder =
         post(PathMappingUri.ADD_OR_UPDATE_USER_DETAILS.getPath())

@@ -139,9 +139,9 @@ public class AppMetaDataDao {
                 .setMaxResults(20)
                 .list();
         if ((notificationList != null) && !notificationList.isEmpty()) {
-          Map<Integer, NotificationsBean> notificationTreeMap = new HashMap<>();
-          HashMap<Integer, String> hashMap = new HashMap<>();
-          List<Integer> notificationIdsList = new ArrayList<>();
+          Map<String, NotificationsBean> notificationTreeMap = new HashMap<>();
+          HashMap<String, String> hashMap = new HashMap<>();
+          List<String> notificationIdsList = new ArrayList<>();
           List<String> scheduleDateTimes = new ArrayList<>();
           for (NotificationDto notificationDto : notificationList) {
             NotificationsBean notifyBean = new NotificationsBean();
@@ -205,8 +205,8 @@ public class AppMetaDataDao {
             hashMap.put(notificationDto.getNotificationId(), scheduledDate + " " + scheduledTime);
           }
 
-          LinkedHashMap<Integer, String> sortedMap = sortHashMapByValues(hashMap);
-          for (Integer id : sortedMap.keySet()) {
+          LinkedHashMap<String, String> sortedMap = sortHashMapByValues(hashMap);
+          for (String id : sortedMap.keySet()) {
             notifyList.add(notificationTreeMap.get(id));
           }
         }
@@ -225,12 +225,12 @@ public class AppMetaDataDao {
     return notificationsResponse;
   }
 
-  public LinkedHashMap<Integer, String> sortHashMapByValues(HashMap<Integer, String> passedMap) {
-    List<Integer> mapKeys = new ArrayList<>(passedMap.keySet());
+  public LinkedHashMap<String, String> sortHashMapByValues(HashMap<String, String> passedMap) {
+    List<String> mapKeys = new ArrayList<>(passedMap.keySet());
     List<String> mapValues = new ArrayList<>(passedMap.values());
-    LinkedHashMap<Integer, String> sortedMap = new LinkedHashMap<>();
+    LinkedHashMap<String, String> sortedMap = new LinkedHashMap<>();
     Iterator<String> valueIt = null;
-    Iterator<Integer> keyIt = null;
+    Iterator<String> keyIt = null;
 
     Collections.sort(mapKeys, Collections.reverseOrder());
 
@@ -250,7 +250,7 @@ public class AppMetaDataDao {
       keyIt = mapKeys.iterator();
 
       while (keyIt.hasNext()) {
-        Integer key = keyIt.next();
+        String key = keyIt.next();
         String comp1 = passedMap.get(key);
         String comp2 = val;
 

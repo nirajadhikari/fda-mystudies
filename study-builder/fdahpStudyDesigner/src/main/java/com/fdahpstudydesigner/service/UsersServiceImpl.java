@@ -308,7 +308,7 @@ public class UsersServiceImpl implements UsersService {
   }
 
   @Override
-  public RoleBO getUserRole(Integer roleId) {
+  public RoleBO getUserRole(String roleId) {
     logger.info("UsersServiceImpl - getUserRole() - Starts");
     RoleBO roleBO = null;
     try {

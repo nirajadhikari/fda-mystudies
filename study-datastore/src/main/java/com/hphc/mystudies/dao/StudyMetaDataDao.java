@@ -405,7 +405,7 @@ public class StudyMetaDataDao {
             (StudySequenceDto)
                 session
                     .getNamedQuery("getStudySequenceDetailsByStudyId")
-                    .setInteger(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
+                    .setString(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
                     .uniqueResult();
         if (studySequenceDto != null) {
 
@@ -417,7 +417,7 @@ public class StudyMetaDataDao {
                 (EligibilityDto)
                     session
                         .getNamedQuery("eligibilityDtoByStudyId")
-                        .setInteger(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
+                        .setString(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
                         .uniqueResult();
             if (eligibilityDto != null) {
 
@@ -450,7 +450,7 @@ public class StudyMetaDataDao {
                               + " where ETDTO.eligibilityId=:eligId"
                               + " and ETDTO.status=true and ETDTO.active=true"
                               + " ORDER BY ETDTO.sequenceNo")
-                      .setInteger("eligId", eligibilityDto.getId())
+                      .setString("eligId", eligibilityDto.getId())
                       .list();
               if ((eligibilityTestList != null) && !eligibilityTestList.isEmpty()) {
                 List<QuestionnaireActivityStepsBean> test = new ArrayList<>();
@@ -580,8 +580,7 @@ public class StudyMetaDataDao {
                 if (consentInfoDto.getConsentItemTitleId() != null) {
                   if ((consentMasterInfoList != null) && !consentMasterInfoList.isEmpty()) {
                     for (ConsentMasterInfoDto masterInfo : consentMasterInfoList) {
-                      if (masterInfo.getId().intValue()
-                          == consentInfoDto.getConsentItemTitleId().intValue()) {
+                      if (masterInfo.getId().equals(consentInfoDto.getConsentItemTitleId())) {
                         consentBean.setType(masterInfo.getCode());
                         break;
                       }
@@ -628,7 +627,7 @@ public class StudyMetaDataDao {
             comprehensionQuestionList =
                 session
                     .getNamedQuery("comprehensionQuestionByStudyId")
-                    .setInteger(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
+                    .setString(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
                     .list();
             if ((null != comprehensionQuestionList) && !comprehensionQuestionList.isEmpty()) {
               ComprehensionDetailsBean comprehensionDetailsBean = new ComprehensionDetailsBean();
@@ -658,7 +657,7 @@ public class StudyMetaDataDao {
                 List<ComprehensionTestResponseDto> comprehensionTestResponseList =
                     session
                         .getNamedQuery("comprehensionQuestionResponseByCTID")
-                        .setInteger("comprehensionTestQuestionId", comprehensionQuestionDto.getId())
+                        .setString("comprehensionTestQuestionId", comprehensionQuestionDto.getId())
                         .list();
                 if ((comprehensionTestResponseList != null)
                     && !comprehensionTestResponseList.isEmpty()) {
@@ -845,7 +844,7 @@ public class StudyMetaDataDao {
                 (ConsentDto)
                     session
                         .getNamedQuery("consentDtoByStudyId")
-                        .setInteger(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
+                        .setString(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
                         .uniqueResult();
           }
 
@@ -905,7 +904,7 @@ public class StudyMetaDataDao {
         resourcesDtoList =
             session
                 .getNamedQuery("getResourcesListByStudyId")
-                .setInteger(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
+                .setString(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
                 .list();
         if ((null != resourcesDtoList) && !resourcesDtoList.isEmpty()) {
 
@@ -1115,7 +1114,7 @@ public class StudyMetaDataDao {
         studyPageDtoList =
             session
                 .getNamedQuery("studyPageDetailsByStudyId")
-                .setInteger(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
+                .setString(StudyMetaDataEnum.QF_STUDY_ID.value(), studyDto.getId())
                 .list();
         if ((null != studyPageDtoList) && !studyPageDtoList.isEmpty()) {
           for (StudyPageDto studyPageInfo : studyPageDtoList) {
@@ -1185,11 +1184,11 @@ public class StudyMetaDataDao {
                   .list();
           if ((questionnairesList != null) && !questionnairesList.isEmpty()) {
 
-            List<Integer> questionnaireIdsList = new ArrayList<>();
-            Map<Integer, QuestionnairesDto> questionnaireMap = new TreeMap<>();
+            List<String> questionnaireIdsList = new ArrayList<>();
+            Map<String, QuestionnairesDto> questionnaireMap = new TreeMap<>();
             Map<String, QuestionnairesStepsDto> stepsMap = new TreeMap<>();
-            Map<Integer, QuestionsDto> questionsMap = null;
-            Map<Integer, FormMappingDto> formMappingMap = new TreeMap<>();
+            Map<String, QuestionsDto> questionsMap = null;
+            Map<String, FormMappingDto> formMappingMap = new TreeMap<>();
 
             for (QuestionnairesDto questionnaire : questionnairesList) {
               questionnaireIdsList.add(questionnaire.getId());
@@ -1198,8 +1197,8 @@ public class StudyMetaDataDao {
 
             if (!questionnaireIdsList.isEmpty()) {
 
-              List<Integer> questionIdsList = new ArrayList<>();
-              List<Integer> formIdsList = new ArrayList<>();
+              List<String> questionIdsList = new ArrayList<>();
+              List<String> formIdsList = new ArrayList<>();
               List<QuestionnairesStepsDto> questionnairesStepsList =
                   session
                       .createQuery(
@@ -1254,7 +1253,7 @@ public class StudyMetaDataDao {
 
                 if ((questionsMap == null) && !formIdsList.isEmpty()) {
 
-                  List<Integer> formQuestionsList = new ArrayList<>();
+                  List<String> formQuestionsList = new ArrayList<>();
                   List<FormMappingDto> formMappingList =
                       session
                           .createQuery(
@@ -1298,7 +1297,7 @@ public class StudyMetaDataDao {
                 if (questionsMap != null) {
                   AnchorDateBean anchorDate = new AnchorDateBean();
                   anchorDate.setType(StudyMetaDataConstants.ANCHORDATE_TYPE_QUESTION);
-                  for (Map.Entry<Integer, QuestionsDto> map : questionsMap.entrySet()) {
+                  for (Map.Entry<String, QuestionsDto> map : questionsMap.entrySet()) {
                     QuestionsDto questionDto = map.getValue();
                     if (questionDto != null) {
                       QuestionnairesStepsDto questionnairesSteps;

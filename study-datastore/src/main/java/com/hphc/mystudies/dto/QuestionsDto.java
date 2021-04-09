@@ -61,7 +61,7 @@ public class QuestionsDto implements Serializable {
   private String description;
 
   @Column(name = "response_type")
-  private Integer responseType;
+  private String responseType;
 
   @Column(name = "skippable")
   private String skippable;
@@ -91,10 +91,10 @@ public class QuestionsDto implements Serializable {
   private String statDisplayUnits;
 
   @Column(name = "stat_type")
-  private Integer statType;
+  private String statType;
 
   @Column(name = "stat_formula")
-  private Integer statFormula;
+  private String statFormula;
 
   @Column(name = "created_on")
   private String createdOn;
@@ -164,11 +164,11 @@ public class QuestionsDto implements Serializable {
     this.description = description;
   }
 
-  public Integer getResponseType() {
+  public String getResponseType() {
     return responseType;
   }
 
-  public void setResponseType(Integer responseType) {
+  public void setResponseType(String responseType) {
     this.responseType = responseType;
   }
 
@@ -244,19 +244,19 @@ public class QuestionsDto implements Serializable {
     this.statDisplayUnits = statDisplayUnits;
   }
 
-  public Integer getStatType() {
+  public String getStatType() {
     return statType;
   }
 
-  public void setStatType(Integer statType) {
+  public void setStatType(String statType) {
     this.statType = statType;
   }
 
-  public Integer getStatFormula() {
+  public String getStatFormula() {
     return statFormula;
   }
 
-  public void setStatFormula(Integer statFormula) {
+  public void setStatFormula(String statFormula) {
     this.statFormula = statFormula;
   }
 

@@ -42,7 +42,6 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_RESOURCE_SECTION_MARKED_COMPLETE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_SAVED_IN_DRAFT_STATE;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_VIEWED;
-
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
@@ -5243,5 +5242,19 @@ public class StudyController {
 
     logger.info("StudyController - exportStudy() - Ends");
     return StringUtils.defaultString(filePath);
+  }
+
+  @RequestMapping(value = "/studies/{studyId}/replicate", method = RequestMethod.POST)
+  public void replicateStudy(
+      HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId) {
+    logger.info("StudyController - replicateStudy() - Starts");
+
+    HttpSession session = request.getSession();
+    SessionObject sessionObject =
+        (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+
+    studyService.replicateStudy(studyId, sessionObject);
+
+    logger.info("StudyController - replicateStudy() - Ends");
   }
 }
