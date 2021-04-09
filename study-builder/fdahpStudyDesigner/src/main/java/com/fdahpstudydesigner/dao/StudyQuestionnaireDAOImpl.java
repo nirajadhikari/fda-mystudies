@@ -13,6 +13,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_INSTRUC
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.STUDY_QUESTION_STEP_DELETED;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.QUESTION_ID;
 import static com.fdahpstudydesigner.common.StudyBuilderConstants.STEP_ID;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.QuestionnaireStepBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
@@ -57,6 +58,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -5052,14 +5054,18 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
   public List<QuestionnairesStepsBo> getQuestionnairesStepsList(List<String> questionnaireIds) {
     logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Starts");
     Session session = null;
-    List<QuestionnairesStepsBo> questionnairesStepsList = null;
+    List<QuestionnairesStepsBo> questionnairesStepsList = new ArrayList<QuestionnairesStepsBo>();
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      query =
-          session
-              .getNamedQuery("getQuestionnaireStepsByquestionnairesId")
-              .setParameter("questionnairesIds", questionnaireIds);
-      questionnairesStepsList = query.list();
+
+      SQLQuery query =
+          session.createSQLQuery(
+              "SELECT * From questionnaires_steps QSBO where QSBO.questionnaires_id IN (:questionnairesId)  and QSBO.active=1");
+      query
+          .addEntity(QuestionnairesStepsBo.class)
+          .setParameterList("questionnairesId", questionnaireIds);
+      questionnairesStepsList = (List<QuestionnairesStepsBo>) query.list();
+
     } catch (Exception e) {
       logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
     } finally {
@@ -5068,5 +5074,178 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       }
     }
     return questionnairesStepsList;
+  }
+
+  @Override
+  public List<QuestionnairesFrequenciesBo> getQuestionnairesFrequenciesBoList(
+      List<String> questionnaireIds) {
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Starts");
+    Session session = null;
+    List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBoList =
+        new ArrayList<QuestionnairesFrequenciesBo>();
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query =
+          session.createSQLQuery(
+              "SELECT * From questionnaires_frequencies QF where QF.questionnaires_id IN  (:questionnairesId) ");
+      query
+          .addEntity(QuestionnairesFrequenciesBo.class)
+          .setParameterList("questionnairesId", questionnaireIds);
+      questionnairesFrequenciesBoList = (List<QuestionnairesFrequenciesBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionnairesFrequenciesBoList;
+  }
+
+  @Override
+  public List<QuestionnaireCustomScheduleBo> getQuestionnairesCustomFrequenciesBoList(
+      List<String> questionnaireIds) {
+    logger.info("StudyQuestionnaireDAOImpl - getQuestionnaireStepList() - Starts");
+    Session session = null;
+    List<QuestionnaireCustomScheduleBo> questionnairesFrequenciesBoList =
+        new ArrayList<QuestionnaireCustomScheduleBo>();
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query =
+          session.createSQLQuery(
+              "SELECT * From questionnaires_custom_frequencies QCF where QCF.questionnaires_id IN  (:questionnairesId) ");
+      query
+          .addEntity(QuestionnaireCustomScheduleBo.class)
+          .setParameterList("questionnairesId", questionnaireIds);
+      questionnairesFrequenciesBoList = (List<QuestionnaireCustomScheduleBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionnairesFrequenciesBoList;
+  }
+
+  @Override
+  public List<QuestionsBo> getQuestionsByInstructionFormIds(List<String> instructionFormIds) {
+    List<QuestionsBo> questionsList = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query = session.createSQLQuery("SELECT * From questions where id IN (:id) ");
+      query.addEntity(QuestionsBo.class).setParameterList("id", instructionFormIds);
+      questionsList = (List<QuestionsBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionsList;
+  }
+
+  @Override
+  public List<FormMappingBo> getFormMappingbyInstructionFormIds(List<String> instructionFormIds) {
+    List<FormMappingBo> formList = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query =
+          session.createSQLQuery("SELECT * From form_mapping where form_id IN (:formId) ");
+      query.addEntity(FormMappingBo.class).setParameterList("formId", instructionFormIds);
+      formList = (List<FormMappingBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return formList;
+  }
+
+  @Override
+  public List<InstructionsBo> getInstructionListByInstructionFormIds(
+      List<String> instructionFormIds) {
+    List<InstructionsBo> formList = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query = session.createSQLQuery("SELECT * From instructions where id IN (:id) ");
+      query.addEntity(InstructionsBo.class).setParameterList("id", instructionFormIds);
+      formList = (List<InstructionsBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return formList;
+  }
+
+  @Override
+  public List<QuestionResponseSubTypeBo> getQuestionResponseSubTypeBoByInstructionFormIds(
+      List<String> instructionFormIds) {
+    List<QuestionResponseSubTypeBo> questionResponseSubtypeList = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query =
+          session.createSQLQuery(
+              "SELECT * From response_sub_type_value where response_type_id IN (:responseTypeId) ");
+      query
+          .addEntity(QuestionResponseSubTypeBo.class)
+          .setParameterList("responseTypeId", instructionFormIds);
+      questionResponseSubtypeList = (List<QuestionResponseSubTypeBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionResponseSubtypeList;
+  }
+
+  @Override
+  public List<QuestionReponseTypeBo> getQuestionResponseTypeBoByInstructionFormIds(
+      List<String> instructionFormIds) {
+    List<QuestionReponseTypeBo> questionResponseTypeList = null;
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+
+      SQLQuery query =
+          session.createSQLQuery(
+              "SELECT * From response_type_value where questions_response_type_id IN (:questionsResponseTypeId) ");
+      query
+          .addEntity(QuestionReponseTypeBo.class)
+          .setParameterList("questionsResponseTypeId", instructionFormIds);
+      questionResponseTypeList = (List<QuestionReponseTypeBo>) query.list();
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionResponseTypeList;
   }
 }

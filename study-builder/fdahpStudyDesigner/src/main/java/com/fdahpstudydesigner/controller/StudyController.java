@@ -5235,7 +5235,11 @@ public class StudyController {
       HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId) {
     logger.info("StudyController - exportStudy() - Starts");
 
-    String filePath = studyExportService.exportStudy(studyId);
+    SessionObject sesObj =
+        (SessionObject)
+            request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+
+    String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
 
     logger.info("StudyController - exportStudy() - Ends");
     return StringUtils.defaultString(filePath);
