@@ -203,4 +203,8 @@ public class QuestionResponseSubTypeBo implements Serializable {
   public void setValue(String value) {
     this.value = value;
   }
+
+  public Integer getStudyVersion() {
+    return studyVersion;
+  }
 }

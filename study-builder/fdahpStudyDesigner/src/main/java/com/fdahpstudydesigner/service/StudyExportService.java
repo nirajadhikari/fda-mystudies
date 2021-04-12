@@ -164,6 +164,7 @@ public class StudyExportService {
       addQuestionListInsertSql(questionsList, insertSqlStatements);
       addFormsListInsertSql(formsList, insertSqlStatements);
       addInstructionInsertSql(instructionList, insertSqlStatements);
+      addQuestionsResponseSubTypeInsertSql(QuestionResponseSubTypeBoList, insertSqlStatements);
       addNotificationInsertSql(notificationBOs, insertSqlStatements);
       addResourceInsertSql(resourceBOs, insertSqlStatements);
       addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
@@ -177,6 +178,37 @@ public class StudyExportService {
     }
 
     return null;
+  }
+
+  private void addQuestionsResponseSubTypeInsertSql(
+      List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
+      List<String> insertSqlStatements)
+      throws SQLException {
+
+    if (CollectionUtils.isEmpty(questionResponseSubTypeBoList)) {
+      return;
+    }
+
+    List<String> questionResponseSubTypeBoInsertQueryList = new ArrayList<>();
+    for (QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeBoList) {
+      String questionResponseSubTypeBoInsertQuery =
+          prepareInsertQuery(
+              StudyExportSqlQueries.RESPONSE_SUB_TYPE_VALUE,
+              questionResponseSubTypeBo.getResponseSubTypeValueId(),
+              questionResponseSubTypeBo.getActive(),
+              questionResponseSubTypeBo.getDescription(),
+              questionResponseSubTypeBo.getDestinationStepId(),
+              questionResponseSubTypeBo.getDetail(),
+              questionResponseSubTypeBo.getExclusive(),
+              questionResponseSubTypeBo.getImage(),
+              questionResponseSubTypeBo.getResponseTypeId(),
+              questionResponseSubTypeBo.getSelectedImage(),
+              questionResponseSubTypeBo.getText(),
+              questionResponseSubTypeBo.getValue(),
+              questionResponseSubTypeBo.ver);
+      questionResponseSubTypeBoInsertQueryList.add(questionResponseSubTypeBoInsertQuery);
+    }
+    insertSqlStatements.addAll(questionResponseSubTypeBoInsertQueryList);
   }
 
   private void addInstructionInsertSql(
