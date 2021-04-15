@@ -1372,7 +1372,7 @@ public class StudyMetaDataDao {
                   .createQuery(
                       "from StudyDto SDTO"
                           + " where SDTO.customStudyId= :customStudyId"
-                          + " ORDER BY SDTO.id DESC")
+                          + " ORDER BY SDTO.modifiedOn DESC")
                   .setString(StudyMetaDataEnum.QF_CUSTOM_STUDY_ID.value(), studyId)
                   .setMaxResults(1)
                   .uniqueResult();
@@ -1404,7 +1404,7 @@ public class StudyMetaDataDao {
                       "from ActiveTaskDto ATDTO"
                           + " where ATDTO.shortTitle= :shortTitle"
                           + " and ROUND(ATDTO.version, 1)= :version and ATDTO.customStudyId= :customStudyId"
-                          + " ORDER BY ATDTO.id DESC")
+                          + " ORDER BY ATDTO.modifiedDate DESC")
                   .setString(
                       StudyMetaDataEnum.QF_SHORT_TITLE.value(),
                       StudyMetaDataUtil.replaceSingleQuotes(activityId))
@@ -1422,7 +1422,7 @@ public class StudyMetaDataDao {
                         "from QuestionnairesDto QDTO"
                             + " where QDTO.shortTitle= :shortTitle"
                             + " and ROUND(QDTO.version, 1)= :version and QDTO.customStudyId= :customStudyId"
-                            + " ORDER BY QDTO.id DESC")
+                            + " ORDER BY QDTO.modifiedDate DESC")
                     .setString(
                         StudyMetaDataEnum.QF_SHORT_TITLE.value(),
                         StudyMetaDataUtil.replaceSingleQuotes(activityId))
@@ -1459,7 +1459,7 @@ public class StudyMetaDataDao {
                       "from ActiveTaskDto ATDTO"
                           + " where ATDTO.shortTitle= :shortTitle"
                           + " and ROUND(ATDTO.version, 1)= :version and ATDTO.customStudyId= :customStudyId"
-                          + " ORDER BY ATDTO.id DESC")
+                          + " ORDER BY ATDTO.modifiedDate DESC")
                   .setString(
                       StudyMetaDataEnum.QF_SHORT_TITLE.value(),
                       StudyMetaDataUtil.replaceSingleQuotes(activityId))

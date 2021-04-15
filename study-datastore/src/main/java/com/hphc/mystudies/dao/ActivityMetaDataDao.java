@@ -417,7 +417,7 @@ public class ActivityMetaDataDao {
                           + " where ATDTO.action=true and ATDTO.customStudyId= :customStudyId"
                           + " and ATDTO.shortTitle= :shortTitle"
                           + " and ROUND(ATDTO.version, 1)= :version"
-                          + " ORDER BY ATDTO.id DESC")
+                          + " ORDER BY ATDTO.modifiedDate DESC")
                   .setString(StudyMetaDataEnum.QF_CUSTOM_STUDY_ID.value(), studyId)
                   .setString(
                       StudyMetaDataEnum.QF_SHORT_TITLE.value(),
@@ -618,7 +618,7 @@ public class ActivityMetaDataDao {
                       "from QuestionnairesDto QDTO"
                           + " where QDTO.customStudyId= :customStudyId and QDTO.shortTitle= :shortTitle"
                           + " and QDTO.status=true and ROUND(QDTO.version, 1)= :version"
-                          + " ORDER BY QDTO.id DESC")
+                          + " ORDER BY QDTO.modifiedDate DESC")
                   .setString(StudyMetaDataEnum.QF_CUSTOM_STUDY_ID.value(), studyId)
                   .setString(
                       StudyMetaDataEnum.QF_SHORT_TITLE.value(),
