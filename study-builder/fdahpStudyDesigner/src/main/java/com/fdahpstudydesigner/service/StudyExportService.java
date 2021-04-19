@@ -2,6 +2,11 @@ package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
+import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
+import com.fdahpstudydesigner.bo.ActiveTaskListBo;
+import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
+import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
@@ -29,6 +34,8 @@ import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.StudyExportSqlQueries;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -120,10 +127,10 @@ public class StudyExportService {
     List<InstructionsBo> instructionList =
         studyQuestionnaireDAO.getInstructionListByInstructionFormIds(instructionFormIds);
 
-    List<QuestionResponseSubTypeBo> QuestionResponseSubTypeBoList =
+    List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList =
         studyQuestionnaireDAO.getQuestionResponseSubTypeBoByInstructionFormIds(instructionFormIds);
 
-    List<QuestionReponseTypeBo> QuestionResponseTypeBo =
+    List<QuestionReponseTypeBo> questionResponseTypeBo =
         studyQuestionnaireDAO.getQuestionResponseTypeBoByInstructionFormIds(instructionFormIds);
 
     List<NotificationBO> notificationBOs = notificationDAO.getNotificationList(studyBo.getId());
@@ -134,23 +141,35 @@ public class StudyExportService {
         studyActiveTasksDAO.getStudyActiveTaskByStudyId(studyBo.getId());
 
     List<String> activeTaskIds = new ArrayList<>();
+    List<String> activeTaskTypes = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(activeTaskBos)) {
       for (ActiveTaskBo activeTaskBo : activeTaskBos) {
         activeTaskIds.add(activeTaskBo.getId());
+        activeTaskTypes.add(activeTaskBo.getTaskTypeId());
       }
     }
 
     List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
         studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
 
+    List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBoList =
+        studyActiveTasksDAO.getActiveTaskCustomScheduleBoList(activeTaskIds);
+
+    List<ActiveTaskFrequencyBo> activeTaskFrequencyBoList =
+        studyActiveTasksDAO.getActiveTaskFrequencyBoList(activeTaskIds);
+
+    List<ActivetaskFormulaBo> activetaskFormulaBoList = studyActiveTasksDAO.getActivetaskFormulas();
+
+    List<ActiveTaskListBo> activeTaskListBo =
+        studyActiveTasksDAO.getAllActiveTaskTypes(studyBo.getPlatform());
+
+    List<ActiveTaskMasterAttributeBo> activeTaskMasterAttributeBoList =
+        studyActiveTasksDAO.getActiveTaskMasterAttributesByType(activeTaskTypes);
+
     try {
       addStudiesInsertSql(studyBo, insertSqlStatements);
       addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements);
       addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
-
-      addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
-      addActiveTaskAtrributeValuesInsertSql(activeTaskAtrributeValuesBos, insertSqlStatements);
-
       addAnchorDateInsertSql(anchorDate, insertSqlStatements);
       addStudypagesListInsertSql(studypageList, insertSqlStatements);
       addEligibilityInsertSql(eligibilityBo, insertSqlStatements);
@@ -168,11 +187,22 @@ public class StudyExportService {
       addQuestionListInsertSql(questionsList, insertSqlStatements);
       addFormsListInsertSql(formsList, insertSqlStatements);
       addInstructionInsertSql(instructionList, insertSqlStatements);
-      addQuestionsResponseSubTypeInsertSql(QuestionResponseSubTypeBoList, insertSqlStatements);
-      addNotificationInsertSql(notificationBOs, insertSqlStatements);
-      addResourceInsertSql(resourceBOs, insertSqlStatements);
+      addQuestionsResponseSubTypeInsertSql(questionResponseSubTypeBoList, insertSqlStatements);
+      addQuestionsResponseTypeInsertSql(questionResponseTypeBo, insertSqlStatements);
       addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
       addActiveTaskAtrributeValuesInsertSql(activeTaskAtrributeValuesBos, insertSqlStatements);
+      addActiveTaskCustomScheduleBoInsertSqlQuery(activeTaskCustomScheduleBoList,
+          insertSqlStatements);
+      addActiveTaskFrequencyBoInsertSqlQuery(activeTaskFrequencyBoList, insertSqlStatements);
+      addactivetaskFormulaBoInsertSqlQuery(activetaskFormulaBoList, insertSqlStatements);
+      addActiveTaskListBoInsertSqlQuery(activeTaskListBo, insertSqlStatements);
+      activeTaskMasterAttributeBoInsertSqlQuery(activeTaskMasterAttributeBoList,
+          insertSqlStatements);
+
+      addNotificationInsertSql(notificationBOs, insertSqlStatements);
+
+      addResourceInsertSql(resourceBOs, insertSqlStatements);
+
 
     } catch (SQLException e) {
       logger.error(String.format("export study failed due to %s", e.getMessage()), e);
@@ -180,8 +210,179 @@ public class StudyExportService {
     for (String sql : insertSqlStatements) {
       System.out.println(sql);
     }
+    return createFileFromListAndSaveToCloudStorage(insertSqlStatements, studyBo);
+
+  }
+
+  private String createFileFromListAndSaveToCloudStorage(List<String> insertSqlStatements,
+      StudyBo studyBo) {
+    try {
+      FileWriter writer = new FileWriter(studyBo.getName() + ".txt");
+      for (String insertSqlStatement : insertSqlStatements) {
+        writer.write(insertSqlStatement + System.lineSeparator());
+      }
+
+    } catch (IOException e) {
+      logger.error(String.format("create file failed due to %s", e.getMessage()), e);
+    }
 
     return null;
+  }
+
+
+  private void activeTaskMasterAttributeBoInsertSqlQuery(
+      List<ActiveTaskMasterAttributeBo> activeTaskMasterAttributeBoList,
+      List<String> insertSqlStatements) throws SQLException {
+
+    if (CollectionUtils.isEmpty(activeTaskMasterAttributeBoList)) {
+      return;
+    }
+
+    List<String> activeTaskMasterAttributeBoInsertQueryList = new ArrayList<>();
+    for (ActiveTaskMasterAttributeBo activeTaskMasterAttributeBo : activeTaskMasterAttributeBoList) {
+      String activeTaskMasterAttributeBoInsertQuery = prepareInsertQuery(
+          StudyExportSqlQueries.ACTIVETASK_MASTER_ATTRIBUTE,
+          activeTaskMasterAttributeBo.getMasterId(), activeTaskMasterAttributeBo.isAddToDashboard(),
+          activeTaskMasterAttributeBo.getAttributeDataType(),
+          activeTaskMasterAttributeBo.getAttributeName(),
+          activeTaskMasterAttributeBo.getAttributeType(),
+          activeTaskMasterAttributeBo.getDisplayName(),
+          activeTaskMasterAttributeBo.getOrderByTaskType(),
+          activeTaskMasterAttributeBo.getTaskTypeId());
+      activeTaskMasterAttributeBoInsertQueryList.add(activeTaskMasterAttributeBoInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskMasterAttributeBoInsertQueryList);
+
+  }
+
+  private void addActiveTaskListBoInsertSqlQuery(List<ActiveTaskListBo> activeTaskListBo,
+      List<String> insertSqlStatements) throws SQLException {
+    if (CollectionUtils.isEmpty(activeTaskListBo)) {
+      return;
+    }
+
+    List<String> activeTaskListInsertQueryList = new ArrayList<>();
+    for (ActiveTaskListBo activeTaskList : activeTaskListBo) {
+      String activeTaskListInsertQuery = prepareInsertQuery(StudyExportSqlQueries.ACTIVETASK_LIST,
+          activeTaskList.getActiveTaskListId(), activeTaskList.getTaskName(),
+          activeTaskList.getType());
+      activeTaskListInsertQueryList.add(activeTaskListInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskListInsertQueryList);
+
+  }
+
+  private void addactivetaskFormulaBoInsertSqlQuery(
+      List<ActivetaskFormulaBo> activetaskFormulaBoList, List<String> insertSqlStatements)
+      throws SQLException {
+    if (CollectionUtils.isEmpty(activetaskFormulaBoList)) {
+      return;
+    }
+
+    List<String> activeTaskFormulaInsertQueryList = new ArrayList<>();
+    for (ActivetaskFormulaBo activeTaskFormula : activetaskFormulaBoList) {
+      String activeTaskFormulaInsertQuery =
+          prepareInsertQuery(StudyExportSqlQueries.ACTIVETASK_FORMULA,
+              activeTaskFormula.getActivetaskFormulaId(), activeTaskFormula.getValue());
+      activeTaskFormulaInsertQueryList.add(activeTaskFormulaInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskFormulaInsertQueryList);
+
+  }
+
+  private void addActiveTaskFrequencyBoInsertSqlQuery(
+      List<ActiveTaskFrequencyBo> activeTaskFrequencyBoList, List<String> insertSqlStatements)
+      throws SQLException {
+    if (CollectionUtils.isEmpty(activeTaskFrequencyBoList)) {
+      return;
+    }
+
+    List<String> activeTaskBoInsertQueryList = new ArrayList<>();
+    for (ActiveTaskFrequencyBo activeTaskFrquencyBo : activeTaskFrequencyBoList) {
+      String activeTaskBoInsertQuery = prepareInsertQuery(
+          StudyExportSqlQueries.ACTIVETASK_FREQUENCIES, activeTaskFrquencyBo.getId(),
+          activeTaskFrquencyBo.getActiveTaskId(), activeTaskFrquencyBo.getFrequencyDate(),
+          activeTaskFrquencyBo.getFrequencyTime(), activeTaskFrquencyBo.getIsLaunchStudy(),
+          activeTaskFrquencyBo.getIsStudyLifeTime(), activeTaskFrquencyBo.getTimePeriodFromDays(),
+          activeTaskFrquencyBo.getTimePeriodToDays(), activeTaskFrquencyBo.isxDaysSign(),
+          activeTaskFrquencyBo.isyDaysSign());
+      activeTaskBoInsertQueryList.add(activeTaskBoInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskBoInsertQueryList);
+
+  }
+
+  private void addActiveTaskCustomScheduleBoInsertSqlQuery(
+      List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBoList,
+      List<String> insertSqlStatements) throws SQLException {
+
+    if (CollectionUtils.isEmpty(activeTaskCustomScheduleBoList)) {
+      return;
+    }
+
+    List<String> activeTaskCustomScheduleBoInsertQueryList = new ArrayList<>();
+    for (ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo : activeTaskCustomScheduleBoList) {
+      String activeTaskCustomScheduleBoInsertQuery =
+          prepareInsertQuery(StudyExportSqlQueries.ACTIVETASK_CUSTOM_FREQUENCIES,
+              activeTaskCustomScheduleBo.getId(), activeTaskCustomScheduleBo.getActiveTaskId(),
+              activeTaskCustomScheduleBo.getFrequencyEndDate(),
+              activeTaskCustomScheduleBo.getFrequencyStartDate(),
+              activeTaskCustomScheduleBo.getFrequencyTime(),
+              activeTaskCustomScheduleBo.getTimePeriodFromDays(),
+              activeTaskCustomScheduleBo.getTimePeriodToDays(), activeTaskCustomScheduleBo.isUsed(),
+              activeTaskCustomScheduleBo.isxDaysSign(), activeTaskCustomScheduleBo.isyDaysSign()
+
+          );
+      activeTaskCustomScheduleBoInsertQueryList.add(activeTaskCustomScheduleBoInsertQuery);
+    }
+    insertSqlStatements.addAll(activeTaskCustomScheduleBoInsertQueryList);
+
+  }
+
+  private void addQuestionsResponseTypeInsertSql(
+      List<QuestionReponseTypeBo> questionResponseTypeBoList, List<String> insertSqlStatements)
+      throws SQLException {
+
+
+    if (CollectionUtils.isEmpty(questionResponseTypeBoList)) {
+      return;
+    }
+
+    List<String> questionResponseTypeBoInsertQueryList = new ArrayList<>();
+    for (QuestionReponseTypeBo questionResponseTypeBo : questionResponseTypeBoList) {
+      String questionResponseTypeBoInsertQuery = prepareInsertQuery(
+          StudyExportSqlQueries.RESPONSE_TYPE_VALUE, questionResponseTypeBo.getResponseTypeId(),
+          questionResponseTypeBo.getActive(), questionResponseTypeBo.getConditionFormula(),
+          questionResponseTypeBo.getDefaultDate(), questionResponseTypeBo.getDefaultDate(),
+          questionResponseTypeBo.getDefaultTime(), questionResponseTypeBo.getDefaultValue(),
+          questionResponseTypeBo.getFormulaBasedLogic(), questionResponseTypeBo.getImageSize(),
+          questionResponseTypeBo.getInvalidMessage(), questionResponseTypeBo.getMaxDate(),
+          questionResponseTypeBo.getMaxDescription(), questionResponseTypeBo.getMaxFractionDigits(),
+          questionResponseTypeBo.getMaxImage(), questionResponseTypeBo.getMaxLength(),
+          questionResponseTypeBo.getMaxValue(), questionResponseTypeBo.getMeasurementSystem(),
+          questionResponseTypeBo.getMinDate(), questionResponseTypeBo.getMinDescription(),
+          questionResponseTypeBo.getMinImage(), questionResponseTypeBo.getMinValue(),
+          questionResponseTypeBo.getMultipleLines(), questionResponseTypeBo.getOtherDescription(),
+          questionResponseTypeBo.getOtherDestinationStepId(),
+          questionResponseTypeBo.getOtherExclusive(), questionResponseTypeBo.getOtherIncludeText(),
+          questionResponseTypeBo.getOtherParticipantFill(),
+          questionResponseTypeBo.getOtherPlaceholderText(), questionResponseTypeBo.getOtherText(),
+          questionResponseTypeBo.getOtherType(), questionResponseTypeBo.getOtherValue(),
+          questionResponseTypeBo.getPlaceholder(),
+          questionResponseTypeBo.getQuestionsResponseTypeId(),
+          questionResponseTypeBo.getSelectionStyle(), questionResponseTypeBo.getStep(),
+          questionResponseTypeBo.getStyle(), questionResponseTypeBo.getTextChoices(),
+          questionResponseTypeBo.getUnit(), questionResponseTypeBo.getUseCurrentLocation(),
+          questionResponseTypeBo.getValidationCharacters(),
+          questionResponseTypeBo.getValidationCondition(),
+          questionResponseTypeBo.getValidationExceptText(),
+          questionResponseTypeBo.getValidationRegex(), questionResponseTypeBo.getVertical()
+
+      );
+      questionResponseTypeBoInsertQueryList.add(questionResponseTypeBoInsertQuery);
+    }
+    insertSqlStatements.addAll(questionResponseTypeBoInsertQueryList);
+
   }
 
   private void addQuestionsResponseSubTypeInsertSql(
@@ -204,7 +405,7 @@ public class StudyExportService {
               questionResponseSubTypeBo.getDetail(), questionResponseSubTypeBo.getExclusive(),
               questionResponseSubTypeBo.getImage(), questionResponseSubTypeBo.getResponseTypeId(),
               questionResponseSubTypeBo.getSelectedImage(), questionResponseSubTypeBo.getText(),
-              questionResponseSubTypeBo.getValue(), questionResponseSubTypeBo.getStudyVersion());
+              questionResponseSubTypeBo.getValue());
       questionResponseSubTypeBoInsertQueryList.add(questionResponseSubTypeBoInsertQuery);
     }
     insertSqlStatements.addAll(questionResponseSubTypeBoInsertQueryList);
@@ -261,9 +462,10 @@ public class StudyExportService {
           questionBo.getCreatedOn(), questionBo.getDescription(), questionBo.getHealthkitDatatype(),
           questionBo.getLineChartTimeRange(), questionBo.getModifiedBy(),
           questionBo.getModifiedOn(), questionBo.getQuestion(), questionBo.getResponseType(),
-          questionBo.getShortTitle(), questionBo.getSkippable(), questionBo.getStatDisplayUnits(),
-          questionBo.getStatFormula(), questionBo.getStatShortName(), questionBo.getStatType(),
-          questionBo.getStatus(), questionBo.getUseAnchorDate(), questionBo.getUseStasticData());
+          questionBo.getShortTitle(), questionBo.getSkippable(), questionBo.getStatDisplayName(),
+          questionBo.getStatDisplayUnits(), questionBo.getStatFormula(),
+          questionBo.getStatShortName(), questionBo.getStatType(), questionBo.getStatus(),
+          questionBo.getUseAnchorDate(), questionBo.getUseStasticData());
       questionsBoInsertQueryList.add(questionInsertQuery);
     }
     insertSqlStatements.addAll(questionsBoInsertQueryList);
@@ -732,4 +934,6 @@ public class StudyExportService {
 
     return sqlQuery;
   }
+
+
 }

@@ -1,9 +1,8 @@
 /*
  * Copyright 2020 Google LLC
  *
- * Use of this source code is governed by an MIT-style
- * license that can be found in the LICENSE file or at
- * https://opensource.org/licenses/MIT.
+ * Use of this source code is governed by an MIT-style license that can be found in the LICENSE file
+ * or at https://opensource.org/licenses/MIT.
  */
 
 package com.fdahpstudydesigner.controller;
@@ -110,9 +109,11 @@ public class StudyControllerTest extends BaseMockIT {
 
   private static final String TEST_STUDY_ID_STRING = "678680";
 
-  @Autowired NotificationDAOImpl notificationDaoImpl;
+  @Autowired
+  NotificationDAOImpl notificationDaoImpl;
 
-  @Autowired StudyExportService studyExportService;
+  @Autowired
+  StudyExportService studyExportService;
 
   private static final String OAUTH_TOKEN = "/oauth2/token";
 
@@ -125,17 +126,12 @@ public class StudyControllerTest extends BaseMockIT {
     notificationBo.setCustomStudyId("678595");
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_NOTIFICATION.getPath())
-            .headers(headers)
-            .param("buttonType", "save")
-            .sessionAttrs(getSessionAttributes());
+        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_NOTIFICATION.getPath()).headers(headers)
+            .param("buttonType", "save").sessionAttrs(getSessionAttributes());
 
     addParams(requestBuilder, notificationBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:getStudyNotification.do"));
 
     verifyAuditEventCall(STUDY_NOTIFICATION_SAVED_OR_UPDATED);
@@ -150,17 +146,12 @@ public class StudyControllerTest extends BaseMockIT {
     notificationBo.setNotificationText("Study notification");
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_NOTIFICATION.getPath())
-            .headers(headers)
-            .param("buttonType", "save")
-            .sessionAttrs(getSessionAttributes());
+        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_NOTIFICATION.getPath()).headers(headers)
+            .param("buttonType", "save").sessionAttrs(getSessionAttributes());
 
     addParams(requestBuilder, notificationBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:getStudyNotification.do"));
 
     verifyAuditEventCall(STUDY_NEW_NOTIFICATION_CREATED);
@@ -175,17 +166,12 @@ public class StudyControllerTest extends BaseMockIT {
     notificationBo.setCustomStudyId("678592");
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_NOTIFICATION.getPath())
-            .headers(headers)
-            .param("buttonType", "done")
-            .sessionAttrs(getSessionAttributes());
+        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_NOTIFICATION.getPath()).headers(headers)
+            .param("buttonType", "done").sessionAttrs(getSessionAttributes());
 
     addParams(requestBuilder, notificationBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:/adminStudies/viewStudyNotificationList.do"));
 
     verifyAuditEventCall(STUDY_NOTIFICATION_MARKED_COMPLETE);
@@ -207,12 +193,9 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, CUSTOM_STUDY_ID_VALUE);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.CONSENT_MARKED_AS_COMPLETE.getPath())
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(post(PathMappingUri.CONSENT_MARKED_AS_COMPLETE.getPath()).headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:comprehensionQuestionList.do"));
 
     verifyAuditEventCall(STUDY_CONSENT_SECTIONS_MARKED_COMPLETE);
@@ -234,12 +217,9 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, CUSTOM_STUDY_ID_VALUE);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.NOTIFICATION_MARK_AS_COMPLETED.getPath())
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(post(PathMappingUri.NOTIFICATION_MARK_AS_COMPLETED.getPath()).headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:actionList.do"));
 
     verifyAuditEventCall(STUDY_NOTIFICATIONS_SECTION_MARKED_COMPLETE);
@@ -261,12 +241,9 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, CUSTOM_STUDY_ID_VALUE);
 
     mockMvc
-        .perform(
-            get(PathMappingUri.QUESTIONAIRE_MARK_AS_COMPLETED.getPath())
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(get(PathMappingUri.QUESTIONAIRE_MARK_AS_COMPLETED.getPath()).headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:viewStudyActiveTasks.do"));
 
     verifyAuditEventCall(STUDY_QUESTIONNAIRES_SECTION_MARKED_COMPLETE);
@@ -287,12 +264,9 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, CUSTOM_STUDY_ID_VALUE);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.RESOURCE_MARK_AS_COMPLETED.getPath())
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(post(PathMappingUri.RESOURCE_MARK_AS_COMPLETED.getPath()).headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:viewStudyNotificationList.do"));
 
     verifyAuditEventCall(STUDY_RESOURCE_SECTION_MARKED_COMPLETE);
@@ -316,15 +290,11 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.VIEW_BASIC_INFO.getPath())
-                .param(FdahpStudyDesignerConstants.IS_LIVE, "live")
-                .param(FdahpStudyDesignerConstants.PERMISSION, "permission")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(view().name("viewBasicInfo"));
+        .perform(post(PathMappingUri.VIEW_BASIC_INFO.getPath())
+            .param(FdahpStudyDesignerConstants.IS_LIVE, "live")
+            .param(FdahpStudyDesignerConstants.PERMISSION, "permission").headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isOk()).andExpect(view().name("viewBasicInfo"));
 
     verifyAuditEventCall(NEW_STUDY_CREATION_INITIATED);
   }
@@ -352,15 +322,12 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.VIEW_STUDY_DETAILS.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
-                .param(FdahpStudyDesignerConstants.PERMISSION, "View")
-                .param(FdahpStudyDesignerConstants.IS_LIVE, "isLive")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(post(PathMappingUri.VIEW_STUDY_DETAILS.getPath())
+            .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
+            .param(FdahpStudyDesignerConstants.PERMISSION, "View")
+            .param(FdahpStudyDesignerConstants.IS_LIVE, "isLive").headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:/adminStudies/viewBasicInfo.do"));
 
     verifyAuditEventCall(LAST_PUBLISHED_VERSION_OF_STUDY_VIEWED);
@@ -388,14 +355,11 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.VIEW_STUDY_DETAILS.getPath())
-                .param(FdahpStudyDesignerConstants.PERMISSION, "View")
-                .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(post(PathMappingUri.VIEW_STUDY_DETAILS.getPath())
+            .param(FdahpStudyDesignerConstants.PERMISSION, "View")
+            .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE).headers(headers)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:/adminStudies/viewBasicInfo.do"));
 
     verifyAuditEventCall(STUDY_VIEWED);
@@ -423,13 +387,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     mockMvc
-        .perform(
-            post(PathMappingUri.VIEW_STUDY_DETAILS.getPath())
-                .headers(headers)
-                .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isFound())
+        .perform(post(PathMappingUri.VIEW_STUDY_DETAILS.getPath()).headers(headers)
+            .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
+            .sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:/adminStudies/viewBasicInfo.do"));
 
     verifyAuditEventCall(STUDY_ACCESSED_IN_EDIT_MODE);
@@ -448,15 +409,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678595");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678579")
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "lunchId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, "678579")
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "lunchId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(STUDY_LAUNCHED);
   }
@@ -474,15 +430,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678591");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678575")
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "updatesId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, "678575")
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "updatesId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(UPDATES_PUBLISHED_TO_STUDY);
   }
@@ -500,15 +451,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678594");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678578")
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "pauseId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, "678578")
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "pauseId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(STUDY_PAUSED);
   }
@@ -526,15 +472,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678593");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678577")
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "resumeId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, "678577")
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "resumeId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(STUDY_RESUMED);
   }
@@ -559,10 +500,8 @@ public class StudyControllerTest extends BaseMockIT {
 
     MockHttpServletRequestBuilder requestBuilder =
         post(PathMappingUri.SAVE_OR_UPDATE_SETTINGS_AND_ADMINS.getPath())
-            .param("userIds", STUDY_ID_VALUE)
-            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save")
-            .headers(headers)
-            .sessionAttrs(sessionAttributes);
+            .param("userIds", STUDY_ID_VALUE).param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save")
+            .headers(headers).sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, studyBo);
     mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound());
@@ -589,15 +528,11 @@ public class StudyControllerTest extends BaseMockIT {
     ConsentInfoBo.setStudyId(STUDY_ID_INT_VALUE);
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_CONSENT_INFO.getPath())
-            .headers(headers)
+        post(PathMappingUri.SAVE_OR_UPDATE_CONSENT_INFO.getPath()).headers(headers)
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, ConsentInfoBo);
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:/adminStudies/consentListPage.do"));
 
     verifyAuditEventCall(STUDY_CONSENT_SECTIONS_SAVED_OR_UPDATED);
@@ -624,8 +559,7 @@ public class StudyControllerTest extends BaseMockIT {
     MockHttpServletRequestBuilder requestBuilder =
         post(PathMappingUri.SAVE_OR_UPDATE_SETTINGS_AND_ADMINS.getPath())
             .param("userIds", STUDY_ID_VALUE)
-            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "completed")
-            .headers(headers)
+            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "completed").headers(headers)
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, studyBo);
@@ -647,15 +581,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678592");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678576")
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "deactivateId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, "678576")
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "deactivateId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(STUDY_DEACTIVATED);
   }
@@ -682,10 +611,8 @@ public class StudyControllerTest extends BaseMockIT {
     studyBo.setStudySequenceBo(null);
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_BASIC_INFO.getPath())
-            .headers(headers)
-            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save")
-            .sessionAttrs(sessionAttributes);
+        post(PathMappingUri.SAVE_OR_UPDATE_BASIC_INFO.getPath()).headers(headers)
+            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save").sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, studyBo);
 
@@ -715,17 +642,13 @@ public class StudyControllerTest extends BaseMockIT {
     studyBo.setAppId("GCP123");
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_BASIC_INFO.getPath())
-            .headers(headers)
+        post(PathMappingUri.SAVE_OR_UPDATE_BASIC_INFO.getPath()).headers(headers)
             .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "completed")
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, studyBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:viewSettingAndAdmins.do"));
 
     verifyAuditEventCall(STUDY_BASIC_INFO_SECTION_MARKED_COMPLETE);
@@ -753,17 +676,12 @@ public class StudyControllerTest extends BaseMockIT {
     studyBo.setStudySequenceBo(null);
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_BASIC_INFO.getPath())
-            .headers(headers)
-            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save")
-            .sessionAttrs(sessionAttributes);
+        post(PathMappingUri.SAVE_OR_UPDATE_BASIC_INFO.getPath()).headers(headers)
+            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save").sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, studyBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:viewBasicInfo.do"));
 
     verifyAuditEventCall(STUDY_BASIC_INFO_SECTION_SAVED_OR_UPDATED);
@@ -789,8 +707,7 @@ public class StudyControllerTest extends BaseMockIT {
     resourceBO.setAction(true);
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath())
-            .headers(headers)
+        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath()).headers(headers)
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, resourceBO);
@@ -830,10 +747,8 @@ public class StudyControllerTest extends BaseMockIT {
     resourceBO.setResourceVisibility(false);
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath())
-            .headers(headers)
-            .param("resourceVisibilityParam", "0")
-            .sessionAttrs(sessionAttributes);
+        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath()).headers(headers)
+            .param("resourceVisibilityParam", "0").sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, resourceBO);
 
@@ -863,17 +778,12 @@ public class StudyControllerTest extends BaseMockIT {
     ResourceBO ResourceBO = new ResourceBO();
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath())
-            .headers(headers)
-            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save")
-            .sessionAttrs(sessionAttributes);
+        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath()).headers(headers)
+            .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "save").sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, ResourceBO);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:addOrEditResource.do"));
 
     verifyAuditEventCall(STUDY_RESOURCE_SAVED_OR_UPDATED);
@@ -897,17 +807,13 @@ public class StudyControllerTest extends BaseMockIT {
     ResourceBO ResourceBO = new ResourceBO();
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath())
-            .headers(headers)
+        post(PathMappingUri.SAVE_OR_UPDATE_RESOURCE.getPath()).headers(headers)
             .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "completed")
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, ResourceBO);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:getResourceList.do"));
 
     verifyAuditEventCall(STUDY_RESOURCE_MARKED_COMPLETED);
@@ -933,16 +839,12 @@ public class StudyControllerTest extends BaseMockIT {
     eligibilityBo.setActionType("save");
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_ELIGIBILITY.getPath())
-            .headers(headers)
+        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_ELIGIBILITY.getPath()).headers(headers)
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, eligibilityBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:viewStudyEligibilty.do"));
     verifyAuditEventCall(STUDY_ELIGIBILITY_SECTION_SAVED_OR_UPDATED);
   }
@@ -967,16 +869,12 @@ public class StudyControllerTest extends BaseMockIT {
     eligibilityBo.setActionType("complete");
 
     MockHttpServletRequestBuilder requestBuilder =
-        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_ELIGIBILITY.getPath())
-            .headers(headers)
+        post(PathMappingUri.SAVE_OR_UPDATE_STUDY_ELIGIBILITY.getPath()).headers(headers)
             .sessionAttrs(sessionAttributes);
 
     addParams(requestBuilder, eligibilityBo);
 
-    mockMvc
-        .perform(requestBuilder)
-        .andDo(print())
-        .andExpect(status().isFound())
+    mockMvc.perform(requestBuilder).andDo(print()).andExpect(status().isFound())
         .andExpect(view().name("redirect:consentListPage.do"));
     verifyAuditEventCall(STUDY_ELIGIBILITY_SECTION_MARKED_COMPLETE);
   }
@@ -998,14 +896,9 @@ public class StudyControllerTest extends BaseMockIT {
     consentBo.setStudyId(STUDY_ID_INT_VALUE);
     consentBo.setType("save");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
-                .param("consentInfo", asJsonString(consentBo))
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
+        .param("consentInfo", asJsonString(consentBo)).headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
     verifyAuditEventCall(STUDY_REVIEW_AND_E_CONSENT_SAVED_OR_UPDATED);
   }
 
@@ -1028,14 +921,9 @@ public class StudyControllerTest extends BaseMockIT {
     consentBo.setConsentDocContent(
         "<span style=&#34;font-size:20px;&#34;><strong>Data gathering</strong></span><br/><span style=&#34;display: block; overflow-wrap: break-word; width: 100%;&#34;>Auto0016</span><br/>");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
-                .param("consentInfo", asJsonString(consentBo))
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
+        .param("consentInfo", asJsonString(consentBo)).headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
     verifyAuditEventCall(STUDY_REVIEW_AND_E_CONSENT_MARKED_COMPLETE);
   }
 
@@ -1057,14 +945,9 @@ public class StudyControllerTest extends BaseMockIT {
     consentBo.setComprehensionTest("save");
     consentBo.setConsentDocContent("doc");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
-                .param("consentInfo", asJsonString(consentBo))
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
+        .param("consentInfo", asJsonString(consentBo)).headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
     verifyAuditEventCall(STUDY_COMPREHENSION_TEST_SECTION_SAVED_OR_UPDATED);
   }
 
@@ -1086,14 +969,9 @@ public class StudyControllerTest extends BaseMockIT {
     consentBo.setComprehensionTest("complete");
     consentBo.setConsentDocContent("doc");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
-                .param("consentInfo", asJsonString(consentBo))
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.SAVE_CONSENT_REVIEW_AND_ECONSENT_INFO.getPath())
+        .param("consentInfo", asJsonString(consentBo)).headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
     verifyAuditEventCall(STUDY_COMPREHENSION_TEST_SECTION_MARKED_COMPLETE);
   }
 
@@ -1110,13 +988,9 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, CUSTOM_STUDY_ID_VALUE);
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.STUDY_LIST.getPath())
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(
+        post(PathMappingUri.STUDY_LIST.getPath()).headers(headers).sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(STUDY_LIST_VIEWED);
   }
@@ -1134,15 +1008,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678599");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, "678580")
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "updatesId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, "678580")
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "updatesId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
     verifyAuditEventCall(STUDY_CONSENT_DOCUMENT_NEW_VERSION_PUBLISHED);
   }
 
@@ -1159,15 +1028,10 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
     sessionAttributes.put(CUSTOM_STUDY_ID_ATTR_NAME, "678999");
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, TEST_STUDY_ID_STRING)
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "updatesId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, TEST_STUDY_ID_STRING)
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "updatesId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     verifyAuditEventCall(STUDY_CONSENT_CONTENT_NEW_VERSION_PUBLISHED);
   }
@@ -1198,39 +1062,22 @@ public class StudyControllerTest extends BaseMockIT {
     StudyDetailsBean studyDetailsBean = new StudyDetailsBean();
     studyDetailsBean.setStudyId(CUSTOM_STUDY_ID_VALUE);
 
-    mockServer
-        .expect(requestTo(authServerUrl))
-        .andExpect(method(HttpMethod.POST))
-        .andRespond(
-            withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(readJsonFile("/token_response_oauth_scim_service.json")));
+    mockServer.expect(requestTo(authServerUrl)).andExpect(method(HttpMethod.POST))
+        .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+            .body(readJsonFile("/token_response_oauth_scim_service.json")));
 
-    mockServer
-        .expect(requestTo(participantDatastoreUrl))
-        .andExpect(method(HttpMethod.POST))
-        .andRespond(
-            withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mapper.writeValueAsString(studyDetailsBean)));
+    mockServer.expect(requestTo(participantDatastoreUrl)).andExpect(method(HttpMethod.POST))
+        .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+            .body(mapper.writeValueAsString(studyDetailsBean)));
 
-    mockServer
-        .expect(requestTo(responseDatastoreUrl))
-        .andExpect(method(HttpMethod.POST))
-        .andRespond(
-            withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mapper.writeValueAsString(studyDetailsBean)));
+    mockServer.expect(requestTo(responseDatastoreUrl)).andExpect(method(HttpMethod.POST))
+        .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+            .body(mapper.writeValueAsString(studyDetailsBean)));
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, TEST_STUDY_ID_STRING)
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "deactivateId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, TEST_STUDY_ID_STRING)
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "deactivateId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     mockServer.verify();
 
@@ -1263,39 +1110,22 @@ public class StudyControllerTest extends BaseMockIT {
     StudyDetailsBean studyDetailsBean = new StudyDetailsBean();
     studyDetailsBean.setStudyId(CUSTOM_STUDY_ID_VALUE);
 
-    mockServer
-        .expect(requestTo(authServerUrl))
-        .andExpect(method(HttpMethod.POST))
-        .andRespond(
-            withStatus(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(readJsonFile("/token_response_oauth_scim_service.json")));
+    mockServer.expect(requestTo(authServerUrl)).andExpect(method(HttpMethod.POST))
+        .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+            .body(readJsonFile("/token_response_oauth_scim_service.json")));
 
-    mockServer
-        .expect(requestTo(participantDatastoreUrl))
-        .andExpect(method(HttpMethod.POST))
-        .andRespond(
-            withStatus(HttpStatus.FOUND)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mapper.writeValueAsString(studyDetailsBean)));
+    mockServer.expect(requestTo(participantDatastoreUrl)).andExpect(method(HttpMethod.POST))
+        .andRespond(withStatus(HttpStatus.FOUND).contentType(MediaType.APPLICATION_JSON)
+            .body(mapper.writeValueAsString(studyDetailsBean)));
 
-    mockServer
-        .expect(requestTo(responseDatastoreUrl))
-        .andExpect(method(HttpMethod.POST))
-        .andRespond(
-            withStatus(HttpStatus.FOUND)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(mapper.writeValueAsString(studyDetailsBean)));
+    mockServer.expect(requestTo(responseDatastoreUrl)).andExpect(method(HttpMethod.POST))
+        .andRespond(withStatus(HttpStatus.FOUND).contentType(MediaType.APPLICATION_JSON)
+            .body(mapper.writeValueAsString(studyDetailsBean)));
 
-    mockMvc
-        .perform(
-            post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
-                .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
-                .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "deactivateId")
-                .headers(headers)
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(post(PathMappingUri.UPDATE_STUDY_ACTION.getPath())
+        .param(FdahpStudyDesignerConstants.STUDY_ID, STUDY_ID_VALUE)
+        .param(FdahpStudyDesignerConstants.BUTTON_TEXT, "deactivateId").headers(headers)
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
 
     mockServer.verify();
 
@@ -1312,17 +1142,13 @@ public class StudyControllerTest extends BaseMockIT {
     HashMap<String, Object> sessionAttributes = getSessionAttributes();
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
-    mockMvc
-        .perform(
-            post("/studies/8ad16a8678a6aa750178a6e25aaa0033/export")
-                .sessionAttrs(sessionAttributes))
-        .andDo(print())
-        .andExpect(status().isOk());
+    mockMvc.perform(
+        post("/studies/4028614378e9ad270178e9b28f57001b/export").sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isOk());
   }
 
   public static String readJsonFile(String filepath) throws IOException {
     return JsonUtils.getObjectMapper()
-        .readValue(JsonUtils.class.getResourceAsStream(filepath), JsonNode.class)
-        .toString();
+        .readValue(JsonUtils.class.getResourceAsStream(filepath), JsonNode.class).toString();
   }
 }
