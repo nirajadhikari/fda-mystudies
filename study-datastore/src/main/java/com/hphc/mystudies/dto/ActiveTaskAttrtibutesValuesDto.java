@@ -45,7 +45,7 @@ public class ActiveTaskAttrtibutesValuesDto implements Serializable {
   private String attributeValueId;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "active_task_master_attr_id")
   private String activeTaskMasterAttrId;
@@ -110,11 +110,11 @@ public class ActiveTaskAttrtibutesValuesDto implements Serializable {
     this.attributeValueId = attributeValueId;
   }
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return activeTaskId;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
+  public void setActiveTaskId(String activeTaskId) {
     this.activeTaskId = activeTaskId;
   }
 

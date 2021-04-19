@@ -52,7 +52,7 @@ public class ActiveTaskCustomFrequenciesDto implements Serializable {
   private String frequencyTime;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "study_version")
   private Integer studyVersion = 1;
@@ -101,11 +101,11 @@ public class ActiveTaskCustomFrequenciesDto implements Serializable {
     this.frequencyTime = frequencyTime;
   }
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return activeTaskId;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
+  public void setActiveTaskId(String activeTaskId) {
     this.activeTaskId = activeTaskId;
   }
 
