@@ -33,12 +33,15 @@ import com.fdahpstudydesigner.dao.NotificationDAO;
 import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
+import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
+import com.fdahpstudydesigner.util.IdGenerator;
 import com.fdahpstudydesigner.util.StudyExportSqlQueries;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +69,10 @@ public class StudyExportService {
     List<String> insertSqlStatements = new ArrayList<>();
 
     StudyBo studyBo = studyDao.getStudy(studyId);
+    Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
+    String newStudyId = IdGenerator.id();
+    String newCustomId = studyBo.getCustomStudyId() + "_" + map.get("studyVersion");
+
 
     StudyPermissionBO studyPermissionBo = studyDao.getStudyPermissionBO(studyBo.getId(), userId);
 
@@ -75,6 +82,7 @@ public class StudyExportService {
     List<StudyPageBo> studypageList = studyDao.getOverviewStudyPagesById(studyBo.getId(), userId);
 
     EligibilityBo eligibilityBo = studyDao.getStudyEligibiltyByStudyId(studyBo.getId());
+    String newEligibilityId = IdGenerator.id();
 
     List<EligibilityTestBo> eligibilityBoList = null;
     if (eligibilityBo != null) {
@@ -94,21 +102,26 @@ public class StudyExportService {
         studyQuestionnaireDAO.getStudyQuestionnairesByStudyId(studyBo.getId());
 
     List<String> questionnaireIds = new ArrayList<>();
+    List<String> newQuestionnaireIds = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(questionnairesList)) {
       for (QuestionnaireBo questionnaireBo : questionnairesList) {
         questionnaireIds.add(questionnaireBo.getId());
+        newQuestionnaireIds.add(IdGenerator.id());
       }
+
     }
 
     List<QuestionnairesStepsBo> questionnairesStepsList =
         studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireIds);
 
+
+
     List<String> instructionFormIds = new ArrayList<>();
-    List<String> stepTypeList = new ArrayList<>();
+    List<String> stepIds = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(questionnairesStepsList)) {
       for (QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsList) {
         instructionFormIds.add(questionnairesStepsBo.getInstructionFormId());
-        stepTypeList.add(questionnairesStepsBo.getType());
+        stepIds.add(IdGenerator.id());
       }
     }
 
@@ -167,20 +180,25 @@ public class StudyExportService {
         studyActiveTasksDAO.getActiveTaskMasterAttributesByType(activeTaskTypes);
 
     try {
-      addStudiesInsertSql(studyBo, insertSqlStatements);
-      addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements);
-      addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
-      addAnchorDateInsertSql(anchorDate, insertSqlStatements);
-      addStudypagesListInsertSql(studypageList, insertSqlStatements);
-      addEligibilityInsertSql(eligibilityBo, insertSqlStatements);
-      addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements);
-      addConsentBoListInsertSql(consentBoList, insertSqlStatements);
-      addConsentInfoBoListInsertSql(consentInfoBoList, insertSqlStatements);
+      addStudiesInsertSql(studyBo, insertSqlStatements, newStudyId, newCustomId);
+      addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements, newStudyId);
+      addStudySequenceInsertSql(studySequenceBo, insertSqlStatements, newStudyId);
+      addAnchorDateInsertSql(anchorDate, insertSqlStatements, newStudyId, newCustomId);
+      addStudypagesListInsertSql(studypageList, insertSqlStatements, newStudyId);
+      addEligibilityInsertSql(eligibilityBo, insertSqlStatements, newEligibilityId, newStudyId);
+      addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements, newEligibilityId);
+      addConsentBoListInsertSql(consentBoList, insertSqlStatements, newStudyId, newCustomId);
+
+      addConsentInfoBoListInsertSql(consentInfoBoList, insertSqlStatements, newStudyId,
+          newCustomId);
+
       addConsentMasterInfoBoListInsertSql(consentMasterInfoList, insertSqlStatements);
       addComprehensionTestQuestionListInsertSql(comprehensionTestQuestionBoList,
-          insertSqlStatements);
-      addQuestionnaireBoListInsertSql(questionnairesList, insertSqlStatements);
-      addQuestionnairesStepsListInsertSql(questionnairesStepsList, insertSqlStatements);
+          insertSqlStatements, newStudyId);
+      addQuestionnaireBoListInsertSql(questionnairesList, insertSqlStatements, newStudyId,
+          newCustomId, newQuestionnaireIds);
+      addQuestionnairesStepsListInsertSql(questionnairesStepsList, insertSqlStatements,
+          newQuestionnaireIds, stepIds);
       addQuestionnaireFrequenciesBoInsertSql(questionnairesFrequenciesBoList, insertSqlStatements);
       addQuestionnaireCustomScheduleBoInsertSql(questionnairesCustomFrequenciesBoList,
           insertSqlStatements);
@@ -217,7 +235,11 @@ public class StudyExportService {
   private String createFileFromListAndSaveToCloudStorage(List<String> insertSqlStatements,
       StudyBo studyBo) {
     try {
-      FileWriter writer = new FileWriter(studyBo.getName() + ".txt");
+
+      Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
+      String studyVersion = map.get("studyVersion");
+
+      FileWriter writer = new FileWriter(studyBo.getCustomStudyId() + "_" + studyVersion + ".sql");
       for (String insertSqlStatement : insertSqlStatements) {
         writer.write(insertSqlStatement + System.lineSeparator());
       }
@@ -500,40 +522,44 @@ public class StudyExportService {
   }
 
   private void addQuestionnairesStepsListInsertSql(
-      List<QuestionnairesStepsBo> questionnairesStepsList, List<String> insertSqlStatements)
-      throws SQLException {
+      List<QuestionnairesStepsBo> questionnairesStepsList, List<String> insertSqlStatements,
+      List<String> newQuestionnaireIds, List<String> stepIds) throws SQLException {
     if (CollectionUtils.isEmpty(questionnairesStepsList)) {
       return;
     }
-
+    String questionnaireStepsBoInsertQuery = null;
     List<String> questionnaireStepsBoInsertQueryList = new ArrayList<>();
     for (QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsList) {
-      String questionnaireStepsBoInsertQuery = prepareInsertQuery(
-          StudyExportSqlQueries.QUESTIONNAIRES_STEPS, questionnairesStepsBo.getStepId(),
-          questionnairesStepsBo.getActive(), questionnairesStepsBo.getCreatedBy(),
-          questionnairesStepsBo.getCreatedOn(), questionnairesStepsBo.getDestinationStep(),
-          questionnairesStepsBo.getInstructionFormId(), questionnairesStepsBo.getModifiedBy(),
-          questionnairesStepsBo.getModifiedOn(), questionnairesStepsBo.getQuestionnairesId(),
-          questionnairesStepsBo.getRepeatable(), questionnairesStepsBo.getRepeatableText(),
-          questionnairesStepsBo.getSequenceNo(), questionnairesStepsBo.getSkiappable(),
-          questionnairesStepsBo.getStatus(), questionnairesStepsBo.getStepShortTitle(),
-          questionnairesStepsBo.getStepType());
+      for (String newQuestionnaireId : newQuestionnaireIds) {
+        for (String stepId : stepIds) {
+          questionnaireStepsBoInsertQuery =
+              prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES_STEPS, stepId,
+                  questionnairesStepsBo.getActive(), questionnairesStepsBo.getCreatedBy(),
+                  questionnairesStepsBo.getCreatedOn(), questionnairesStepsBo.getDestinationStep(),
+                  questionnairesStepsBo.getInstructionFormId(),
+                  questionnairesStepsBo.getModifiedBy(), questionnairesStepsBo.getModifiedOn(),
+                  newQuestionnaireId, questionnairesStepsBo.getRepeatable(),
+                  questionnairesStepsBo.getRepeatableText(), questionnairesStepsBo.getSequenceNo(),
+                  questionnairesStepsBo.getSkiappable(), questionnairesStepsBo.getStatus(),
+                  questionnairesStepsBo.getStepShortTitle(), questionnairesStepsBo.getStepType());
+        }
+      }
 
       questionnaireStepsBoInsertQueryList.add(questionnaireStepsBoInsertQuery);
     }
     insertSqlStatements.addAll(questionnaireStepsBoInsertQueryList);
   }
 
-  private void addStudiesInsertSql(StudyBo studyBo, List<String> insertSqlStatements)
-      throws SQLException {
+  private void addStudiesInsertSql(StudyBo studyBo, List<String> insertSqlStatements,
+      String newStudyId, String newCustomId) throws SQLException {
 
     if (studyBo == null) {
       return;
     }
 
-    String studiesInsertQuery = prepareInsertQuery(StudyExportSqlQueries.STUDIES, studyBo.getId(),
+    String studiesInsertQuery = prepareInsertQuery(StudyExportSqlQueries.STUDIES, newStudyId,
         studyBo.getAppId(), studyBo.getCategory(), studyBo.getCreatedBy(), studyBo.getCreatedOn(),
-        studyBo.getCustomStudyId(), studyBo.getDescription(), studyBo.getEnrollingParticipants(),
+        newCustomId, studyBo.getDescription(), studyBo.getEnrollingParticipants(),
         studyBo.getFullName(), studyBo.getHasActivetaskDraft(), studyBo.getHasActivityDraft(),
         studyBo.getHasConsentDraft(), studyBo.getHasQuestionnaireDraft(),
         studyBo.getHasStudyDraft(), studyBo.getInboxEmailAddress(), studyBo.getIrbReview(),
@@ -548,41 +574,41 @@ public class StudyExportService {
   }
 
   private void addStudySequenceInsertSql(StudySequenceBo studySequenceBo,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId) throws SQLException {
 
     if (studySequenceBo == null) {
       return;
     }
 
     String studySequeneInsertQuery = prepareInsertQuery(StudyExportSqlQueries.STUDY_SEQUENCE,
-        studySequenceBo.getStudySequenceId(), studySequenceBo.isActions(),
-        studySequenceBo.isBasicInfo(), studySequenceBo.isCheckList(),
-        studySequenceBo.isComprehensionTest(), studySequenceBo.isConsentEduInfo(),
-        studySequenceBo.iseConsent(), studySequenceBo.isEligibility(),
-        studySequenceBo.isMiscellaneousBranding(), studySequenceBo.isMiscellaneousNotification(),
-        studySequenceBo.isMiscellaneousResources(), studySequenceBo.isOverView(),
-        studySequenceBo.isSettingAdmins(), studySequenceBo.isStudyDashboardChart(),
-        studySequenceBo.isStudyDashboardStats(), studySequenceBo.isStudyExcActiveTask(),
-        studySequenceBo.isStudyExcQuestionnaries(), studySequenceBo.getStudyId());
+        IdGenerator.id(), studySequenceBo.isActions(), studySequenceBo.isBasicInfo(),
+        studySequenceBo.isCheckList(), studySequenceBo.isComprehensionTest(),
+        studySequenceBo.isConsentEduInfo(), studySequenceBo.iseConsent(),
+        studySequenceBo.isEligibility(), studySequenceBo.isMiscellaneousBranding(),
+        studySequenceBo.isMiscellaneousNotification(), studySequenceBo.isMiscellaneousResources(),
+        studySequenceBo.isOverView(), studySequenceBo.isSettingAdmins(),
+        studySequenceBo.isStudyDashboardChart(), studySequenceBo.isStudyDashboardStats(),
+        studySequenceBo.isStudyExcActiveTask(), studySequenceBo.isStudyExcQuestionnaries(),
+        newStudyId);
     insertSqlStatements.add(studySequeneInsertQuery);
   }
 
-  private void addAnchorDateInsertSql(AnchorDateTypeBo anchorDate, List<String> insertSqlStatements)
-      throws SQLException {
+  private void addAnchorDateInsertSql(AnchorDateTypeBo anchorDate, List<String> insertSqlStatements,
+      String newStudyId, String newCustomId) throws SQLException {
 
     if (anchorDate == null) {
       return;
     }
 
     String anchorDateTypeInsertQuery = prepareInsertQuery(StudyExportSqlQueries.ANCHORDATE_TYPE,
-        anchorDate.getId(), anchorDate.getCustomStudyId(), anchorDate.getHasAnchortypeDraft(),
-        anchorDate.getName(), anchorDate.getStudyId(), anchorDate.getVersion());
+        IdGenerator.id(), newCustomId, anchorDate.getHasAnchortypeDraft(), anchorDate.getName(),
+        newStudyId, anchorDate.getVersion());
 
     insertSqlStatements.add(anchorDateTypeInsertQuery);
   }
 
   private void addStudypagesListInsertSql(List<StudyPageBo> studypageList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId) throws SQLException {
 
     if (CollectionUtils.isEmpty(studypageList)) {
       return;
@@ -591,9 +617,9 @@ public class StudyExportService {
     List<String> studyPageBoInsertQueryList = new ArrayList<>();
     for (StudyPageBo studyPageBo : studypageList) {
       String studyPageBoInsertQuery = prepareInsertQuery(StudyExportSqlQueries.STUDY_PAGE,
-          studyPageBo.getPageId(), studyPageBo.getCreatedBy(), studyPageBo.getCreatedOn(),
+          IdGenerator.id(), studyPageBo.getCreatedBy(), studyPageBo.getCreatedOn(),
           studyPageBo.getDescription(), studyPageBo.getImagePath(), studyPageBo.getModifiedBy(),
-          studyPageBo.getModifiedOn(), studyPageBo.getStudyId(), studyPageBo.getTitle());
+          studyPageBo.getModifiedOn(), newStudyId, studyPageBo.getTitle());
 
       studyPageBoInsertQueryList.add(studyPageBoInsertQuery);
     }
@@ -601,17 +627,18 @@ public class StudyExportService {
   }
 
   private void addEligibilityInsertSql(EligibilityBo eligibilityBo,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newEligibilityId, String newStudyId)
+      throws SQLException {
 
     if (eligibilityBo == null) {
       return;
     }
 
     String eligibilityInsertQuery = prepareInsertQuery(StudyExportSqlQueries.ELIGIBILITY,
-        eligibilityBo.getId(), eligibilityBo.getCreatedBy(), eligibilityBo.getCreatedOn(),
+        newEligibilityId, eligibilityBo.getCreatedBy(), eligibilityBo.getCreatedOn(),
         eligibilityBo.getEligibilityMechanism(), eligibilityBo.getFailureOutcomeText(),
         eligibilityBo.getInstructionalText(), eligibilityBo.getModifiedBy(),
-        eligibilityBo.getModifiedOn(), eligibilityBo.getStudyId());
+        eligibilityBo.getModifiedOn(), newStudyId);
 
     insertSqlStatements.add(eligibilityInsertQuery);
   }
@@ -729,35 +756,33 @@ public class StudyExportService {
   }
 
   private void addStudyPermissionInsertQuery(StudyPermissionBO studyPermissionBo,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId) throws SQLException {
 
     if (studyPermissionBo == null) {
       return;
     }
 
     String studyPermissionsInsertQuery = prepareInsertQuery(StudyExportSqlQueries.STUDY_PERMISSION,
-        studyPermissionBo.getStudyPermissionId(), studyPermissionBo.getDelFlag(),
-        studyPermissionBo.getProjectLead(), studyPermissionBo.getStudyId(),
+        getNewId(), studyPermissionBo.getDelFlag(), studyPermissionBo.getProjectLead(), newStudyId,
         studyPermissionBo.getUserId(), studyPermissionBo.isViewPermission());
 
     insertSqlStatements.add(studyPermissionsInsertQuery);
   }
 
   private void addEligibilityTestListInsertSql(List<EligibilityTestBo> eligibilityTestBoList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newEligibilityId) throws SQLException {
     if (CollectionUtils.isEmpty(eligibilityTestBoList)) {
       return;
     }
     List<String> eligibilityTestBoInsertQueryList = new ArrayList<>();
     for (EligibilityTestBo eligibilityTestBo : eligibilityTestBoList) {
 
-      String eligibilityTestBoBoInsertQuery =
-          prepareInsertQuery(StudyExportSqlQueries.ELIGIBILITY_TEST, eligibilityTestBo.getId(),
-              eligibilityTestBo.getActive(), eligibilityTestBo.getEligibilityId(),
-              eligibilityTestBo.getQuestion(), eligibilityTestBo.getResponseFormat(),
-              eligibilityTestBo.getResponseNoOption(), eligibilityTestBo.getResponseYesOption(),
-              eligibilityTestBo.getSequenceNo(), eligibilityTestBo.getShortTitle(),
-              eligibilityTestBo.getStatus(), eligibilityTestBo.isUsed());
+      String eligibilityTestBoBoInsertQuery = prepareInsertQuery(
+          StudyExportSqlQueries.ELIGIBILITY_TEST, getNewId(), eligibilityTestBo.getActive(),
+          newEligibilityId, eligibilityTestBo.getQuestion(), eligibilityTestBo.getResponseFormat(),
+          eligibilityTestBo.getResponseNoOption(), eligibilityTestBo.getResponseYesOption(),
+          eligibilityTestBo.getSequenceNo(), eligibilityTestBo.getShortTitle(),
+          eligibilityTestBo.getStatus(), eligibilityTestBo.isUsed());
 
       eligibilityTestBoInsertQueryList.add(eligibilityTestBoBoInsertQuery);
     }
@@ -765,7 +790,7 @@ public class StudyExportService {
   }
 
   private void addConsentBoListInsertSql(List<ConsentBo> consentBoList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId, String newCustomId) throws SQLException {
 
     if (CollectionUtils.isEmpty(consentBoList)) {
       return;
@@ -773,26 +798,25 @@ public class StudyExportService {
 
     List<String> consentBoListInsertQuery = new ArrayList<>();
     for (ConsentBo consentBo : consentBoList) {
-      String consentInsertSql = prepareInsertQuery(StudyExportSqlQueries.CONSENT, consentBo.getId(),
+      String consentInsertSql = prepareInsertQuery(StudyExportSqlQueries.CONSENT, IdGenerator.id(),
           consentBo.getAllowWithoutPermission(), consentBo.getComprehensionTestMinimumScore(),
           consentBo.getConsentDocContent(), consentBo.getConsentDocType(), consentBo.getCreatedBy(),
-          consentBo.getCreatedOn(), consentBo.getCustomStudyId(), consentBo.geteConsentAgree(),
+          consentBo.getCreatedOn(), newCustomId, consentBo.geteConsentAgree(),
           consentBo.geteConsentDatetime(), consentBo.geteConsentFirstName(),
           consentBo.geteConsentLastName(), consentBo.geteConsentSignature(),
           consentBo.getHtmlConsent(), consentBo.getLearnMoreText(), consentBo.getLive(),
           consentBo.getLongDescription(), consentBo.getModifiedBy(), consentBo.getModifiedOn(),
           consentBo.getNeedComprehensionTest(), consentBo.getShareDataPermissions(),
-          consentBo.getShortDescription(), consentBo.getStudyId(),
-          consentBo.getTaglineDescription(), consentBo.getTitle(), consentBo.getVersion(),
-          consentBo.getEnrollAgain());
-
+          consentBo.getShortDescription(), newStudyId, consentBo.getTaglineDescription(),
+          consentBo.getTitle(), consentBo.getVersion(), consentBo.getEnrollAgain());
       consentBoListInsertQuery.add(consentInsertSql);
+
     }
     insertSqlStatements.addAll(consentBoListInsertQuery);
   }
 
   private void addConsentInfoBoListInsertSql(List<ConsentInfoBo> consentInfoBoList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId, String newCustomId) throws SQLException {
 
     if (CollectionUtils.isEmpty(consentInfoBoList)) {
       return;
@@ -801,15 +825,14 @@ public class StudyExportService {
     List<String> consentInfoInsertQueryList = new ArrayList<>();
     for (ConsentInfoBo consentInfoBo : consentInfoBoList) {
       String consentInfoInsertSql = prepareInsertQuery(StudyExportSqlQueries.CONSENT_INFO,
-          consentInfoBo.getId(), consentInfoBo.getActive(), consentInfoBo.getBriefSummary(),
+          IdGenerator.id(), consentInfoBo.getActive(), consentInfoBo.getBriefSummary(),
           consentInfoBo.getConsentItemTitleId(), consentInfoBo.getConsentItemType(),
           consentInfoBo.getContentType(), consentInfoBo.getCreatedBy(),
-          consentInfoBo.getCreatedOn(), consentInfoBo.getCustomStudyId(),
-          consentInfoBo.getDisplayTitle(), consentInfoBo.getElaborated(),
-          consentInfoBo.getHtmlContent(), consentInfoBo.getLive(), consentInfoBo.getModifiedBy(),
-          consentInfoBo.getModifiedOn(), consentInfoBo.getSequenceNo(), consentInfoBo.getStatus(),
-          consentInfoBo.getStudyId(), consentInfoBo.getUrl(), consentInfoBo.getVersion(),
-          consentInfoBo.getVisualStep());
+          consentInfoBo.getCreatedOn(), newCustomId, consentInfoBo.getDisplayTitle(),
+          consentInfoBo.getElaborated(), consentInfoBo.getHtmlContent(), consentInfoBo.getLive(),
+          consentInfoBo.getModifiedBy(), consentInfoBo.getModifiedOn(),
+          consentInfoBo.getSequenceNo(), consentInfoBo.getStatus(), newStudyId,
+          consentInfoBo.getUrl(), consentInfoBo.getVersion(), consentInfoBo.getVisualStep());
 
       consentInfoInsertQueryList.add(consentInfoInsertSql);
     }
@@ -837,7 +860,7 @@ public class StudyExportService {
 
   private void addComprehensionTestQuestionListInsertSql(
       List<ComprehensionTestQuestionBo> comprehensionTestQuestionList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId) throws SQLException {
 
     if (CollectionUtils.isEmpty(comprehensionTestQuestionList)) {
       return;
@@ -846,14 +869,13 @@ public class StudyExportService {
     List<String> comprehensionTestQuestionInsertQueryList = new ArrayList<>();
     for (ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList) {
       String comprehensionTestQuestionInsertQuery = prepareInsertQuery(
-          StudyExportSqlQueries.COMREHENSION_TEST_QUESTIONS, comprehensionTestQuestionBo.getId(),
+          StudyExportSqlQueries.COMREHENSION_TEST_QUESTIONS, IdGenerator.id(),
           comprehensionTestQuestionBo.getActive(), comprehensionTestQuestionBo.getCreatedBy(),
           comprehensionTestQuestionBo.getCreatedOn(), comprehensionTestQuestionBo.getModifiedBy(),
           comprehensionTestQuestionBo.getModifiedOn(),
           comprehensionTestQuestionBo.getQuestionText(),
           comprehensionTestQuestionBo.getSequenceNo(), comprehensionTestQuestionBo.getStatus(),
-          comprehensionTestQuestionBo.getStructureOfCorrectAns(),
-          comprehensionTestQuestionBo.getStudyId());
+          comprehensionTestQuestionBo.getStructureOfCorrectAns(), newStudyId);
 
       comprehensionTestQuestionInsertQueryList.add(comprehensionTestQuestionInsertQuery);
     }
@@ -861,25 +883,30 @@ public class StudyExportService {
   }
 
   private void addQuestionnaireBoListInsertSql(List<QuestionnaireBo> questionnairesList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, String newStudyId, String newCustomId,
+      List<String> newQuestionnaireIds) throws SQLException {
 
     if (CollectionUtils.isEmpty(questionnairesList)) {
       return;
     }
 
+
     List<String> questionnairesBoInsertQueryList = new ArrayList<>();
     for (QuestionnaireBo questionnaireBo : questionnairesList) {
-      String questionnairesBoInsertQuery = prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES,
-          questionnaireBo.getId(), questionnaireBo.getActive(), questionnaireBo.getAnchorDateId(),
-          questionnaireBo.getBranching(), questionnaireBo.getCreatedBy(),
-          questionnaireBo.getCreatedDate(), questionnaireBo.getCustomStudyId(),
-          questionnaireBo.getDayOfTheWeek(), questionnaireBo.getFrequency(),
-          questionnaireBo.getIsChange(), questionnaireBo.getLive(), questionnaireBo.getModifiedBy(),
-          questionnaireBo.getModifiedDate(), questionnaireBo.getRepeatQuestionnaire(),
-          questionnaireBo.getScheduleType(), questionnaireBo.getShortTitle(),
-          questionnaireBo.getStatus(), questionnaireBo.getStudyId(),
-          questionnaireBo.getStudyLifetimeEnd(), questionnaireBo.getStudyLifetimeStart(),
-          questionnaireBo.getTitle(), questionnaireBo.getVersion());
+      String questionnairesBoInsertQuery = null;
+      for (String questionaireId : newQuestionnaireIds) {
+        questionnairesBoInsertQuery = prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES,
+            questionaireId, questionnaireBo.getActive(), questionnaireBo.getAnchorDateId(),
+            questionnaireBo.getBranching(), questionnaireBo.getCreatedBy(),
+            questionnaireBo.getCreatedDate(), newCustomId, questionnaireBo.getDayOfTheWeek(),
+            questionnaireBo.getFrequency(), questionnaireBo.getIsChange(),
+            questionnaireBo.getLive(), questionnaireBo.getModifiedBy(),
+            questionnaireBo.getModifiedDate(), questionnaireBo.getRepeatQuestionnaire(),
+            questionnaireBo.getScheduleType(), questionnaireBo.getShortTitle(),
+            questionnaireBo.getStatus(), newStudyId, questionnaireBo.getStudyLifetimeEnd(),
+            questionnaireBo.getStudyLifetimeStart(), questionnaireBo.getTitle(),
+            questionnaireBo.getVersion());
+      }
 
       questionnairesBoInsertQueryList.add(questionnairesBoInsertQuery);
     }
@@ -935,5 +962,9 @@ public class StudyExportService {
     return sqlQuery;
   }
 
+  private String getNewId() {
+    return com.fdahpstudydesigner.util.IdGenerator.id();
+
+  }
 
 }
