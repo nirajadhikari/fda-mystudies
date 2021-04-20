@@ -3871,7 +3871,7 @@ public class ActivityMetaDataDao {
           (AnchorDateTypeDto)
               session
                   .createQuery(searchQuery)
-                  .setInteger("anchorDateId", activeTaskDto.getAnchorDateId())
+                  .setString("anchorDateId", activeTaskDto.getAnchorDateId())
                   .uniqueResult();
       if (anchorDateTypeDto != null) {
         if (!anchorDateTypeDto
@@ -3896,7 +3896,7 @@ public class ActivityMetaDataDao {
                   .setString("custStudyId", activeTaskDto.getCustomStudyId())
                   .setString("schedulerType", StudyMetaDataConstants.SCHEDULETYPE_REGULAR)
                   .setString("freqType", StudyMetaDataConstants.FREQUENCY_TYPE_ONE_TIME)
-                  .setInteger("anchorDateId", activeTaskDto.getAnchorDateId())
+                  .setString("anchorDateId", activeTaskDto.getAnchorDateId())
                   .list();
           if ((null != result) && !result.isEmpty()) {
             Object[] objects = (Object[]) result.get(0);
@@ -3920,7 +3920,7 @@ public class ActivityMetaDataDao {
             List<?> result1 =
                 session
                     .createQuery(query)
-                    .setInteger("anchorDateId", activeTaskDto.getAnchorDateId())
+                    .setString("anchorDateId", activeTaskDto.getAnchorDateId())
                     .setString("custStudyId", activeTaskDto.getCustomStudyId())
                     .setString("schedulerType", StudyMetaDataConstants.SCHEDULETYPE_REGULAR)
                     .setString("freqType", StudyMetaDataConstants.FREQUENCY_TYPE_ONE_TIME)
