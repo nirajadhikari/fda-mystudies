@@ -43,7 +43,7 @@ public class EligibilityTestResponseDto implements Serializable {
   private String responseId;
 
   @Column(name = "eligibility_test_id")
-  private Integer eligibilityTestId;
+  private String eligibilityTestId;
 
   @Column(name = "response_option")
   private String responseOption;
@@ -52,7 +52,7 @@ public class EligibilityTestResponseDto implements Serializable {
   private String passFail;
 
   @Column(name = "destination_question")
-  private Integer destinationQuestion;
+  private String destinationQuestion;
 
   @Column(name = "study_version")
   private Integer studyVersion = 1;
@@ -73,11 +73,11 @@ public class EligibilityTestResponseDto implements Serializable {
     this.responseId = responseId;
   }
 
-  public Integer getEligibilityTestId() {
+  public String getEligibilityTestId() {
     return eligibilityTestId;
   }
 
-  public void setEligibilityTestId(Integer eligibilityTestId) {
+  public void setEligibilityTestId(String eligibilityTestId) {
     this.eligibilityTestId = eligibilityTestId;
   }
 
@@ -97,11 +97,11 @@ public class EligibilityTestResponseDto implements Serializable {
     this.passFail = passFail;
   }
 
-  public Integer getDestinationQuestion() {
+  public String getDestinationQuestion() {
     return destinationQuestion;
   }
 
-  public void setDestinationQuestion(Integer destinationQuestion) {
+  public void setDestinationQuestion(String destinationQuestion) {
     this.destinationQuestion = destinationQuestion;
   }
 }
