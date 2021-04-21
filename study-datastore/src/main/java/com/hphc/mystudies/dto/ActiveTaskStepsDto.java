@@ -43,7 +43,7 @@ public class ActiveTaskStepsDto implements Serializable {
   private String stepId;
 
   @Column(name = "active_task_id")
-  private Integer activeTaskId;
+  private String activeTaskId;
 
   @Column(name = "active_task_stepscol")
   private String activeTaskStepscol;
@@ -57,11 +57,11 @@ public class ActiveTaskStepsDto implements Serializable {
   @Column(name = "study_version")
   private Integer studyVersion = 1;
 
-  public Integer getActiveTaskId() {
+  public String getActiveTaskId() {
     return activeTaskId;
   }
 
-  public void setActiveTaskId(Integer activeTaskId) {
+  public void setActiveTaskId(String activeTaskId) {
     this.activeTaskId = activeTaskId;
   }
 
