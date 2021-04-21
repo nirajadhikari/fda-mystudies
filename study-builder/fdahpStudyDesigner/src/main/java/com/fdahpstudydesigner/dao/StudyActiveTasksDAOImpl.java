@@ -343,7 +343,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
       // to get only "Fetal kick counter" type of active task based on
       // Android platform
       Query query = null;
-      if (StringUtils.isNotEmpty(platformType) && platformType.contains("A")) {
+      if (StringUtils.isNotEmpty(platformType) && platformType.equals("A")) {
         query = session.createQuery(
             "from ActiveTaskListBo a where a.taskName not in(:towerOfHanoi, :spatialSpanMemory)")
             .setParameter("towerOfHanoi", FdahpStudyDesignerConstants.TOWER_OF_HANOI)

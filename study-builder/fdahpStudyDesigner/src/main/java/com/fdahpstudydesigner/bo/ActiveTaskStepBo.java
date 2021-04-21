@@ -40,7 +40,7 @@ public class ActiveTaskStepBo implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Column(name = "active_task_id")
-  private Integer activetaskId;
+  private String activetaskId;
 
   @Column(name = "active_task_stepscol")
   private String activeTaskStepscol;
@@ -59,7 +59,7 @@ public class ActiveTaskStepBo implements Serializable {
 
   public ActiveTaskStepBo() {}
 
-  public Integer getActivetaskId() {
+  public String getActivetaskId() {
     return activetaskId;
   }
 
@@ -79,7 +79,7 @@ public class ActiveTaskStepBo implements Serializable {
     return this.stepId;
   }
 
-  public void setActivetaskId(Integer activetaskId) {
+  public void setActivetaskId(String activetaskId) {
     this.activetaskId = activetaskId;
   }
 
