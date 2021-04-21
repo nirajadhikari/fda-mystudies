@@ -24,6 +24,7 @@
 package com.fdahpstudydesigner.controller;
 
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.APP_LEVEL_NOTIFICATION_LIST_VIEWED;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.NotificationHistoryBO;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -370,19 +372,21 @@ public class NotificationController {
        * study and empty string to define it is as global notification
        */
       notificationList = notificationService.getNotificationList(null, "");
-      for (NotificationBO notification : notificationList) {
-        if (!notification.isNotificationSent()
-            && notification
-                .getNotificationScheduleType()
-                .equals(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE)) {
-          notification.setCheckNotificationSendingStatus("Scheduled");
-        } else if (!notification.isNotificationSent()
-            && notification
-                .getNotificationScheduleType()
-                .equals(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE)) {
-          notification.setCheckNotificationSendingStatus("Sending");
-        } else if (notification.isNotificationSent()) {
-          notification.setCheckNotificationSendingStatus("Sent");
+      if (CollectionUtils.isNotEmpty(notificationList)) {
+        for (NotificationBO notification : notificationList) {
+          if (!notification.isNotificationSent()
+              && notification
+                  .getNotificationScheduleType()
+                  .equals(FdahpStudyDesignerConstants.NOTIFICATION_NOTIMMEDIATE)) {
+            notification.setCheckNotificationSendingStatus("Scheduled");
+          } else if (!notification.isNotificationSent()
+              && notification
+                  .getNotificationScheduleType()
+                  .equals(FdahpStudyDesignerConstants.NOTIFICATION_IMMEDIATE)) {
+            notification.setCheckNotificationSendingStatus("Sending");
+          } else if (notification.isNotificationSent()) {
+            notification.setCheckNotificationSendingStatus("Sent");
+          }
         }
       }
       map.addAttribute("notificationList", notificationList);
