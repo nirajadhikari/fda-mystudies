@@ -3855,7 +3855,36 @@
           if ((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find(
               '.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find(
               '.startTime').val()) {
-              
+             
+        	  var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+              var startTime = moment($(this).find('.startTime').val(), "HH:mm").toDate()
+              fromDate.setHours(startTime.getHours());
+              fromDate.setMinutes(startTime.getMinutes());
+              var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+              var endTime = moment($(this).find('.endTime').val(), "HH:mm").toDate()
+              toDate.setHours(endTime.getHours());
+              toDate.setMinutes(endTime.getMinutes());
+              var thisFromDate = moment(
+                  $(thisAttr).parents('.manually-option').find('.cusStrDate').val(),
+                  "MM/DD/YYYY").toDate();
+              var thisStartTime = moment($(thisAttr).parents('.manually-option').find('.startTime').val(),
+                  "HH:mm").toDate()
+              thisFromDate.setHours(thisStartTime.getHours());
+              thisFromDate.setMinutes(thisStartTime.getMinutes());
+              var thisToDate = moment(
+                  $(thisAttr).parents('.manually-option').find('.cusEndDate').val(),
+                  "MM/DD/YYYY").toDate();
+              var thisEndTime = moment($(thisAttr).parents('.manually-option').find('.endTime').val(),
+              "HH:mm").toDate()
+              thisToDate.setHours(thisEndTime.getHours());
+              thisToDate.setMinutes(thisEndTime.getMinutes());
+              if (chkVal)
+                chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate
+                    >= fromDate && thisToDate <= toDate));
+            }
+          
+        /*   
+          
               
             var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
            
@@ -3898,7 +3927,7 @@
             
             if (chkVal)
               chkVal = ((thisFromDate >= fromDate && thisFromDate >= toDate));
-          }
+          } */
           
           
           
