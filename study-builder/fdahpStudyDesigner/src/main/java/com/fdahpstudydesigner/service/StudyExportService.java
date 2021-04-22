@@ -1,17 +1,14 @@
 package com.fdahpstudydesigner.service;
 
+import com.fdahpstudydesigner.bean.QuestionnairesStepsIdsBean;
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
-import com.fdahpstudydesigner.bo.ActiveTaskListBo;
-import com.fdahpstudydesigner.bo.ActiveTaskMasterAttributeBo;
-import com.fdahpstudydesigner.bo.ActivetaskFormulaBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
-import com.fdahpstudydesigner.bo.ConsentMasterInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
@@ -93,7 +90,6 @@ public class StudyExportService {
 
     List<ConsentInfoBo> consentInfoBoList = studyDao.getConsentInfoList(studyBo.getId());
 
-    List<ConsentMasterInfoBo> consentMasterInfoList = studyDao.getConsentMasterInfoList();
 
     List<ComprehensionTestQuestionBo> comprehensionTestQuestionBoList =
         studyDao.getComprehensionTestQuestionList(studyBo.getId());
@@ -108,7 +104,6 @@ public class StudyExportService {
         questionnaireIds.add(questionnaireBo.getId());
         newQuestionnaireIds.add(IdGenerator.id());
       }
-
     }
 
     List<QuestionnairesStepsBo> questionnairesStepsList =
@@ -117,11 +112,9 @@ public class StudyExportService {
 
 
     List<String> instructionFormIds = new ArrayList<>();
-    List<String> stepIds = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(questionnairesStepsList)) {
       for (QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsList) {
         instructionFormIds.add(questionnairesStepsBo.getInstructionFormId());
-        stepIds.add(IdGenerator.id());
       }
     }
 
@@ -143,8 +136,11 @@ public class StudyExportService {
     List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList =
         studyQuestionnaireDAO.getQuestionResponseSubTypeBoByInstructionFormIds(instructionFormIds);
 
+
     List<QuestionReponseTypeBo> questionResponseTypeBo =
         studyQuestionnaireDAO.getQuestionResponseTypeBoByInstructionFormIds(instructionFormIds);
+
+
 
     List<NotificationBO> notificationBOs = notificationDAO.getNotificationList(studyBo.getId());
 
@@ -171,13 +167,10 @@ public class StudyExportService {
     List<ActiveTaskFrequencyBo> activeTaskFrequencyBoList =
         studyActiveTasksDAO.getActiveTaskFrequencyBoList(activeTaskIds);
 
-    List<ActivetaskFormulaBo> activetaskFormulaBoList = studyActiveTasksDAO.getActivetaskFormulas();
-
-    List<ActiveTaskListBo> activeTaskListBo =
-        studyActiveTasksDAO.getAllActiveTaskTypes(studyBo.getPlatform());
-
-    List<ActiveTaskMasterAttributeBo> activeTaskMasterAttributeBoList =
-        studyActiveTasksDAO.getActiveTaskMasterAttributesByType(activeTaskTypes);
+    List<String> questionFormInstructionIds = new ArrayList<>();
+    QuestionnairesStepsIdsBean questionnairesStepsIdsBean =
+        getInstructionFormIds(questionsList, formsList, instructionList,
+            questionResponseSubTypeBoList, questionResponseTypeBo, questionFormInstructionIds);
 
     try {
       addStudiesInsertSql(studyBo, insertSqlStatements, newStudyId, newCustomId);
@@ -192,30 +185,42 @@ public class StudyExportService {
       addConsentInfoBoListInsertSql(consentInfoBoList, insertSqlStatements, newStudyId,
           newCustomId);
 
-      addConsentMasterInfoBoListInsertSql(consentMasterInfoList, insertSqlStatements);
       addComprehensionTestQuestionListInsertSql(comprehensionTestQuestionBoList,
           insertSqlStatements, newStudyId);
       addQuestionnaireBoListInsertSql(questionnairesList, insertSqlStatements, newStudyId,
           newCustomId, newQuestionnaireIds);
-      addQuestionnairesStepsListInsertSql(questionnairesStepsList, insertSqlStatements,
-          newQuestionnaireIds, stepIds);
-      addQuestionnaireFrequenciesBoInsertSql(questionnairesFrequenciesBoList, insertSqlStatements);
+
+      addQuestionnaireFrequenciesBoInsertSql(questionnairesFrequenciesBoList, insertSqlStatements,
+          newQuestionnaireIds);
+
       addQuestionnaireCustomScheduleBoInsertSql(questionnairesCustomFrequenciesBoList,
-          insertSqlStatements);
-      addQuestionListInsertSql(questionsList, insertSqlStatements);
-      addFormsListInsertSql(formsList, insertSqlStatements);
-      addInstructionInsertSql(instructionList, insertSqlStatements);
-      addQuestionsResponseSubTypeInsertSql(questionResponseSubTypeBoList, insertSqlStatements);
-      addQuestionsResponseTypeInsertSql(questionResponseTypeBo, insertSqlStatements);
+          insertSqlStatements, newQuestionnaireIds);
+
+      addQuestionListInsertSql(questionsList, insertSqlStatements,
+          questionnairesStepsIdsBean.getQuestionIds());
+
+      addFormsListInsertSql(formsList, insertSqlStatements,
+          questionnairesStepsIdsBean.getFormIds());
+
+      addInstructionInsertSql(instructionList, insertSqlStatements,
+          questionnairesStepsIdsBean.getInstructionIds());
+
+      addQuestionsResponseSubTypeInsertSql(questionResponseSubTypeBoList, insertSqlStatements,
+          questionnairesStepsIdsBean.getQuestionResponseSubTypeIds());
+
+      addQuestionsResponseTypeInsertSql(questionResponseTypeBo, insertSqlStatements,
+          questionResponseSubTypeBoList, questionnairesStepsIdsBean.getQuestionResponseIds());
+
+
+      addQuestionnairesStepsListInsertSql(questionnairesStepsList, insertSqlStatements,
+          newQuestionnaireIds, questionFormInstructionIds);
+
       addStudyActiveTaskInsertSql(activeTaskBos, insertSqlStatements);
       addActiveTaskAtrributeValuesInsertSql(activeTaskAtrributeValuesBos, insertSqlStatements);
       addActiveTaskCustomScheduleBoInsertSqlQuery(activeTaskCustomScheduleBoList,
           insertSqlStatements);
       addActiveTaskFrequencyBoInsertSqlQuery(activeTaskFrequencyBoList, insertSqlStatements);
-      addactivetaskFormulaBoInsertSqlQuery(activetaskFormulaBoList, insertSqlStatements);
-      addActiveTaskListBoInsertSqlQuery(activeTaskListBo, insertSqlStatements);
-      activeTaskMasterAttributeBoInsertSqlQuery(activeTaskMasterAttributeBoList,
-          insertSqlStatements);
+
 
       addNotificationInsertSql(notificationBOs, insertSqlStatements);
 
@@ -252,65 +257,6 @@ public class StudyExportService {
   }
 
 
-  private void activeTaskMasterAttributeBoInsertSqlQuery(
-      List<ActiveTaskMasterAttributeBo> activeTaskMasterAttributeBoList,
-      List<String> insertSqlStatements) throws SQLException {
-
-    if (CollectionUtils.isEmpty(activeTaskMasterAttributeBoList)) {
-      return;
-    }
-
-    List<String> activeTaskMasterAttributeBoInsertQueryList = new ArrayList<>();
-    for (ActiveTaskMasterAttributeBo activeTaskMasterAttributeBo : activeTaskMasterAttributeBoList) {
-      String activeTaskMasterAttributeBoInsertQuery = prepareInsertQuery(
-          StudyExportSqlQueries.ACTIVETASK_MASTER_ATTRIBUTE,
-          activeTaskMasterAttributeBo.getMasterId(), activeTaskMasterAttributeBo.isAddToDashboard(),
-          activeTaskMasterAttributeBo.getAttributeDataType(),
-          activeTaskMasterAttributeBo.getAttributeName(),
-          activeTaskMasterAttributeBo.getAttributeType(),
-          activeTaskMasterAttributeBo.getDisplayName(),
-          activeTaskMasterAttributeBo.getOrderByTaskType(),
-          activeTaskMasterAttributeBo.getTaskTypeId());
-      activeTaskMasterAttributeBoInsertQueryList.add(activeTaskMasterAttributeBoInsertQuery);
-    }
-    insertSqlStatements.addAll(activeTaskMasterAttributeBoInsertQueryList);
-
-  }
-
-  private void addActiveTaskListBoInsertSqlQuery(List<ActiveTaskListBo> activeTaskListBo,
-      List<String> insertSqlStatements) throws SQLException {
-    if (CollectionUtils.isEmpty(activeTaskListBo)) {
-      return;
-    }
-
-    List<String> activeTaskListInsertQueryList = new ArrayList<>();
-    for (ActiveTaskListBo activeTaskList : activeTaskListBo) {
-      String activeTaskListInsertQuery = prepareInsertQuery(StudyExportSqlQueries.ACTIVETASK_LIST,
-          activeTaskList.getActiveTaskListId(), activeTaskList.getTaskName(),
-          activeTaskList.getType());
-      activeTaskListInsertQueryList.add(activeTaskListInsertQuery);
-    }
-    insertSqlStatements.addAll(activeTaskListInsertQueryList);
-
-  }
-
-  private void addactivetaskFormulaBoInsertSqlQuery(
-      List<ActivetaskFormulaBo> activetaskFormulaBoList, List<String> insertSqlStatements)
-      throws SQLException {
-    if (CollectionUtils.isEmpty(activetaskFormulaBoList)) {
-      return;
-    }
-
-    List<String> activeTaskFormulaInsertQueryList = new ArrayList<>();
-    for (ActivetaskFormulaBo activeTaskFormula : activetaskFormulaBoList) {
-      String activeTaskFormulaInsertQuery =
-          prepareInsertQuery(StudyExportSqlQueries.ACTIVETASK_FORMULA,
-              activeTaskFormula.getActivetaskFormulaId(), activeTaskFormula.getValue());
-      activeTaskFormulaInsertQueryList.add(activeTaskFormulaInsertQuery);
-    }
-    insertSqlStatements.addAll(activeTaskFormulaInsertQueryList);
-
-  }
 
   private void addActiveTaskFrequencyBoInsertSqlQuery(
       List<ActiveTaskFrequencyBo> activeTaskFrequencyBoList, List<String> insertSqlStatements)
@@ -362,45 +308,51 @@ public class StudyExportService {
   }
 
   private void addQuestionsResponseTypeInsertSql(
-      List<QuestionReponseTypeBo> questionResponseTypeBoList, List<String> insertSqlStatements)
-      throws SQLException {
+      List<QuestionReponseTypeBo> questionResponseTypeBoList, List<String> insertSqlStatements,
+      List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
+      List<String> questionResponseSubTypeIds) throws SQLException {
 
 
     if (CollectionUtils.isEmpty(questionResponseTypeBoList)) {
       return;
     }
 
+    String questionResponseTypeBoInsertQuery = null;
     List<String> questionResponseTypeBoInsertQueryList = new ArrayList<>();
     for (QuestionReponseTypeBo questionResponseTypeBo : questionResponseTypeBoList) {
-      String questionResponseTypeBoInsertQuery = prepareInsertQuery(
-          StudyExportSqlQueries.RESPONSE_TYPE_VALUE, questionResponseTypeBo.getResponseTypeId(),
-          questionResponseTypeBo.getActive(), questionResponseTypeBo.getConditionFormula(),
-          questionResponseTypeBo.getDefaultDate(), questionResponseTypeBo.getDefaultDate(),
-          questionResponseTypeBo.getDefaultTime(), questionResponseTypeBo.getDefaultValue(),
-          questionResponseTypeBo.getFormulaBasedLogic(), questionResponseTypeBo.getImageSize(),
-          questionResponseTypeBo.getInvalidMessage(), questionResponseTypeBo.getMaxDate(),
-          questionResponseTypeBo.getMaxDescription(), questionResponseTypeBo.getMaxFractionDigits(),
-          questionResponseTypeBo.getMaxImage(), questionResponseTypeBo.getMaxLength(),
-          questionResponseTypeBo.getMaxValue(), questionResponseTypeBo.getMeasurementSystem(),
-          questionResponseTypeBo.getMinDate(), questionResponseTypeBo.getMinDescription(),
-          questionResponseTypeBo.getMinImage(), questionResponseTypeBo.getMinValue(),
-          questionResponseTypeBo.getMultipleLines(), questionResponseTypeBo.getOtherDescription(),
-          questionResponseTypeBo.getOtherDestinationStepId(),
-          questionResponseTypeBo.getOtherExclusive(), questionResponseTypeBo.getOtherIncludeText(),
-          questionResponseTypeBo.getOtherParticipantFill(),
-          questionResponseTypeBo.getOtherPlaceholderText(), questionResponseTypeBo.getOtherText(),
-          questionResponseTypeBo.getOtherType(), questionResponseTypeBo.getOtherValue(),
-          questionResponseTypeBo.getPlaceholder(),
-          questionResponseTypeBo.getQuestionsResponseTypeId(),
-          questionResponseTypeBo.getSelectionStyle(), questionResponseTypeBo.getStep(),
-          questionResponseTypeBo.getStyle(), questionResponseTypeBo.getTextChoices(),
-          questionResponseTypeBo.getUnit(), questionResponseTypeBo.getUseCurrentLocation(),
-          questionResponseTypeBo.getValidationCharacters(),
-          questionResponseTypeBo.getValidationCondition(),
-          questionResponseTypeBo.getValidationExceptText(),
-          questionResponseTypeBo.getValidationRegex(), questionResponseTypeBo.getVertical()
+      for (String questionResponseSubTypeId : questionResponseSubTypeIds) {
+        questionResponseTypeBoInsertQuery =
+            prepareInsertQuery(StudyExportSqlQueries.RESPONSE_TYPE_VALUE, questionResponseSubTypeId,
+                questionResponseTypeBo.getActive(), questionResponseTypeBo.getConditionFormula(),
+                questionResponseTypeBo.getDefaultDate(), questionResponseTypeBo.getDefaultDate(),
+                questionResponseTypeBo.getDefaultTime(), questionResponseTypeBo.getDefaultValue(),
+                questionResponseTypeBo.getFormulaBasedLogic(),
+                questionResponseTypeBo.getImageSize(), questionResponseTypeBo.getInvalidMessage(),
+                questionResponseTypeBo.getMaxDate(), questionResponseTypeBo.getMaxDescription(),
+                questionResponseTypeBo.getMaxFractionDigits(), questionResponseTypeBo.getMaxImage(),
+                questionResponseTypeBo.getMaxLength(), questionResponseTypeBo.getMaxValue(),
+                questionResponseTypeBo.getMeasurementSystem(), questionResponseTypeBo.getMinDate(),
+                questionResponseTypeBo.getMinDescription(), questionResponseTypeBo.getMinImage(),
+                questionResponseTypeBo.getMinValue(), questionResponseTypeBo.getMultipleLines(),
+                questionResponseTypeBo.getOtherDescription(),
+                questionResponseTypeBo.getOtherDestinationStepId(),
+                questionResponseTypeBo.getOtherExclusive(),
+                questionResponseTypeBo.getOtherIncludeText(),
+                questionResponseTypeBo.getOtherParticipantFill(),
+                questionResponseTypeBo.getOtherPlaceholderText(),
+                questionResponseTypeBo.getOtherText(), questionResponseTypeBo.getOtherType(),
+                questionResponseTypeBo.getOtherValue(), questionResponseTypeBo.getPlaceholder(),
+                questionResponseTypeBo.getQuestionsResponseTypeId(),
+                questionResponseTypeBo.getSelectionStyle(), questionResponseTypeBo.getStep(),
+                questionResponseTypeBo.getStyle(), questionResponseTypeBo.getTextChoices(),
+                questionResponseTypeBo.getUnit(), questionResponseTypeBo.getUseCurrentLocation(),
+                questionResponseTypeBo.getValidationCharacters(),
+                questionResponseTypeBo.getValidationCondition(),
+                questionResponseTypeBo.getValidationExceptText(),
+                questionResponseTypeBo.getValidationRegex(), questionResponseTypeBo.getVertical()
 
-      );
+            );
+      }
       questionResponseTypeBoInsertQueryList.add(questionResponseTypeBoInsertQuery);
     }
     insertSqlStatements.addAll(questionResponseTypeBoInsertQueryList);
@@ -409,85 +361,97 @@ public class StudyExportService {
 
   private void addQuestionsResponseSubTypeInsertSql(
       List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, List<String> questionResponseSubTypeIds)
+      throws SQLException {
 
     if (CollectionUtils.isEmpty(questionResponseSubTypeBoList)) {
       return;
     }
 
 
-
+    String questionResponseSubTypeBoInsertQuery = null;
     List<String> questionResponseSubTypeBoInsertQueryList = new ArrayList<>();
     for (QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeBoList) {
-      String questionResponseSubTypeBoInsertQuery =
-          prepareInsertQuery(StudyExportSqlQueries.RESPONSE_SUB_TYPE_VALUE,
-              questionResponseSubTypeBo.getResponseSubTypeValueId(),
-              questionResponseSubTypeBo.getActive(), questionResponseSubTypeBo.getDescription(),
-              questionResponseSubTypeBo.getDestinationStepId(),
-              questionResponseSubTypeBo.getDetail(), questionResponseSubTypeBo.getExclusive(),
-              questionResponseSubTypeBo.getImage(), questionResponseSubTypeBo.getResponseTypeId(),
-              questionResponseSubTypeBo.getSelectedImage(), questionResponseSubTypeBo.getText(),
-              questionResponseSubTypeBo.getValue());
+      for (String questionResponseSubTypeId : questionResponseSubTypeIds) {
+        questionResponseSubTypeBoInsertQuery = prepareInsertQuery(
+            StudyExportSqlQueries.RESPONSE_SUB_TYPE_VALUE, questionResponseSubTypeId,
+            questionResponseSubTypeBo.getActive(), questionResponseSubTypeBo.getDescription(),
+            questionResponseSubTypeBo.getDestinationStepId(), questionResponseSubTypeBo.getDetail(),
+            questionResponseSubTypeBo.getExclusive(), questionResponseSubTypeBo.getImage(),
+            questionResponseSubTypeBo.getResponseTypeId(),
+            questionResponseSubTypeBo.getSelectedImage(), questionResponseSubTypeBo.getText(),
+            questionResponseSubTypeBo.getValue());
+      }
       questionResponseSubTypeBoInsertQueryList.add(questionResponseSubTypeBoInsertQuery);
     }
     insertSqlStatements.addAll(questionResponseSubTypeBoInsertQueryList);
   }
 
   private void addInstructionInsertSql(List<InstructionsBo> instructionList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, List<String> instructionIds) throws SQLException {
     List<String> instructionBoInsertQueryList = new ArrayList<>();
     if (CollectionUtils.isEmpty(instructionList)) {
       return;
     }
 
+    String instructionBoInsertQuery = null;
     for (InstructionsBo instructionBo : instructionList) {
-      String instructionBoInsertQuery = prepareInsertQuery(StudyExportSqlQueries.INSTRUCTION,
-          instructionBo.getId(), instructionBo.getActive(), instructionBo.getCreatedBy(),
-          instructionBo.getCreatedOn(), instructionBo.getInstructionText(),
-          instructionBo.getInstructionTitle(), instructionBo.getModifiedBy(),
-          instructionBo.getModifiedOn(), instructionBo.getStatus());
+      for (String instructionId : instructionIds) {
+        instructionBoInsertQuery = prepareInsertQuery(StudyExportSqlQueries.INSTRUCTION,
+            instructionId, instructionBo.getActive(), instructionBo.getCreatedBy(),
+            instructionBo.getCreatedOn(), instructionBo.getInstructionText(),
+            instructionBo.getInstructionTitle(), instructionBo.getModifiedBy(),
+            instructionBo.getModifiedOn(), instructionBo.getStatus());
+      }
       instructionBoInsertQueryList.add(instructionBoInsertQuery);
+
     }
     insertSqlStatements.addAll(instructionBoInsertQueryList);
   }
 
   private void addFormsListInsertSql(List<FormMappingBo> formsList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, List<String> formIds) throws SQLException {
 
     List<String> formMappingBoInsertQueryList = new ArrayList<>();
     if (CollectionUtils.isEmpty(formsList)) {
       return;
     }
 
+    String formMappingInsertQuery = null;
     for (FormMappingBo formMappingBo : formsList) {
-      String formMappingInsertQuery = prepareInsertQuery(StudyExportSqlQueries.FORM_MAPPING,
-          formMappingBo.getId(), formMappingBo.getActive(), formMappingBo.getFormId(),
-          formMappingBo.getQuestionId(), formMappingBo.getSequenceNo());
+      for (String formId : formIds) {
+        formMappingInsertQuery = prepareInsertQuery(StudyExportSqlQueries.FORM_MAPPING, formId,
+            formMappingBo.getActive(), formMappingBo.getFormId(), formMappingBo.getQuestionId(),
+            formMappingBo.getSequenceNo());
+      }
       formMappingBoInsertQueryList.add(formMappingInsertQuery);
     }
     insertSqlStatements.addAll(formMappingBoInsertQueryList);
   }
 
   private void addQuestionListInsertSql(List<QuestionsBo> questionsList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, List<String> questionIds) throws SQLException {
 
     List<String> questionsBoInsertQueryList = new ArrayList<>();
     if (CollectionUtils.isEmpty(questionsList)) {
       return;
     }
 
+    String questionInsertQuery = null;
     for (QuestionsBo questionBo : questionsList) {
-      String questionInsertQuery = prepareInsertQuery(StudyExportSqlQueries.QUESTIONS,
-          questionBo.getId(), questionBo.getActive(), questionBo.getAddLineChart(),
-          questionBo.getAllowHealthKit(), questionBo.getAllowRollbackChart(),
-          questionBo.getAnchorDateId(), questionBo.getChartTitle(), questionBo.getCreatedBy(),
-          questionBo.getCreatedOn(), questionBo.getDescription(), questionBo.getHealthkitDatatype(),
-          questionBo.getLineChartTimeRange(), questionBo.getModifiedBy(),
-          questionBo.getModifiedOn(), questionBo.getQuestion(), questionBo.getResponseType(),
-          questionBo.getShortTitle(), questionBo.getSkippable(), questionBo.getStatDisplayName(),
-          questionBo.getStatDisplayUnits(), questionBo.getStatFormula(),
-          questionBo.getStatShortName(), questionBo.getStatType(), questionBo.getStatus(),
-          questionBo.getUseAnchorDate(), questionBo.getUseStasticData());
+      for (String questionId : questionIds) {
+        questionInsertQuery = prepareInsertQuery(StudyExportSqlQueries.QUESTIONS, questionId,
+            questionBo.getActive(), questionBo.getAddLineChart(), questionBo.getAllowHealthKit(),
+            questionBo.getAllowRollbackChart(), questionBo.getAnchorDateId(),
+            questionBo.getChartTitle(), questionBo.getCreatedBy(), questionBo.getCreatedOn(),
+            questionBo.getDescription(), questionBo.getHealthkitDatatype(),
+            questionBo.getLineChartTimeRange(), questionBo.getModifiedBy(),
+            questionBo.getModifiedOn(), questionBo.getQuestion(), questionBo.getResponseType(),
+            questionBo.getShortTitle(), questionBo.getSkippable(), questionBo.getStatDisplayName(),
+            questionBo.getStatDisplayUnits(), questionBo.getStatFormula(),
+            questionBo.getStatShortName(), questionBo.getStatType(), questionBo.getStatus(),
+            questionBo.getUseAnchorDate(), questionBo.getUseStasticData());
+      }
       questionsBoInsertQueryList.add(questionInsertQuery);
     }
     insertSqlStatements.addAll(questionsBoInsertQueryList);
@@ -495,7 +459,7 @@ public class StudyExportService {
 
   private void addQuestionnaireCustomScheduleBoInsertSql(
       List<QuestionnaireCustomScheduleBo> questionnairesCustomFrequenciesBoList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, List<String> newQuestionnaireIds) throws SQLException {
 
 
 
@@ -504,18 +468,19 @@ public class StudyExportService {
       return;
     }
 
+    String questionnairesCustomScheduleBoInsertQuery = null;
     for (QuestionnaireCustomScheduleBo questionnaireCustomScheduleBo : questionnairesCustomFrequenciesBoList) {
-      String questionnairesCustomScheduleBoInsertQuery =
-          prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES_CUSTOM_FREQUENCIES,
-              questionnaireCustomScheduleBo.getId(),
-              questionnaireCustomScheduleBo.getFrequencyEndDate(),
-              questionnaireCustomScheduleBo.getFrequencyStartDate(),
-              questionnaireCustomScheduleBo.getFrequencyTime(),
-              questionnaireCustomScheduleBo.getQuestionnairesId(),
-              questionnaireCustomScheduleBo.getTimePeriodFromDays(),
-              questionnaireCustomScheduleBo.getTimePeriodToDays(),
-              questionnaireCustomScheduleBo.isUsed(), questionnaireCustomScheduleBo.isxDaysSign(),
-              questionnaireCustomScheduleBo.isyDaysSign());
+      for (String newQuestionnaireId : newQuestionnaireIds) {
+        questionnairesCustomScheduleBoInsertQuery =
+            prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES_CUSTOM_FREQUENCIES,
+                IdGenerator.id(), questionnaireCustomScheduleBo.getFrequencyEndDate(),
+                questionnaireCustomScheduleBo.getFrequencyStartDate(),
+                questionnaireCustomScheduleBo.getFrequencyTime(), newQuestionnaireId,
+                questionnaireCustomScheduleBo.getTimePeriodFromDays(),
+                questionnaireCustomScheduleBo.getTimePeriodToDays(),
+                questionnaireCustomScheduleBo.isUsed(), questionnaireCustomScheduleBo.isxDaysSign(),
+                questionnaireCustomScheduleBo.isyDaysSign());
+      }
       questionnairesCustomScheduleBoInsertQueryList.add(questionnairesCustomScheduleBoInsertQuery);
     }
     insertSqlStatements.addAll(questionnairesCustomScheduleBoInsertQueryList);
@@ -523,7 +488,8 @@ public class StudyExportService {
 
   private void addQuestionnairesStepsListInsertSql(
       List<QuestionnairesStepsBo> questionnairesStepsList, List<String> insertSqlStatements,
-      List<String> newQuestionnaireIds, List<String> stepIds) throws SQLException {
+      List<String> newQuestionnaireIds, List<String> questionFormInstructionIds)
+      throws SQLException {
     if (CollectionUtils.isEmpty(questionnairesStepsList)) {
       return;
     }
@@ -531,17 +497,17 @@ public class StudyExportService {
     List<String> questionnaireStepsBoInsertQueryList = new ArrayList<>();
     for (QuestionnairesStepsBo questionnairesStepsBo : questionnairesStepsList) {
       for (String newQuestionnaireId : newQuestionnaireIds) {
-        for (String stepId : stepIds) {
+        for (String questionFormInstructionId : questionFormInstructionIds) {
           questionnaireStepsBoInsertQuery =
-              prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES_STEPS, stepId,
+              prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES_STEPS, IdGenerator.id(),
                   questionnairesStepsBo.getActive(), questionnairesStepsBo.getCreatedBy(),
                   questionnairesStepsBo.getCreatedOn(), questionnairesStepsBo.getDestinationStep(),
-                  questionnairesStepsBo.getInstructionFormId(),
-                  questionnairesStepsBo.getModifiedBy(), questionnairesStepsBo.getModifiedOn(),
-                  newQuestionnaireId, questionnairesStepsBo.getRepeatable(),
-                  questionnairesStepsBo.getRepeatableText(), questionnairesStepsBo.getSequenceNo(),
-                  questionnairesStepsBo.getSkiappable(), questionnairesStepsBo.getStatus(),
-                  questionnairesStepsBo.getStepShortTitle(), questionnairesStepsBo.getStepType());
+                  questionFormInstructionId, questionnairesStepsBo.getModifiedBy(),
+                  questionnairesStepsBo.getModifiedOn(), newQuestionnaireId,
+                  questionnairesStepsBo.getRepeatable(), questionnairesStepsBo.getRepeatableText(),
+                  questionnairesStepsBo.getSequenceNo(), questionnairesStepsBo.getSkiappable(),
+                  questionnairesStepsBo.getStatus(), questionnairesStepsBo.getStepShortTitle(),
+                  questionnairesStepsBo.getStepType());
         }
       }
 
@@ -839,24 +805,7 @@ public class StudyExportService {
     insertSqlStatements.addAll(consentInfoInsertQueryList);
   }
 
-  private void addConsentMasterInfoBoListInsertSql(
-      List<ConsentMasterInfoBo> consentMasterInfoBoList, List<String> insertSqlStatements)
-      throws SQLException {
 
-    if (CollectionUtils.isEmpty(consentMasterInfoBoList)) {
-      return;
-    }
-
-    List<String> consentMasterInfoInsertQueryList = new ArrayList<>();
-    for (ConsentMasterInfoBo consentMasterInfoBo : consentMasterInfoBoList) {
-      String consentMasterInfoInsertQuery =
-          prepareInsertQuery(StudyExportSqlQueries.CONSENT_MASTER_INFO, consentMasterInfoBo.getId(),
-              consentMasterInfoBo.getTitle(), consentMasterInfoBo.getType());
-
-      consentMasterInfoInsertQueryList.add(consentMasterInfoInsertQuery);
-    }
-    insertSqlStatements.addAll(consentMasterInfoInsertQueryList);
-  }
 
   private void addComprehensionTestQuestionListInsertSql(
       List<ComprehensionTestQuestionBo> comprehensionTestQuestionList,
@@ -915,24 +864,25 @@ public class StudyExportService {
 
   private void addQuestionnaireFrequenciesBoInsertSql(
       List<QuestionnairesFrequenciesBo> questionnairesFrequenciesBoList,
-      List<String> insertSqlStatements) throws SQLException {
+      List<String> insertSqlStatements, List<String> newQuestionnaireIds) throws SQLException {
 
     List<String> questionnairesFrequenciesBoInsertQueryList = new ArrayList<>();
     if (CollectionUtils.isEmpty(questionnairesFrequenciesBoList)) {
       return;
     }
-
+    String questionnairesFrequenciesBoInsertQuery = null;
     for (QuestionnairesFrequenciesBo questionnairesFrequenciesBo : questionnairesFrequenciesBoList) {
-      String questionnairesFrequenciesBoInsertQuery =
-          prepareInsertQuery(StudyExportSqlQueries.QUESTIONNAIRES_FREQUENCIES,
-              questionnairesFrequenciesBo.getId(), questionnairesFrequenciesBo.getFrequencyDate(),
-              questionnairesFrequenciesBo.getFrequencyTime(),
-              questionnairesFrequenciesBo.getIsLaunchStudy(),
-              questionnairesFrequenciesBo.getIsStudyLifeTime(),
-              questionnairesFrequenciesBo.getQuestionnairesId(),
-              questionnairesFrequenciesBo.getTimePeriodFromDays(),
-              questionnairesFrequenciesBo.getTimePeriodToDays(),
-              questionnairesFrequenciesBo.isxDaysSign(), questionnairesFrequenciesBo.isyDaysSign());
+      for (String questtionnairesId : newQuestionnaireIds) {
+        questionnairesFrequenciesBoInsertQuery = prepareInsertQuery(
+            StudyExportSqlQueries.QUESTIONNAIRES_FREQUENCIES, IdGenerator.id(),
+            questionnairesFrequenciesBo.getFrequencyDate(),
+            questionnairesFrequenciesBo.getFrequencyTime(),
+            questionnairesFrequenciesBo.getIsLaunchStudy(),
+            questionnairesFrequenciesBo.getIsStudyLifeTime(), questtionnairesId,
+            questionnairesFrequenciesBo.getTimePeriodFromDays(),
+            questionnairesFrequenciesBo.getTimePeriodToDays(),
+            questionnairesFrequenciesBo.isxDaysSign(), questionnairesFrequenciesBo.isyDaysSign());
+      }
       questionnairesFrequenciesBoInsertQueryList.add(questionnairesFrequenciesBoInsertQuery);
     }
 
@@ -966,5 +916,42 @@ public class StudyExportService {
     return com.fdahpstudydesigner.util.IdGenerator.id();
 
   }
+
+  private QuestionnairesStepsIdsBean getInstructionFormIds(List<QuestionsBo> questionsList,
+      List<FormMappingBo> formsList, List<InstructionsBo> instructionList,
+      List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
+      List<QuestionReponseTypeBo> questionResponseTypeBo, List<String> questionFormInstructionIds) {
+
+    QuestionnairesStepsIdsBean questionnairesStepsIdsBean = new QuestionnairesStepsIdsBean();
+    if (CollectionUtils.isNotEmpty(questionsList)) {
+      questionnairesStepsIdsBean.getQuestionIds().add(IdGenerator.id());
+    }
+
+    if (CollectionUtils.isNotEmpty(formsList)) {
+      questionnairesStepsIdsBean.getFormIds().add(IdGenerator.id());
+    }
+
+    if (CollectionUtils.isNotEmpty(instructionList)) {
+      questionnairesStepsIdsBean.getInstructionIds().add(IdGenerator.id());
+    }
+
+    if (CollectionUtils.isNotEmpty(questionResponseSubTypeBoList)) {
+      questionnairesStepsIdsBean.getQuestionResponseSubTypeIds().add(IdGenerator.id());
+    }
+
+    if (CollectionUtils.isNotEmpty(questionResponseTypeBo)) {
+      questionnairesStepsIdsBean.getQuestionResponseIds().add(IdGenerator.id());
+    }
+
+
+    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionIds());
+    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getFormIds());
+    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getInstructionIds());
+    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionResponseSubTypeIds());
+    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionResponseIds());
+
+    return questionnairesStepsIdsBean;
+  }
+
 
 }
