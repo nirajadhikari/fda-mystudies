@@ -1728,7 +1728,7 @@
                         class="form-control clock ${questionnaireCustomScheduleBo.used ?'cursor-none' : ''}"
                         name="questionnaireCustomScheduleBo[${customVar.index}].frequencyEndTime"
                         value="${questionnaireCustomScheduleBo.frequencyEndTime}"
-                        placeholder="Time" required data-error="Please fill out this field"/>
+                        placeholder="End Time" required data-error="Please fill out this field"/>
                       <span
                           class='help-block with-errors red-txt'></span>
                     </span>
@@ -3187,6 +3187,7 @@
     customEndDate('EndDate' + customCount, customCount);
     timep('customTime' + customCount);
     timep('customStartTime' + customCount);
+    timep('customTime' + customCount);
      $('#customStartTime' + customCount).val("");
     
     $('#customTime' + customCount).val("");

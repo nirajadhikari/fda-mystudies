@@ -949,7 +949,7 @@
             </span>            
            
           <span class="form-group dis-inline vertical-align-middle pr-md">
-            <input id="customendTime0" type="text" count='0' class="form-control clock endTime"
+            <input id="customTime0" type="text" count='0' class="form-control clock endTime"
                    name="activeTaskCustomScheduleBo[0].frequencyEndTime" placeholder="End Time"
                    onclick='timep(this.id);'
                    disabled required data-error="Please fill out this field"/>
@@ -985,7 +985,7 @@
             
             <span class="form-group  dis-inline vertical-align-middle pr-md">
               <input id="customStartTime${customVar.index}" type="text" count='${customVar.index}'
-                     class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+                     class="form-control clock startTime cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
                      name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartTime"
                      value="${activeTaskCustomScheduleBo.frequencyStartTime}" placeholder="Start Time"
                      onclick='timep(this.id);'
@@ -1006,10 +1006,10 @@
               <span class='help-block with-errors red-txt'></span>
             </span>
             <span class="form-group  dis-inline vertical-align-middle pr-md">
-              <input id="customEndTime${customVar.index}" type="text" count='${customVar.index}'
-                     class="form-control clock cusTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+              <input id="customTime${customVar.index}" type="text" count='${customVar.index}'
+                     class="form-control clock cusTime endTime ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
                      name="activeTaskCustomScheduleBo[${customVar.index}].frequencyEndTime"
-                     value="${activeTaskCustomScheduleBo.frequencyEndTime}" placeholder="Time"
+                     value="${activeTaskCustomScheduleBo.frequencyEndTime}" placeholder="End Time"
                      onclick='timep(this.id);'
                      required data-error="Please fill out this field"/>
               <span class='help-block with-errors red-txt'></span>
@@ -1181,8 +1181,8 @@
                 
                 <span class="form-group  dis-inline vertical-align-middle pr-md"
                 style="margin-bottom: -13px"><input id="manualStartTime${customVar.index}"
-                                                    type="text" class="form-control clock"
-                                                    name="activeTaskCustomScheduleBo[0].frequencyStartTime"
+                                                    type="text" class="form-control remove_required clock ${activeTaskCustomScheduleBo.used ?'cursor-none' : ''}"
+                                                    name="activeTaskCustomScheduleBo[${customVar.index}].frequencyStartTime"
                                                     value="${activeTaskCustomScheduleBo.frequencyStartTime}"
                                                     placeholder="Start Time" required/>
             <span
@@ -1639,7 +1639,8 @@
             
             $('.manually-anchor-option:not(:first)').find('.remBtnDis').click();
             $('.manually-anchor-option').find('input').val('');
-            $('.manually-anchor-option').find('.cusTime').prop('disabled', true);
+            $('.manually-anchor-option').find('.startTime').prop('disabled', true);
+            $('.manually-anchor-option').find('.endTime').prop('disabled', true);
           } else if (val == 'Daily') {
             $("#startDate").val('');
             $("#days").val('');
@@ -2177,7 +2178,7 @@
     disablePastTime('#selectMonthlyTime', '#startDateMonthly');
     disablePastTime('#selectTime1', '#chooseDate');
 
-    $(document).on('click change dp.change', '.cusStrDate, .cusTime', function (e) {
+    $(document).on('click change dp.change', '.cusStrDate, .startTime', function (e) {
       if ($(this).is('.startTime') && !$(this).prop('disabled')) {
         disablePastTime('#' + $(this).attr('id'),
             '#' + $(this).parents('.manually-option').find('.cusStrDate').attr('id'));
@@ -2327,7 +2328,7 @@
         + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
         + "  <input id='customStartTime" + customCount + "' type='text' count='" + customCount
         + "' required name='activeTaskCustomScheduleBo[" + customCount
-        + "].frequencyStartTime' class='form-control clock customTime startTime' placeholder='Start Time' onclick='timep(this.id);' disabled/>"
+        + "].frequencyStartTime' class='form-control clock customTime startTime cusTime' placeholder='Start Time' onclick='timep(this.id);' disabled/>"
         + "<span class='help-block with-errors red-txt'></span>"
         + "  </span>"
         
@@ -2342,7 +2343,7 @@
         + "<span class='help-block with-errors red-txt'></span>"
         + "  </span>"
         + "  <span class='form-group dis-inline vertical-align-middle pr-md'>"
-        + "  <input id='customEndTime" + customCount + "' type='text' count='" + customCount
+        + "  <input id='customTime" + customCount + "' type='text' count='" + customCount
         + "' required name='activeTaskCustomScheduleBo[" + customCount
         + "].frequencyEndTime' class='form-control clock customTime endTime' placeholder='End Time' onclick='timep(this.id);' disabled/>"
         + "<span class='help-block with-errors red-txt'></span>"
@@ -2364,7 +2365,7 @@
     customStartDate('StartDate' + customCount, customCount);
     customEndDate('EndDate' + customCount, customCount);
     timep('customStartTime' + customCount);
-     timep('customEndTime' + customCount);
+    timep('customTime' + customCount);
     
     $('#customStartTime' + customCount).val("");
     $('#customEndTime' + customCount).val("");
@@ -2393,7 +2394,7 @@
       $('.manually-option').find(".delete").css("visibility", "hidden");
     }
     
-    $(document).find('.cusTime').trigger('dp.change');
+    $(document).find('.startTime').trigger('dp.change');
   }
 
   function timep(item) {
@@ -2418,8 +2419,8 @@
       var endDate = $("#EndDate" + count).val();
       if (startDate != '' && endDate != '' && toJSDate(startDate) > toJSDate(endDate)) {
         $("#" + id).parent().addClass("has-danger").addClass("has-error");
-        $("#" + id).parent().find(".help-block").text(
-            '<ul class="list-unstyled"><li>Start Date and Time Should not be greater than End Date and Time</li></ul>');
+        $("#" + id).parent().find(".help-block").empty().append(
+            	$("<ul><li> </li></ul>").attr("class","list-unstyled").text("Start Date and Time Should not be greater than End Date and Time"));
       } else {
         $("#activeTaskId").parent().removeClass("has-danger").removeClass("has-error");
         $("#activeTaskId").parent().find(".help-block").empty();
@@ -2668,7 +2669,7 @@
           var startdate = $("#StartDate" + id).val();
           var enddate = $("#EndDate" + id).val();
           var startTime = $("#customStartTime" + id).val();
-          var endTime = $("#customEndTime" + id).val();
+          var endTime = $("#customTime" + id).val();
           var isUsed = $("#isUsed" + id).val();
           if (startdate != null && startdate != '' && typeof startdate != 'undefined') {
             activeTaskCustomFrequencey.frequencyStartDate = startdate;
@@ -2694,7 +2695,7 @@
           $(document).find('.manually-option').each(function () {
             var returnFlag = validateTime(
                 $(this).find(".cusStrDate").not('.cursor-none, :disabled'),
-                $(this).find(".cusTime").not('.cursor-none, :disabled'));
+                $(this).find(".startTime").not('.cursor-none, :disabled'));
             if (isFormValid) {
               isFormValid = returnFlag;
             }
@@ -3001,41 +3002,84 @@
     }
   }
 
-  function checkDateRange() {
+  /* function checkDateRange() {
     $(document).on('dp.change change', '.cusStrDate, .cusEndDate, .cusTime', function (e) {
       var chkVal = true;
-      if ($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents(
-          '.manually-option').find('.cusEndDate').val() && $(this).parents('.manually-option').find(
-          '.cusTime').val()) {
+      if ($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find(
+      '.startTime').val()) {
         var thisAttr = this;
         $(this).parents('.manuallyContainer').find('.manually-option').each(function () {
           if ((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find(
               '.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find(
-              '.cusTime').val()) {
-            var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
-            var cusTime = moment($(this).find('.cusTime').val(), "HH:mm").toDate()
-            fromDate.setHours(cusTime.getHours());
-            fromDate.setMinutes(cusTime.getMinutes());
+              '.startTime').val()) {
+        	  
+        	
+          
+             var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+            var startTime = moment($(this).find('.startTime').val(), "HH:mm").toDate()
+            fromDate.setHours(startTime.getHours());
+            fromDate.setMinutes(startTime.getMinutes());
             var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
-            toDate.setHours(cusTime.getHours());
-            toDate.setMinutes(cusTime.getMinutes());
+            var endTime = moment($(this).find('.endTime').val(), "HH:mm").toDate()
+            toDate.setHours(endTime.getHours());
+            toDate.setMinutes(endTime.getMinutes());
             var thisFromDate = moment(
                 $(thisAttr).parents('.manually-option').find('.cusStrDate').val(),
                 "MM/DD/YYYY").toDate();
-            var thisCusTime = moment($(thisAttr).parents('.manually-option').find('.cusTime').val(),
+            var thisStartTime = moment($(thisAttr).parents('.manually-option').find('.cusTime').val(),
                 "HH:mm").toDate()
-            thisFromDate.setHours(thisCusTime.getHours());
-            thisFromDate.setMinutes(thisCusTime.getMinutes());
+            thisFromDate.setHours(thisStartTime.getHours());
+            thisFromDate.setMinutes(thisStartTime.getMinutes());
             var thisToDate = moment(
                 $(thisAttr).parents('.manually-option').find('.cusEndDate').val(),
                 "MM/DD/YYYY").toDate();
-            thisToDate.setHours(thisCusTime.getHours());
-            thisToDate.setMinutes(thisCusTime.getMinutes());
+            var thisEndTime = moment($(thisAttr).parents('.manually-option').find('.endTime').val(),
+            "HH:mm").toDate()
+            thisToDate.setHours(thisEndTime.getHours());
+            thisToDate.setMinutes(thisEndTime.getMinutes()); 
             if (chkVal)
-              chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate
-                  >= fromDate && thisToDate <= toDate));
-          }
-        });
+              chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate));
+          } 
+        }); */
+        
+        function checkDateRange() {
+            $(document).on('dp.change change', '.cusStrDate, .cusEndDate, .startTime', function (e) {
+              var chkVal = true;
+              if ($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find(
+                  '.startTime').val()) {
+                var thisAttr = this;
+                $(this).parents('.manuallyContainer').find('.manually-option').each(function () {
+                  if ((!$(thisAttr).parents('.manually-option').is($(this))) && $(this).find(
+                      '.cusStrDate').val() && $(this).find('.cusEndDate').val() && $(this).find(
+                      '.startTime').val()) {
+                     
+                	  var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
+                      var startTime = moment($(this).find('.startTime').val(), "HH:mm").toDate()
+                      fromDate.setHours(startTime.getHours());
+                      fromDate.setMinutes(startTime.getMinutes());
+                      var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
+                      var endTime = moment($(this).find('.endTime').val(), "HH:mm").toDate()
+                      toDate.setHours(endTime.getHours());
+                      toDate.setMinutes(endTime.getMinutes());
+                      var thisFromDate = moment(
+                          $(thisAttr).parents('.manually-option').find('.cusStrDate').val(),
+                          "MM/DD/YYYY").toDate();
+                      var thisStartTime = moment($(thisAttr).parents('.manually-option').find('.startTime').val(),
+                          "HH:mm").toDate()
+                      thisFromDate.setHours(thisStartTime.getHours());
+                      thisFromDate.setMinutes(thisStartTime.getMinutes());
+                      var thisToDate = moment(
+                          $(thisAttr).parents('.manually-option').find('.cusEndDate').val(),
+                          "MM/DD/YYYY").toDate();
+                      var thisEndTime = moment($(thisAttr).parents('.manually-option').find('.endTime').val(),
+                      "HH:mm").toDate()
+                      thisToDate.setHours(thisEndTime.getHours());
+                      thisToDate.setMinutes(thisEndTime.getMinutes());
+                      if (chkVal)
+                        chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate
+                            >= fromDate && thisToDate <= toDate));
+                    }
+                });
       }
       if (!chkVal) {
         $(thisAttr).parents('.manually-option').find('.startTime').parent().addClass(
@@ -3043,13 +3087,8 @@
             	$("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","font-size: 10px;").text(
                    "Please ensure that the runs created do not have any overlapping time period."));
                    
-                   $(thisAttr).parents('.manually-option').find('.endTime').parent().addClass(
-                   
-            'has-error has-danger').find(".help-block").removeClass('with-errors').empty().append(
-                    $("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","font-size: 10px;").text(
-                    "Please ensure that the runs created do not have any overlapping time period."));
       } else {
-        $(thisAttr).parents('.manually-option').find('.cusTime').parent().removeClass(
+        $(thisAttr).parents('.manually-option').find('.startTime').parent().removeClass(
             'has-error has-danger').addClass('with-errors').find(".help-block").empty();
       }
       var a = 0;
@@ -3355,7 +3394,8 @@
         + "<span class='help-block with-errors red-txt'></span>"
         + "</span>"
         
-        +"<span class='light-txt opacity06'> <span style='padding-right:5px;padding-left:5px'>to </span>  Anchor date </span></span>"
+        +"<span class='light-txt opacity06'>"
+        +"<span style='padding-right:5px;padding-left:5px'>to </span>  Anchor date </span></span>"
         + "<span class='mr-xs'><select class='signDropDown selectpicker sign-box' count='" + customAnchorCount
         + "' title='Select' name='activeTaskCustomScheduleBo[" + customAnchorCount
         + "].yDaysSign' id='ySign" + customAnchorCount + "'>"
