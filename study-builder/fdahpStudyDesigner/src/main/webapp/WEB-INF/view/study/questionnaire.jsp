@@ -3847,8 +3847,11 @@
   }
 
   function checkDateRange() {
-    $(document).on('dp.change change', '.cusStrDate, .cusEndDate, .startTime', function (e) {
+    $(document).on('dp.change change', '.cusStrDate, .cusEndDate, .startTime, .endTime', function (e) {
       var chkVal = true;
+
+      var chkValFromDate=true;
+      var chkValToDate = true;
       if ($(this).parents('.manually-option').find('.cusStrDate').val() && $(this).parents('.manually-option').find(
           '.startTime').val()) {
         var thisAttr = this;
@@ -3879,83 +3882,48 @@
               "HH:mm").toDate()
               thisToDate.setHours(thisEndTime.getHours());
               thisToDate.setMinutes(thisEndTime.getMinutes());
-              if (chkVal)
-                chkVal = !((thisFromDate >= fromDate && thisFromDate <= toDate) || (thisToDate
-                    >= fromDate && thisToDate <= toDate));
-            }
-          
-        /*   
-          
               
-            var fromDate = moment($(this).find('.cusStrDate').val(), "MM/DD/YYYY").toDate();
-           
-            //first row start time
-            var startTime = moment($(this).find('.startTime').val(), "HH:mm").toDate()
-            
-            fromDate.setHours(startTime.getHours());
-            fromDate.setMinutes(startTime.getMinutes());
-            
-            
-            
-            var toDate = moment($(this).find('.cusEndDate').val(), "MM/DD/YYYY").toDate();
-            
-            //first row end time
-            var endTime = moment($(this).find('.endTime').val(), "HH:mm").toDate()
-            
-            toDate.setHours(endTime.getHours());
-            toDate.setMinutes(endTime.getMinutes());
-            
-            
-            //first sencod row start time
-            
-            var thisFromDate = moment(
-                $(thisAttr).parents('.manually-option').find('.cusStrDate').val(),
-                "MM/DD/YYYY").toDate();
-                
-                
-            var thisCusStartTime = moment($(thisAttr).parents('.manually-option').find('.startTime').val(),
-                "HH:mm").toDate()
-                
-                
-            thisFromDate.setHours(thisCusStartTime.getHours());
-            thisFromDate.setMinutes(thisCusStartTime.getMinutes());
-            
-            
-  
-                
-          
-            
-            
-            if (chkVal)
-              chkVal = ((thisFromDate >= fromDate && thisFromDate >= toDate));
-          } */
-          
-          
+              if (chkValFromDate && chkValToDate){
+              	 chkValFromDate = !(thisFromDate >= fromDate && thisFromDate <= toDate) 
+              	 chkValToDate = !(thisToDate >= fromDate && thisToDate <= toDate);
+              }
+          }
+  			
           
         });
       }
-      if (!chkVal) {
-        $(thisAttr).parents('.manually-option').find('.startTime').parent().addClass(
+      if (!chkValFromDate) {
+          $(thisAttr).parents('.manually-option').find('.startTime').parent().addClass(
+              'has-error has-danger').find(".help-block").removeClass('with-errors').empty().append(
+              	$("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","font-size: 10px;").text(
+                     "Please ensure that the runs created do not have any overlapping time period."));
+        } 
+      else if (!chkValToDate) {
+        $(thisAttr).parents('.manually-option').find('.endTime').parent().addClass(
             'has-error has-danger').find(".help-block").removeClass('with-errors').empty().append(
             	$("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","font-size: 10px;").text(
                    "Please ensure that the runs created do not have any overlapping time period."));
-                
       } else {
         $(thisAttr).parents('.manually-option').find('.startTime').parent().removeClass(
             'has-error has-danger').find(".help-block").addClass('with-errors').empty();
+        $(thisAttr).parents('.manually-option').find('.endTime').parent().removeClass(
+        'has-error has-danger').find(".help-block").addClass('with-errors').empty();
       }
       var a = 0;
       $('.manuallyContainer').find('.manually-option').each(function () {
-        if ($(this).find('.startTime').parent().find('.help-block').children().length > 0) {
+        if ($(this).find('.cusStartTime').parent().find('.help-block').children().length > 0) {
           a++;
-          $(this).find('.startTime').val('');
-        }
-        if ($(this).find('.endTime').parent().find('.help-block').children().length > 0) {
-          a++;
-          $(this).find('.endTime').val('');
+          $(this).find('.cusStartTime').val('');
         }
       });
-      isValidManuallySchedule = !(a > 0);
+      var b = 0;
+      $('.manuallyContainer').find('.manually-option').each(function () {
+          if ($(this).find('.endTime').parent().find('.help-block').children().length > 0) {
+            b++;
+            $(this).find('.endTime').val('');
+          }
+        });
+      isValidManuallySchedule = !(a > 0 &&  b>0);
     });
     return isValidManuallySchedule;
   }
