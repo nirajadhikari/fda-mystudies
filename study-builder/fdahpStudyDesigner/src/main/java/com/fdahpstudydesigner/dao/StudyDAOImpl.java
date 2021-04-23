@@ -7026,4 +7026,81 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - getStudy() - Ends");
     return anchorDatetype;
   }
+
+  @Override
+  public void saveStudyPages(StudyPageBo studyPageBo) {
+    logger.info("StudyDAOImpl - saveStudyPages() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.save(studyPageBo);
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      logger.error("StudyDAOImpl - saveStudyPages() - ERROR ", e);
+    } finally {
+      if ((session != null) && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveStudyPages() - Ends");
+  }
+
+  @Override
+  public void saveStudyActiveTask(ActiveTaskBo activeTaskBo) {
+    logger.info("StudyDAOImpl - saveStudyActiveTask() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      session.save(activeTaskBo);
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      logger.error("StudyDAOImpl - saveStudyActiveTask() - ERROR ", e);
+    } finally {
+      if ((session != null) && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveStudyActiveTask() - Ends");
+  }
+
+  @Override
+  public void saveActiveTaskAtrributeValuesBo(
+      List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValues,
+      List<ActiveTaskCustomScheduleBo> activeTaskCustomSchedules,
+      List<ActiveTaskFrequencyBo> activeTaskTaskFrequency) {
+    logger.info("StudyDAOImpl - saveActiveTaskAtrributeValuesBo() - Starts");
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+      if (activeTaskAtrributeValues != null) {
+        session.save(activeTaskAtrributeValues);
+      }
+      if (activeTaskCustomSchedules != null) {
+        session.save(activeTaskCustomSchedules);
+      }
+      if (activeTaskTaskFrequency != null) {
+        session.save(activeTaskTaskFrequency);
+      }
+      transaction.commit();
+    } catch (Exception e) {
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      logger.error("StudyDAOImpl - saveActiveTaskAtrributeValuesBo() - ERROR ", e);
+    } finally {
+      if ((session != null) && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.info("StudyDAOImpl - saveActiveTaskAtrributeValuesBo() - Ends");
+  }
 }
