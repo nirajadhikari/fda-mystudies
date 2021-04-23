@@ -7,7 +7,7 @@
   <session-factory>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password">navya</property>
+    <property name="hibernate.connection.password">raaj</property>
     <property name="hibernate.connection.url">
       jdbc:mysql://localhost:3306/fda_hphc_dev_new
     </property>

@@ -48,7 +48,7 @@ public class CloudStorageService implements FileStorageService {
 
       try (WriteChannel writer = storageService.writer(blobInfo)) {
         bytes = Base64.getDecoder().decode(content.replaceAll("\n", ""));
-
+        
         writer.write(ByteBuffer.wrap(bytes, 0, bytes.length));
       } catch (IOException e) {
         logger.error("Save file in cloud storage failed", e);

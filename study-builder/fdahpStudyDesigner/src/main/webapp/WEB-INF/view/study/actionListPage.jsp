@@ -135,6 +135,22 @@
        Once deactivated, mobile app users will no longer be able to participate in the study. Deactivated studies cannot be reactivated.
       </div>
       </div>
+      
+      
+      <div class="form-group mr-sm" style="white-space: normal;">
+        <button type="button" class="btn btn-default red-btn-action "
+                id="exportId" onclick="exportStudy();"
+           
+                <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Export
+        </button>
+         <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
+       This action closes out a live study and deactivates it in the mobile app. 
+       Once deactivated, mobile app users will no longer be able to participate in the study. Deactivated studies cannot be reactivated.
+      </div>
+      </div>
+      
+      
+      
     </div>
   </div>
 </div>
@@ -252,6 +268,7 @@
   }
 
   function updateStudyByAction(buttonText) {
+	  
     if (buttonText) {
       var studyId = "${studyBo.id}";
       $
@@ -288,4 +305,41 @@
           });
     }
   }
+  
+  function exportStudy(){
+	  debugger
+	   var studyId = "${studyBo.id}";
+	  $
+      .ajax({
+        url: "/studybuilder/adminStudies/studies/export.do",
+        type: "POST",
+        datatype: "json",
+        data: {
+          studyId: studyId,
+          "${_csrf.parameterName}": "${_csrf.token}",
+        },
+        success: function updateAction(data, status) {
+          var message = data.message;
+          if (message == "SUCCESS") {
+            if (buttonText == 'deactivateId'
+                || buttonText == 'lunchId'
+                || buttonText == 'updatesId') {
+              $('#studyListInfoForm').submit();
+            } else {
+              document.studyListInfoForm.action = "/studybuilder/adminStudies/actionList.do?_S=${param._S}";
+              document.studyListInfoForm.submit();
+            }
+          } else {
+            $('#studyListInfoForm').submit();
+          }
+        },
+        error: function status(data, status) {
+          $("body").removeClass("loading");
+        },
+        complete: function () {
+          $('.actBut').removeAttr('disabled');
+        }
+      });
+}
+  
 </script>

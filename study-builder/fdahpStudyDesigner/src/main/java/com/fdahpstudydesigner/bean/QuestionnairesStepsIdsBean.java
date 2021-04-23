@@ -21,20 +21,21 @@
 
 package com.fdahpstudydesigner.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
 @Data
 public class QuestionnairesStepsIdsBean {
 
-  private List<String> questionIds;
+  private List<String> questionIds = new ArrayList<>();
 
-  private List<String> formIds;
+  private List<String> formIds = new ArrayList<>();
 
-  private List<String> instructionIds;
+  private List<String> instructionIds = new ArrayList<>();
 
-  private List<String> questionResponseSubTypeIds;
+  private List<String> questionResponseSubTypeIds = new ArrayList<>();
 
-  private List<String> questionResponseIds;
+  private List<String> questionResponseIds = new ArrayList<>();
 
 }
