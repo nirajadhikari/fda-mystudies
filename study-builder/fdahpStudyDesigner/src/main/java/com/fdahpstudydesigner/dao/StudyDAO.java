@@ -25,10 +25,7 @@ package com.fdahpstudydesigner.dao;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
-import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
-import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
-import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
@@ -228,12 +225,16 @@ public interface StudyDAO {
 
   public AnchorDateTypeBo getAnchorDateDetails(String studyId);
 
-  public void saveStudyPages(StudyPageBo studyPageBo);
+  public void cloneStudy(StudyBo studyBo, SessionObject sessionObject);
 
-  public void saveStudyActiveTask(ActiveTaskBo activeTaskBo);
+  public void cloneActiveTask(ActiveTaskBo activeTask, String studyId);
 
-  public void saveActiveTaskAtrributeValuesBo(
-      List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos,
-      List<ActiveTaskCustomScheduleBo> activeTaskCustomSchedules,
-      List<ActiveTaskFrequencyBo> activeTaskTaskFrequency);
+  public void cloneEligibility(EligibilityBo eligibilityBo, String studyId);
+
+  public void cloneComprehensionTest(
+      ComprehensionTestQuestionBo comprehensionTestQuestionBo, String studyId);
+
+  public void cloneConsent(ConsentBo consentBo, String studyId);
+
+  public void cloneConsentInfo(ConsentInfoBo consentInfoBo, String studyId);
 }

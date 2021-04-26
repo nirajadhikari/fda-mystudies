@@ -195,4 +195,7 @@ public interface StudyQuestionnaireDAO {
 
   public List<QuestionReponseTypeBo> getQuestionResponseTypeBoByInstructionFormIds(
       List<String> instructionFormIds);
+
+  public QuestionnaireBo cloneStudyQuestionnaire(
+      String questionnaireId, String studyId, SessionObject sessionObject);
 }

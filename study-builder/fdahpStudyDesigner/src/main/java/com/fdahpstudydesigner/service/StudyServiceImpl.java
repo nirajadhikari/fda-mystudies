@@ -26,9 +26,7 @@ import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
-import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
-import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
@@ -39,13 +37,11 @@ import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
 import com.fdahpstudydesigner.bo.QuestionnaireBo;
-import com.fdahpstudydesigner.bo.QuestionnairesStepsBo;
 import com.fdahpstudydesigner.bo.ReferenceTablesBo;
 import com.fdahpstudydesigner.bo.ResourceBO;
 import com.fdahpstudydesigner.bo.StudyBo;
 import com.fdahpstudydesigner.bo.StudyPageBo;
 import com.fdahpstudydesigner.bo.StudyPermissionBO;
-import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.dao.NotificationDAO;
 import com.fdahpstudydesigner.dao.StudyActiveTasksDAO;
 import com.fdahpstudydesigner.dao.StudyDAO;
@@ -1496,29 +1492,14 @@ public class StudyServiceImpl implements StudyService {
 
   @Override
   public String replicateStudy(String studyId, SessionObject sessionObject) {
+
     StudyBo studyBo = studyDAO.getStudy(studyId);
-
-    StudyPermissionBO studyPermissionBo =
-        studyDAO.getStudyPermissionBO(studyBo.getId(), sessionObject.getUserId());
-
-    StudySequenceBo studySequenceBo = studyDAO.getStudySequenceByStudyId(studyBo.getId());
-    AnchorDateTypeBo anchorDate = studyDAO.getAnchorDateDetails(studyBo.getId());
-
-    List<StudyPageBo> studypageList =
-        studyDAO.getOverviewStudyPagesById(studyBo.getId(), sessionObject.getUserId());
 
     EligibilityBo eligibilityBo = studyDAO.getStudyEligibiltyByStudyId(studyBo.getId());
 
-    List<EligibilityTestBo> eligibilityBoList = null;
-    if (eligibilityBo != null) {
-      eligibilityBoList = studyDAO.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
-    }
-
-    List<ConsentBo> consentBoList = studyDAO.getConsentList(studyBo.getCustomStudyId());
+    List<ConsentBo> consentBoList = studyDAO.getConsentList(studyBo.getId());
 
     List<ConsentInfoBo> consentInfoBoList = studyDAO.getConsentInfoList(studyBo.getId());
-
-    List<ConsentMasterInfoBo> consentMasterInfoList = studyDAO.getConsentMasterInfoList();
 
     List<ComprehensionTestQuestionBo> comprehensionTestQuestionBoList =
         studyDAO.getComprehensionTestQuestionList(studyBo.getId());
@@ -1533,30 +1514,71 @@ public class StudyServiceImpl implements StudyService {
     List<ActiveTaskBo> activeTaskBos =
         studyActiveTasksDAO.getStudyActiveTaskByStudyId(studyBo.getId());
 
-    List<String> questionnaireIds = new ArrayList<>();
-    if (CollectionUtils.isNotEmpty(questionnairesList)) {
-      for (QuestionnaireBo questionnaireBo : questionnairesList) {
-        questionnaireIds.add(questionnaireBo.getId());
-      }
-    }
-
-    List<QuestionnairesStepsBo> questionnairesStepsList =
-        studyQuestionnaireDAO.getQuestionnairesStepsList(questionnaireIds);
-
     List<String> activeTaskIds = new ArrayList<>();
+    List<String> activeTaskTypes = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(activeTaskBos)) {
       for (ActiveTaskBo activeTaskBo : activeTaskBos) {
         activeTaskIds.add(activeTaskBo.getId());
+        activeTaskTypes.add(activeTaskBo.getTaskTypeId());
       }
     }
 
-    List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
-        studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
+    studyDAO.cloneStudy(studyBo, sessionObject);
 
-    studyBo.setId(null);
-    studyBo.setCustomStudyId(("copy of " + studyBo.getCustomStudyId()).substring(0, 255));
-    studyDAO.saveOrUpdateStudy(studyBo, sessionObject);
+    studyDAO.cloneEligibility(eligibilityBo, studyBo.getId());
 
+    if (CollectionUtils.isNotEmpty(consentBoList)) {
+      for (ConsentBo consentBo : consentBoList) {
+        studyDAO.cloneConsent(consentBo, studyBo.getId());
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(consentInfoBoList)) {
+      for (ConsentInfoBo consentinfoBo : consentInfoBoList) {
+
+        studyDAO.cloneConsentInfo(consentinfoBo, studyBo.getId());
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(comprehensionTestQuestionBoList)) {
+      for (ComprehensionTestQuestionBo comprehensionTestQuestionBo :
+          comprehensionTestQuestionBoList) {
+        comprehensionTestQuestionBo.setStudyId(studyBo.getId());
+        studyDAO.cloneComprehensionTest(comprehensionTestQuestionBo, studyBo.getId());
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(questionnairesList)) {
+      for (QuestionnaireBo questionnaireBo : questionnairesList) {
+
+        studyQuestionnaireDAO.cloneStudyQuestionnaire(
+            questionnaireBo.getId(), studyBo.getId(), sessionObject);
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(resourceBOs)) {
+      for (ResourceBO resourceBO : resourceBOs) {
+        resourceBO.setId(null);
+        resourceBO.setStudyId(studyBo.getId());
+        resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        studyDAO.saveOrUpdateResource(resourceBO);
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(activeTaskBos)) {
+      for (ActiveTaskBo activeTaskBo : activeTaskBos) {
+        studyDAO.cloneActiveTask(activeTaskBo, studyBo.getId());
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(notificationBOs)) {
+      for (NotificationBO notificationBO : notificationBOs) {
+        notificationBO.setNotificationId(null);
+        notificationBO.setStudyId(studyBo.getId());
+        notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+        notificationDAO.saveNotification(notificationBO);
+      }
+    }
     return studyBo.getId();
   }
 }
