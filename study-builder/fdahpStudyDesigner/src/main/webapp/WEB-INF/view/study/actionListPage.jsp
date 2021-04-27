@@ -150,12 +150,12 @@
       
        <div class="form-group mr-sm" style="white-space: normal;">
         <button type="button" class="btn btn-default gray-btn-action "
-                id="exportId" onclick="exportStudy();"
+                id="exportId" onclick="copyStudy();"
            
                 <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Copy
         </button>
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
-       This action copies study.
+       This action replicates study.
       </div>
       </div>
       
@@ -322,6 +322,42 @@
 	  $
       .ajax({
         url: "/studybuilder/studies/export.do",
+        type: "POST",
+        datatype: "json",
+        data: {
+          studyId: studyId,
+          "${_csrf.parameterName}": "${_csrf.token}",
+        },
+        success: function updateAction(data, status) {
+          var message = data.message;
+          if (message == "SUCCESS") {
+            if (buttonText == 'deactivateId'
+                || buttonText == 'lunchId'
+                || buttonText == 'updatesId') {
+              $('#studyListInfoForm').submit();
+            } else {
+              document.studyListInfoForm.action = "/studybuilder/adminStudies/actionList.do?_S=${param._S}";
+              document.studyListInfoForm.submit();
+            }
+          } else {
+            $('#studyListInfoForm').submit();
+          }
+        },
+        error: function status(data, status) {
+          $("body").removeClass("loading");
+        },
+        complete: function () {
+          $('.actBut').removeAttr('disabled');
+        }
+      });
+}
+  
+  function copyStudy(){
+	  debugger
+	   var studyId = "${studyBo.id}";
+	  $
+      .ajax({
+        url: "/studybuilder/studies/{studyId}/replicate.do",
         type: "POST",
         datatype: "json",
         data: {
