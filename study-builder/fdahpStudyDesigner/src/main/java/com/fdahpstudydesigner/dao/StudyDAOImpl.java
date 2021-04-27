@@ -7066,9 +7066,9 @@ public class StudyDAOImpl implements StudyDAO {
       studyBo.setId(null);
       studyBo.setCustomStudyId(
           (RandomStringUtils.randomNumeric(2) + "_copy of " + studyBo.getCustomStudyId())
-              .substring(0, 50));
+              .substring(0, 14));
       studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
-
+      studyBo.setStudylunchDate(null);
       String appId = studyBo.getAppId().toUpperCase();
       studyBo.setAppId(appId);
       studyBo.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -7136,7 +7136,6 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - cloneStudy() - Ends");
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void cloneEligibility(EligibilityBo eligibilityBo, String studyId) {
     logger.info("StudyDAOImpl - cloneEligibility() - Starts");
@@ -7174,7 +7173,6 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - cloneEligibility() - Ends");
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void cloneComprehensionTest(
       ComprehensionTestQuestionBo comprehensionTestQuestionBo, String studyId) {
@@ -7214,7 +7212,6 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - cloneComprehensionTest() - Ends");
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void cloneConsent(ConsentBo consentBo, String studyId) {
     logger.info("StudyDAOImpl - cloneConsent() - Starts");
@@ -7240,7 +7237,6 @@ public class StudyDAOImpl implements StudyDAO {
     logger.info("StudyDAOImpl - cloneConsent() - Ends");
   }
 
-  @SuppressWarnings("unchecked")
   @Override
   public void cloneConsentInfo(ConsentInfoBo consentInfoBo, String studyId) {
 
