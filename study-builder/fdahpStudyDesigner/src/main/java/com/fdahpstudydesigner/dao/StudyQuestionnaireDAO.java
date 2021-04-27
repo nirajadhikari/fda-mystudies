@@ -164,4 +164,7 @@ public interface StudyQuestionnaireDAO {
       List<String> instructionFormIds);
 
   public List<FormBo> getFormsByInstructionFormIds(List<String> instructionFormIds);
+
+  public QuestionnaireBo cloneStudyQuestionnaire(String questionnaireId, String studyId,
+      SessionObject sessionObject);
 }

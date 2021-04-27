@@ -1144,10 +1144,25 @@ public class StudyControllerTest extends BaseMockIT {
 
     mockMvc.perform(post("/studies/export.do").param("studyId", "4028614378e9ad270178e9b28f57001b")
         .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
+
   }
 
   public static String readJsonFile(String filepath) throws IOException {
     return JsonUtils.getObjectMapper()
         .readValue(JsonUtils.class.getResourceAsStream(filepath), JsonNode.class).toString();
+  }
+
+  @Test
+  public void shouldreplicateStudies() throws Exception {
+
+    SessionObject session = new SessionObject();
+    session.setUserId("1");
+
+    HashMap<String, Object> sessionAttributes = getSessionAttributes();
+    sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
+
+    mockMvc.perform(
+        post("/studies/40286174790cc2ba01790ccc9fc10001/replicate").sessionAttrs(sessionAttributes))
+        .andDo(print()).andExpect(status().isOk());
   }
 }
