@@ -7,10 +7,12 @@ import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
 import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.AnchorDateTypeBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
+import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
 import com.fdahpstudydesigner.bo.ConsentBo;
 import com.fdahpstudydesigner.bo.ConsentInfoBo;
 import com.fdahpstudydesigner.bo.EligibilityBo;
 import com.fdahpstudydesigner.bo.EligibilityTestBo;
+import com.fdahpstudydesigner.bo.FormBo;
 import com.fdahpstudydesigner.bo.FormMappingBo;
 import com.fdahpstudydesigner.bo.InstructionsBo;
 import com.fdahpstudydesigner.bo.NotificationBO;
@@ -33,13 +35,11 @@ import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.IdGenerator;
 import com.fdahpstudydesigner.util.StudyExportSqlQueries;
-import com.google.cloud.WriteChannel;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +70,7 @@ public class StudyExportService {
 
 
 
-  public String exportStudy(String studyId, String userId) {
+  public String exportStudy(String studyId, String userId) throws IOException {
 
     List<String> insertSqlStatements = new ArrayList<>();
 
@@ -102,6 +102,17 @@ public class StudyExportService {
 
     List<ComprehensionTestQuestionBo> comprehensionTestQuestionBoList =
         studyDao.getComprehensionTestQuestionList(studyBo.getId());
+
+    List<String> comprehensionTestQuestionIds = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(comprehensionTestQuestionBoList)) {
+      for (ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionBoList) {
+        comprehensionTestQuestionIds.add(comprehensionTestQuestionBo.getId());
+      }
+    }
+
+    List<ComprehensionTestResponseBo> comprehensionTestResponseBoList =
+        studyDao.getComprehensionTestResponseList(comprehensionTestQuestionIds);
+
 
     List<QuestionnaireBo> questionnairesList =
         studyQuestionnaireDAO.getStudyQuestionnairesByStudyId(studyBo.getId());
@@ -136,8 +147,12 @@ public class StudyExportService {
     List<QuestionsBo> questionsList =
         studyQuestionnaireDAO.getQuestionsByInstructionFormIds(instructionFormIds);
 
-    List<FormMappingBo> formsList =
+    List<FormMappingBo> formMappingList =
         studyQuestionnaireDAO.getFormMappingbyInstructionFormIds(instructionFormIds);
+
+    List<FormBo> formsList = studyQuestionnaireDAO.getFormsByInstructionFormIds(instructionFormIds);
+
+
 
     List<InstructionsBo> instructionList =
         studyQuestionnaireDAO.getInstructionListByInstructionFormIds(instructionFormIds);
@@ -178,7 +193,7 @@ public class StudyExportService {
 
     List<String> questionFormInstructionIds = new ArrayList<>();
     QuestionnairesStepsIdsBean questionnairesStepsIdsBean =
-        getInstructionFormIds(questionsList, formsList, instructionList,
+        getInstructionFormIds(questionsList, formMappingList, instructionList, formsList,
             questionResponseSubTypeBoList, questionResponseTypeBo, questionFormInstructionIds);
 
     try {
@@ -196,6 +211,8 @@ public class StudyExportService {
 
       addComprehensionTestQuestionListInsertSql(comprehensionTestQuestionBoList,
           insertSqlStatements, newStudyId);
+      addComprehensionTestResponseBoListInsertSql(comprehensionTestResponseBoList,
+          insertSqlStatements);
       addQuestionnaireBoListInsertSql(questionnairesList, insertSqlStatements, newStudyId,
           newCustomId, newQuestionnaireIds);
 
@@ -208,8 +225,11 @@ public class StudyExportService {
       addQuestionListInsertSql(questionsList, insertSqlStatements,
           questionnairesStepsIdsBean.getQuestionIds());
 
+      addFormMappingListInsertSql(formMappingList, insertSqlStatements,
+          questionnairesStepsIdsBean.getFormMappingIds());
+
       addFormsListInsertSql(formsList, insertSqlStatements,
-          questionnairesStepsIdsBean.getFormIds());
+          questionnairesStepsIdsBean.getFormsIds());
 
       addInstructionInsertSql(instructionList, insertSqlStatements,
           questionnairesStepsIdsBean.getInstructionIds());
@@ -251,6 +271,50 @@ public class StudyExportService {
   }
 
 
+  private void addFormsListInsertSql(List<FormBo> formsList, List<String> insertSqlStatements,
+      List<String> formsIds) throws SQLException {
+    List<String> formBoInsertQueryList = new ArrayList<>();
+    if (CollectionUtils.isEmpty(formsList)) {
+      return;
+    }
+
+    String formInsertQuery = null;
+    for (FormBo formBo : formsList) {
+      for (String formId : formsIds) {
+        formInsertQuery = prepareInsertQuery(StudyExportSqlQueries.FORM, formId, formBo.getActive(),
+            formBo.getCreatedBy(), formBo.getCreatedOn(), formBo.getModifiedBy(),
+            formBo.getModifiedOn());
+      }
+      formBoInsertQueryList.add(formInsertQuery);
+    }
+    insertSqlStatements.addAll(formBoInsertQueryList);
+
+  }
+
+
+  private void addComprehensionTestResponseBoListInsertSql(
+      List<ComprehensionTestResponseBo> comprehensionTestResponseBoList,
+      List<String> insertSqlStatements) throws SQLException {
+    if (CollectionUtils.isEmpty(comprehensionTestResponseBoList)) {
+      return;
+    }
+
+    List<String> comprehensionTestResponseBoInserQueryList = new ArrayList<>();
+    String comprehensionTestResponseInsertQuery = null;
+    for (ComprehensionTestResponseBo comprehensionTestResponseBo : comprehensionTestResponseBoList) {
+      comprehensionTestResponseInsertQuery =
+          prepareInsertQuery(StudyExportSqlQueries.COMREHENSION_TEST_RESPONSE, IdGenerator.id(),
+              comprehensionTestResponseBo.getComprehensionTestQuestionId(),
+              comprehensionTestResponseBo.getCorrectAnswer(),
+              comprehensionTestResponseBo.getResponseOption());
+
+      comprehensionTestResponseBoInserQueryList.add(comprehensionTestResponseInsertQuery);
+    }
+    insertSqlStatements.addAll(comprehensionTestResponseBoInserQueryList);
+
+  }
+
+
   private String createFileFromListAndSaveToCloudStorage(List<String> insertSqlStatements,
       StudyBo studyBo) {
     try {
@@ -272,28 +336,30 @@ public class StudyExportService {
   }
 
 
-  public String saveFile(StudyBo studyBo, List<String> insertSqlStatements) {
+  public String saveFile(StudyBo studyBo, List<String> insertSqlStatements) throws IOException {
     String content = insertSqlStatements.toString();
+
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
     String studyVersion = map.get("studyVersion");
     String fileName = studyBo.getCustomStudyId() + "_" + studyVersion + ".sql";
     String underDirectory = "InsertSqlQueries";
     String absoluteFileName = underDirectory + PATH_SEPARATOR + fileName;
-    byte[] bytes = null;
 
     try {
+      /*
+       * fileWriter = new FileWriter(fileName); for (String insertSqlStatement :
+       * insertSqlStatements) { fileWriter.write(insertSqlStatement + System.lineSeparator()); }
+       */
+      Storage storage = StorageOptions.getDefaultInstance().getService();
       BlobInfo blobInfo =
           BlobInfo.newBuilder(map.get("cloud.bucket.name"), absoluteFileName).build();
-      Storage storage = StorageOptions.getDefaultInstance().getService();
-      WriteChannel writer = storage.writer(blobInfo);
-      bytes = content.getBytes();
-      // storage.create(blobInfo, content.getBytes());
-      writer.write(ByteBuffer.wrap(bytes, 0, bytes.length));
+      storage.create(blobInfo, content.getBytes());
+
+
 
     } catch (Exception e) {
       logger.error("Save Default Image to cloud storage failed", e);
     }
-
 
     /*
      * bytes = content.getBytes(); Storage storage =
@@ -460,7 +526,7 @@ public class StudyExportService {
     insertSqlStatements.addAll(instructionBoInsertQueryList);
   }
 
-  private void addFormsListInsertSql(List<FormMappingBo> formsList,
+  private void addFormMappingListInsertSql(List<FormMappingBo> formsList,
       List<String> insertSqlStatements, List<String> formIds) throws SQLException {
 
     List<String> formMappingBoInsertQueryList = new ArrayList<>();
@@ -977,8 +1043,8 @@ public class StudyExportService {
   }
 
   private QuestionnairesStepsIdsBean getInstructionFormIds(List<QuestionsBo> questionsList,
-      List<FormMappingBo> formsList, List<InstructionsBo> instructionList,
-      List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
+      List<FormMappingBo> formMappingList, List<InstructionsBo> instructionList,
+      List<FormBo> formsList, List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
       List<QuestionReponseTypeBo> questionResponseTypeBo, List<String> questionFormInstructionIds) {
 
     QuestionnairesStepsIdsBean questionnairesStepsIdsBean = new QuestionnairesStepsIdsBean();
@@ -987,7 +1053,7 @@ public class StudyExportService {
     }
 
     if (CollectionUtils.isNotEmpty(formsList)) {
-      questionnairesStepsIdsBean.getFormIds().add(IdGenerator.id());
+      questionnairesStepsIdsBean.getFormMappingIds().add(IdGenerator.id());
     }
 
     if (CollectionUtils.isNotEmpty(instructionList)) {
@@ -1002,9 +1068,13 @@ public class StudyExportService {
       questionnairesStepsIdsBean.getQuestionResponseIds().add(IdGenerator.id());
     }
 
+    if (CollectionUtils.isNotEmpty(formsList)) {
+      questionnairesStepsIdsBean.getFormsIds().add(IdGenerator.id());
+    }
+
 
     questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionIds());
-    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getFormIds());
+    questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getFormMappingIds());
     questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getInstructionIds());
     questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionResponseSubTypeIds());
     questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionResponseIds());

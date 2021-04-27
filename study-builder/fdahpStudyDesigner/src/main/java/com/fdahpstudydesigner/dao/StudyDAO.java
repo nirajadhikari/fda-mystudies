@@ -1,11 +1,10 @@
 /*
  * Copyright © 2017-2018 Harvard Pilgrim Health Care Institute (HPHCI) and its Contributors.
- * Copyright 2020 Google LLC
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
- * associated documentation files (the "Software"), to deal in the Software without restriction,
- * including without limitation the rights to use, copy, modify, merge, publish, distribute,
- * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
+ * Copyright 2020 Google LLC Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"), to deal in the
+ * Software without restriction, including without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+ * to whom the Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all copies or
  * substantial portions of the Software.
@@ -55,26 +54,26 @@ public interface StudyDAO {
 
   public int consentInfoOrder(String studyId);
 
-  public String deleteComprehensionTestQuestion(
-      String questionId, String studyId, SessionObject sessionObject);
+  public String deleteComprehensionTestQuestion(String questionId, String studyId,
+      SessionObject sessionObject);
 
-  public String deleteConsentInfo(
-      String consentInfoId, String studyId, SessionObject sessionObject, String customStudyId);
+  public String deleteConsentInfo(String consentInfoId, String studyId, SessionObject sessionObject,
+      String customStudyId);
 
-  public String deleteEligibilityTestQusAnsById(
-      String eligibilityTestId, String studyId, SessionObject sessionObject, String customStudyId);
+  public String deleteEligibilityTestQusAnsById(String eligibilityTestId, String studyId,
+      SessionObject sessionObject, String customStudyId);
 
   public boolean deleteLiveStudy(String customStudyId);
 
   public String deleteOverviewStudyPageById(String studyId, String pageId);
 
-  public String deleteResourceInfo(
-      String resourceInfoId, boolean resourceVisibility, String studyId);
+  public String deleteResourceInfo(String resourceInfoId, boolean resourceVisibility,
+      String studyId);
 
   public boolean deleteStudyByCustomStudyId(String customStudyId);
 
-  public String deleteStudyByIdOrCustomstudyId(
-      Session session, Transaction transaction, String studyId, String customStudyId);
+  public String deleteStudyByIdOrCustomstudyId(Session session, Transaction transaction,
+      String studyId, String customStudyId);
 
   public int eligibilityTestOrderCount(String eligibilityId);
 
@@ -127,25 +126,21 @@ public interface StudyDAO {
 
   public ResourceBO getStudyProtocol(String studyId);
 
-  public String markAsCompleted(
-      String studyId,
-      String markCompleted,
-      boolean flag,
-      SessionObject sesObj,
-      String customStudyId);
+  public String markAsCompleted(String studyId, String markCompleted, boolean flag,
+      SessionObject sesObj, String customStudyId);
 
-  public String reOrderComprehensionTestQuestion(
-      String studyId, int oldOrderNumber, int newOrderNumber);
+  public String reOrderComprehensionTestQuestion(String studyId, int oldOrderNumber,
+      int newOrderNumber);
 
   public String reOrderConsentInfoList(String studyId, int oldOrderNumber, int newOrderNumber);
 
-  public String reorderEligibilityTestQusAns(
-      String eligibilityId, int oldOrderNumber, int newOrderNumber, String studyId);
+  public String reorderEligibilityTestQusAns(String eligibilityId, int oldOrderNumber,
+      int newOrderNumber, String studyId);
 
   public String reOrderResourceList(String studyId, int oldOrderNumber, int newOrderNumber);
 
-  public boolean resetDraftStudyByCustomStudyId(
-      String customStudyId, String action, SessionObject sesObj);
+  public boolean resetDraftStudyByCustomStudyId(String customStudyId, String action,
+      SessionObject sesObj);
 
   public int resourceOrder(String studyId);
 
@@ -153,22 +148,19 @@ public interface StudyDAO {
 
   public List<ResourceBO> resourcesWithAnchorDate(String studyId);
 
-  public ConsentBo saveOrCompleteConsentReviewDetails(
-      ConsentBo consentBo, SessionObject sesObj, String customStudyId);
+  public ConsentBo saveOrCompleteConsentReviewDetails(ConsentBo consentBo, SessionObject sesObj,
+      String customStudyId);
 
   public String saveOrDoneChecklist(Checklist checklist);
 
   public ComprehensionTestQuestionBo saveOrUpdateComprehensionTestQuestion(
       ComprehensionTestQuestionBo comprehensionTestQuestionBo);
 
-  public ConsentInfoBo saveOrUpdateConsentInfo(
-      ConsentInfoBo consentInfoBo, SessionObject sesObj, String customStudyId);
-
-  public String saveOrUpdateEligibilityTestQusAns(
-      EligibilityTestBo eligibilityTestBo,
-      String studyId,
-      SessionObject sessionObject,
+  public ConsentInfoBo saveOrUpdateConsentInfo(ConsentInfoBo consentInfoBo, SessionObject sesObj,
       String customStudyId);
+
+  public String saveOrUpdateEligibilityTestQusAns(EligibilityTestBo eligibilityTestBo,
+      String studyId, SessionObject sessionObject, String customStudyId);
 
   public String saveOrUpdateOverviewStudyPages(StudyPageBean studyPageBean, SessionObject sesObj);
 
@@ -176,8 +168,8 @@ public interface StudyDAO {
 
   public String saveOrUpdateStudy(StudyBo studyBo, SessionObject sessionObject);
 
-  public String saveOrUpdateStudyEligibilty(
-      EligibilityBo eligibilityBo, SessionObject sesObj, String customStudyId);
+  public String saveOrUpdateStudyEligibilty(EligibilityBo eligibilityBo, SessionObject sesObj,
+      String customStudyId);
 
   public String saveOrUpdateStudySettings(StudyBo studyBo, SessionObject sesObj);
 
@@ -187,8 +179,8 @@ public interface StudyDAO {
 
   public String validateActivityComplete(String studyId, String action);
 
-  public String validateEligibilityTestKey(
-      String eligibilityTestId, String shortTitle, String eligibilityId);
+  public String validateEligibilityTestKey(String eligibilityTestId, String shortTitle,
+      String eligibilityId);
 
   public String validateStudyAction(String studyId, String buttonText);
 
@@ -202,11 +194,11 @@ public interface StudyDAO {
 
   public Boolean isAnchorDateExistForEnrollmentDraftStudy(String studyId, String customStudyId);
 
-  public String updateAnchordateForEnrollmentDate(
-      StudyBo oldStudyBo, StudyBo updatedStudyBo, Session session, Transaction transaction);
+  public String updateAnchordateForEnrollmentDate(StudyBo oldStudyBo, StudyBo updatedStudyBo,
+      Session session, Transaction transaction);
 
-  public boolean validateAppId(
-      String customStudyId, String appId, String studyType, String dbCustomStudyId);
+  public boolean validateAppId(String customStudyId, String appId, String studyType,
+      String dbCustomStudyId);
 
   public StudyPermissionBO getStudyPermissionBO(String studyId, String userId);
 
@@ -223,4 +215,7 @@ public interface StudyDAO {
   public StudySequenceBo getStudySequenceByStudyId(String studyId);
 
   public AnchorDateTypeBo getAnchorDateDetails(String studyId);
+
+  public List<ComprehensionTestResponseBo> getComprehensionTestResponseList(
+      List<String> comprehensionTestQuestionIds);
 }

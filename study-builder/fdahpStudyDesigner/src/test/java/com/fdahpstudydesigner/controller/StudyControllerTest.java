@@ -1142,9 +1142,8 @@ public class StudyControllerTest extends BaseMockIT {
     HashMap<String, Object> sessionAttributes = getSessionAttributes();
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
-    mockMvc.perform(
-        post("/studies/4028614378e9ad270178e9b28f57001b/export").sessionAttrs(sessionAttributes))
-        .andDo(print()).andExpect(status().isOk());
+    mockMvc.perform(post("/studies/export.do").param("studyId", "4028614378e9ad270178e9b28f57001b")
+        .sessionAttrs(sessionAttributes)).andDo(print()).andExpect(status().isOk());
   }
 
   public static String readJsonFile(String filepath) throws IOException {

@@ -311,7 +311,7 @@
 	   var studyId = "${studyBo.id}";
 	  $
       .ajax({
-        url: "/studybuilder/adminStudies/studies/export.do",
+        url: "/studybuilder/studies/export.do",
         type: "POST",
         datatype: "json",
         data: {

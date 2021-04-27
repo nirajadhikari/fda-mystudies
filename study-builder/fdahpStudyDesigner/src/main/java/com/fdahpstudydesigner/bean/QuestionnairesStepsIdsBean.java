@@ -30,12 +30,14 @@ public class QuestionnairesStepsIdsBean {
 
   private List<String> questionIds = new ArrayList<>();
 
-  private List<String> formIds = new ArrayList<>();
+  private List<String> formMappingIds = new ArrayList<>();
 
   private List<String> instructionIds = new ArrayList<>();
 
   private List<String> questionResponseSubTypeIds = new ArrayList<>();
 
   private List<String> questionResponseIds = new ArrayList<>();
+
+  private List<String> formsIds = new ArrayList<>();
 
 }

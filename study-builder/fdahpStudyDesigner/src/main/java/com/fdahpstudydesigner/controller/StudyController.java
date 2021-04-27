@@ -4163,8 +4163,8 @@ public class StudyController {
     logger.info("StudyController - submitResponseToResponseServer() - Ends ");
   }
 
-  @RequestMapping(value = "/adminStudies/studies/export.do", method = RequestMethod.POST)
-  public ModelAndView exportStudy(HttpServletRequest request, HttpServletResponse response)
+  @RequestMapping(value = "/studies/export.do", method = RequestMethod.POST)
+  public void exportStudy(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     logger.info("StudyController - exportStudy() - Starts");
 
@@ -4174,8 +4174,10 @@ public class StudyController {
     SessionObject sesObj = (SessionObject) request.getSession()
         .getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 
-    String studyId = FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId")) ? ""
-        : request.getParameter("studyId");
+    String studyId =
+        FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+            ? ""
+            : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 
     String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
 
@@ -4185,7 +4187,6 @@ public class StudyController {
     out.print(jsonobject);
 
     logger.info("StudyController - exportStudy() - Ends");
-    return new ModelAndView();
   }
 
   @RequestMapping(value = "/studies/{studyId}/replicate", method = RequestMethod.POST)
