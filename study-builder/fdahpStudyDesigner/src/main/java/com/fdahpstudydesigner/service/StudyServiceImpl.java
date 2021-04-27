@@ -26,7 +26,10 @@ import com.fdahpstudydesigner.bean.StudyDetailsBean;
 import com.fdahpstudydesigner.bean.StudyIdBean;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bean.StudyPageBean;
+import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
+import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
+import com.fdahpstudydesigner.bo.ActiveTaskFrequencyBo;
 import com.fdahpstudydesigner.bo.Checklist;
 import com.fdahpstudydesigner.bo.ComprehensionTestQuestionBo;
 import com.fdahpstudydesigner.bo.ComprehensionTestResponseBo;
@@ -1565,9 +1568,43 @@ public class StudyServiceImpl implements StudyService {
       }
     }
 
+    List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
+        studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
+
+    List<ActiveTaskCustomScheduleBo> activeTaskCustomScheduleBoList =
+        studyActiveTasksDAO.getActiveTaskCustomScheduleBoList(activeTaskIds);
+
+    List<ActiveTaskFrequencyBo> activeTaskFrequencyBoList =
+        studyActiveTasksDAO.getActiveTaskFrequencyBoList(activeTaskIds);
+
     if (CollectionUtils.isNotEmpty(activeTaskBos)) {
-      for (ActiveTaskBo activeTaskBo : activeTaskBos) {
-        studyDAO.cloneActiveTask(activeTaskBo, studyBo.getId());
+      for (ActiveTaskBo activeTask : activeTaskBos) {
+        String oldActiveTaskId = activeTask.getId();
+        activeTask.setId(null);
+        activeTask.setStudyId(studyBo.getId());
+        studyDAO.saveStudyActiveTask(activeTask);
+
+        for (ActiveTaskAtrributeValuesBo active : activeTaskAtrributeValuesBos) {
+          if (active.getActiveTaskId().equals(oldActiveTaskId)) {
+            active.setAttributeValueId(null);
+            active.setActiveTaskId(activeTask.getId());
+            studyDAO.saveActiveTaskAtrributeValuesBo(active);
+          }
+        }
+        for (ActiveTaskCustomScheduleBo active : activeTaskCustomScheduleBoList) {
+          if (active.getActiveTaskId().equals(oldActiveTaskId)) {
+            active.setId(null);
+            active.setActiveTaskId(activeTask.getId());
+            studyDAO.saveActiveTaskCustomScheduleBo(active);
+          }
+        }
+        for (ActiveTaskFrequencyBo active : activeTaskFrequencyBoList) {
+          if (active.getActiveTaskId().equals(oldActiveTaskId)) {
+            active.setId(null);
+            active.setActiveTaskId(activeTask.getId());
+            studyDAO.saveActiveTaskFrequencyBo(active);
+          }
+        }
       }
     }
 
