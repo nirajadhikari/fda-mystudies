@@ -136,16 +136,26 @@
       </div>
       </div>
       
-      
       <div class="form-group mr-sm" style="white-space: normal;">
-        <button type="button" class="btn btn-default red-btn-action "
+        <button type="button" class="btn btn-default gray-btn-action "
                 id="exportId" onclick="exportStudy();"
            
                 <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Export
         </button>
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
-       This action closes out a live study and deactivates it in the mobile app. 
-       Once deactivated, mobile app users will no longer be able to participate in the study. Deactivated studies cannot be reactivated.
+       This action exports study to google cloud storage.
+      </div>
+      </div>
+      
+      
+       <div class="form-group mr-sm" style="white-space: normal;">
+        <button type="button" class="btn btn-default gray-btn-action "
+                id="exportId" onclick="exportStudy();"
+           
+                <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Copy
+        </button>
+         <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
+       This action copies study.
       </div>
       </div>
       
