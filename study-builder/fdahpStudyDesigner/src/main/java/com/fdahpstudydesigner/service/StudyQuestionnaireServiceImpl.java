@@ -663,7 +663,7 @@ public class StudyQuestionnaireServiceImpl implements StudyQuestionnaireService 
         if (questionsBo.getUseAnchorDate() != null) {
           addQuestionsBo.setUseAnchorDate(questionsBo.getUseAnchorDate());
           addQuestionsBo.setAnchorDateName(questionsBo.getAnchorDateName());
-          if (questionsBo.getAnchorDateId() != null) {
+          if (StringUtils.isNotEmpty(questionsBo.getAnchorDateId())) {
             addQuestionsBo.setAnchorDateId(questionsBo.getAnchorDateId());
           }
         }

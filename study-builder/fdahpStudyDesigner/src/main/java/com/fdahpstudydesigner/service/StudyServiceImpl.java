@@ -1526,9 +1526,12 @@ public class StudyServiceImpl implements StudyService {
       }
     }
 
+    // replicating study
     studyDAO.cloneStudy(studyBo, sessionObject);
 
-    studyDAO.cloneEligibility(eligibilityBo, studyBo.getId());
+    if (eligibilityBo != null) {
+      studyDAO.cloneEligibility(eligibilityBo, studyBo.getId());
+    }
 
     if (CollectionUtils.isNotEmpty(consentBoList)) {
       for (ConsentBo consentBo : consentBoList) {
@@ -1538,7 +1541,6 @@ public class StudyServiceImpl implements StudyService {
 
     if (CollectionUtils.isNotEmpty(consentInfoBoList)) {
       for (ConsentInfoBo consentinfoBo : consentInfoBoList) {
-
         studyDAO.cloneConsentInfo(consentinfoBo, studyBo.getId());
       }
     }
@@ -1553,18 +1555,8 @@ public class StudyServiceImpl implements StudyService {
 
     if (CollectionUtils.isNotEmpty(questionnairesList)) {
       for (QuestionnaireBo questionnaireBo : questionnairesList) {
-
         studyQuestionnaireDAO.cloneStudyQuestionnaire(
             questionnaireBo.getId(), studyBo.getId(), sessionObject);
-      }
-    }
-
-    if (CollectionUtils.isNotEmpty(resourceBOs)) {
-      for (ResourceBO resourceBO : resourceBOs) {
-        resourceBO.setId(null);
-        resourceBO.setStudyId(studyBo.getId());
-        resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-        studyDAO.saveOrUpdateResource(resourceBO);
       }
     }
 
@@ -1605,6 +1597,15 @@ public class StudyServiceImpl implements StudyService {
             studyDAO.saveActiveTaskFrequencyBo(active);
           }
         }
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(resourceBOs)) {
+      for (ResourceBO resourceBO : resourceBOs) {
+        resourceBO.setId(null);
+        resourceBO.setStudyId(studyBo.getId());
+        resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        studyDAO.saveOrUpdateResource(resourceBO);
       }
     }
 

@@ -91,7 +91,6 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -113,6 +112,8 @@ public class StudyDAOImpl implements StudyDAO {
   @Autowired private StudyBuilderAuditEventHelper auditLogEventHelper;
 
   @Autowired private AuditLogDAO auditLogDAO;
+
+  @Autowired private NotificationDAO notificationDAO;
 
   HibernateTemplate hibernateTemplate;
   private Query query = null;
@@ -7049,6 +7050,7 @@ public class StudyDAOImpl implements StudyDAO {
     return comprehensionTestResponseList;
   }
 
+  @Override
   public void cloneStudy(StudyBo studyBo, SessionObject sessionObject) {
     logger.info("StudyDAOImpl - cloneStudy() - Starts");
     Session session = null;
@@ -7064,9 +7066,7 @@ public class StudyDAOImpl implements StudyDAO {
 
       String oldStudyId = studyBo.getId();
       studyBo.setId(null);
-      studyBo.setCustomStudyId(
-          (RandomStringUtils.randomNumeric(2) + "_copy of " + studyBo.getCustomStudyId())
-              .substring(0, 14));
+      studyBo.setCustomStudyId(null);
       studyBo.setStatus(FdahpStudyDesignerConstants.STUDY_PRE_LAUNCH);
       studyBo.setStudylunchDate(null);
       String appId = studyBo.getAppId().toUpperCase();
@@ -7098,14 +7098,11 @@ public class StudyDAOImpl implements StudyDAO {
           }
         }
       }
-      // give permission to all super admin End
-
-      // creating table to keep track of each section of study
-      // completed or not
 
       StudySequenceBo studySequenceBo = getStudySequenceByStudyId(oldStudyId);
       studySequenceBo.setStudySequenceId(null);
       studySequenceBo.setStudyId(studyId);
+      studySequenceBo.setBasicInfo(false);
       session.save(studySequenceBo);
 
       AnchorDateTypeBo anchorDateTypeBo = getAnchorDateDetails(oldStudyId);
@@ -7288,7 +7285,7 @@ public class StudyDAOImpl implements StudyDAO {
   @Override
   public void saveActiveTaskAtrributeValuesBo(
       ActiveTaskAtrributeValuesBo activeTaskAtrributeValuesBo) {
-    logger.info("StudyDAOImpl - saveStudyActiveTask() - Starts");
+    logger.info("StudyDAOImpl - saveActiveTaskAtrributeValuesBo() - Starts");
     Session session = null;
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
@@ -7299,13 +7296,13 @@ public class StudyDAOImpl implements StudyDAO {
       if (transaction != null) {
         transaction.rollback();
       }
-      logger.error("StudyDAOImpl - saveStudyActiveTask() - ERROR ", e);
+      logger.error("StudyDAOImpl - saveActiveTaskAtrributeValuesBo() - ERROR ", e);
     } finally {
       if ((session != null) && session.isOpen()) {
         session.close();
       }
     }
-    logger.info("StudyDAOImpl - saveStudyActiveTask() - Ends");
+    logger.info("StudyDAOImpl - saveActiveTaskAtrributeValuesBo() - Ends");
   }
 
   @Override
