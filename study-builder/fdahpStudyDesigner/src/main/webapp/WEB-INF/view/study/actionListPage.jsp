@@ -317,7 +317,6 @@
   }
   
   function exportStudy(){
-	  debugger
 	   var studyId = "${studyBo.id}";
 	  $
       .ajax({
@@ -328,21 +327,7 @@
           studyId: studyId,
           "${_csrf.parameterName}": "${_csrf.token}",
         },
-        success: function updateAction(data, status) {
-          var message = data.message;
-          if (message == "SUCCESS") {
-            if (buttonText == 'deactivateId'
-                || buttonText == 'lunchId'
-                || buttonText == 'updatesId') {
-              $('#studyListInfoForm').submit();
-            } else {
-              document.studyListInfoForm.action = "/studybuilder/adminStudies/actionList.do?_S=${param._S}";
-              document.studyListInfoForm.submit();
-            }
-          } else {
-            $('#studyListInfoForm').submit();
-          }
-        },
+        
         error: function status(data, status) {
           $("body").removeClass("loading");
         },

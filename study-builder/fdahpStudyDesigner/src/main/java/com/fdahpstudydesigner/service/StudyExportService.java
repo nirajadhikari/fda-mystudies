@@ -38,8 +38,8 @@ import com.fdahpstudydesigner.util.StudyExportSqlQueries;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +63,9 @@ public class StudyExportService {
 
   private static final String PATH_SEPARATOR = "/";
 
-  public String exportStudy(String studyId, String userId) throws IOException {
+  private static final String UNDER_DIRECTORY = "InsertSqlQueries";
+
+  public String exportStudy(String studyId, String userId) {
 
     List<String> insertSqlStatements = new ArrayList<>();
 
@@ -73,10 +75,8 @@ public class StudyExportService {
     String newCustomId = studyBo.getCustomStudyId() + "_" + map.get("studyVersion");
 
     StudyPermissionBO studyPermissionBo = studyDao.getStudyPermissionBO(studyBo.getId(), userId);
-
     StudySequenceBo studySequenceBo = studyDao.getStudySequenceByStudyId(studyBo.getId());
     AnchorDateTypeBo anchorDate = studyDao.getAnchorDateDetails(studyBo.getId());
-
     List<StudyPageBo> studypageList = studyDao.getOverviewStudyPagesById(studyBo.getId(), userId);
 
     EligibilityBo eligibilityBo = studyDao.getStudyEligibiltyByStudyId(studyBo.getId());
@@ -95,10 +95,12 @@ public class StudyExportService {
         studyDao.getComprehensionTestQuestionList(studyBo.getId());
 
     List<String> comprehensionTestQuestionIds = new ArrayList<>();
+    List<String> newComprehensionTestQuestionIds = new ArrayList<>();
     if (CollectionUtils.isNotEmpty(comprehensionTestQuestionBoList)) {
       for (ComprehensionTestQuestionBo comprehensionTestQuestionBo :
           comprehensionTestQuestionBoList) {
         comprehensionTestQuestionIds.add(comprehensionTestQuestionBo.getId());
+        newComprehensionTestQuestionIds.add(IdGenerator.id());
       }
     }
 
@@ -188,21 +190,26 @@ public class StudyExportService {
 
     try {
       addStudiesInsertSql(studyBo, insertSqlStatements, newStudyId, newCustomId);
-      addStudyPermissionInsertQuery(studyPermissionBo, insertSqlStatements, newStudyId);
+      addStudyPermissionInsertSql(studyPermissionBo, insertSqlStatements, newStudyId);
       addStudySequenceInsertSql(studySequenceBo, insertSqlStatements, newStudyId);
+
       addAnchorDateInsertSql(anchorDate, insertSqlStatements, newStudyId, newCustomId);
       addStudypagesListInsertSql(studypageList, insertSqlStatements, newStudyId);
+
       addEligibilityInsertSql(eligibilityBo, insertSqlStatements, newEligibilityId, newStudyId);
       addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements, newEligibilityId);
-      addConsentBoListInsertSql(consentBoList, insertSqlStatements, newStudyId, newCustomId);
 
+      addConsentBoListInsertSql(consentBoList, insertSqlStatements, newStudyId, newCustomId);
       addConsentInfoBoListInsertSql(
           consentInfoBoList, insertSqlStatements, newStudyId, newCustomId);
 
       addComprehensionTestQuestionListInsertSql(
-          comprehensionTestQuestionBoList, insertSqlStatements, newStudyId);
+          comprehensionTestQuestionBoList,
+          insertSqlStatements,
+          newStudyId,
+          newComprehensionTestQuestionIds);
       addComprehensionTestResponseBoListInsertSql(
-          comprehensionTestResponseBoList, insertSqlStatements);
+          comprehensionTestResponseBoList, insertSqlStatements, newComprehensionTestQuestionIds);
 
       addQuestionnaireBoListInsertSql(
           questionnairesList, insertSqlStatements, newStudyId, newCustomId, newQuestionnaireIds);
@@ -263,9 +270,7 @@ public class StudyExportService {
     } catch (SQLException e) {
       logger.error(String.format("export study failed due to %s", e.getMessage()), e);
     }
-    for (String sql : insertSqlStatements) {
-      System.out.println(sql);
-    }
+
     return saveFile(studyBo, insertSqlStatements);
   }
 
@@ -297,7 +302,8 @@ public class StudyExportService {
 
   private void addComprehensionTestResponseBoListInsertSql(
       List<ComprehensionTestResponseBo> comprehensionTestResponseBoList,
-      List<String> insertSqlStatements)
+      List<String> insertSqlStatements,
+      List<String> newComprehensionTestQuestionIds)
       throws SQLException {
     if (CollectionUtils.isEmpty(comprehensionTestResponseBoList)) {
       return;
@@ -305,69 +311,44 @@ public class StudyExportService {
 
     List<String> comprehensionTestResponseBoInserQueryList = new ArrayList<>();
     String comprehensionTestResponseInsertQuery = null;
-    for (ComprehensionTestResponseBo comprehensionTestResponseBo :
-        comprehensionTestResponseBoList) {
-      comprehensionTestResponseInsertQuery =
-          prepareInsertQuery(
-              StudyExportSqlQueries.COMREHENSION_TEST_RESPONSE,
-              IdGenerator.id(),
-              comprehensionTestResponseBo.getComprehensionTestQuestionId(),
-              comprehensionTestResponseBo.getCorrectAnswer(),
-              comprehensionTestResponseBo.getResponseOption());
+    for (String newComprehensionTestQuestionId : newComprehensionTestQuestionIds) {
+      for (ComprehensionTestResponseBo comprehensionTestResponseBo :
+          comprehensionTestResponseBoList) {
+        comprehensionTestResponseInsertQuery =
+            prepareInsertQuery(
+                StudyExportSqlQueries.COMPREHENSION_TEST_RESPONSE,
+                IdGenerator.id(),
+                newComprehensionTestQuestionId,
+                comprehensionTestResponseBo.getCorrectAnswer(),
+                comprehensionTestResponseBo.getResponseOption());
+      }
 
       comprehensionTestResponseBoInserQueryList.add(comprehensionTestResponseInsertQuery);
     }
     insertSqlStatements.addAll(comprehensionTestResponseBoInserQueryList);
   }
 
-  /*
-   * private String createFileFromListAndSaveToCloudStorage(List<String> insertSqlStatements,
-   * StudyBo studyBo) { try {
-   *
-   * Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties(); String studyVersion =
-   * map.get("studyVersion");
-   *
-   * FileWriter writer = new FileWriter(studyBo.getCustomStudyId() + "_" + studyVersion + ".sql");
-   * for (String insertSqlStatement : insertSqlStatements) { writer.write(insertSqlStatement +
-   * System.lineSeparator()); }
-   *
-   *
-   * } catch (IOException e) { logger.error(String.format("create file failed due to %s",
-   * e.getMessage()), e); }
-   *
-   * return null; }
-   */
-
-  public String saveFile(StudyBo studyBo, List<String> insertSqlStatements) throws IOException {
-    String content = insertSqlStatements.toString();
+  public String saveFile(StudyBo studyBo, List<String> insertSqlStatements) {
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
     String studyVersion = map.get("studyVersion");
     String fileName = studyBo.getCustomStudyId() + "_" + studyVersion + ".sql";
-    String underDirectory = "InsertSqlQueries";
-    String absoluteFileName = underDirectory + PATH_SEPARATOR + fileName;
+    String absoluteFileName = UNDER_DIRECTORY + PATH_SEPARATOR + fileName;
 
     try {
-      /*
-       * fileWriter = new FileWriter(fileName); for (String insertSqlStatement :
-       * insertSqlStatements) { fileWriter.write(insertSqlStatement + System.lineSeparator()); }
-       */
+      StringBuilder content = new StringBuilder();
+      for (String insertSqlStatement : insertSqlStatements) {
+        content.append(insertSqlStatement);
+        content.append(System.lineSeparator());
+      }
+      String sqlStatemets = content.toString();
       Storage storage = StorageOptions.getDefaultInstance().getService();
       BlobInfo blobInfo =
           BlobInfo.newBuilder(map.get("cloud.bucket.name"), absoluteFileName).build();
-      storage.create(blobInfo, content.getBytes());
+      storage.create(blobInfo, sqlStatemets.getBytes());
 
     } catch (Exception e) {
       logger.error("Save file to cloud storage failed", e);
     }
-
-    /*
-     * bytes = content.getBytes(); Storage storage =
-     * StorageOptions.getDefaultInstance().getService(); try (WriteChannel writer =
-     * storage.writer(blobInfo)) {
-     *
-     * writer.write(ByteBuffer.wrap(bytes, 0, bytes.length)); } catch (IOException e) {
-     * logger.error("Save file in cloud storage failed", e); } }
-     */
     return absoluteFileName;
   }
 
@@ -517,8 +498,8 @@ public class StudyExportService {
 
     String questionResponseSubTypeBoInsertQuery = null;
     List<String> questionResponseSubTypeBoInsertQueryList = new ArrayList<>();
-    for (QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeBoList) {
-      for (String questionResponseSubTypeId : questionResponseSubTypeIds) {
+    for (String questionResponseSubTypeId : questionResponseSubTypeIds) {
+      for (QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeBoList) {
         questionResponseSubTypeBoInsertQuery =
             prepareInsertQuery(
                 StudyExportSqlQueries.RESPONSE_SUB_TYPE_VALUE,
@@ -580,8 +561,8 @@ public class StudyExportService {
     }
 
     String formMappingInsertQuery = null;
-    for (FormMappingBo formMappingBo : formsList) {
-      for (String formId : formIds) {
+    for (String formId : formIds) {
+      for (FormMappingBo formMappingBo : formsList) {
         formMappingInsertQuery =
             prepareInsertQuery(
                 StudyExportSqlQueries.FORM_MAPPING,
@@ -947,7 +928,7 @@ public class StudyExportService {
       for (String newActiveTaskId : newActiveTaskIds) {
         activeTaskBoInsertQuery =
             prepareInsertQuery(
-                StudyExportSqlQueries.ACTIVETASK_SQL,
+                StudyExportSqlQueries.ACTIVETASK,
                 newActiveTaskId,
                 activeTaskBo.isAction(),
                 activeTaskBo.getActive(),
@@ -1031,7 +1012,7 @@ public class StudyExportService {
       String resourceBoInsertQuery =
           prepareInsertQuery(
               StudyExportSqlQueries.RESOURCES,
-              resourceBO.getId(),
+              IdGenerator.id(),
               resourceBO.isAction(),
               resourceBO.getAnchorDateId(),
               resourceBO.getCreatedBy(),
@@ -1048,7 +1029,7 @@ public class StudyExportService {
               resourceBO.getSequenceNo(),
               resourceBO.getStartDate(),
               resourceBO.isStatus(),
-              resourceBO.getStudyId(),
+              newStudyId,
               resourceBO.isStudyProtocol(),
               resourceBO.isTextOrPdf(),
               resourceBO.getTimePeriodFromDays(),
@@ -1062,7 +1043,7 @@ public class StudyExportService {
     insertSqlStatements.addAll(resourceBoInsertQueryList);
   }
 
-  private void addStudyPermissionInsertQuery(
+  private void addStudyPermissionInsertSql(
       StudyPermissionBO studyPermissionBo, List<String> insertSqlStatements, String newStudyId)
       throws SQLException {
 
@@ -1093,7 +1074,6 @@ public class StudyExportService {
     }
     List<String> eligibilityTestBoInsertQueryList = new ArrayList<>();
     for (EligibilityTestBo eligibilityTestBo : eligibilityTestBoList) {
-
       String eligibilityTestBoBoInsertQuery =
           prepareInsertQuery(
               StudyExportSqlQueries.ELIGIBILITY_TEST,
@@ -1208,7 +1188,8 @@ public class StudyExportService {
   private void addComprehensionTestQuestionListInsertSql(
       List<ComprehensionTestQuestionBo> comprehensionTestQuestionList,
       List<String> insertSqlStatements,
-      String newStudyId)
+      String newStudyId,
+      List<String> newComprehensionTestQuestionIds)
       throws SQLException {
 
     if (CollectionUtils.isEmpty(comprehensionTestQuestionList)) {
@@ -1216,21 +1197,25 @@ public class StudyExportService {
     }
 
     List<String> comprehensionTestQuestionInsertQueryList = new ArrayList<>();
-    for (ComprehensionTestQuestionBo comprehensionTestQuestionBo : comprehensionTestQuestionList) {
-      String comprehensionTestQuestionInsertQuery =
-          prepareInsertQuery(
-              StudyExportSqlQueries.COMREHENSION_TEST_QUESTIONS,
-              IdGenerator.id(),
-              comprehensionTestQuestionBo.getActive(),
-              comprehensionTestQuestionBo.getCreatedBy(),
-              comprehensionTestQuestionBo.getCreatedOn(),
-              comprehensionTestQuestionBo.getModifiedBy(),
-              comprehensionTestQuestionBo.getModifiedOn(),
-              comprehensionTestQuestionBo.getQuestionText(),
-              comprehensionTestQuestionBo.getSequenceNo(),
-              comprehensionTestQuestionBo.getStatus(),
-              comprehensionTestQuestionBo.getStructureOfCorrectAns(),
-              newStudyId);
+    String comprehensionTestQuestionInsertQuery = null;
+    for (String newComprehensionTestQuestionId : newComprehensionTestQuestionIds) {
+      for (ComprehensionTestQuestionBo comprehensionTestQuestionBo :
+          comprehensionTestQuestionList) {
+        comprehensionTestQuestionInsertQuery =
+            prepareInsertQuery(
+                StudyExportSqlQueries.COMPREHENSION_TEST_QUESTIONS,
+                newComprehensionTestQuestionId,
+                comprehensionTestQuestionBo.getActive(),
+                comprehensionTestQuestionBo.getCreatedBy(),
+                comprehensionTestQuestionBo.getCreatedOn(),
+                comprehensionTestQuestionBo.getModifiedBy(),
+                comprehensionTestQuestionBo.getModifiedOn(),
+                comprehensionTestQuestionBo.getQuestionText(),
+                comprehensionTestQuestionBo.getSequenceNo(),
+                comprehensionTestQuestionBo.getStatus(),
+                comprehensionTestQuestionBo.getStructureOfCorrectAns(),
+                newStudyId);
+      }
 
       comprehensionTestQuestionInsertQueryList.add(comprehensionTestQuestionInsertQuery);
     }
@@ -1333,7 +1318,7 @@ public class StudyExportService {
     int i = 0;
     for (Object column : columns) {
       column = ((String) column).trim();
-      if (values[i] instanceof String) {
+      if (values[i] instanceof String || values[i] instanceof Timestamp) {
         sqlQuery = sqlQuery.replace("<" + column + ">", "'" + values[i] + "'");
       } else {
         sqlQuery = sqlQuery.replace("<" + column + ">", "" + values[i] + "");
@@ -1355,32 +1340,45 @@ public class StudyExportService {
       List<InstructionsBo> instructionList,
       List<FormBo> formsList,
       List<QuestionResponseSubTypeBo> questionResponseSubTypeBoList,
-      List<QuestionReponseTypeBo> questionResponseTypeBo,
+      List<QuestionReponseTypeBo> questionResponseTypeBoList,
       List<String> questionFormInstructionIds) {
 
     QuestionnairesStepsIdsBean questionnairesStepsIdsBean = new QuestionnairesStepsIdsBean();
+
     if (CollectionUtils.isNotEmpty(questionsList)) {
-      questionnairesStepsIdsBean.getQuestionIds().add(IdGenerator.id());
+      for (QuestionsBo questionsBo : questionsList) {
+        questionnairesStepsIdsBean.getQuestionIds().add(IdGenerator.id());
+      }
     }
 
     if (CollectionUtils.isNotEmpty(formMappingList)) {
-      questionnairesStepsIdsBean.getFormMappingIds().add(IdGenerator.id());
+      for (FormMappingBo formMappingBo : formMappingList) {
+        questionnairesStepsIdsBean.getFormMappingIds().add(IdGenerator.id());
+      }
     }
 
     if (CollectionUtils.isNotEmpty(instructionList)) {
-      questionnairesStepsIdsBean.getInstructionIds().add(IdGenerator.id());
+      for (InstructionsBo instructionsBo : instructionList) {
+        questionnairesStepsIdsBean.getInstructionIds().add(IdGenerator.id());
+      }
     }
 
     if (CollectionUtils.isNotEmpty(questionResponseSubTypeBoList)) {
-      questionnairesStepsIdsBean.getQuestionResponseSubTypeIds().add(IdGenerator.id());
+      for (QuestionResponseSubTypeBo questionResponseSubTypeBo : questionResponseSubTypeBoList) {
+        questionnairesStepsIdsBean.getQuestionResponseSubTypeIds().add(IdGenerator.id());
+      }
     }
 
-    if (CollectionUtils.isNotEmpty(questionResponseTypeBo)) {
-      questionnairesStepsIdsBean.getQuestionResponseIds().add(IdGenerator.id());
+    if (CollectionUtils.isNotEmpty(questionResponseTypeBoList)) {
+      for (QuestionReponseTypeBo questionReponseTypeBo : questionResponseTypeBoList) {
+        questionnairesStepsIdsBean.getQuestionResponseIds().add(IdGenerator.id());
+      }
     }
 
     if (CollectionUtils.isNotEmpty(formsList)) {
-      questionnairesStepsIdsBean.getFormsIds().add(IdGenerator.id());
+      for (FormBo formBo : formsList) {
+        questionnairesStepsIdsBean.getFormsIds().add(IdGenerator.id());
+      }
     }
 
     questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getQuestionIds());
