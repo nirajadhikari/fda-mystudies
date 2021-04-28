@@ -174,6 +174,10 @@
     action="/studybuilder/adminStudies/studyList.do?_S=${param._S}"
     name="studyListInfoForm" id="studyListInfoForm" method="post">
 </form:form>
+<form:form
+    action="/studybuilder/adminStudies/viewBasicInfo.do?_S=${param._S}"
+    name="basicInfoForm" id="basicInfoForm" method="post">
+</form:form>
 <script type="text/javascript">
   $(document).ready(function () {
 	$('.studyClass').addClass("active");
@@ -353,6 +357,7 @@
 }
   
   function copyStudy(){
+	  debugger
 	   var studyId = "${studyBo.id}";
 	  $
       .ajax({
@@ -364,18 +369,19 @@
           "${_csrf.parameterName}": "${_csrf.token}",
         },
         success: function updateAction(data, status) {
+        	debugger
           var message = data.message;
           if (message == "SUCCESS") {
             if (buttonText == 'deactivateId'
                 || buttonText == 'lunchId'
                 || buttonText == 'updatesId') {
-              $('#studyListInfoForm').submit();
+              $('#basicInfoForm').submit();
             } else {
               document.studyListInfoForm.action = "/studybuilder/adminStudies/actionList.do?_S=${param._S}";
               document.studyListInfoForm.submit();
             }
           } else {
-            $('#studyListInfoForm').submit();
+            $('#basicInfoForm').submit();
           }
         },
         error: function status(data, status) {

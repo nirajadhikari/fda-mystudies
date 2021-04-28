@@ -5256,20 +5256,29 @@ public class StudyController {
   }
 
   @RequestMapping(value = "/studies/replicate.do", method = RequestMethod.POST)
-  public void replicateStudy(HttpServletRequest request, HttpServletResponse response) {
+  public ModelAndView replicateStudy(HttpServletRequest request, HttpServletResponse response) {
     logger.info("StudyController - replicateStudy() - Starts");
-
+    ModelMap map = new ModelMap();
     HttpSession session = request.getSession();
     SessionObject sessionObject =
         (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 
+    Integer sessionStudyCount =
+        (Integer)
+            (request.getSession().getAttribute("sessionStudyCount") != null
+                ? request.getSession().getAttribute("sessionStudyCount")
+                : 0);
+    map.addAttribute("_S", sessionStudyCount);
     String studyId =
         FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
             ? ""
             : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 
-    studyService.replicateStudy(studyId, sessionObject);
+    String copiedStudyId = studyService.replicateStudy(studyId, sessionObject);
+
+    request.getSession().setAttribute(sessionStudyCount + "studyId", String.valueOf(copiedStudyId));
 
     logger.info("StudyController - replicateStudy() - Ends");
+    return new ModelAndView("redirect:/adminStudies/viewBasicInfo.do", map);
   }
 }
