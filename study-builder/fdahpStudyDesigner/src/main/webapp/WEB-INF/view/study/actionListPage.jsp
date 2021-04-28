@@ -353,11 +353,10 @@
 }
   
   function copyStudy(){
-	  debugger
 	   var studyId = "${studyBo.id}";
 	  $
       .ajax({
-        url: "/studybuilder/studies/{studyId}/replicate.do",
+        url: "/studybuilder/studies/replicate.do",
         type: "POST",
         datatype: "json",
         data: {
