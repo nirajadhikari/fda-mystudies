@@ -353,8 +353,7 @@
           "${_csrf.parameterName}": "${_csrf.token}",
         },
         success: function updateAction(data) {
-        	debugger
-           // $('#basicInfoForm').submit();
+           $('#basicInfoForm').submit();
         },
         error: function status(data, status) {
           $("body").removeClass("loading");
