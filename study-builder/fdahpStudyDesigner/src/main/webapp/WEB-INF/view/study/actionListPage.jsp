@@ -344,30 +344,17 @@
   function copyStudy(){
 	  debugger
 	   var studyId = "${studyBo.id}";
-	  $
+	   $
       .ajax({
-        url: "/studybuilder/studies/replicate.do",
+        url: "/studybuilder/studies/${studyBo.id}/replicate.do",
         type: "POST",
         datatype: "json",
         data: {
-          studyId: studyId,
           "${_csrf.parameterName}": "${_csrf.token}",
         },
-        success: function updateAction(data, status) {
+        success: function updateAction(data) {
         	debugger
-          var message = data.message;
-          if (message == "SUCCESS") {
-            if (buttonText == 'deactivateId'
-                || buttonText == 'lunchId'
-                || buttonText == 'updatesId') {
-              $('#basicInfoForm').submit();
-            } else {
-              document.studyListInfoForm.action = "/studybuilder/adminStudies/actionList.do?_S=${param._S}";
-              document.studyListInfoForm.submit();
-            }
-          } else {
-            $('#basicInfoForm').submit();
-          }
+           // $('#basicInfoForm').submit();
         },
         error: function status(data, status) {
           $("body").removeClass("loading");

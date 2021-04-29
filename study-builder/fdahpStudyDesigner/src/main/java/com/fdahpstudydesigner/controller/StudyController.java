@@ -109,6 +109,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
@@ -5268,8 +5269,9 @@ public class StudyController {
     logger.info("StudyController - exportStudy() - Ends");
   }
 
-  @RequestMapping(value = "/studies/replicate.do", method = RequestMethod.POST)
-  public ModelAndView replicateStudy(HttpServletRequest request, HttpServletResponse response) {
+  @RequestMapping(value = "/studies/{studyId}/replicate.do", method = RequestMethod.POST)
+  public ModelAndView replicateStudy(
+      HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId) {
     logger.info("StudyController - replicateStudy() - Starts");
     ModelMap map = new ModelMap();
     HttpSession session = request.getSession();
@@ -5282,15 +5284,14 @@ public class StudyController {
                 ? request.getSession().getAttribute("sessionStudyCount")
                 : 0);
     map.addAttribute("_S", sessionStudyCount);
-    String studyId =
-        FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
-            ? ""
-            : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
+    /* String studyId =
+    FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
+        ? ""
+        : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);*/
 
     String copiedStudyId = studyService.replicateStudy(studyId, sessionObject);
 
     request.getSession().setAttribute(sessionStudyCount + "studyId", String.valueOf(copiedStudyId));
-
     logger.info("StudyController - replicateStudy() - Ends");
     return new ModelAndView("redirect:/adminStudies/viewBasicInfo.do", map);
   }
