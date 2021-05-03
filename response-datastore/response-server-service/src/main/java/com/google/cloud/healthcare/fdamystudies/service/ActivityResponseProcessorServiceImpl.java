@@ -375,7 +375,7 @@ public class ActivityResponseProcessorServiceImpl implements ActivityResponsePro
     logger.exit("saveActivityResponseData() - ends ");
   }
 
-  private Map<String, Object> getMapForParticipantCollection(
+  /*private Map<String, Object> getMapForParticipantCollection(
       ActivityResponseBean questionnaireActivityResponseBean) {
     Map<String, Object> dataToStoreParticipantCollMap = new HashMap<String, Object>();
     dataToStoreParticipantCollMap.put(
@@ -387,7 +387,7 @@ public class ActivityResponseProcessorServiceImpl implements ActivityResponsePro
     dataToStoreParticipantCollMap.put(
         AppConstants.CREATED_TS_KEY, questionnaireActivityResponseBean.getCreatedTimestamp());
     return dataToStoreParticipantCollMap;
-  }
+  }*/
 
   private void addParticipantDataToMap(
       ActivityResponseBean questionnaireActivityResponseBean,

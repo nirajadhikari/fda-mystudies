@@ -47,6 +47,8 @@ public final class Constants {
 
   public static final String ACTIVITY_ID_VALUE = "Activity";
 
+  public static final String ACTIVITY_VERSION = "v1.5.3";
+
   public static final String SITE_ID_VALUE = "siteId";
 
   public static final String STUDY_ID_VALUE = "ASignature01";

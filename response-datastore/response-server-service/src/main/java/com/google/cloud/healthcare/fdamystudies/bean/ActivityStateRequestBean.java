@@ -9,6 +9,7 @@ package com.google.cloud.healthcare.fdamystudies.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,8 +18,9 @@ import lombok.ToString;
 @Getter
 @ToString
 public class ActivityStateRequestBean {
-  private String participantId;
-  private String studyId;
+
+  @NotBlank private String participantId;
+  @NotBlank private String studyId;
   private List<ParticipantActivityBean> activity = new ArrayList<>();
   private String message = null;
 }

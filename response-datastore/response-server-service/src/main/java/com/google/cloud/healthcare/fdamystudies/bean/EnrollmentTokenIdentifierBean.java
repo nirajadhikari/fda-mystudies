@@ -8,6 +8,7 @@
 
 package com.google.cloud.healthcare.fdamystudies.bean;
 
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class EnrollmentTokenIdentifierBean {
 
-  private String tokenIdentifier;
-  private String customStudyId;
+  @NotBlank private String tokenIdentifier;
+  @NotBlank private String customStudyId;
   private String studyVersion;
 }

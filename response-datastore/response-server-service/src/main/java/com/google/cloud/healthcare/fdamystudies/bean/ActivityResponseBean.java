@@ -7,7 +7,7 @@
 
 package com.google.cloud.healthcare.fdamystudies.bean;
 
-import com.google.cloud.healthcare.fdamystudies.utils.AppConstants;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,9 +16,9 @@ import lombok.ToString;
 @Getter
 @ToString
 public class ActivityResponseBean {
-  private String applicationId = AppConstants.EMPTY_STR;
+  @NotBlank private String applicationId;
+  @NotBlank private String tokenIdentifier;
   private String participantId;
-  private String tokenIdentifier;
   private String siteId;
   private String sharingConsent;
   private Boolean withdrawalStatus;

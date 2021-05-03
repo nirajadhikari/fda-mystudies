@@ -9,7 +9,6 @@
 package com.google.cloud.healthcare.fdamystudies.controller;
 
 import static com.google.cloud.healthcare.fdamystudies.common.JsonUtils.asJsonString;
-import static com.google.cloud.healthcare.fdamystudies.common.JsonUtils.readJsonFile;
 import static com.google.cloud.healthcare.fdamystudies.common.ResponseServerEvent.STUDY_METADATA_RECEIVED;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.CONTACT_EMAIL_ID;
 import static org.junit.Assert.assertEquals;
@@ -34,11 +33,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
-import org.springframework.test.web.servlet.MvcResult;
 
 public class StudyMetadataControllerTest extends BaseMockIT {
 
@@ -108,36 +104,37 @@ public class StudyMetadataControllerTest extends BaseMockIT {
     StudyMetadataBean studyMetadataBeanRequest = createValidStudyMetadataBean();
     studyMetadataBeanRequest.setStudyId("");
     // Step 2: call API and expect bad request
-    MvcResult result =
-        mockMvc
-            .perform(
-                post(ApiEndpoint.STUDYMETADATA.getPath())
-                    .contextPath(getContextPath())
-                    .content(asJsonString(studyMetadataBeanRequest))
-                    .headers(headers))
-            .andDo(print())
-            .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.appErrorCode").isNumber())
-            .andExpect(jsonPath("$.userMessage").isNotEmpty())
-            .andReturn();
+    //    MvcResult result =
+    mockMvc
+        .perform(
+            post(ApiEndpoint.STUDYMETADATA.getPath())
+                .contextPath(getContextPath())
+                .content(asJsonString(studyMetadataBeanRequest))
+                .headers(headers))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error_code").value("EC-400"))
+        .andExpect(jsonPath("$.violations[0].path").value("studyId"))
+        .andExpect(jsonPath("$.violations[0].message").value("must not be blank"));
+    //            .andReturn();
 
-    String actualResponse = result.getResponse().getContentAsString();
+    /*String actualResponse = result.getResponse().getContentAsString();
     String expectedResponse = readJsonFile("/invalid_args_expected_bad_request_response.json");
-    JSONAssert.assertEquals(expectedResponse, actualResponse, JSONCompareMode.NON_EXTENSIBLE);
+    JSONAssert.assertEquals(expectedResponse, actualResponse, JSONCompareMode.NON_EXTENSIBLE);*/
   }
 
   private StudyMetadataBean createValidStudyMetadataBean() {
     return new StudyMetadataBean(
         "TEST_STUDY_ID",
-        "TEST_TITLE",
         "1.0",
+        APP_ID_VALUE,
+        "TEST_TITLE",
         "Open",
         "Active",
         "Health",
         "TEST_TAGLINE",
         "TEST_SPONSOR",
         "Yes",
-        APP_ID_VALUE,
         "Test App",
         "Test app for population health study",
         LOGO_IMAGE_URL,

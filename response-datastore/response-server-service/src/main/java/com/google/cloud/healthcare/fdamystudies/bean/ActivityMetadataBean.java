@@ -8,6 +8,7 @@
 package com.google.cloud.healthcare.fdamystudies.bean;
 
 import com.google.cloud.healthcare.fdamystudies.utils.AppConstants;
+import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,13 +24,13 @@ import lombok.ToString;
 @ToString
 public class ActivityMetadataBean {
 
-  private String studyId = AppConstants.EMPTY_STR;
+  @NotBlank private String studyId;
+  @NotBlank private String activityId;
+  @NotBlank private String version;
   private String studyVersion = AppConstants.EMPTY_STR;
-  private String activityId = AppConstants.EMPTY_STR;
   private String activityRunId = AppConstants.EMPTY_STR;
   private String activityType = AppConstants.EMPTY_STR;
   private String name = AppConstants.EMPTY_STR;
-  private String version = AppConstants.EMPTY_STR;
   private String lastModified = AppConstants.EMPTY_STR;
   private String startDate = AppConstants.EMPTY_STR;
   private String endDate = AppConstants.EMPTY_STR;

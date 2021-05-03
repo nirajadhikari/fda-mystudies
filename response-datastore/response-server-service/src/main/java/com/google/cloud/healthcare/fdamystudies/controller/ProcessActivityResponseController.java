@@ -64,6 +64,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.ext.XLogger;
@@ -100,7 +102,7 @@ public class ProcessActivityResponseController {
   @ApiOperation(value = "Process activity response for participant and store in cloud fire store")
   @PostMapping("/participant/process-response")
   public ResponseEntity<?> processActivityResponseForParticipant(
-      @RequestBody ActivityResponseBean questionnaireActivityResponseBean,
+      @Valid @RequestBody ActivityResponseBean questionnaireActivityResponseBean,
       @RequestHeader String userId,
       HttpServletRequest request) {
     logger.entry(String.format(BEGIN_REQUEST_LOG, request.getRequestURI()));
@@ -129,7 +131,7 @@ public class ProcessActivityResponseController {
               + activityId
               + "\n Activity Version: "
               + activityVersion);
-      if (StringUtils.isBlank(applicationId)
+      /*if (StringUtils.isBlank(applicationId)
           || StringUtils.isBlank(secureEnrollmentToken)
           || StringUtils.isBlank(studyId)
           || StringUtils.isBlank(activityId)
@@ -148,7 +150,7 @@ public class ProcessActivityResponseController {
                 AppConstants.ERROR_STR,
                 ErrorCode.EC_701.errorMessage());
         return new ResponseEntity<>(errorBean, HttpStatus.BAD_REQUEST);
-      }
+      }*/
 
       auditRequest.setStudyId(studyId);
       auditRequest.setParticipantId(participantId);
@@ -398,13 +400,13 @@ public class ProcessActivityResponseController {
   @ApiOperation(value = "Get activity response data for participant from cloud fire store")
   @GetMapping("/participant/getresponse")
   public ResponseEntity<?> getActivityResponseDataForParticipant(
-      @RequestParam("appId") String applicationId,
-      @RequestParam("studyId") String studyId,
-      @RequestParam("siteId") String siteId,
-      @RequestParam("participantId") String participantId,
+      @RequestParam("appId") @NotBlank String applicationId,
+      @RequestParam("studyId") @NotBlank String studyId,
+      @RequestParam("siteId") @NotBlank String siteId,
+      @RequestParam("participantId") @NotBlank String participantId,
       @RequestParam(AppConstants.PARTICIPANT_TOKEN_IDENTIFIER_KEY) String tokenIdentifier,
-      @RequestParam("activityId") String activityId,
-      @RequestParam("questionKey") String questionKey,
+      @RequestParam("activityId") @NotBlank String activityId,
+      @RequestParam("questionKey") @NotBlank String questionKey,
       @RequestHeader String userId,
       HttpServletRequest request) {
     logger.entry(String.format(BEGIN_REQUEST_LOG, request.getRequestURI()));

@@ -30,10 +30,13 @@ import static com.google.cloud.healthcare.fdamystudies.utils.AppConstants.PARTIC
 import static com.google.cloud.healthcare.fdamystudies.utils.AppConstants.PARTICIPANT_TOKEN_IDENTIFIER_KEY;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.ACTIVITY_COLLECTION_NAME_VALUE;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.ACTIVITY_ID_VALUE;
+import static com.google.cloud.healthcare.fdamystudies.utils.Constants.ACTIVITY_VERSION;
+import static com.google.cloud.healthcare.fdamystudies.utils.Constants.APPLICATION_ID_VALUE;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.PARTICIPANT_ID_NOT_EXISTS_MESSAGE;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.QUESTION_KEY_VALUE;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.SITE_ID_VALUE;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.STUDY_COLLECTION_NAME_VALUE;
+import static com.google.cloud.healthcare.fdamystudies.utils.Constants.STUDY_ID;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.STUDY_ID_VALUE;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.STUDY_VERSION;
 import static com.google.cloud.healthcare.fdamystudies.utils.Constants.SUCCESS;
@@ -210,6 +213,10 @@ public class ProcessActivityResponseControllerTest extends BaseMockIT {
   @Test
   public void shouldReturnBadRequestForEmptyInputsOfProccessActivityResponse() throws Exception {
     ActivityResponseBean activityResponseBean = new ActivityResponseBean();
+    activityResponseBean.getMetadata().setStudyId(STUDY_ID);
+    activityResponseBean.getMetadata().setActivityId(ACTIVITY_ID_VALUE);
+    activityResponseBean.getMetadata().setVersion(ACTIVITY_VERSION);
+    activityResponseBean.setApplicationId(APPLICATION_ID_VALUE);
     HttpHeaders headers = TestUtils.newHeadersUser();
     mockMvc
         .perform(
@@ -219,7 +226,9 @@ public class ProcessActivityResponseControllerTest extends BaseMockIT {
                 .headers(headers))
         .andDo(print())
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.userMessage", is(EC_701.errorMessage())));
+        .andExpect(jsonPath("$.error_code").value("EC-400"))
+        .andExpect(jsonPath("$.violations[0].path").value("tokenIdentifier"))
+        .andExpect(jsonPath("$.violations[0].message").value("must not be blank"));
   }
 
   @Test

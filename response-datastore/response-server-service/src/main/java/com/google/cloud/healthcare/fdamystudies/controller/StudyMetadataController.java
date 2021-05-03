@@ -10,22 +10,18 @@ package com.google.cloud.healthcare.fdamystudies.controller;
 
 import static com.google.cloud.healthcare.fdamystudies.common.ResponseServerEvent.STUDY_METADATA_RECEIVED;
 
-import com.google.cloud.healthcare.fdamystudies.bean.ErrorBean;
 import com.google.cloud.healthcare.fdamystudies.bean.StudyMetadataBean;
 import com.google.cloud.healthcare.fdamystudies.beans.AuditLogEventRequest;
 import com.google.cloud.healthcare.fdamystudies.common.ResponseServerAuditLogHelper;
 import com.google.cloud.healthcare.fdamystudies.mapper.AuditEventMapper;
 import com.google.cloud.healthcare.fdamystudies.service.StudyMetadataService;
-import com.google.cloud.healthcare.fdamystudies.utils.AppConstants;
-import com.google.cloud.healthcare.fdamystudies.utils.AppUtil;
-import com.google.cloud.healthcare.fdamystudies.utils.ErrorCode;
 import com.google.cloud.healthcare.fdamystudies.utils.ProcessResponseException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
+import javax.validation.Valid;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +52,12 @@ public class StudyMetadataController {
       value =
           "Add or update study metadata in response datastore when a study is published from study builder")
   @PostMapping("/studymetadata")
-  public ResponseEntity<?> addUpdateStudyMetadata(
-      @RequestBody StudyMetadataBean studyMetadataBean, HttpServletRequest request)
+  public ResponseEntity<String> addUpdateStudyMetadata(
+      @Valid @RequestBody StudyMetadataBean studyMetadataBean, HttpServletRequest request)
       throws ProcessResponseException, IllegalAccessException, IllegalArgumentException,
           InvocationTargetException, IntrospectionException {
     logger.entry(String.format(BEGIN_REQUEST_LOG, request.getRequestURI()));
-    String studyIdToUpdate = null;
+    /*String studyIdToUpdate = null;
     studyIdToUpdate = studyMetadataBean.getStudyId();
     if (StringUtils.isBlank(studyIdToUpdate)
         || StringUtils.isBlank(studyMetadataBean.getStudyVersion())
@@ -73,7 +69,7 @@ public class StudyMetadataController {
               AppConstants.ERROR_STR,
               ErrorCode.EC_701.errorMessage());
       return new ResponseEntity<>(errorBean, HttpStatus.BAD_REQUEST);
-    }
+    }*/
     AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);
     auditRequest.setAppId(studyMetadataBean.getAppId());
     auditRequest.setStudyId(studyMetadataBean.getStudyId());
@@ -82,6 +78,6 @@ public class StudyMetadataController {
     studyMetadataService.saveStudyMetadata(studyMetadataBean);
     responseServerAuditLogHelper.logEvent(STUDY_METADATA_RECEIVED, auditRequest);
     logger.exit(String.format(STATUS_LOG, HttpStatus.OK.value()));
-    return new ResponseEntity<String>(HttpStatus.OK);
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 }

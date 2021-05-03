@@ -290,6 +290,26 @@ public class ProcessActivityStateControllerTest extends BaseMockIT {
         resultsList.get(1).getCompletedCount());
   }
 
+  /* @Test
+  void shouldReturnBadRequestForUpdateActivityState() throws Exception {
+
+    String inputJsonContent = readJsonFile("/update_activity_state_runs_info_request.json");
+    DocumentContext json = JsonPath.parse(inputJsonContent);
+    inputJsonContent = json.set("$.studyId", "").jsonString();
+    System.out.println("**: " + inputJsonContent);
+
+    // Step 1: Call API to update activity state
+    HttpHeaders headers = TestUtils.newHeadersUser();
+    mockMvc
+        .perform(
+            post(ApiEndpoint.UPDATE_ACTIVITY_STATE.getPath())
+                .contextPath(getContextPath())
+                .content(inputJsonContent)
+                .headers(headers))
+        .andDo(print())
+        .andExpect(status().isOk());
+  }*/
+
   @AfterEach
   void cleanUp() {
     participantActivitiesRepository.deleteAll();

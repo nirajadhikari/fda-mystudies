@@ -35,10 +35,10 @@ import io.swagger.annotations.ApiOperation;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import javax.ws.rs.core.Context;
 import org.apache.commons.collections4.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,14 +106,14 @@ public class ProcessActivityStateController {
   @ApiOperation(value = "Update activity state")
   @PostMapping("/participant/update-activity-state")
   public ResponseEntity<?> updateActivityState(
-      @RequestBody ActivityStateRequestBean activityStateRequestBean,
+      @Valid @RequestBody ActivityStateRequestBean activityStateRequestBean,
       @Context HttpServletResponse response,
       @RequestHeader String userId,
       HttpServletRequest request) {
     logger.entry(String.format(BEGIN_REQUEST_LOG, request.getRequestURI()));
     AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);
     auditRequest.setUserId(userId);
-    if (activityStateRequestBean == null
+    /*if (activityStateRequestBean == null
         || Strings.isBlank(activityStateRequestBean.getParticipantId())
         || Strings.isBlank(activityStateRequestBean.getStudyId())) {
       ErrorBean errorBean =
@@ -123,43 +123,43 @@ public class ProcessActivityStateController {
               AppConstants.ERROR_STR,
               ErrorCode.EC_701.errorMessage());
       return new ResponseEntity<>(errorBean, HttpStatus.BAD_REQUEST);
-    } else {
-      try {
-        participantActivityStateResponseService.saveParticipantActivities(activityStateRequestBean);
-        SuccessResponseBean srBean = new SuccessResponseBean();
-        srBean.setMessage(AppConstants.SUCCESS_MSG);
+    } else {*/
+    try {
+      participantActivityStateResponseService.saveParticipantActivities(activityStateRequestBean);
+      SuccessResponseBean srBean = new SuccessResponseBean();
+      srBean.setMessage(AppConstants.SUCCESS_MSG);
 
-        auditRequest.setStudyId(activityStateRequestBean.getStudyId());
-        auditRequest.setStudyVersion("NA");
-        auditRequest.setParticipantId(activityStateRequestBean.getParticipantId());
-        for (ParticipantActivityBean activity : activityStateRequestBean.getActivity()) {
-          Map<String, String> map = new HashedMap<>();
-          map.put(ACTIVITY_STATE, activity.getActivityState());
-          map.put(ACTIVITY_ID, activity.getActivityId());
-          map.put(ACTIVITY_VERSION, activity.getActivityVersion());
-          map.put(RUN_ID, activity.getActivityRunId());
-          responseServerAuditLogHelper.logEvent(ACTIVITY_STATE_SAVED_OR_UPDATED, auditRequest, map);
-        }
-
-        return new ResponseEntity<>(srBean, HttpStatus.OK);
-      } catch (Exception e) {
-        logger.warn("ProcessActivityStateController updateActivityState() failed ", e);
-        for (ParticipantActivityBean activity : activityStateRequestBean.getActivity()) {
-          Map<String, String> map = new HashedMap<>();
-          map.put(ACTIVITY_STATE, activity.getActivityState());
-          map.put(ACTIVITY_ID, activity.getActivityId());
-          map.put(ACTIVITY_VERSION, activity.getActivityVersion());
-          map.put(RUN_ID, activity.getActivityRunId());
-          responseServerAuditLogHelper.logEvent(ACTIVITY_STATE_SAVE_OR_UPDATE_FAILED, auditRequest);
-        }
-        ErrorBean errorBean =
-            AppUtil.dynamicResponse(
-                ErrorCode.EC_714.code(),
-                ErrorCode.EC_714.errorMessage(),
-                AppConstants.ERROR_STR,
-                e.getMessage());
-        return new ResponseEntity<>(errorBean, HttpStatus.BAD_REQUEST);
+      auditRequest.setStudyId(activityStateRequestBean.getStudyId());
+      auditRequest.setStudyVersion("NA");
+      auditRequest.setParticipantId(activityStateRequestBean.getParticipantId());
+      for (ParticipantActivityBean activity : activityStateRequestBean.getActivity()) {
+        Map<String, String> map = new HashedMap<>();
+        map.put(ACTIVITY_STATE, activity.getActivityState());
+        map.put(ACTIVITY_ID, activity.getActivityId());
+        map.put(ACTIVITY_VERSION, activity.getActivityVersion());
+        map.put(RUN_ID, activity.getActivityRunId());
+        responseServerAuditLogHelper.logEvent(ACTIVITY_STATE_SAVED_OR_UPDATED, auditRequest, map);
       }
+
+      return new ResponseEntity<>(srBean, HttpStatus.OK);
+    } catch (Exception e) {
+      logger.warn("ProcessActivityStateController updateActivityState() failed ", e);
+      for (ParticipantActivityBean activity : activityStateRequestBean.getActivity()) {
+        Map<String, String> map = new HashedMap<>();
+        map.put(ACTIVITY_STATE, activity.getActivityState());
+        map.put(ACTIVITY_ID, activity.getActivityId());
+        map.put(ACTIVITY_VERSION, activity.getActivityVersion());
+        map.put(RUN_ID, activity.getActivityRunId());
+        responseServerAuditLogHelper.logEvent(ACTIVITY_STATE_SAVE_OR_UPDATE_FAILED, auditRequest);
+      }
+      ErrorBean errorBean =
+          AppUtil.dynamicResponse(
+              ErrorCode.EC_714.code(),
+              ErrorCode.EC_714.errorMessage(),
+              AppConstants.ERROR_STR,
+              e.getMessage());
+      return new ResponseEntity<>(errorBean, HttpStatus.BAD_REQUEST);
     }
+    //    }
   }
 }

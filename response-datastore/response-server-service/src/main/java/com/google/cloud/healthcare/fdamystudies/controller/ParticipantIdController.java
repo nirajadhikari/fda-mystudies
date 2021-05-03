@@ -24,7 +24,7 @@ import com.google.cloud.healthcare.fdamystudies.utils.ErrorCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
+import javax.validation.Valid;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,12 +56,12 @@ public class ParticipantIdController {
   @PostMapping("/participant/add")
   public ResponseEntity<?> addParticipantIdentifier(
       @RequestHeader("appId") String applicationId,
-      @RequestBody EnrollmentTokenIdentifierBean enrollmentTokenIdentifierBean,
+      @Valid @RequestBody EnrollmentTokenIdentifierBean enrollmentTokenIdentifierBean,
       HttpServletRequest request) {
     logger.entry(String.format(BEGIN_REQUEST_LOG, request.getRequestURI()));
     AuditLogEventRequest auditRequest = AuditEventMapper.fromHttpServletRequest(request);
 
-    if (enrollmentTokenIdentifierBean == null
+    /*if (enrollmentTokenIdentifierBean == null
         || StringUtils.isBlank(enrollmentTokenIdentifierBean.getTokenIdentifier())
         || StringUtils.isBlank(enrollmentTokenIdentifierBean.getCustomStudyId())) {
       logger.info("ParticipantIdController addParticipantIdentifier() Inside Error");
@@ -72,7 +72,7 @@ public class ParticipantIdController {
               AppConstants.ERROR_STR,
               ErrorCode.EC_701.errorMessage());
       return new ResponseEntity<>(errorBean, HttpStatus.BAD_REQUEST);
-    }
+    }*/
     try {
       ParticipantInfoEntity participantBo = new ParticipantInfoEntity();
       participantBo.setTokenId(enrollmentTokenIdentifierBean.getTokenIdentifier());
