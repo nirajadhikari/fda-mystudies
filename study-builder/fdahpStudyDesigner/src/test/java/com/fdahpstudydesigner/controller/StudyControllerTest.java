@@ -1313,8 +1313,7 @@ public class StudyControllerTest extends BaseMockIT {
 
     mockMvc
         .perform(
-            post("/studies/export.do")
-                .param("studyId", "4028614379183c3b0179183d51120001")
+            post("/studies/{studyId}/export.do", "f24b5b94l66b1n4286v8884w9ccb90306363")
                 .sessionAttrs(sessionAttributes))
         .andDo(print())
         .andExpect(status().isOk());
