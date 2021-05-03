@@ -5229,8 +5229,9 @@ public class StudyController {
     logger.info("StudyController - submitResponseToResponseServer() - Ends ");
   }
 
-  @RequestMapping(value = "/studies/export.do", method = RequestMethod.POST)
-  public void exportStudy(HttpServletRequest request, HttpServletResponse response)
+  @RequestMapping(value = "/studies/{studyId}/export.do", method = RequestMethod.POST)
+  public void exportStudy(
+      HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId)
       throws IOException {
     logger.info("StudyController - exportStudy() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
@@ -5242,11 +5243,6 @@ public class StudyController {
     SessionObject sesObj =
         (SessionObject)
             request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-
-    String studyId =
-        FdahpStudyDesignerUtil.isEmpty(request.getParameter(FdahpStudyDesignerConstants.STUDY_ID))
-            ? ""
-            : request.getParameter(FdahpStudyDesignerConstants.STUDY_ID);
 
     String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
     if (StringUtils.isNotEmpty(filePath)) {

@@ -743,7 +743,8 @@ public class StudyExportService {
             studyBo.getTentativeDurationWeekmonth(),
             studyBo.getThumbnailImage(),
             studyBo.getType(),
-            studyBo.getVersion());
+            studyBo.getVersion(),
+            studyBo.isEnrollmentdateAsAnchordate());
 
     insertSqlStatements.add(studiesInsertQuery);
   }

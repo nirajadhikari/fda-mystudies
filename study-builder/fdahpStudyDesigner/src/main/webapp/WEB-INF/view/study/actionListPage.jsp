@@ -324,11 +324,10 @@
 	   var studyId = "${studyBo.id}";
 	  $
       .ajax({
-        url: "/studybuilder/studies/export.do",
+        url: "/studybuilder/studies/${studyBo.id}/export.do",
         type: "POST",
         datatype: "json",
         data: {
-          studyId: studyId,
           "${_csrf.parameterName}": "${_csrf.token}",
         },
         
