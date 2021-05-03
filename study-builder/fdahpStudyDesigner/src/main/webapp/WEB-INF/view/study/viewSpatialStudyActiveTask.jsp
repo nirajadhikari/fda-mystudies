@@ -299,7 +299,7 @@
                         class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass"
                         id="chartId" name="taskAttributeValueBos[7].timeRangeChart"
                         title="Select">
-                      <option value="" selected disabled>Select</option>
+                      <option value="" disabled>Select</option>
                       <c:forEach items="${timeRangeList}" var="timeRangeAttr">
                         <option value="${timeRangeAttr}">${timeRangeAttr}</option>
                       </c:forEach>
@@ -490,7 +490,7 @@
                         class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass"
                         id="chartId1" name="taskAttributeValueBos[8].timeRangeChart"
                         title="Select">
-                      <option value="" selected disabled>Select</option>
+                      <option value="" disabled>Select</option>
                       <c:forEach items="${timeRangeList}" var="timeRangeAttr">
                         <option value="${timeRangeAttr}">${timeRangeAttr}</option>
                       </c:forEach>
@@ -681,7 +681,7 @@
                         class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass"
                         id="chartId2" name="taskAttributeValueBos[9].timeRangeChart"
                         title="Select">
-                      <option value="" selected disabled>Select</option>
+                      <option value="" disabled>Select</option>
                       <c:forEach items="${timeRangeList}" var="timeRangeAttr">
                         <option value="${timeRangeAttr}">${timeRangeAttr}</option>
                       </c:forEach>
@@ -2338,7 +2338,7 @@
           e.preventDefault();
           $(this).val(newVal);
           $(this).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-              "Please use allowed characters only: lowercase alphabets (a-z), digits (0-9), _ (underscore) and -(minus)."));
+              "Please use allowed characters only: lowercase alphabets (a-z), digits (0-9), _ (underscore) and -(minus)"));
         }
       }
     });

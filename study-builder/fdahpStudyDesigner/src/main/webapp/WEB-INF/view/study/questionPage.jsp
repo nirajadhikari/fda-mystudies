@@ -252,7 +252,7 @@
                   </span>
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" name="anchorDateName" id="anchorTextId"
+                  <input type="text" class="form-control" name="anchorDateName" id="anchorTextId" data-error="Please fill out this field" 
                          value="${questionsBo.anchorDateName}" maxlength="50" <c:if
                       test="${not empty questionsBo.isShorTitleDuplicate && (questionsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
                   <div class="help-block with-errors red-txt"></div>
@@ -286,7 +286,7 @@
                   </span>
                 </div>
                 <div class="form-group">
-                  <input type="text" class="form-control" name="anchorDateName" id="anchorTextId"
+                  <input type="text" class="form-control" name="anchorDateName" id="anchorTextId" data-error="Please fill out this field" 
                          value="${fn:escapeXml(questionsBo.anchorDateName)}" maxlength="50" <c:if
                       test="${not empty questionsBo.isShorTitleDuplicate && (questionsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
                   <div class="help-block with-errors red-txt"></div>
@@ -319,7 +319,7 @@
                       title="- Please select the appropriate HealthKit data type as suited to the question<br>- Please note that only the most recent value available in HealthKit would be read by the app<br>- Access to HealthKit data is subject to the user providing permissions for the app to read the data"></span>
               </div>
               <div class="form-group">
-                <select class="selectpicker elaborateClass healthkitrequireClass"
+                <select class="selectpicker elaborateClass healthkitrequireClass" data-error="Please select an item in the list"
                         id="healthkitDatatypeId" name="healthkitDatatype"
                         value="${questionsBo.healthkitDatatype}">
                   <option value="" selected>Select</option>
@@ -424,7 +424,7 @@
               </span>
             </div>
             <div class="form-group">
-              <input type="text" custAttType="cust" class="form-control requireClass"
+              <input type="text" custAttType="cust" class="form-control requireClass" data-error="Please fill out this field" 
                      name="statShortName"
                      id="statShortNameId" value="${fn:escapeXml(questionsBo.statShortName)}"
                      maxlength="20" <c:if
@@ -443,7 +443,7 @@
               <span class="requiredStar">*</span>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control requireClass" name="statDisplayName"
+              <input type="text" class="form-control requireClass" name="statDisplayName" data-error="Please fill out this field" 
                      id="statDisplayNameId" value="${fn:escapeXml(
                   questionsBo.statDisplayName)}" maxlength="50">
               <div class="help-block with-errors red-txt"></div>
@@ -460,7 +460,7 @@
                     title="For Response Types of Time Interval and Height, participant responses are saved in hours and cms respectively. Please enter units accordingly."></span>
             </div>
             <div class="form-group">
-              <input type="text" class="form-control requireClass" name="statDisplayUnits"
+              <input type="text" class="form-control requireClass" name="statDisplayUnits" data-error="Please fill out this field" 
                      id="statDisplayUnitsId" value="${fn:escapeXml(
                   questionsBo.statDisplayUnits)}" maxlength="15">
               <div class="help-block with-errors red-txt"></div>
@@ -474,7 +474,7 @@
               </span>
             </div>
             <div class="form-group">
-              <select class="selectpicker elaborateClass requireClass" id="statTypeId"
+              <select class="selectpicker elaborateClass requireClass" id="statTypeId" data-error="Please select an item in the list"
                       title="Select"
                       name="statType">
                 <option value="" selected>Select</option>
@@ -494,7 +494,7 @@
               </span>
             </div>
             <div class="form-group">
-              <select class="selectpicker elaborateClass requireClass" id="statFormula"
+              <select class="selectpicker elaborateClass requireClass" id="statFormula" data-error="Please select an item in the list"
                       title="Select"
                       name="statFormula">
                 <option value="" selected>Select</option>
@@ -3057,7 +3057,7 @@ if(document.getElementById("singleSelect").checked==true){
           $("#displayStepsCount").parent().find(".help-block").empty();
           $("#displayStepsCount").parent().find(".help-block").append(
         	$("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-              "(Max-Min) value should be exactly divisisble by the step size."));
+              "(Max-Min) value should be exactly divisisble by the step size"));
         }
       }
     });
@@ -3458,6 +3458,10 @@ if(document.getElementById("singleSelect").checked==true){
       var thisAttr = this;
       var response_type = $("#rlaResonseType").val();
       if ((file = this.files[0])) {
+    	  const allowedExtensions =  ['jpg','png','jpeg'];
+          const { name:fileName } = file;
+          const fileExtension = fileName.split(".").pop().toLowerCase();
+          if(allowedExtensions.includes(fileExtension)){
         img = new Image();
         img.onload = function () {
         	var minHeightAndWidth=0;
@@ -3505,6 +3509,14 @@ if(document.getElementById("singleSelect").checked==true){
           $(thisAttr).parent().parent().parent().find(".removeUrl").click();
         };
         img.src = _URL.createObjectURL(file);
+          }else{
+       	   $(thisAttr).parent().find('img').attr("src", "../images/icons/sm-thumb.jpg");
+              $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+              $(thisAttr).parent().find(".help-block").empty().append(
+                $("<ul><li> </li></ul>").attr("class","list-unstyled").attr("style","white-space:nowrap").text(
+                  "Invalid image size or format"));
+              $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+         }
       }
     });
     $('.textScaleValue').on('blur', function () {
@@ -3595,6 +3607,10 @@ if(document.getElementById("singleSelect").checked==true){
   function readURL(input) {
 
     if (input.files && input.files[0]) {
+    	const allowedExtensions =  ['jpg','png','jpeg'];
+     	  const { name:fileName } = input.files[0];
+     	  const fileExtension = fileName.split(".").pop().toLowerCase();
+     	  if(allowedExtensions.includes(fileExtension)){
       var reader = new FileReader();
 
       reader.onload = function (e) {
@@ -3607,6 +3623,7 @@ if(document.getElementById("singleSelect").checked==true){
       };
 
       reader.readAsDataURL(input.files[0]);
+     	  }
     }
   }
 
@@ -4782,7 +4799,7 @@ if(document.getElementById("singleSelect").checked==true){
           $(item).parent().find(".help-block").empty();
           $(item).parent().find(".help-block").append(
         	$("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-              "Please enter a value in the range (0,x)."));
+              "Please enter a value in the range (0,x)"));
         }
       } else {
         $(item).val('');

@@ -14,6 +14,10 @@
     width: 250px !important;
 }
 
+.help-block ul {
+      width: max-content !important;
+}
+
 .bootstrap-select.btn-group .dropdown-toggle .filter-option {
     text-transform: inherit; !important
 	}
@@ -158,7 +162,7 @@
               <select
                   class="selectpicker aq-select aq-select-form elaborateClass frequencyIdList elaborateClass requireClass"
                   id="chartId" name="taskAttributeValueBos[2].timeRangeChart" title="Select">
-                <option value="" selected disabled>Select</option>
+                <option value="" disabled>Select</option>
                 <c:forEach items="${timeRangeList}" var="timeRangeAttr">
                   <option value="${timeRangeAttr}">${timeRangeAttr}</option>
                 </c:forEach>
@@ -627,7 +631,7 @@
             $('#fetalKickId').val('');
             $('.timeDurationClass').find('.help-block').empty().append(
             $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-            "Number of kicks should be greater than zero."));
+            "Number of kicks should be greater than zero"));
           } else {
             $('.timeDurationClass').find('.help-block').empty();
           }

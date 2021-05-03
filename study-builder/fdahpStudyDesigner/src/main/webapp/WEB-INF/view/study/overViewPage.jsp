@@ -186,6 +186,7 @@
                   <div class="mt-xlg">
                     <div class="gray-xs-f mb-xs">
                       Description
+                      <small>(200 characters max)</small>
                       <span
                           class="requiredStar">*
                       </span>
@@ -328,6 +329,7 @@
                   <div class="mt-md">
                     <div class="gray-xs-f mb-xs">
                       Description
+                      <small>(200 characters max)</small>
                       <span
                           class="requiredStar">*
                       </span>
@@ -403,10 +405,38 @@
     $("[data-toggle=tooltip]").tooltip();
     var countId = ${fn:length(studyPageBos)+ 2};
   //summernote editor initialization
-    $('.summernote')
+  var maxwords=200;  
+  $('.summernote')
         .summernote(
             {
               placeholder: '',
+              callbacks: {
+                  onKeydown: function(e) {
+                    var t = e.currentTarget.innerText;
+                    if (t.length >= maxwords) {
+                    if (e.keyCode != 8)
+                      e.preventDefault();
+                    }
+                  },
+                   onKeyup: function(e) {
+                      var t = e.currentTarget.innerText;
+                     if (t.length >= maxwords) {
+                    if (e.keyCode != 8)
+                      e.preventDefault();
+                    }
+                  },
+                  onPaste: function(e) {
+                	  var t = e.currentTarget.innerText;
+                      var bufferText = ((e.originalEvent || e).clipboardData || 
+                                         window.clipboardData).getData('Text');
+                      e.preventDefault();
+                      var all = t + bufferText;
+                      var array = bufferText.slice(0, (maxwords-t.length))
+                      document.execCommand('insertText', false, array);
+                 
+               }
+      },
+                  
               disableResizeEditor: true,
               tabsize: 2,
               height: 200,
@@ -541,7 +571,7 @@
           "</div>" +
           "</div>" +
           "<div class=mt-lg>" +
-          "<div class='gray-xs-f mb-xs'>Description<span class='requiredStar'>*</span></div>"
+          "<div class='gray-xs-f mb-xs'>Description<small>(200 characters max)</small><span class='requiredStar'>*</span></div>"
           +
           "<div class='form-group elaborateClass'><textarea class='summernote form-control updateInput' name='description' id='editor"
           + countId
@@ -564,10 +594,37 @@
       $("[data-toggle=tooltip]").tooltip();
       $('body').find('.panel-collapse:last').collapse('show').addClass('in');
 
+      
       $('.summernote')
       .summernote(
           {
             placeholder: '',
+            callbacks: {
+                onKeydown: function(e) {
+                  var t = e.currentTarget.innerText;
+                  if (t.length >= maxwords) {
+                  if (e.keyCode != 8)
+                    e.preventDefault();
+                  }
+                },
+                 onKeyup: function(e) {
+                    var t = e.currentTarget.innerText;
+                   if (t.length >= maxwords) {
+                  if (e.keyCode != 8)
+                    e.preventDefault();
+                  }
+                },
+                onPaste: function(e) {
+              	  var t = e.currentTarget.innerText;
+                    var bufferText = ((e.originalEvent || e).clipboardData || 
+                                       window.clipboardData).getData('Text');
+                    e.preventDefault();
+                    var all = t + bufferText;
+                    var array = bufferText.slice(0, (maxwords-t.length))
+                    document.execCommand('insertText', false, array);
+               
+             }
+    },
             disableResizeEditor: true,
             tabsize: 2,
             height: 200,
@@ -699,6 +756,10 @@
       var thisAttr = this;
       var thisId = $(this).attr("data-imageId");
       if ((file = this.files[0])) {
+      	const allowedExtensions =  ['jpg','png','jpeg'];
+       	const { name:fileName } = file;
+       	const fileExtension = fileName.split(".").pop().toLowerCase();
+        if(allowedExtensions.includes(fileExtension)){ 
         img = new Image();
         img.onload = function () {
         	           
@@ -709,7 +770,8 @@
                 }
                   var ht = this.height;
                   var wds = this.width;
-            if (ht == 1334 && wds == 750) {
+              	
+            if (ht == 1334 && wds == 750 ) {
               $(thisAttr).parent().parent().find('.removeUrl').css("visibility", "visible");
               $(thisAttr).parent().parent().parent().find(".thumb img")
                   .attr('src', img.src)
@@ -768,8 +830,16 @@
           $(thisAttr).parent().parent().parent().find(".removeUrl").click();
         };
         img.src = _URL.createObjectURL(file);
-
+        }else{
+        	  $(thisAttr).val();
+              $(thisAttr).parent().find('.form-group').addClass('has-error has-danger');
+              $(thisAttr).parent().find(".help-block").empty().append(
+            	  $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+                  "Invalid image size or format"));
+              $(thisAttr).parent().parent().parent().find(".removeUrl").click();
+        }
       }
+      
       var file = $(this).find('input[type=file]').val();
       var thumbnailImageId = $(this).find('input[type=file]').parent().find(
           'input[name="imagePath"]').val();
@@ -784,10 +854,27 @@
   // Displaying images from file upload
   function readURL(input) {
     if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function (e) {
-      };
-      reader.readAsDataURL(input.files[0]);
+    	const allowedExtensions =  ['jpg','png','jpeg'];
+     	const { name:fileName } = input.files[0];
+     	const fileExtension = fileName.split(".").pop().toLowerCase();
+     	if(allowedExtensions.includes(fileExtension)){  
+      		var reader = new FileReader();
+		      reader.onload = function (e) {
+		      };
+		      reader.readAsDataURL(input.files[0]);
+	    }else{
+	   		  $("#uploadImg")
+	          .parent()
+	          .find(".help-block")
+	          .empty()
+	          .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+	              "Invalid image size or format"));
+	      	  $(".thumb.alternate img")
+	          .attr("src",
+	              "/studybuilder/images/dummy-img.jpg");
+	      	  $('#uploadImg, #thumbnailImageId').val('');
+	      	  $('#removeUrl').css("visibility", "hidden");
+	   	  }
     }
   }
 
