@@ -1336,9 +1336,7 @@ public class StudyControllerTest extends BaseMockIT {
     sessionAttributes.put(FdahpStudyDesignerConstants.SESSION_OBJECT, session);
 
     mockMvc
-        .perform(
-            post("/studies/402861747912b0b3017912b10f9d0001/replicate")
-                .sessionAttrs(sessionAttributes))
+        .perform(post("/studies/{studyId}/replicate.do", "678574").sessionAttrs(sessionAttributes))
         .andDo(print())
         .andExpect(status().isOk());
   }
