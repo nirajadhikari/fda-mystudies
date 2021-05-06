@@ -406,12 +406,13 @@ public class StudyExportService {
                 newActiveTaskId,
                 activeTaskCustomScheduleBo.getFrequencyEndDate(),
                 activeTaskCustomScheduleBo.getFrequencyStartDate(),
-                activeTaskCustomScheduleBo.getFrequencyTime(),
                 activeTaskCustomScheduleBo.getTimePeriodFromDays(),
                 activeTaskCustomScheduleBo.getTimePeriodToDays(),
                 activeTaskCustomScheduleBo.isUsed(),
                 activeTaskCustomScheduleBo.isxDaysSign(),
-                activeTaskCustomScheduleBo.isyDaysSign());
+                activeTaskCustomScheduleBo.isyDaysSign(),
+                activeTaskCustomScheduleBo.getFrequencyStartTime(),
+                activeTaskCustomScheduleBo.getFrequencyEndTime());
       }
 
       activeTaskCustomScheduleBoInsertQueryList.add(activeTaskCustomScheduleBoInsertQuery);
@@ -645,13 +646,14 @@ public class StudyExportService {
                 IdGenerator.id(),
                 questionnaireCustomScheduleBo.getFrequencyEndDate(),
                 questionnaireCustomScheduleBo.getFrequencyStartDate(),
-                questionnaireCustomScheduleBo.getFrequencyTime(),
                 newQuestionnaireId,
                 questionnaireCustomScheduleBo.getTimePeriodFromDays(),
                 questionnaireCustomScheduleBo.getTimePeriodToDays(),
                 questionnaireCustomScheduleBo.isUsed(),
                 questionnaireCustomScheduleBo.isxDaysSign(),
-                questionnaireCustomScheduleBo.isyDaysSign());
+                questionnaireCustomScheduleBo.isyDaysSign(),
+                questionnaireCustomScheduleBo.getFrequencyEndTime(),
+                questionnaireCustomScheduleBo.getFrequencyStartTime());
       }
       questionnairesCustomScheduleBoInsertQueryList.add(questionnairesCustomScheduleBoInsertQuery);
     }
