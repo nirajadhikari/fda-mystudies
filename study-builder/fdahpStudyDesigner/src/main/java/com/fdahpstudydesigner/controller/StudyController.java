@@ -2833,7 +2833,7 @@ public class StudyController {
               mapper.readValue(comprehensionQuestion, ComprehensionTestQuestionBo.class);
 
           if (comprehensionTestQuestionBo != null) {
-            if (comprehensionTestQuestionBo.getId() != null) {
+            if (StringUtils.isNotEmpty(comprehensionTestQuestionBo.getId())) {
               comprehensionTestQuestionBo.setModifiedBy(sesObj.getUserId());
               comprehensionTestQuestionBo.setModifiedOn(
                   FdahpStudyDesignerUtil.getCurrentDateTime());
