@@ -27,13 +27,13 @@
             src="/studybuilder/images/icons/back-b.png" alt=""/></a>
       </span>
       <c:if test="${actionPage eq 'ADD_PAGE'}">
-        Add new user
+        Add new admin
       </c:if>
       <c:if test="${actionPage eq 'EDIT_PAGE'}">
-        Edit user details
+        Edit admin details
       </c:if>
       <c:if test="${actionPage eq 'VIEW_PAGE'}">
-        User details
+        Admin details
       </c:if>
 
     </div>
@@ -74,14 +74,14 @@
 			         <c:when test="${actionPage eq 'VIEW_PAGE'}">
 			              <span class="black-sm-f resend pl-md">
 			                <a  href="javascript:void(0)"  id="resendLinkId" class="disabled">Re-send
-			                  Activation Link
+			                  activation link
 			                </a>
 			              </span>
 			         </c:when>
 			         <c:otherwise>
 			           		<span class="black-sm-f resend pl-md">
 			                <a  href="javascript:void(0)" id="resendLinkId" >Re-send
-			                  Activation Link
+			                  activation link
 			                </a>
 			              </span>
 			         </c:otherwise>
@@ -130,7 +130,7 @@
       <div class="ed-user-layout row">
         <!-- Edit User Layout-->
 
-        <div class="blue-md-f text-uppercase mb-md">User Information</div>
+        <div class="blue-md-f text-uppercase mb-md">Admin Information</div>
         <div class="col-md-12 p-none">
           <!-- form- input-->
           <div class="col-md-6 pl-none">
@@ -141,7 +141,7 @@
             <div class="form-group">
               <input autofocus="autofocus" type="text" class="form-control"
                      name="firstName" value="${fn:escapeXml(userBO.firstName)}"
-                     maxlength="50" required
+                     maxlength="50" required data-error="Please fill out this field"
                      <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if> />
               <div class="help-block with-errors red-txt"></div>
             </div>
@@ -154,7 +154,7 @@
             </div>
             <div class="form-group">
               <input type="text" class="form-control" name="lastName"
-                     value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required
+                     value="${fn:escapeXml(userBO.lastName)}" maxlength="50" required data-error="Please fill out this field"
                      <c:if test="${actionPage eq 'VIEW_PAGE'}">disabled</c:if> />
               <div class="help-block with-errors red-txt"></div>
             </div>
@@ -177,7 +177,7 @@
                      name="userEmail" value="${userBO.userEmail}"
                      oldVal="${userBO.userEmail}"
                      pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                     data-pattern-error="Email address is invalid" maxlength="100"
+                     data-pattern-error="Email address is invalid" data-error="Please fill out this field" maxlength="100"
                      required
                      <c:if
                          test="${actionPage eq 'VIEW_PAGE' || (empty userBO.userPassword && not empty userBO)}">disabled</c:if> />
@@ -212,7 +212,7 @@
             <div class="form-group">
               <select id="roleId"
                       class="selectpicker <c:if test="${actionPage eq 'VIEW_PAGE'}">linkDis</c:if>"
-                      name="roleId" required>
+                      name="roleId" required data-error="Please fill out this field">
                 <option value="" selected disabled>- Select Role -</option>
                 <c:forEach items="${roleBOList}" var="role">
                   <option ${role.roleId eq userBO.roleId ? 'selected' : ''}
@@ -730,7 +730,7 @@
     $('#enforcePasswordId').on('click', function () {
       bootbox.confirm({
         closeButton: false,
-        message: "Are you sure you wish to enforce a password change for this user?",
+        message: "Are you sure you wish to enforce a password change for this admin?",
         buttons: {
           'cancel': {
             label: 'No',
@@ -803,7 +803,7 @@
     } else {
       msgPart = "deactivate";
     }
-    bootbox.confirm("Are you sure you want to " + msgPart + " this user?", function (result) {
+    bootbox.confirm("Are you sure you want to " + msgPart + " this admin?", function (result) {
       if (result) {
         if (status == 'true') {
           $('#change' + userId).val(false);

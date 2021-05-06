@@ -57,7 +57,7 @@
           </div>
           <div class="form-group">
             <textarea autofocus="autofocus" class="form-control" maxlength="250" rows="5"
-                      id="notificationText" name="notificationText" required
+                      id="notificationText" name="notificationText" required data-error="Please fill out this field"
             >${notificationBO.notificationText}</textarea>
             <div class="help-block with-errors red-txt"></div>
           </div>
@@ -110,9 +110,9 @@
           </div>
           <div class="form-group date">
             <input id='datetimepicker' type="text" class="form-control calendar datepicker resetVal"
-                   name="scheduleDate" value="${notificationBO.scheduleDate}"
+                   name="scheduleDate" value="${notificationBO.scheduleDate}" data-error="Please fill out this field"
                    oldValue="${notificationBO.scheduleDate}"
-                   placeholder="MM/DD/YYYY" disabled/>
+                   placeholder="MM/DD/YYYY" disabled data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div>
         </div>
@@ -126,7 +126,7 @@
             <input id="timepicker1" class="form-control clock timepicker resetVal"
                    name="scheduleTime"
                    value="${notificationBO.scheduleTime}" oldValue="${notificationBO.scheduleTime}"
-                   placeholder="00:00" disabled/>
+                   placeholder="00:00" disabled data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div>
         </div>
@@ -435,7 +435,7 @@
         $('#timepicker1').val('');
         $('.timepicker').parent().addClass('has-error has-danger').find('.help-block.with-errors')
             .empty().append(
-            	$("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a time that has not already passed for the current date."));
+            	$("<ul><li> </li></ul>").attr("class","list-unstyled").text("Please select a time that has not already passed for the current date"));
         valid = false;
       } else {
         $('.timepicker').parent().removeClass('has-error has-danger').find(

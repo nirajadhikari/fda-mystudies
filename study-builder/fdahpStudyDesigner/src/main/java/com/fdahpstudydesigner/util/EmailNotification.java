@@ -27,13 +27,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmailNotification {
 
-  private static Logger logger = Logger.getLogger(EmailNotification.class.getName());
+  private static XLogger logger = XLoggerFactory.getXLogger(EmailNotification.class.getName());
+  @Autowired Mail mail;
 
-  public static boolean sendEmailNotification(
+  public boolean sendEmailNotification(
       String subjectProprtyName,
       String content,
       String toMail,
@@ -43,7 +48,6 @@ public class EmailNotification {
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     boolean sentMail = false;
     try {
-      Mail mail = new Mail();
       if (toMail != null) {
         toMail = toMail.trim();
         mail.setToemail(toMail.toLowerCase());
@@ -63,23 +67,22 @@ public class EmailNotification {
     } catch (Exception e) {
       logger.error("EmailNotification.sendEmailNotification() :: ERROR ", e);
     }
-    logger.info("EmailNotification - Ends: sendLinkToEmail() - returning  a List value" + " : ");
+    logger.exit("EmailNotification - Ends: sendLinkToEmail() - returning  a List value" + " : ");
     return sentMail;
   }
 
-  public static boolean sendEmailNotificationToMany(
+  public boolean sendEmailNotificationToMany(
       String subjectProprtyName,
       String content,
       List<String> toMailList,
       List<String> ccMailList,
       List<String> bccMailList) {
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
-    logger.info(
+    logger.entry(
         "EmailNotification - Starts: sendEmailNotificationToMany() - Input arg are ServletContext ");
     boolean sentMail = false;
     List<String> toMailListNew = new ArrayList<>();
     try {
-      Mail mail = new Mail();
       if ((toMailList != null) && !toMailList.isEmpty()) {
         for (String mailId : toMailList) {
           mailId = mailId.trim();
@@ -104,13 +107,13 @@ public class EmailNotification {
       sentMail = false;
       logger.error("EmailNotification.sendEmailNotificationToMany() :: ERROR ", e);
     }
-    logger.info(
+    logger.exit(
         "EmailNotification - Ends: sendEmailNotificationToMany() - returning  a List value"
             + " : ");
     return sentMail;
   }
 
-  public static boolean sendMailWithAttachment(
+  public boolean sendMailWithAttachment(
       String subjectProprtyName,
       String content,
       String toMail,
@@ -120,7 +123,6 @@ public class EmailNotification {
     Map<String, String> propMap = FdahpStudyDesignerUtil.getAppProperties();
     boolean sentMail = false;
     try {
-      Mail mail = new Mail();
       if (toMail != null) {
         toMail = toMail.trim();
         mail.setToemail(toMail.toLowerCase());
@@ -142,7 +144,7 @@ public class EmailNotification {
     } catch (Exception e) {
       logger.error("EmailNotification.sendEmailNotification() :: ERROR ", e);
     }
-    logger.info("EmailNotification - Ends: sendLinkToEmail() - returning  a List value" + " : ");
+    logger.exit("EmailNotification - Ends: sendLinkToEmail() - returning  a List value" + " : ");
     return sentMail;
   }
 }

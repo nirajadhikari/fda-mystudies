@@ -15,8 +15,8 @@ margin-top:16px !important;
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 
+      
 <div class="col-sm-10 col-rc white-bg p-none">
-
   <form:form
       action="/studybuilder/adminStudies/saveOrUpdateBasicInfo.do?${_csrf.parameterName}=${_csrf.token}&_S=${param._S}"
       data-toggle="validator" role="form" id="basicInfoFormId" method="post"
@@ -79,7 +79,7 @@ margin-top:16px !important;
                    value="${studyBo.customStudyId}"
                 <c:if
                     test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>
-                   required/>
+                   required data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div>
         </div>
@@ -103,7 +103,7 @@ margin-top:16px !important;
                    maxlength="15" value="${studyBo.appId}"
                 <c:if
                     test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}"> disabled</c:if>
-                   required/>
+                   required data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div>
         </div>
@@ -126,7 +126,7 @@ margin-top:16px !important;
           <div class="form-group">
              <input type="text" class="form-control" name="name"
                    id="customStudyName" value="${fn:escapeXml(studyBo.name)}"
-                   maxlength="50" required/>
+                   maxlength="50" required data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div>
         </div>
@@ -143,7 +143,7 @@ margin-top:16px !important;
                    name="studyWebsite" value="${studyBo.studyWebsite}"
                    pattern="^(http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
                    title="Include http://" maxlength="100"
-                   data-pattern-error="Please enter a valid URL"/>
+                   data-pattern-error="Please enter a valid URL" data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div> 
         </div>
@@ -160,7 +160,7 @@ margin-top:16px !important;
         </div>
         <div class="form-group">
           <input type="text" class="form-control" name="fullName"
-                 value="${fn:escapeXml(studyBo.fullName)}" maxlength="150" required/>
+                 value="${fn:escapeXml(studyBo.fullName)}" maxlength="150" required data-error="Please fill out this field"/>
           <div class="help-block with-errors red-txt"></div>
         </div>
       </div>
@@ -181,7 +181,7 @@ margin-top:16px !important;
             <span class="radio radio-info radio-inline p-45"><input
                 type="radio" id="inlineRadio5"
                 class="rejoin_radio studyTypeClass" name="type" value="GT"
-              ${studyBo.type eq 'GT'?'checked':""} required
+              ${studyBo.type eq 'GT'?'checked':""} required data-error="Please fill out this field"
             <c:if
                 test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}">
                 disabled </c:if>>
@@ -192,7 +192,7 @@ margin-top:16px !important;
                                                     class="rejoin_radio studyTypeClass"
                                                     name="type"
                                                     value="SD" ${studyBo.type eq 'SD'?'checked':""}
-                                                    required
+                                                    required data-error="Please fill out this field"
             <c:if
                 test="${not empty studyBo.status && (studyBo.status == 'Active' || studyBo.status == 'Published' || studyBo.status == 'Paused' || studyBo.status == 'Deactivated')}">
                                                     disabled </c:if>>
@@ -213,7 +213,7 @@ margin-top:16px !important;
             <input type="text" class="form-control" name="inboxEmailAddress"
                    value="${studyBo.inboxEmailAddress}" required maxlength="100"
                    pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                   autocomplete="off" data-pattern-error="Email address is invalid"/>
+                   autocomplete="off" data-pattern-error="Email address is invalid" data-error="Please fill out this field"/>
             <div class="help-block with-errors red-txt"></div>
           </div>
         </div>
@@ -225,13 +225,14 @@ margin-top:16px !important;
             <span class="filled-tooltip"
                     data-toggle="tooltip" data-placement="top"
                     data-html="true"
-                    title="<span class='font24 text-weight-light pull-left'></span> The default image shown below will be used for the study list thumbnail in the mobile app. Upload an alternate image if you wish to use another. The image must be of type .JPG or .PNG, and have a size of 225x225 pixels.">
+                    title=" <p class='text-left'>Image requirements: The default image shown below will be used for the study list thumbnail in the mobile app. Upload an alternate image if you wish to override it</p>
+					<p class='text-left'>The image must be of type .JPG or .PNG. The minimum image size required is 225 x 225. For optimum display in the mobile app, upload an image of either the minimum size or one that is proportionally larger"></p>
             </span>
       </div>
           
           <div class="thumb" style="display:inline-block; width:77px !important;">
                         <img
-                           src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />${sessionObject.gcpBucketName}/studylogo/<spring:eval expression="@propertyConfigurer.getProperty('study.basicInformation.defaultImage')"/>"
+                           src="${defaultImageSignedUrl}"
                             class="wid100" alt=""/>
 
             </div>
@@ -241,7 +242,7 @@ margin-top:16px !important;
             <div class="thumb alternate" style=" width:77px !important;"> 
               <img
                   <c:if
-                       test="${not empty studyBo.thumbnailImage}">src="<spring:eval expression="@propertyConfigurer.getProperty('fda.imgDisplaydPath')" />${sessionObject.gcpBucketName}/studylogo/${studyBo.thumbnailImage}"
+                       test="${not empty studyBo.thumbnailImage}">src="${signedUrl}"
               </c:if>
                   <c:if
                       test="${empty studyBo.thumbnailImage}">src="/studybuilder/images/dummy-img.jpg" </c:if>
@@ -795,22 +796,39 @@ margin-top:16px !important;
 
   // Displaying images from file upload
   function readURL(input) {
+	
     if (input.files && input.files[0]) {
-      var reader = new FileReader();
-
-      reader.onload = function (e) {
-    	  var image = new Image();
-    	    image.src = e.target.result;
-    	    image.onload = function() {
-    	        // access image size here 
-    	        if(this.width ==225 && this.height==225 ){
-    	        	 $('.thumb.alternate img').attr('src', e.target.result).width(66).height(
-         	                66);
-        	       }
-    	    };
-      };
-
-      reader.readAsDataURL(input.files[0]);
+      const allowedExtensions =  ['jpg','png','jpeg'];
+   	  const { name:fileName } = input.files[0];
+   	  const fileExtension = fileName.split(".").pop().toLowerCase();
+   	  if(allowedExtensions.includes(fileExtension)){  
+	      var reader = new FileReader();
+	
+	      reader.onload = function (e) {
+	    	  var image = new Image();
+	    	    image.src = e.target.result;
+	    	    image.onload = function() {
+	    	        // access image size here 
+	    	        if(this.width >=225 && this.height>=225 ){
+	    	        	 $('.thumb.alternate img').attr('src', e.target.result).width(66).height(
+	         	                66);
+	        	       }
+	    	    };
+	      };
+	      reader.readAsDataURL(input.files[0]);
+   	  }else{
+   		  $("#uploadImg")
+          .parent()
+          .find(".help-block")
+          .empty()
+          .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+              "Invalid image size or format"));
+      	  $(".thumb.alternate img")
+          .attr("src",
+              "/studybuilder/images/dummy-img.jpg");
+      	  $('#uploadImg, #thumbnailImageId').val('');
+      	  $('#removeUrl').css("visibility", "hidden");
+   	  }
     }
   }
 
@@ -826,7 +844,7 @@ margin-top:16px !important;
               img.onload = function () {  
                 var ht = this.height;
                 var wds = this.width;
-                if (ht == 225 && wds == 225) {
+                if (ht >= 225 && wds >= 225) {
                   $("#uploadImg").parent()
                       .find(".help-block").append('');
                   $('#removeUrl')
@@ -837,7 +855,7 @@ margin-top:16px !important;
                       .find(".help-block")
                       .empty()
                       .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-                          "Please upload image as per provided guidelines"));
+                          "Invalid image size or format"));
                   $(".thumb.alternate img")
                       .attr("src",
                           "/studybuilder/images/dummy-img.jpg");
@@ -863,7 +881,7 @@ margin-top:16px !important;
                     .find(".help-block")
                     .empty()
                     .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-                        "Please upload image as per provided guidelines"));
+                        "Invalid image size or format"));
                 $('#removeUrl').css("visibility", "hidden");
                 $(".thumb.alternate img").attr("src",
                     "/studybuilder/images/dummy-img.jpg");
@@ -1012,7 +1030,7 @@ margin-top:16px !important;
                     .empty()
                     .append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
                         appId
-                        + " has already been used in the past. Switch app type to 'gateway' or choose a unique App ID."))
+                        + " has already been used in the past. Switch app type to 'gateway' or choose a unique App ID"))
                     .append("</br>");
                 callback(false);
               }
@@ -1021,6 +1039,24 @@ margin-top:16px !important;
           });
     } else {
       callback(false);
+    }
+  }
+  
+    var sucMsg = '${sucMsg}';
+    if (sucMsg.length > 0) {
+      showSucMsg(sucMsg);
+    }
+
+  function showSucMsg(message) {
+    $("#alertMsg").removeClass('e-box').addClass('s-box').text(message);
+    $('#alertMsg').show('5000');
+    if('${param.buttonText}' == 'completed'){
+	    window.setTimeout(function(){
+	        window.location.href = "/studybuilder/adminStudies/viewSettingAndAdmins.do?_S=${param._S}";
+	
+	    }, 5000);
+    }else{
+    	setTimeout(hideDisplayMessage, 5000);
     }
   }
 </script>

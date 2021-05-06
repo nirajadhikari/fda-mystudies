@@ -113,7 +113,7 @@
               <div class="form-group">
                 <input autofocus="autofocus" type="text" custAttType="cust" class="form-control"
                        name="stepShortTitle" id="stepShortTitle"
-                       value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required
+                       value="${fn:escapeXml(questionnairesStepsBo.stepShortTitle)}" required data-error="Please fill out this field"
                        maxlength="15" <c:if
                     test="${not empty questionnairesStepsBo.isShorTitleDuplicate && (questionnairesStepsBo.isShorTitleDuplicate gt 0)}"> disabled</c:if>/>
                 <div class="help-block with-errors red-txt"></div>
@@ -158,7 +158,7 @@
                 </div>
                 <div class="form-group">
                   <select class="selectpicker" name="destinationStep" id="destinationStepId"
-                          value="${questionnairesStepsBo.destinationStep}" required>
+                          value="${questionnairesStepsBo.destinationStep}" required data-error="Please fill out this field">
                     <c:forEach items="${destinationStepList}" var="destinationStep">
                       <option
                           value="${destinationStep.stepId}" ${questionnairesStepsBo.destinationStep eq destinationStep.stepId ? 'selected' :''}>
@@ -215,8 +215,8 @@
           </div>
           <div class="clearfix"></div>
           <div class="row mt-lg" id="addQuestionContainer">
-            <div class="col-md-6 p-none blue-md-f mt-xs text-uppercase">
-              Questions in the Form
+            <div class="col-md-6 p-none black-md-f mt-xs">
+              Questions in the form
             </div>
             <div class="col-md-6 p-none">
               <div class="dis-line form-group mb-md pull-right">
@@ -443,7 +443,7 @@
       "info": false,
       "filter": false,
       language: {
-        "zeroRecords": "No content created yet.",
+        "zeroRecords": "No content created yet",
       },
       rowReorder: reorder,
       "columnDefs": [{orderable: false, targets: [0, 1, 2]}],

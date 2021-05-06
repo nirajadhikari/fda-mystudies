@@ -40,12 +40,15 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import org.springframework.mail.MailAuthenticationException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Mail {
 
-  private static Logger logger = Logger.getLogger(Mail.class.getName());
+  private static XLogger logger = XLoggerFactory.getXLogger(Mail.class.getName());
 
   // Fallback hostname if we are authenticating.
   private static final String SMTP_HOSTNAME = "smtp.gmail.com";
@@ -148,7 +151,7 @@ public class Mail {
   }
 
   public boolean sendemail() {
-    logger.info("Mail.sendemail() :: Starts");
+    logger.entry("begin sendemail()");
     boolean sentMail = false;
     try {
       final String username = this.getFromEmailAddress();
@@ -190,12 +193,12 @@ public class Mail {
       logger.error("ERROR: sendemail() - ", e);
       sentMail = false;
     }
-    logger.info("Mail.sendemail() :: Ends");
+    logger.exit("sendemail() :: Ends");
     return sentMail;
   }
 
   public boolean sendMailWithAttachment() {
-    logger.info("Mail.sendMailWithAttachment() :: Starts");
+    logger.entry("begin sendMailWithAttachment()");
     boolean sentMail = false;
     BodyPart messageBodyPart = null;
     Multipart multipart = null;
@@ -251,7 +254,7 @@ public class Mail {
     } catch (Exception e) {
       logger.error("ERROR:  sendemail() - ", e);
     }
-    logger.info("Mail.sendMailWithAttachment() :: Ends");
+    logger.exit("sendMailWithAttachment() :: Ends");
     return sentMail;
   }
 
@@ -261,8 +264,8 @@ public class Mail {
     Properties props = new Properties();
     props.put("mail.smtp.host", this.getSmtpHostname());
     props.put("mail.smtp.port", this.getSmtpPortvalue());
-    props.put("mail.smtp.socketFactory.class", this.getSslFactory());
-    props.put("mail.smtp.socketFactory.port", this.getSmtpPortvalue());
+    props.put("mail.smtp.starttls.enable", "true");
+
     if (useIpWhitelist) {
       props.put("mail.smtp.auth", "false");
       props.put("mail.smtp.ssl.enable", "true");

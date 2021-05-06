@@ -29,14 +29,18 @@ import com.fdahpstudydesigner.common.BaseMockIT;
 import com.fdahpstudydesigner.common.PathMappingUri;
 import com.fdahpstudydesigner.common.UserAccessLevel;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerConstants;
+import com.fdahpstudydesigner.util.Mail;
 import com.fdahpstudydesigner.util.SessionObject;
 import java.util.HashMap;
 import java.util.UUID;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 public class UsersControllerTest extends BaseMockIT {
+
+  @Autowired Mail mail;
 
   @Test
   public void shouldViewUserDetails() throws Exception {
@@ -162,7 +166,6 @@ public class UsersControllerTest extends BaseMockIT {
   @Test
   public void shouldEnforcePasswordChangeForAllUsers() throws Exception {
     HttpHeaders headers = getCommonHeaders();
-
     mockMvc
         .perform(
             post(PathMappingUri.ENFORCE_PASSWORD_CHANGE.getPath())

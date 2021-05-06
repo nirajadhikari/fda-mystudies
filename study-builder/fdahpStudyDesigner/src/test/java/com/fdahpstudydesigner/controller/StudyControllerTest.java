@@ -212,7 +212,7 @@ public class StudyControllerTest extends BaseMockIT {
                 .sessionAttrs(sessionAttributes))
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(view().name("redirect:comprehensionQuestionList.do"));
+        .andExpect(view().name("redirect:consentListPage.do"));
 
     verifyAuditEventCall(STUDY_CONSENT_SECTIONS_MARKED_COMPLETE);
   }
@@ -239,7 +239,7 @@ public class StudyControllerTest extends BaseMockIT {
                 .sessionAttrs(sessionAttributes))
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(view().name("redirect:actionList.do"));
+        .andExpect(view().name("redirect:viewStudyNotificationList.do"));
 
     verifyAuditEventCall(STUDY_NOTIFICATIONS_SECTION_MARKED_COMPLETE);
   }
@@ -266,7 +266,7 @@ public class StudyControllerTest extends BaseMockIT {
                 .sessionAttrs(sessionAttributes))
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(view().name("redirect:viewStudyActiveTasks.do"));
+        .andExpect(view().name("redirect:viewStudyQuestionnaires.do"));
 
     verifyAuditEventCall(STUDY_QUESTIONNAIRES_SECTION_MARKED_COMPLETE);
   }
@@ -292,7 +292,7 @@ public class StudyControllerTest extends BaseMockIT {
                 .sessionAttrs(sessionAttributes))
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(view().name("redirect:viewStudyNotificationList.do"));
+        .andExpect(view().name("redirect:getResourceList.do"));
 
     verifyAuditEventCall(STUDY_RESOURCE_SECTION_MARKED_COMPLETE);
   }
@@ -725,7 +725,7 @@ public class StudyControllerTest extends BaseMockIT {
         .perform(requestBuilder)
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(view().name("redirect:viewSettingAndAdmins.do"));
+        .andExpect(view().name("redirect:viewBasicInfo.do"));
 
     verifyAuditEventCall(STUDY_BASIC_INFO_SECTION_MARKED_COMPLETE);
   }
@@ -976,7 +976,7 @@ public class StudyControllerTest extends BaseMockIT {
         .perform(requestBuilder)
         .andDo(print())
         .andExpect(status().isFound())
-        .andExpect(view().name("redirect:consentListPage.do"));
+        .andExpect(view().name("redirect:viewStudyEligibilty.do"));
     verifyAuditEventCall(STUDY_ELIGIBILITY_SECTION_MARKED_COMPLETE);
   }
 

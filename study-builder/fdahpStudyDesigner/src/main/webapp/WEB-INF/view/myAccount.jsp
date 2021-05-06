@@ -8,7 +8,7 @@
   <!-- widgets section-->
   <div class="col-sm-12 col-md-12 col-lg-12 p-none">
     <div class="black-lg-f">
-      My Account <c:if test="${accountManager eq 'Yes'}">
+      My account <c:if test="${accountManager eq 'Yes'}">
       <span
           class="gray-xs-f ml-xlg">Account Manager
       </span>
@@ -38,7 +38,7 @@
               <input type="text" class="form-control edit-field bor-trans resetVal linkDis"
                      name="firstName" value="${fn:escapeXml(userBO.firstName)}"
                      oldVal="${fn:escapeXml(userBO.firstName)}"
-                     maxlength="50" required readonly/>
+                     maxlength="50" required data-error="Please fill out this field" readonly/>
               <div class="help-block with-errors red-txt"></div>
             </div>
           </div>
@@ -59,7 +59,7 @@
               <input type="text" class="form-control edit-field bor-trans resetVal linkDis"
                      name="lastName" value="${fn:escapeXml(userBO.lastName)}"
                      oldVal="${fn:escapeXml(userBO.lastName)}"
-                     maxlength="50" required readonly/>
+                     maxlength="50" required data-error="Please fill out this field" readonly/>
               <div class="help-block with-errors red-txt"></div>
             </div>
           </div>
@@ -82,7 +82,7 @@
                      id="userEmail" name="userEmail" value="${userBO.userEmail}"
                      oldVal="${userBO.userEmail}" maxlength="100"
                      pattern="[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
-                     data-pattern-error="Email address is invalid" required readonly/>
+                     data-pattern-error="Email address is invalid" data-error="Please fill out this field" required data-error="Please fill out this field" readonly/>
               <div class="help-block with-errors red-txt"></div>
             </div>
           </div>
@@ -167,7 +167,7 @@
                 <div class="form-group">
                   <input autofocus="autofocus" type="password"
                          class="input-field wow_input emptyField" maxlength="64" id="oldPassword"
-                         name="oldPassword"
+                         name="oldPassword" data-error="Please fill out this field"
                          required tabindex="1" autocomplete="off"/>
                   <div class="help-block with-errors red-txt"></div>
                 </div>
@@ -204,7 +204,7 @@
               <div class="col-md-6 p-none">
                 <div class="form-group">
                   <input type="password" class="input-field wow_input emptyField" maxlength="64"
-                         data-minlength="8" data-match-error="Passwords do not match"
+                         data-minlength="8" data-match-error="Passwords do not match" data-error="Please fill out this field"
                          id="conpassword" data-match="#password"
                          tabindex="3" required autocomplete="off"/>
                   <div class="help-block with-errors red-txt"></div>
@@ -239,7 +239,7 @@
       <c:if test="${fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_VIEW') or
               fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">
       <div class="edit-user-list-widget mb-xs">
-        <span>Users</span>
+        <span>Admins</span>
         <span class="gray-xs-f pull-right">
            <c:if
               test="${!fn:contains(sessionObject.userPermissions,'ROLE_MANAGE_USERS_EDIT')}">View only</c:if>
@@ -390,7 +390,7 @@
             success: function getResponse(data, status) {
               var message = data.message;
               if ('SUCCESS' == message) {
-                showSucMsg('Password updated successfully.');
+                showSucMsg('Password updated successfully');
                 $("#cancelBtn").click();
               } else {
                 showErrMsg(message);
@@ -402,7 +402,7 @@
             },
           });
         } else {
-          showErrMsg('New password should not be same as old Password.');
+          showErrMsg('New password should not be same as old password');
           $(window).scrollTop(0);
           $(".changepwd .emptyField").val("");
           $("#updateBtn").prop('disabled', false);

@@ -8,13 +8,14 @@
 package com.fdahpstudydesigner.service;
 
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
-import org.apache.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuditEventServiceImpl implements AuditEventService {
 
-  private static Logger logger = Logger.getLogger(AuditEventServiceImpl.class);
+  private static XLogger logger = XLoggerFactory.getXLogger(AuditEventServiceImpl.class.getName());
 
   private static final String AUDIT_LOG_NAME = "application-audit-log";
 
@@ -25,18 +26,18 @@ public class AuditEventServiceImpl implements AuditEventService {
      * auditRequest.getEventCode())); try (Logging logging =
      * LoggingOptions.getDefaultInstance().getService()) { JsonNode requestBody =
      * getObjectMapper().convertValue(auditRequest, JsonNode.class);
-     * 
+     *
      * // The data to write to the log Map<String, Object> jsonPayloadMap =
      * getObjectMapper().convertValue(auditRequest, Map.class);
-     * 
+     *
      * LogEntry entry = LogEntry.newBuilder(Payload.JsonPayload.of(jsonPayloadMap))
      * .setTimestamp(auditRequest.getOccurred().getTime()) .setSeverity(Severity.INFO)
      * .setLogName(AUDIT_LOG_NAME) .setResource(MonitoredResource.newBuilder("global").build())
      * .build(); // Writes the log entry asynchronously logging.write(Collections.singleton(entry));
-     * 
+     *
      * } catch (Exception e) { logger.error(String.format("%s failed with an exception",
      * auditRequest.getEventCode()), e); }
-     * 
+     *
      * logger.debug( String.format("postAuditLogEvent() for %s event finished",
      * auditRequest.getEventCode()));
      */

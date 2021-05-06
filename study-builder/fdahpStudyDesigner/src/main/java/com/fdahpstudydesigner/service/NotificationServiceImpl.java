@@ -33,14 +33,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-  private static Logger logger = Logger.getLogger(NotificationServiceImpl.class);
+  private static XLogger logger =
+      XLoggerFactory.getXLogger(NotificationServiceImpl.class.getName());
 
   @Autowired private NotificationDAO notificationDAO;
 
@@ -49,7 +51,7 @@ public class NotificationServiceImpl implements NotificationService {
   @Override
   public String deleteNotification(
       String notificationIdForDelete, SessionObject sessionObject, String notificationType) {
-    logger.info("NotificationServiceImpl - deleteNotification - Starts");
+    logger.entry("begin deleteNotification()");
     String message = FdahpStudyDesignerConstants.FAILURE;
     try {
       message =
@@ -58,13 +60,13 @@ public class NotificationServiceImpl implements NotificationService {
     } catch (Exception e) {
       logger.error("NotificationServiceImpl - deleteNotification - ERROR", e);
     }
-    logger.info("NotificationServiceImpl - deleteNotification - Ends");
+    logger.exit("deleteNotification() - Ends");
     return message;
   }
 
   @Override
   public NotificationBO getNotification(String notificationId) {
-    logger.info("NotificationServiceImpl - getNotification - Starts");
+    logger.entry("begin getNotification()");
     NotificationBO notificationBO = null;
     try {
       notificationBO = notificationDAO.getNotification(notificationId);
@@ -96,13 +98,13 @@ public class NotificationServiceImpl implements NotificationService {
     } catch (Exception e) {
       logger.error("NotificationServiceImpl - getNotification - ERROR", e);
     }
-    logger.info("NotificationServiceImpl - getNotification - Ends");
+    logger.exit("getNotification() - Ends");
     return notificationBO;
   }
 
   @Override
   public List<NotificationHistoryBO> getNotificationHistoryListNoDateTime(String notificationId) {
-    logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime() - Starts");
+    logger.entry("begin getNotificationHistoryListNoDateTime()");
     List<NotificationHistoryBO> notificationHistoryListNoDateTime = null;
     try {
       notificationHistoryListNoDateTime =
@@ -129,20 +131,20 @@ public class NotificationServiceImpl implements NotificationService {
     } catch (Exception e) {
       logger.error("NotificationServiceImpl - getNotificationHistoryListNoDateTime - ERROR", e);
     }
-    logger.info("NotificationServiceImpl - getNotificationHistoryListNoDateTime - Ends");
+    logger.exit("getNotificationHistoryListNoDateTime() - Ends");
     return notificationHistoryListNoDateTime;
   }
 
   @Override
   public List<NotificationBO> getNotificationList(String studyId, String type) {
-    logger.info("NotificationServiceImpl - getNotificationList() - Starts");
+    logger.entry("begin getNotificationList()");
     List<NotificationBO> notificationList = null;
     try {
       notificationList = notificationDAO.getNotificationList(studyId, type);
     } catch (Exception e) {
       logger.error("NotificationServiceImpl - getNotificationList() - ERROR ", e);
     }
-    logger.info("NotificationServiceImpl - getNotificationList() - Ends , e");
+    logger.exit("getNotificationList() - Ends");
     return notificationList;
   }
 
@@ -153,7 +155,7 @@ public class NotificationServiceImpl implements NotificationService {
       String buttonType,
       SessionObject sessionObject,
       String customStudyId) {
-    logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
+    logger.entry("begin saveOrUpdateOrResendNotification()");
     String notificationId = null;
     try {
       if (notificationBO != null) {
@@ -173,7 +175,7 @@ public class NotificationServiceImpl implements NotificationService {
     } catch (Exception e) {
       logger.error("NotificationServiceImpl - saveOrUpdateNotification - ERROR", e);
     }
-    logger.info("NotificationServiceImpl - saveOrUpdateNotification - Ends");
+    logger.exit("saveOrUpdateOrResendNotification() - Ends");
     return notificationId;
   }
 
@@ -183,9 +185,9 @@ public class NotificationServiceImpl implements NotificationService {
 
   @Override
   public List<String> getGatwayAppList() {
-    logger.info("NotificationServiceImpl - saveOrUpdateNotification - Starts");
+    logger.entry("begin getGatwayAppList()");
     List<String> gatewayAppList = new ArrayList<>(new HashSet(notificationDAO.getGatwayAppList()));
-    logger.info("NotificationServiceImpl - saveOrUpdateNotification - Ends");
+    logger.exit("getGatwayAppList() - Ends");
     return gatewayAppList;
   }
 }

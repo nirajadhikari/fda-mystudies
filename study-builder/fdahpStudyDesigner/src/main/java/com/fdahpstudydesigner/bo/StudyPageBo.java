@@ -29,6 +29,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -66,6 +67,8 @@ public class StudyPageBo implements Serializable {
 
   @Column(name = "title")
   private String title;
+
+  @Transient public String signedUrl;
 
   public String getCreatedBy() {
     return createdBy;
@@ -137,5 +140,13 @@ public class StudyPageBo implements Serializable {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public String getSignedUrl() {
+    return signedUrl;
+  }
+
+  public void setSignedUrl(String signedUrl) {
+    this.signedUrl = signedUrl;
   }
 }

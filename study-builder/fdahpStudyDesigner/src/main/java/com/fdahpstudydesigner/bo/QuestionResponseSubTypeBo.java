@@ -92,6 +92,10 @@ public class QuestionResponseSubTypeBo implements Serializable {
   @Column(name = "value")
   private String value;
 
+  @Transient private String signedImage;
+
+  @Transient private String signedSelectedImage;
+
   public Boolean getActive() {
     return active;
   }
@@ -204,7 +208,19 @@ public class QuestionResponseSubTypeBo implements Serializable {
     this.value = value;
   }
 
-  public Integer getStudyVersion() {
-    return studyVersion;
+  public String getSignedImage() {
+    return signedImage;
+  }
+
+  public String getSignedSelectedImage() {
+    return signedSelectedImage;
+  }
+
+  public void setSignedImage(String signedImage) {
+    this.signedImage = signedImage;
+  }
+
+  public void setSignedSelectedImage(String signedSelectedImage) {
+    this.signedSelectedImage = signedSelectedImage;
   }
 }
