@@ -3864,7 +3864,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
                             + " and QSBO.stepType=:stepType "
                             + " and QSBO.active=1 and QSBO.questionnairesId=:questionnairesId ")
                     .setString("fromId", questionsBo.getFromId())
-                    .setInteger("questionnairesId", questionsBo.getQuestionnaireId())
+                    .setString("questionnairesId", questionsBo.getQuestionnaireId())
                     .setString("stepType", FdahpStudyDesignerConstants.FORM_STEP);
           } else {
             query =

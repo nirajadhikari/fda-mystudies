@@ -137,7 +137,7 @@ public class QuestionsBo implements Serializable {
 
   @Transient private String stepType;
 
-  @Transient private Integer questionnaireId;
+  @Transient private String questionnaireId;
 
   @Transient private String fromId;
 
@@ -223,7 +223,7 @@ public class QuestionsBo implements Serializable {
     return question;
   }
 
-  public Integer getQuestionnaireId() {
+  public String getQuestionnaireId() {
     return questionnaireId;
   }
 
@@ -359,7 +359,7 @@ public class QuestionsBo implements Serializable {
     this.question = question;
   }
 
-  public void setQuestionnaireId(Integer questionnaireId) {
+  public void setQuestionnaireId(String questionnaireId) {
     this.questionnaireId = questionnaireId;
   }
 
