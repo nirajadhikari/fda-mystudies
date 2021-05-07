@@ -3853,7 +3853,7 @@ public class StudyDAOImpl implements StudyDAO {
             comprehensionTestQuestionBo.getResponseList()) {
           if ((comprehensionTestResponseBo.getResponseOption() != null)
               && !comprehensionTestResponseBo.getResponseOption().isEmpty()) {
-            if (comprehensionTestResponseBo.getComprehensionTestQuestionId() == null) {
+            if (StringUtils.isEmpty(comprehensionTestResponseBo.getComprehensionTestQuestionId())) {
               comprehensionTestResponseBo.setComprehensionTestQuestionId(
                   comprehensionTestQuestionBo.getId());
             }
