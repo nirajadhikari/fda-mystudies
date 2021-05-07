@@ -3407,7 +3407,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           addOrUpdateQuestionnairesStepsBo.setQuestionnairesId(
               questionnairesStepsBo.getQuestionnairesId());
         }
-        if (questionnairesStepsBo.getInstructionFormId() != null) {
+        if (StringUtils.isNotEmpty(questionnairesStepsBo.getInstructionFormId())) {
           addOrUpdateQuestionnairesStepsBo.setInstructionFormId(
               questionnairesStepsBo.getInstructionFormId());
         }
@@ -3480,7 +3480,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               "update QuestionnairesStepsBo QSBO set QSBO.destinationStep=:stepId"
                   + " where "
                   + "QSBO.destinationStep="
-                  + "0"
+                  + String.valueOf(0)
                   + " and QSBO.sequenceNo=:sequenceNo"
                   + " and QSBO.questionnairesId=:questionnairesId ";
           session
