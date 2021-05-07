@@ -34,6 +34,7 @@ import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_CHAN
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.PASSWORD_ENFORCEMENT_EMAIL_SENT;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_ACCOUNT_UPDATED_FAILED;
 import static com.fdahpstudydesigner.common.StudyBuilderAuditEvent.USER_RECORD_VIEWED;
+
 import com.fdahpstudydesigner.bean.AuditLogEventRequest;
 import com.fdahpstudydesigner.bean.StudyListBean;
 import com.fdahpstudydesigner.bo.RoleBO;
@@ -203,7 +204,7 @@ public class UsersController {
             FdahpStudyDesignerUtil.isEmpty(request.getParameter("ownUser"))
                 ? ""
                 : request.getParameter("ownUser");
-        if (null == userBO.getUserId()) {
+        if (StringUtils.isEmpty(userBO.getUserId())) {
           addFlag = true;
           userBO.setCreatedBy(userSession.getUserId());
           userBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
@@ -213,7 +214,7 @@ public class UsersController {
           userBO.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
         }
 
-        if (userBO.getRoleId().equals(1)) {
+        if (userBO.getRoleId().equals("1")) {
           permissions = FdahpStudyDesignerConstants.SUPER_ADMIN_PERMISSIONS;
         } else {
           if (!"".equals(manageNotifications)) {

@@ -160,7 +160,7 @@ public class UsersDAOImpl implements UsersDAO {
                     .setParameterList("permissions", permissionList)
                     .list());
         userBO2.setPermissionList(permissionSet);
-        userBO2.setAccessLevel(userBO2.getRoleId().equals(1) ? "SUPERADMIN" : "STUDY ADMIN");
+        userBO2.setAccessLevel(userBO2.getRoleId().equals("1") ? "SUPERADMIN" : "STUDY ADMIN");
         session.update(userBO2);
         userIdAccessLevelInfo.setAccessLevel(userBO2.getAccessLevel());
       } else {
@@ -178,7 +178,7 @@ public class UsersDAOImpl implements UsersDAO {
 
       if (!"".equals(selectedStudies)
           && !"".equals(permissionValues)
-          && userBO2.getRoleId().equals(2)) {
+          && userBO2.getRoleId().equals("2")) {
         selectedStudy = selectedStudies.split(",");
         permissionValue = permissionValues.split(",");
         List<String> selectedStudiesList = Arrays.asList(selectedStudies.split(","));
@@ -211,7 +211,7 @@ public class UsersDAOImpl implements UsersDAO {
             session.save(studyPermissionBO);
           }
         }
-      } else if (userBO2.getRoleId().equals(1)) {
+      } else if (userBO2.getRoleId().equals("1")) {
         query =
             session.createQuery(
                 " FROM StudyBo SBO WHERE SBO.version = 0 AND SBO.status <> :deActivateStatus");
