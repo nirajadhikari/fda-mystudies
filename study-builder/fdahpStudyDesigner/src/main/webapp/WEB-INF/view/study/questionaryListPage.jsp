@@ -274,20 +274,20 @@
         } else {
           datarow.push(obj.frequency == 'Manually Schedule' ? 'Custom schedule' : obj.frequency);
         }
-        var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewQuestionnaires(\""
-            + obj.id + "\");'></span>";
+        var actionDiv = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewQuestionnaires(&#34;"
+            + obj.id + "&#34;);'></span>";
         if (obj.status) {
-          actionDiv += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires(\""
-              + obj.id + "\");'></span>";
+          actionDiv += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires(&#34;"
+              + obj.id + "&#34;);'></span>";
         } else {
-          actionDiv += "<span class='edit-inc-draft mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires(\""
-              + obj.id + "\");'></span>";
+          actionDiv += "<span class='edit-inc-draft mr-md mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editQuestionnaires(&#34;"
+              + obj.id + "&#34;);'></span>";
         }
-        actionDiv += "<span class='sprites_icon copy  mr-lg' data-toggle='tooltip' data-placement='top' title='Copy' onclick='copyQuestionnaire(\""
-            + obj.id + "\");'></span>";
+        actionDiv += "<span class='sprites_icon copy  mr-lg' data-toggle='tooltip' data-placement='top' title='Copy' onclick='copyQuestionnaire(&#34;"
+            + obj.id + "&#34;);'></span>";
 
-        actionDiv += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteQuestionnaire(\""
-            + obj.id + "\");'></span>";
+        actionDiv += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteQuestionnaire(&#34;"
+            + obj.id + "&#34;);'></span>";
         datarow.push(actionDiv);
         $('#questionnaire_list').DataTable().row.add(datarow);
       });

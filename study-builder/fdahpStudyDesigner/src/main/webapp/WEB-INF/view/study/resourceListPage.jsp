@@ -315,17 +315,17 @@
           } else {
             datarow.push(obj.title);
           }
-          var actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewResourceInfo(\'"
-              + obj.id + "\');'></span>";
+          var actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewResourceInfo(&#34;"
+              + obj.id + "&#34;);'></span>";
           if (obj.status) {
-            actions += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editResourceInfo(\"" + obj.id
-                + "\");'></span>"
+            actions += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editResourceInfo(&#34;" + obj.id
+                + "&#34;);'></span>"
           } else {
-            actions += "<span class='sprites_icon edit-inc-draft mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editResourceInfo(\""
-                + obj.id + "\");'></span>";
+            actions += "<span class='sprites_icon edit-inc-draft mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editResourceInfo(&#34;"
+                + obj.id + "&#34;);'></span>";
           }
-          actions += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteResourceInfo(\"" + obj.id
-              + "\");'></span>";
+          actions += "<span class='sprites_icon copy delete' data-toggle='tooltip' data-placement='top' title='Delete' onclick='deleteResourceInfo(&#34;" + obj.id
+              + "&#34;);'></span>";
           datarow.push(actions);
           $('#resource_list').DataTable().row.add(datarow);
 

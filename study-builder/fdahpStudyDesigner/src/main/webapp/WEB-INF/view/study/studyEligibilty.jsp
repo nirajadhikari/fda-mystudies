@@ -638,8 +638,8 @@
                     + ' mr-md mr-lg  editIcon" data-toggle="tooltip" data-placement="top" title="Edit"  etId="'
                     + obj.id
                     + '"></span>'
-                    + '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns(\''
-                    + obj.id + '\',this)"></span> '
+                    + '<span class="sprites_icon copy delete deleteIcon" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteEligibiltyTestQusAns(&#34;'
+                    + obj.id + '&#34;,this)"></span> '
                      datarow.push(actions);
                 $('#consent_list').DataTable().row.add(datarow);
               });
