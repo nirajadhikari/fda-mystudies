@@ -3480,7 +3480,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
               "update QuestionnairesStepsBo QSBO set QSBO.destinationStep=:stepId"
                   + " where "
                   + "QSBO.destinationStep="
-                  + 0
+                  + "0"
                   + " and QSBO.sequenceNo=:sequenceNo"
                   + " and QSBO.questionnairesId=:questionnairesId ";
           session
@@ -3696,14 +3696,21 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
       if ((questionsBo != null)
           && (questionsBo.getId() != null)
           && (questionsBo.getFromId() != null)) {
-        QuestionReponseTypeBo addQuestionReponseTypeBo =
+
+        QuestionReponseTypeBo addQuestionReponseTypeBo = questionsBo.getQuestionReponseTypeBo();
+        if (StringUtils.isEmpty(addQuestionReponseTypeBo.getQuestionsResponseTypeId())) {
+          addQuestionReponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
+        }
+
+        addQuestionReponseTypeBo =
             getQuestionsResponseTypeBo(questionsBo.getQuestionReponseTypeBo(), session);
         if (addQuestionReponseTypeBo != null) {
-          if (addQuestionReponseTypeBo.getQuestionsResponseTypeId() == null) {
+          if (StringUtils.isEmpty(addQuestionReponseTypeBo.getQuestionsResponseTypeId())) {
             addQuestionReponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
           }
           session.saveOrUpdate(addQuestionReponseTypeBo);
         }
+
         questionsBo.setQuestionReponseTypeBo(addQuestionReponseTypeBo);
         if ((questionsBo.getQuestionResponseSubTypeList() != null)
             && !questionsBo.getQuestionResponseSubTypeList().isEmpty()) {
@@ -4355,13 +4362,16 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
           if ((questionsBo != null)
               && (questionsBo.getId() != null)
               && (questionnairesStepsBo.getQuestionReponseTypeBo() != null)) {
+
             QuestionReponseTypeBo questionResponseTypeBo =
+                questionnairesStepsBo.getQuestionReponseTypeBo();
+            if (StringUtils.isEmpty(questionResponseTypeBo.getQuestionsResponseTypeId())) {
+              questionResponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
+            }
+            questionResponseTypeBo =
                 getQuestionsResponseTypeBo(
                     questionnairesStepsBo.getQuestionReponseTypeBo(), session);
             if (questionResponseTypeBo != null) {
-              if (questionResponseTypeBo.getQuestionsResponseTypeId() == null) {
-                questionResponseTypeBo.setQuestionsResponseTypeId(questionsBo.getId());
-              }
               session.saveOrUpdate(questionResponseTypeBo);
             }
             addOrUpdateQuestionnairesStepsBo.setQuestionReponseTypeBo(questionResponseTypeBo);
