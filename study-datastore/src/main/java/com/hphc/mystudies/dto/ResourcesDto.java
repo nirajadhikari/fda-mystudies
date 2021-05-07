@@ -131,7 +131,7 @@ public class ResourcesDto implements Serializable {
   private Integer sequenceNo;
 
   @Column(name = "anchor_date_id")
-  private Integer anchorDateId;
+  private String anchorDateId;
 
   public String getId() {
     return id;
@@ -349,11 +349,11 @@ public class ResourcesDto implements Serializable {
     this.sequenceNo = sequenceNo;
   }
 
-  public Integer getAnchorDateId() {
+  public String getAnchorDateId() {
     return anchorDateId;
   }
 
-  public void setAnchorDateId(Integer anchorDateId) {
+  public void setAnchorDateId(String anchorDateId) {
     this.anchorDateId = anchorDateId;
   }
 }

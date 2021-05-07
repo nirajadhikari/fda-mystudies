@@ -124,7 +124,7 @@ public class ResourceBO implements Serializable {
   private boolean yDaysSign = false;
 
   @Column(name = "anchor_date_id")
-  private Integer anchorDateId;
+  private String anchorDateId;
 
   public String getCreatedBy() {
     return createdBy;
@@ -326,11 +326,11 @@ public class ResourceBO implements Serializable {
     this.yDaysSign = yDaysSign;
   }
 
-  public Integer getAnchorDateId() {
+  public String getAnchorDateId() {
     return anchorDateId;
   }
 
-  public void setAnchorDateId(Integer anchorDateId) {
+  public void setAnchorDateId(String anchorDateId) {
     this.anchorDateId = anchorDateId;
   }
 }

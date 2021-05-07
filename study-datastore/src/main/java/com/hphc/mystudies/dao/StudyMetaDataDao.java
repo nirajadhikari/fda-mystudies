@@ -1009,7 +1009,7 @@ public class StudyMetaDataDao {
                             .setString("scheduleType", StudyMetaDataConstants.SCHEDULETYPE_REGULAR)
                             .setString(
                                 "frequencyType", StudyMetaDataConstants.FREQUENCY_TYPE_ONE_TIME)
-                            .setInteger("anchorDate", resourcesDto.getAnchorDateId())
+                            .setString("anchorDate", resourcesDto.getAnchorDateId())
                             .list();
                     if ((null != result) && !result.isEmpty()) {
                       Object[] objects = (Object[]) result.get(0);
@@ -1039,7 +1039,7 @@ public class StudyMetaDataDao {
                                   "scheduleType", StudyMetaDataConstants.SCHEDULETYPE_REGULAR)
                               .setString(
                                   "frequencyType", StudyMetaDataConstants.FREQUENCY_TYPE_ONE_TIME)
-                              .setInteger("anchorDate", resourcesDto.getAnchorDateId())
+                              .setString("anchorDate", resourcesDto.getAnchorDateId())
                               .list();
                       if ((null != result1) && !result1.isEmpty()) {
                         Object[] objects = (Object[]) result1.get(0);

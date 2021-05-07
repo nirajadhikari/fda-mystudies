@@ -1953,8 +1953,8 @@ public class ActivityMetaDataDao {
                           + StudyMetaDataConstants.QUESTIONAIRE_STEP_TYPE_FORM)
                       .toString());
           QuestionnaireActivityStepsBean formBean = new QuestionnaireActivityStepsBean();
-          List<QuestionnaireActivityStepsBean> formSteps = new ArrayList<>();
-          HashMap<String, QuestionnaireActivityStepsBean> formStepsMap = new HashMap<>();
+          List<QuestionnaireStepsBean> formSteps = new ArrayList<>();
+          HashMap<String, QuestionnaireStepsBean> formStepsMap = new HashMap<>();
 
           formBean.setType(StudyMetaDataConstants.QUESTIONAIRE_STEP_TYPE_FORM.toLowerCase());
           formBean.setResultType(StudyMetaDataConstants.RESULT_TYPE_GROUPED);
