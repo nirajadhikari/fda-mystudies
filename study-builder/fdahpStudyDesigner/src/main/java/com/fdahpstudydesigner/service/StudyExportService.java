@@ -441,7 +441,6 @@ public class StudyExportService {
                 questionResponseTypeBo.getActive(),
                 questionResponseTypeBo.getConditionFormula(),
                 questionResponseTypeBo.getDefaultDate(),
-                questionResponseTypeBo.getDefaultDate(),
                 questionResponseTypeBo.getDefaultTime(),
                 questionResponseTypeBo.getDefaultValue(),
                 questionResponseTypeBo.getFormulaBasedLogic(),
@@ -1322,7 +1321,9 @@ public class StudyExportService {
     for (Object column : columns) {
       column = ((String) column).trim();
       if (values[i] instanceof String || values[i] instanceof Timestamp) {
-        sqlQuery = sqlQuery.replace("<" + column + ">", "'" + values[i] + "'");
+        sqlQuery =
+            sqlQuery.replace(
+                "<" + column + ">", "'" + values[i].toString().replaceAll("'", "") + "'");
       } else {
         sqlQuery = sqlQuery.replace("<" + column + ">", "" + values[i] + "");
       }

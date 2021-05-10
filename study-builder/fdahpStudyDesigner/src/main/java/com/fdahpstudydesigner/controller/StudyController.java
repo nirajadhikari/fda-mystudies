@@ -5295,7 +5295,6 @@ public class StudyController {
       throws IOException {
     logger.info("StudyController - exportStudy() - Starts");
     String message = FdahpStudyDesignerConstants.FAILURE;
-    String successMessage = "";
 
     JSONObject jsonobject = new JSONObject();
     PrintWriter out = null;
@@ -5307,16 +5306,7 @@ public class StudyController {
     String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
     if (StringUtils.isNotEmpty(filePath)) {
       message = FdahpStudyDesignerConstants.SUCCESS;
-      successMessage = FdahpStudyDesignerConstants.ACTION_EXPORT_SUCCESS_MSG;
-      request.getSession().setAttribute(FdahpStudyDesignerConstants.ACTION_SUC_MSG, successMessage);
-    } else {
-      request
-          .getSession()
-          .setAttribute(
-              FdahpStudyDesignerConstants.ERR_MSG,
-              FdahpStudyDesignerConstants.FAILURE_EXPORT_STUDY_MESSAGE);
     }
-
     jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
     response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
     out = response.getWriter();

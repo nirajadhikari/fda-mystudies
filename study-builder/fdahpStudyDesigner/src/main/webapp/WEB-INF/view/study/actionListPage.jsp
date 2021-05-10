@@ -331,13 +331,28 @@
           "${_csrf.parameterName}": "${_csrf.token}",
         },
         
-        error: function status(data, status) {
-          $("body").removeClass("loading");
-        },
-        complete: function () {
-          $('.actBut').removeAttr('disabled');
-        }
-      });
+        success: function (data) {
+            var message = data.message;
+            if (message == "SUCCESS") {
+              $("#alertMsg").removeClass('e-box').addClass('s-box').text("Study exported successfully.");
+              $('#alertMsg').show();
+            } else {
+              var errMsg = data.errMsg;
+              if (errMsg != '' && errMsg != null && typeof errMsg != 'undefined') {
+                $("#alertMsg").removeClass('s-box').addClass('e-box').text(errMsg);
+              } else {
+                $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+              }
+            }
+            setTimeout(hideDisplayMessage, 5000);
+          },
+          error: function (xhr, status, error) {
+            $(item).prop('disabled', false);
+            $('#alertMsg').show();
+            $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
+            setTimeout(hideDisplayMessage, 5000);
+          }
+        });
 }
   
   function copyStudy(){
