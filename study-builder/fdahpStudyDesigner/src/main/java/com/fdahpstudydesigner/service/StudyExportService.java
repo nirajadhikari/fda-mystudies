@@ -44,6 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -248,15 +249,6 @@ public class StudyExportService {
           newQuestionnaireIds,
           questionFormInstructionIds);
 
-      addStudyActiveTaskInsertSql(
-          activeTaskBos, insertSqlStatements, newActiveTaskIds, newStudyId, newCustomId);
-      addActiveTaskAtrributeValuesInsertSql(
-          activeTaskAtrributeValuesBos, insertSqlStatements, newActiveTaskIds);
-      addActiveTaskCustomScheduleBoInsertSqlQuery(
-          activeTaskCustomScheduleBoList, insertSqlStatements, newActiveTaskIds);
-      addActiveTaskFrequencyBoInsertSqlQuery(
-          activeTaskFrequencyBoList, insertSqlStatements, newActiveTaskIds);
-
       addNotificationInsertSql(
           notificationBOs,
           insertSqlStatements,
@@ -267,10 +259,18 @@ public class StudyExportService {
 
       addResourceInsertSql(resourceBOs, insertSqlStatements, newStudyId);
 
+      addStudyActiveTaskInsertSql(
+          activeTaskBos, insertSqlStatements, newActiveTaskIds, newStudyId, newCustomId);
+      addActiveTaskAtrributeValuesInsertSql(
+          activeTaskAtrributeValuesBos, insertSqlStatements, newActiveTaskIds);
+      addActiveTaskCustomScheduleBoInsertSqlQuery(
+          activeTaskCustomScheduleBoList, insertSqlStatements, newActiveTaskIds);
+      addActiveTaskFrequencyBoInsertSqlQuery(
+          activeTaskFrequencyBoList, insertSqlStatements, newActiveTaskIds);
+
     } catch (SQLException e) {
       logger.error(String.format("export study failed due to %s", e.getMessage()), e);
     }
-
     return saveFile(studyBo, insertSqlStatements);
   }
 
@@ -337,10 +337,13 @@ public class StudyExportService {
     try {
       StringBuilder content = new StringBuilder();
       for (String insertSqlStatement : insertSqlStatements) {
-        content.append(insertSqlStatement);
-        content.append(System.lineSeparator());
+        if (StringUtils.isNotEmpty(insertSqlStatement)) {
+          content.append(insertSqlStatement);
+          content.append(System.lineSeparator());
+        }
       }
       String sqlStatemets = content.toString();
+
       Storage storage = StorageOptions.getDefaultInstance().getService();
       BlobInfo blobInfo =
           BlobInfo.newBuilder(map.get("cloud.bucket.name"), absoluteFileName).build();
@@ -875,37 +878,42 @@ public class StudyExportService {
     }
     List<String> notificationBoBoInsertQueryList = new ArrayList<>();
     String notificationBoInsertQuery = null;
+    String newActiveTaskId = null;
     for (NotificationBO notificationBO : notificationBOs) {
       for (String newQuestionnaireId : newQuestionnaireIds) {
-        for (String newActiveTaskId : newActiveTaskIds) {
-          notificationBoInsertQuery =
-              prepareInsertQuery(
-                  StudyExportSqlQueries.NOTIFICATION,
-                  IdGenerator.id(),
-                  newActiveTaskId,
-                  notificationBO.isAnchorDate(),
-                  notificationBO.getAppId(),
-                  notificationBO.getCreatedBy(),
-                  notificationBO.getCreatedOn(),
-                  newCustomId,
-                  notificationBO.getModifiedBy(),
-                  notificationBO.getModifiedOn(),
-                  notificationBO.isNotificationAction(),
-                  notificationBO.isNotificationDone(),
-                  notificationBO.getNotificationScheduleType(),
-                  notificationBO.isNotificationSent(),
-                  notificationBO.isNotificationStatus(),
-                  notificationBO.getNotificationSubType(),
-                  notificationBO.getNotificationText(),
-                  notificationBO.getNotificationType(),
-                  newQuestionnaireId,
-                  notificationBO.getResourceId(),
-                  notificationBO.getScheduleDate(),
-                  notificationBO.getScheduleTime(),
-                  newStudyId,
-                  notificationBO.getxDays(),
-                  notificationBO.getScheduleTimestamp());
+        if (CollectionUtils.isNotEmpty(newActiveTaskIds)) {
+          for (String activeTaskId : newActiveTaskIds) {
+            newActiveTaskId = activeTaskId;
+          }
         }
+
+        notificationBoInsertQuery =
+            prepareInsertQuery(
+                StudyExportSqlQueries.NOTIFICATION,
+                IdGenerator.id(),
+                StringUtils.isNotEmpty(newActiveTaskId) ? newActiveTaskId : null,
+                notificationBO.isAnchorDate(),
+                notificationBO.getAppId(),
+                notificationBO.getCreatedBy(),
+                notificationBO.getCreatedOn(),
+                newCustomId,
+                notificationBO.getModifiedBy(),
+                notificationBO.getModifiedOn(),
+                notificationBO.isNotificationAction(),
+                notificationBO.isNotificationDone(),
+                notificationBO.getNotificationScheduleType(),
+                notificationBO.isNotificationSent(),
+                notificationBO.isNotificationStatus(),
+                notificationBO.getNotificationSubType(),
+                notificationBO.getNotificationText(),
+                notificationBO.getNotificationType(),
+                StringUtils.isNotEmpty(newQuestionnaireId) ? newQuestionnaireId : null,
+                notificationBO.getResourceId(),
+                notificationBO.getScheduleDate(),
+                notificationBO.getScheduleTime(),
+                newStudyId,
+                notificationBO.getxDays(),
+                notificationBO.getScheduleTimestamp());
       }
 
       notificationBoBoInsertQueryList.add(notificationBoInsertQuery);
@@ -1322,8 +1330,7 @@ public class StudyExportService {
       column = ((String) column).trim();
       if (values[i] instanceof String || values[i] instanceof Timestamp) {
         sqlQuery =
-            sqlQuery.replace(
-                "<" + column + ">", "'" + values[i].toString().replaceAll("'", "") + "'");
+            sqlQuery.replace("<" + column + ">", "'" + values[i].toString().replace("'", "") + "'");
       } else {
         sqlQuery = sqlQuery.replace("<" + column + ">", "" + values[i] + "");
       }
