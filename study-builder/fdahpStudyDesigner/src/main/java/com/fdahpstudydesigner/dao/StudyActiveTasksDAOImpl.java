@@ -374,7 +374,7 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
       // to get only "Fetal kick counter" type of active task based on
       // Android platform
       Query query = null;
-      if (StringUtils.isNotEmpty(platformType) && platformType.equals("A")) {
+      if (StringUtils.isNotEmpty(platformType) && platformType.contains("A")) {
         query =
             session
                 .createQuery(
