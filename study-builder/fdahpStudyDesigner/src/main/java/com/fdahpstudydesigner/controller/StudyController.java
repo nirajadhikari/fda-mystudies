@@ -3340,7 +3340,7 @@ public class StudyController {
             auditRequest.setStudyVersion(studyBo.getVersion().toString());
             auditRequest.setAppId(studyBo.getAppId());
             auditLogEventHelper.logEvent(STUDY_CONSENT_SECTIONS_SAVED_OR_UPDATED, auditRequest);
-            if (consentInfoBo.getId() != null) {
+            if (StringUtils.isNotEmpty(consentInfoBo.getId())) {
               request
                   .getSession()
                   .setAttribute(
@@ -3462,7 +3462,7 @@ public class StudyController {
         if (StringUtils.isNotEmpty(resourseId)) {
           values.put("resource_id", resourseId.toString());
           auditLogEventHelper.logEvent(STUDY_NEW_RESOURCE_CREATED, auditRequest, values);
-          if ((resourceBO != null) && (resourceBO.getId() == null)) {
+          if ((resourceBO != null) && (StringUtils.isEmpty(resourceBO.getId()))) {
             if (("save").equalsIgnoreCase(buttonText)) {
               auditLogEventHelper.logEvent(STUDY_RESOURCE_SAVED_OR_UPDATED, auditRequest, values);
               request
@@ -3918,7 +3918,7 @@ public class StudyController {
                   notificationBO, notificationType, buttonType, sessionObject, customStudyId);
         }
         if (StringUtils.isNotEmpty(notificationId)) {
-          if (notificationBO.getNotificationId() == null) {
+          if (StringUtils.isEmpty(notificationBO.getNotificationId())) {
             if ("save".equalsIgnoreCase(buttonType)) {
               request
                   .getSession()

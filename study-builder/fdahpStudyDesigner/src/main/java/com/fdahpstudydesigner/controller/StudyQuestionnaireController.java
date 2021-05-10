@@ -1991,7 +1991,7 @@ public class StudyQuestionnaireController {
             studyService.markAsCompleted(
                 studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
-          if (instructionsBo.getId() != null) {
+          if (StringUtils.isNotEmpty(instructionsBo.getId())) {
             request
                 .getSession()
                 .setAttribute(
@@ -2169,7 +2169,7 @@ public class StudyQuestionnaireController {
             studyService.markAsCompleted(
                 studyId, FdahpStudyDesignerConstants.QUESTIONNAIRE, false, sesObj, customStudyId);
           }
-          if (questionnairesStepsBo.getStepId() != null) {
+          if (StringUtils.isNotEmpty(questionnairesStepsBo.getStepId())) {
             request
                 .getSession()
                 .setAttribute(

@@ -304,7 +304,7 @@ public class NotificationController {
               .setAttribute(
                   FdahpStudyDesignerConstants.SUC_MSG,
                   propMap.get("save.notification.success.message"));
-        } else if ((notificationBO.getNotificationId() != null)
+        } else if ((StringUtils.isNotEmpty(notificationBO.getNotificationId()))
             && "update".equalsIgnoreCase(buttonType)) {
           request
               .getSession()
