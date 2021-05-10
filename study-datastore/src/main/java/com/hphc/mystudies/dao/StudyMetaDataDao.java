@@ -213,7 +213,7 @@ public class StudyMetaDataDao {
             }
 
             resourceBean.setResourcesId(
-                resource.getId() == null ? "" : String.valueOf(resource.getId()));
+                StringUtils.isEmpty(resource.getId()) ? "" : String.valueOf(resource.getId()));
             resourceBeanList.add(resourceBean);
           }
           gatewayInfoResponse.setResources(resourceBeanList);
@@ -940,7 +940,9 @@ public class StudyMetaDataDao {
                           12));
             }
             resourcesBean.setResourcesId(
-                resourcesDto.getId() == null ? "" : String.valueOf(resourcesDto.getId()));
+                StringUtils.isEmpty(resourcesDto.getId())
+                    ? ""
+                    : String.valueOf(resourcesDto.getId()));
 
             if (!resourcesDto.isResourceVisibility()) {
               Map<String, Object> availability = new LinkedHashMap<>();
