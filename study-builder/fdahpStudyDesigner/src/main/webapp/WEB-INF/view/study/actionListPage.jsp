@@ -139,32 +139,49 @@
       <div class="form-group mr-sm" style="white-space: normal;">
         <button type="button" class="btn btn-default gray-btn-action "
                 id="exportId" onclick="exportStudy();"
-           
-                <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Export
+
+                <c:choose>
+                <c:when test="${not empty permission}"> disabled </c:when>
+                <c:when test="${not studyPermissionBO.viewPermission}"> disabled </c:when>
+                </c:choose>>Export
         </button> <span class="sprites_icon copy copy_to_clipboard" id="copy_to_clipboard"
                         data-toggle="tooltip" data-placement="top" title="Copy to clickBoard"></span>
-                        
-                       
-
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
        This action exports study to google cloud storage.
       </div>
       </div>
       
-      
-      
-       <div class="form-group mr-sm" style="white-space: normal;">
+      <div class="form-group mr-sm" style="white-space: normal;">
         <button type="button" class="btn btn-default gray-btn-action "
-                id="exportId" onclick="copyStudy();"
-           
-                <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Copy
+                id="importId" 
+           <c:choose>
+                <c:when test="${not empty permission}"> disabled </c:when>
+                <c:when test="${not studyPermissionBO.viewPermission}"> disabled </c:when>
+           </c:choose>>Import
+        </button>
+         <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
+       This action imports study from google cloud storage.
+      </div>
+   
+           <textarea rows="2" cols="20" id="area" style="display:none"></textarea> 
+       <input type="url" name="url" id="textUrl"  placeholder="Signed url" style="display:none"/> 
+       <input type="submit" id="submit" style="display:none" onclick="importStudy();" />
+          </div>
+       
+      
+
+        <div class="form-group mr-sm" style="white-space: normal;">
+        <button type="button" class="btn btn-default gray-btn-action "
+                id="copyId" onclick="copyStudy();"
+             <c:choose>
+                <c:when test="${not empty permission}"> disabled </c:when>
+                <c:when test="${not studyPermissionBO.viewPermission}"> disabled </c:when>
+             </c:choose>>Copy
         </button>
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
        This action replicates study.
       </div>
       </div>
-      
-      
       
     </div>
   </div>
@@ -411,5 +428,9 @@
       });
 }
   
+  $("#importId").click(function(){
+	  $('#textUrl').show();
+	  $('#submit').show();
+	});
   
 </script>
