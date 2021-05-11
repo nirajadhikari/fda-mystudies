@@ -64,7 +64,7 @@ public class StudyExportService {
 
   private static final String PATH_SEPARATOR = "/";
 
-  private static final String UNDER_DIRECTORY = "InsertSqlQueries";
+  private static final String UNDER_DIRECTORY = "exportStudies";
 
   public String exportStudy(String studyId, String userId) {
 

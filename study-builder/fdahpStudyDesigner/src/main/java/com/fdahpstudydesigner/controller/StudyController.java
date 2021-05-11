@@ -5305,8 +5305,10 @@ public class StudyController {
 
     String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
     if (StringUtils.isNotEmpty(filePath)) {
+      jsonobject.put("signedUrlOfExportStudy", FdahpStudyDesignerUtil.getSignedUrl(filePath, 12));
       message = FdahpStudyDesignerConstants.SUCCESS;
     }
+
     jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
     response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
     out = response.getWriter();

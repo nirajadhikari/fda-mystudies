@@ -141,11 +141,16 @@
                 id="exportId" onclick="exportStudy();"
            
                 <c:if test="${not studyPermissionBO.viewPermission}">disabled</c:if>>Export
-        </button>
+        </button> <span class="sprites_icon copy copy_to_clipboard" id="copy_to_clipboard"
+                        data-toggle="tooltip" data-placement="top" title="Copy to clickBoard"></span>
+                        
+                       
+
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
        This action exports study to google cloud storage.
       </div>
       </div>
+      
       
       
        <div class="form-group mr-sm" style="white-space: normal;">
@@ -320,6 +325,7 @@
     }
   }
   
+  var signedUrl = "";
   function exportStudy(){
 	   var studyId = "${studyBo.id}";
 	  $
@@ -333,6 +339,7 @@
         
         success: function (data) {
             var message = data.message;
+            signedUrl = data.signedUrlOfExportStudy;
             if (message == "SUCCESS") {
               $("#alertMsg").removeClass('e-box').addClass('s-box').text("Study exported successfully.");
               $('#alertMsg').show();
@@ -352,8 +359,34 @@
             $("#alertMsg").removeClass('s-box').addClass('e-box').text("Something went Wrong");
             setTimeout(hideDisplayMessage, 5000);
           }
-        });
+        }); 
 }
+  
+  
+  
+  
+  function doWork(data)
+  {
+	  debugger
+      a = data.signedUrlOfExportStudy;
+  }
+  
+  debugger
+  
+  $('.copy_to_clipboard').on('click', function () {
+	debugger
+	  myFunction();
+  });
+  
+  function copy_password() {
+	    var copyText = document.getElementById("copy_to_clipboard");
+	    var textArea = document.createElement("textarea");
+	    textArea.value = copyText.textContent;
+	    document.body.appendChild(textArea);
+	    textArea.select();
+	    document.execCommand("Copy");
+	    textArea.remove();
+	}
   
   function copyStudy(){
 	  debugger
@@ -377,5 +410,6 @@
         }
       });
 }
+  
   
 </script>
