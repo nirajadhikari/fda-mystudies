@@ -80,7 +80,7 @@ public class StudyExportService {
     StudyBo studyBo = studyDao.getStudy(studyId);
     custumIdMap.put(STUDY_ID + studyBo.getId(), IdGenerator.id());
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
-    String newCustomId = studyBo.getCustomStudyId() + "_" + map.get("studyVersion");
+    String newCustomId = studyBo.getCustomStudyId() + "_" + map.get("release.version");
 
     StudyPermissionBO studyPermissionBo = studyDao.getStudyPermissionBO(studyBo.getId(), userId);
     StudySequenceBo studySequenceBo = studyDao.getStudySequenceByStudyId(studyBo.getId());
