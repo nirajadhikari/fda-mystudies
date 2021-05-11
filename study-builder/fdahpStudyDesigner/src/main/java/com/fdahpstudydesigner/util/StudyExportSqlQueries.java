@@ -2,6 +2,38 @@ package com.fdahpstudydesigner.util;
 
 public class StudyExportSqlQueries {
 
+  private static final String[] ALLOWED_STUDY_TABLE_NAMES = {
+    "active_task",
+    "active_task_attrtibutes_values",
+    "active_task_custom_frequencies",
+    "active_task_frequencies",
+    "active_task_steps",
+    "anchordate_type",
+    "comprehension_test_question",
+    "comprehension_test_response",
+    "consent",
+    "consent_info",
+    "eligibility",
+    "eligibility_test",
+    "eligibility_test_response",
+    "form",
+    "form_mapping",
+    "instructions",
+    "notification",
+    "questionnaires",
+    "questionnaires_custom_frequencies",
+    "questionnaires_frequencies",
+    "questionnaires_steps",
+    "questions",
+    "questions_response_type",
+    "resources",
+    "response_sub_type_value",
+    "response_type_value",
+    "studies",
+    "study_permission",
+    "study_sequence"
+  };
+
   public static final String ACTIVETASK =
       "INSERT INTO `active_task` (`id`, `action`, `active`, `active_task_lifetime_end`, `active_task_lifetime_start`, `anchor_date_id`, `created_by`, `created_date`, `custom_study_id`, `day_of_the_week`, `display_name`, `duration`, `frequency`, `instruction`, `is_Change`, `is_live`, `modified_by`, `modified_date`, `repeat_active_task`, `schedule_type`, `short_title`, `study_id`, `task_type_id`, `task_title`, `version`) VALUES (<id>, <action>, <active>, <active_task_lifetime_end>, <active_task_lifetime_start>, <anchor_date_id>, <created_by>, <created_date>, <custom_study_id>, <day_of_the_week>, <display_name>, <duration>, <frequency>, <instruction>, <is_Change>, <is_live>, <modified_by>, <modified_date>, <repeat_active_task>, <schedule_type>, <short_title>, <study_id>, <task_type_id>, <task_title>, <version>);";
 
@@ -24,7 +56,7 @@ public class StudyExportSqlQueries {
       "INSERT INTO `comprehension_test_question` (`id`, `active`, `created_by`, `created_on`, `modified_by`, `modified_on`, `question_text`, `sequence_no`, `status`, `structure_of_correct_ans`, `study_id`) VALUES (<id>, <active>, <created_by>, <created_on>, <modified_by>, <modified_on>, <question_text>, <sequence_no>, <status>, <structure_of_correct_ans>, <study_id>);";
 
   public static final String COMPREHENSION_TEST_RESPONSE =
-      " INSERT INTO `comprehension_test_response` (`id`, `comprehension_test_question_id`, `correct_answer`, `response_option`) VALUES (<id>, <comprehension_test_question_id>, <correct_answer>, <response_option>);";
+      "INSERT INTO `comprehension_test_response` (`id`, `comprehension_test_question_id`, `correct_answer`, `response_option`) VALUES (<id>, <comprehension_test_question_id>, <correct_answer>, <response_option>);";
 
   public static final String CONSENT =
       "INSERT INTO `consent` (`id`, `allow_without_permission`, `comprehension_test_minimum_score`, `consent_doc_content`, `consent_doc_type`, `created_by`, `created_on`, `custom_study_id`, `e_consent_agree`, `e_consent_datetime`, `e_consent_firstname`, `e_consent_lastname`, `e_consent_signature`, `html_consent`, `learn_more_text`, `is_live`, `long_description`, `modified_by`, `modified_on`, `need_comprehension_test`, `share_data_permissions`, `short_description`, `study_id`, `tagline_description`, `title`, `version`, `enroll_again`) VALUES (<id>, <allow_without_permission>, <comprehension_test_minimum_score>, <consent_doc_content>, <consent_doc_type>, <created_by>, <created_on>, <custom_study_id>, <e_consent_agree>, <e_consent_datetime>, <e_consent_firstname>, <e_consent_lastname>, <e_consent_signature>, <html_consent>, <learn_more_text>, <is_live>, <long_description>, <modified_by>, <modified_on>, <need_comprehension_test>, <share_data_permissions>, <short_description>, <study_id>, <tagline_description>, <title>, <version>, <enroll_again>);";
@@ -55,9 +87,6 @@ public class StudyExportSqlQueries {
 
   public static final String NOTIFICATION_HISTORY =
       "INSERT INTO `notification_history` (`history_id`, `notification_id`, `notification_sent_date_time`) VALUES (<history_id>, <notification_id>, <notification_sent_date_time>);";
-
-  public static final String QUESTION_CONDITION_BRANCHING =
-      "INSERT INTO `question_condtion_branching` (`condition_id`, `active`, `input_type`, `input_type_value`, `parent_sequence_no`, `question_id`, `sequence_no`) VALUES (<condition_id>, <active>, <input_type>, <input_type_value>, <parent_sequence_no>, <question_id>, <sequence_no>);";
 
   public static final String QUESTIONNAIRES =
       "INSERT INTO `questionnaires` (`id`, `active`, `anchor_date_id`, `branching`, `created_by`, `created_date`, `custom_study_id`, `day_of_the_week`, `frequency`, `is_Change`, `is_live`, `modified_by`, `modified_date`, `repeat_questionnaire`, `schedule_type`, `short_title`, `status`, `study_id`, `study_lifetime_end`, `study_lifetime_start`, `title`, `version`) VALUES (<id>, <active>, <anchor_date_id>, <branching>, <created_by>, <created_date>, <custom_study_id>, <day_of_the_week>, <frequency>, <is_Change>, <is_live>, <modified_by>, <modified_date>, <repeat_questionnaire>, <schedule_type>, <short_title>, <status>, <study_id>, <study_lifetime_end>, <study_lifetime_start>, <title>, <version>);";

@@ -144,8 +144,9 @@
                 <c:when test="${not empty permission}"> disabled </c:when>
                 <c:when test="${not studyPermissionBO.viewPermission}"> disabled </c:when>
                 </c:choose>>Export
-        </button> <span class="sprites_icon copy copy_to_clipboard" id="copy_to_clipboard"
+        </button> <span class="sprites_icon copy copy_to_clipboard" id="copy_to_clipboard" 
                         data-toggle="tooltip" data-placement="top" title="Copy to clickBoard"></span>
+                        
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
        This action exports study to google cloud storage.
       </div>
@@ -380,30 +381,17 @@
 }
   
   
-  
-  
-  function doWork(data)
-  {
-	  debugger
-      a = data.signedUrlOfExportStudy;
-  }
-  
-  debugger
-  
   $('.copy_to_clipboard').on('click', function () {
-	debugger
-	  myFunction();
+	$('#copy_to_clipboard').val(signedUrl);
+	var copyText = document.getElementById("copy_to_clipboard");
+    var textArea = document.createElement("textarea");
+    textArea.value = copyText.value;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand("Copy");
+    textArea.remove();
   });
   
-  function copy_password() {
-	    var copyText = document.getElementById("copy_to_clipboard");
-	    var textArea = document.createElement("textarea");
-	    textArea.value = copyText.textContent;
-	    document.body.appendChild(textArea);
-	    textArea.select();
-	    document.execCommand("Copy");
-	    textArea.remove();
-	}
   
   function copyStudy(){
 	  debugger

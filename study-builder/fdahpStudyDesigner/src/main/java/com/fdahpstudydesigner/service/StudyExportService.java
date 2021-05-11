@@ -41,8 +41,11 @@ import com.google.cloud.storage.StorageOptions;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -51,6 +54,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StudyExportService {
+
+  private static final String STUDY_ID = "STUDY_ID_";
 
   private static Logger logger = Logger.getLogger(StudyExportService.class.getName());
 
@@ -64,15 +69,17 @@ public class StudyExportService {
 
   private static final String PATH_SEPARATOR = "/";
 
-  private static final String UNDER_DIRECTORY = "exportStudies";
+  private static final String UNDER_DIRECTORY = "export-studies";
+
+  private Map<String, String> custumIdMap = new HashMap<>();
 
   public String exportStudy(String studyId, String userId) {
 
     List<String> insertSqlStatements = new ArrayList<>();
 
     StudyBo studyBo = studyDao.getStudy(studyId);
+    custumIdMap.put(STUDY_ID + studyBo.getId(), IdGenerator.id());
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
-    String newStudyId = IdGenerator.id();
     String newCustomId = studyBo.getCustomStudyId() + "_" + map.get("studyVersion");
 
     StudyPermissionBO studyPermissionBo = studyDao.getStudyPermissionBO(studyBo.getId(), userId);
@@ -190,30 +197,27 @@ public class StudyExportService {
             questionFormInstructionIds);
 
     try {
-      addStudiesInsertSql(studyBo, insertSqlStatements, newStudyId, newCustomId);
-      addStudyPermissionInsertSql(studyPermissionBo, insertSqlStatements, newStudyId);
-      addStudySequenceInsertSql(studySequenceBo, insertSqlStatements, newStudyId);
+      addStudiesInsertSql(studyBo, insertSqlStatements, newCustomId);
+      addStudyPermissionInsertSql(studyPermissionBo, insertSqlStatements);
+      addStudySequenceInsertSql(studySequenceBo, insertSqlStatements);
 
-      addAnchorDateInsertSql(anchorDate, insertSqlStatements, newStudyId, newCustomId);
-      addStudypagesListInsertSql(studypageList, insertSqlStatements, newStudyId);
+      addAnchorDateInsertSql(anchorDate, insertSqlStatements, newCustomId);
+      addStudypagesListInsertSql(studypageList, insertSqlStatements);
 
-      addEligibilityInsertSql(eligibilityBo, insertSqlStatements, newEligibilityId, newStudyId);
+      addEligibilityInsertSql(eligibilityBo, insertSqlStatements, newEligibilityId);
       addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements, newEligibilityId);
 
-      addConsentBoListInsertSql(consentBoList, insertSqlStatements, newStudyId, newCustomId);
-      addConsentInfoBoListInsertSql(
-          consentInfoBoList, insertSqlStatements, newStudyId, newCustomId);
+      addConsentBoListInsertSql(consentBoList, insertSqlStatements, newCustomId);
+      addConsentInfoBoListInsertSql(consentInfoBoList, insertSqlStatements, newCustomId);
 
       addComprehensionTestQuestionListInsertSql(
-          comprehensionTestQuestionBoList,
-          insertSqlStatements,
-          newStudyId,
-          newComprehensionTestQuestionIds);
+          comprehensionTestQuestionBoList, insertSqlStatements, newComprehensionTestQuestionIds);
+
       addComprehensionTestResponseBoListInsertSql(
           comprehensionTestResponseBoList, insertSqlStatements, newComprehensionTestQuestionIds);
 
       addQuestionnaireBoListInsertSql(
-          questionnairesList, insertSqlStatements, newStudyId, newCustomId, newQuestionnaireIds);
+          questionnairesList, insertSqlStatements, newCustomId, newQuestionnaireIds);
 
       addQuestionnaireFrequenciesBoInsertSql(
           questionnairesFrequenciesBoList, insertSqlStatements, newQuestionnaireIds);
@@ -250,17 +254,12 @@ public class StudyExportService {
           questionFormInstructionIds);
 
       addNotificationInsertSql(
-          notificationBOs,
-          insertSqlStatements,
-          newStudyId,
-          newCustomId,
-          newQuestionnaireIds,
-          newActiveTaskIds);
+          notificationBOs, insertSqlStatements, newCustomId, newQuestionnaireIds, newActiveTaskIds);
 
-      addResourceInsertSql(resourceBOs, insertSqlStatements, newStudyId);
+      addResourceInsertSql(resourceBOs, insertSqlStatements);
 
       addStudyActiveTaskInsertSql(
-          activeTaskBos, insertSqlStatements, newActiveTaskIds, newStudyId, newCustomId);
+          activeTaskBos, insertSqlStatements, newActiveTaskIds, newCustomId);
       addActiveTaskAtrributeValuesInsertSql(
           activeTaskAtrributeValuesBos, insertSqlStatements, newActiveTaskIds);
       addActiveTaskCustomScheduleBoInsertSqlQuery(
@@ -271,7 +270,7 @@ public class StudyExportService {
     } catch (SQLException e) {
       logger.error(String.format("export study failed due to %s", e.getMessage()), e);
     }
-    return saveFile(studyBo, insertSqlStatements);
+    return saveFileToCloudStorage(studyBo, insertSqlStatements);
   }
 
   private void addFormsListInsertSql(
@@ -328,31 +327,44 @@ public class StudyExportService {
     insertSqlStatements.addAll(comprehensionTestResponseBoInserQueryList);
   }
 
-  public String saveFile(StudyBo studyBo, List<String> insertSqlStatements) {
+  public String saveFileToCloudStorage(StudyBo studyBo, List<String> insertSqlStatements) {
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
-    String studyVersion = map.get("studyVersion");
-    String fileName = studyBo.getCustomStudyId() + "_" + studyVersion + ".sql";
-    String absoluteFileName = UNDER_DIRECTORY + PATH_SEPARATOR + fileName;
+    StringBuilder content = new StringBuilder();
 
     try {
-      StringBuilder content = new StringBuilder();
       for (String insertSqlStatement : insertSqlStatements) {
         if (StringUtils.isNotEmpty(insertSqlStatement)) {
           content.append(insertSqlStatement);
           content.append(System.lineSeparator());
         }
       }
-      String sqlStatemets = content.toString();
+
+      byte[] bytes = content.toString().getBytes();
+      String fileName =
+          studyBo.getCustomStudyId()
+              + "_"
+              + map.get("release.version")
+              + "_"
+              + getCRC32Checksum(bytes)
+              + ".sql";
+
+      String absoluteFileName = UNDER_DIRECTORY + PATH_SEPARATOR + fileName;
 
       Storage storage = StorageOptions.getDefaultInstance().getService();
       BlobInfo blobInfo =
           BlobInfo.newBuilder(map.get("cloud.bucket.name"), absoluteFileName).build();
-      storage.create(blobInfo, sqlStatemets.getBytes());
-
+      storage.create(blobInfo, bytes);
+      return absoluteFileName;
     } catch (Exception e) {
       logger.error("Save file to cloud storage failed", e);
     }
-    return absoluteFileName;
+    return null;
+  }
+
+  public long getCRC32Checksum(byte[] bytes) {
+    Checksum crc32 = new CRC32();
+    crc32.update(bytes, 0, bytes.length);
+    return crc32.getValue();
   }
 
   private void addActiveTaskFrequencyBoInsertSqlQuery(
@@ -704,8 +716,7 @@ public class StudyExportService {
   }
 
   private void addStudiesInsertSql(
-      StudyBo studyBo, List<String> insertSqlStatements, String newStudyId, String newCustomId)
-      throws SQLException {
+      StudyBo studyBo, List<String> insertSqlStatements, String newCustomId) throws SQLException {
 
     if (studyBo == null) {
       return;
@@ -714,7 +725,7 @@ public class StudyExportService {
     String studiesInsertQuery =
         prepareInsertQuery(
             StudyExportSqlQueries.STUDIES,
-            newStudyId,
+            custumIdMap.get(STUDY_ID + studyBo.getId()),
             studyBo.getAppId(),
             studyBo.getCategory(),
             studyBo.getCreatedBy(),
@@ -754,8 +765,7 @@ public class StudyExportService {
   }
 
   private void addStudySequenceInsertSql(
-      StudySequenceBo studySequenceBo, List<String> insertSqlStatements, String newStudyId)
-      throws SQLException {
+      StudySequenceBo studySequenceBo, List<String> insertSqlStatements) throws SQLException {
 
     if (studySequenceBo == null) {
       return;
@@ -781,15 +791,12 @@ public class StudyExportService {
             studySequenceBo.isStudyDashboardStats(),
             studySequenceBo.isStudyExcActiveTask(),
             studySequenceBo.isStudyExcQuestionnaries(),
-            newStudyId);
+            custumIdMap.get(STUDY_ID + studySequenceBo.getStudyId()));
     insertSqlStatements.add(studySequeneInsertQuery);
   }
 
   private void addAnchorDateInsertSql(
-      AnchorDateTypeBo anchorDate,
-      List<String> insertSqlStatements,
-      String newStudyId,
-      String newCustomId)
+      AnchorDateTypeBo anchorDate, List<String> insertSqlStatements, String newCustomId)
       throws SQLException {
 
     if (anchorDate == null) {
@@ -803,15 +810,14 @@ public class StudyExportService {
             newCustomId,
             anchorDate.getHasAnchortypeDraft(),
             anchorDate.getName(),
-            newStudyId,
+            custumIdMap.get(STUDY_ID + anchorDate.getStudyId()),
             anchorDate.getVersion());
 
     insertSqlStatements.add(anchorDateTypeInsertQuery);
   }
 
   private void addStudypagesListInsertSql(
-      List<StudyPageBo> studypageList, List<String> insertSqlStatements, String newStudyId)
-      throws SQLException {
+      List<StudyPageBo> studypageList, List<String> insertSqlStatements) throws SQLException {
 
     if (CollectionUtils.isEmpty(studypageList)) {
       return;
@@ -829,7 +835,7 @@ public class StudyExportService {
               studyPageBo.getImagePath(),
               studyPageBo.getModifiedBy(),
               studyPageBo.getModifiedOn(),
-              newStudyId,
+              custumIdMap.get(STUDY_ID + studyPageBo.getStudyId()),
               studyPageBo.getTitle());
 
       studyPageBoInsertQueryList.add(studyPageBoInsertQuery);
@@ -838,10 +844,7 @@ public class StudyExportService {
   }
 
   private void addEligibilityInsertSql(
-      EligibilityBo eligibilityBo,
-      List<String> insertSqlStatements,
-      String newEligibilityId,
-      String newStudyId)
+      EligibilityBo eligibilityBo, List<String> insertSqlStatements, String newEligibilityId)
       throws SQLException {
 
     if (eligibilityBo == null) {
@@ -859,7 +862,7 @@ public class StudyExportService {
             eligibilityBo.getInstructionalText(),
             eligibilityBo.getModifiedBy(),
             eligibilityBo.getModifiedOn(),
-            newStudyId);
+            custumIdMap.get(STUDY_ID + eligibilityBo.getStudyId()));
 
     insertSqlStatements.add(eligibilityInsertQuery);
   }
@@ -867,7 +870,6 @@ public class StudyExportService {
   private void addNotificationInsertSql(
       List<NotificationBO> notificationBOs,
       List<String> insertSqlStatements,
-      String newStudyId,
       String newCustomId,
       List<String> newQuestionnaireIds,
       List<String> newActiveTaskIds)
@@ -911,7 +913,7 @@ public class StudyExportService {
                 notificationBO.getResourceId(),
                 notificationBO.getScheduleDate(),
                 notificationBO.getScheduleTime(),
-                newStudyId,
+                custumIdMap.get(STUDY_ID + notificationBO.getStudyId()),
                 notificationBO.getxDays(),
                 notificationBO.getScheduleTimestamp());
       }
@@ -925,7 +927,6 @@ public class StudyExportService {
       List<ActiveTaskBo> activeTaskBos,
       List<String> insertSqlStatements,
       List<String> newActiveTaskIds,
-      String newStudyId,
       String newCustomId)
       throws SQLException {
 
@@ -960,7 +961,7 @@ public class StudyExportService {
                 activeTaskBo.getRepeatActiveTask(),
                 activeTaskBo.getScheduleType(),
                 activeTaskBo.getShortTitle(),
-                newStudyId,
+                custumIdMap.get(STUDY_ID + activeTaskBo.getId()),
                 activeTaskBo.getTaskTypeId(),
                 activeTaskBo.getTitle(),
                 activeTaskBo.getVersion());
@@ -1010,8 +1011,7 @@ public class StudyExportService {
     insertSqlStatements.addAll(activeTaskAtrributeInsertQueryList);
   }
 
-  private void addResourceInsertSql(
-      List<ResourceBO> resourceBOs, List<String> insertSqlStatements, String newStudyId)
+  private void addResourceInsertSql(List<ResourceBO> resourceBOs, List<String> insertSqlStatements)
       throws SQLException {
 
     if (CollectionUtils.isEmpty(resourceBOs)) {
@@ -1039,7 +1039,7 @@ public class StudyExportService {
               resourceBO.getSequenceNo(),
               resourceBO.getStartDate(),
               resourceBO.isStatus(),
-              newStudyId,
+              custumIdMap.get(STUDY_ID + resourceBO.getId()),
               resourceBO.isStudyProtocol(),
               resourceBO.isTextOrPdf(),
               resourceBO.getTimePeriodFromDays(),
@@ -1054,8 +1054,7 @@ public class StudyExportService {
   }
 
   private void addStudyPermissionInsertSql(
-      StudyPermissionBO studyPermissionBo, List<String> insertSqlStatements, String newStudyId)
-      throws SQLException {
+      StudyPermissionBO studyPermissionBo, List<String> insertSqlStatements) throws SQLException {
 
     if (studyPermissionBo == null) {
       return;
@@ -1067,7 +1066,7 @@ public class StudyExportService {
             getNewId(),
             studyPermissionBo.getDelFlag(),
             studyPermissionBo.getProjectLead(),
-            newStudyId,
+            custumIdMap.get(STUDY_ID + studyPermissionBo.getStudyId()),
             studyPermissionBo.getUserId(),
             studyPermissionBo.isViewPermission());
 
@@ -1105,10 +1104,7 @@ public class StudyExportService {
   }
 
   private void addConsentBoListInsertSql(
-      List<ConsentBo> consentBoList,
-      List<String> insertSqlStatements,
-      String newStudyId,
-      String newCustomId)
+      List<ConsentBo> consentBoList, List<String> insertSqlStatements, String newCustomId)
       throws SQLException {
 
     if (CollectionUtils.isEmpty(consentBoList)) {
@@ -1142,7 +1138,7 @@ public class StudyExportService {
               consentBo.getNeedComprehensionTest(),
               consentBo.getShareDataPermissions(),
               consentBo.getShortDescription(),
-              newStudyId,
+              custumIdMap.get(STUDY_ID + consentBo.getStudyId()),
               consentBo.getTaglineDescription(),
               consentBo.getTitle(),
               consentBo.getVersion(),
@@ -1153,10 +1149,7 @@ public class StudyExportService {
   }
 
   private void addConsentInfoBoListInsertSql(
-      List<ConsentInfoBo> consentInfoBoList,
-      List<String> insertSqlStatements,
-      String newStudyId,
-      String newCustomId)
+      List<ConsentInfoBo> consentInfoBoList, List<String> insertSqlStatements, String newCustomId)
       throws SQLException {
 
     if (CollectionUtils.isEmpty(consentInfoBoList)) {
@@ -1185,7 +1178,7 @@ public class StudyExportService {
               consentInfoBo.getModifiedOn(),
               consentInfoBo.getSequenceNo(),
               consentInfoBo.getStatus(),
-              newStudyId,
+              custumIdMap.get(STUDY_ID + consentInfoBo.getStudyId()),
               consentInfoBo.getUrl(),
               consentInfoBo.getVersion(),
               consentInfoBo.getVisualStep());
@@ -1198,7 +1191,6 @@ public class StudyExportService {
   private void addComprehensionTestQuestionListInsertSql(
       List<ComprehensionTestQuestionBo> comprehensionTestQuestionList,
       List<String> insertSqlStatements,
-      String newStudyId,
       List<String> newComprehensionTestQuestionIds)
       throws SQLException {
 
@@ -1224,7 +1216,7 @@ public class StudyExportService {
                 comprehensionTestQuestionBo.getSequenceNo(),
                 comprehensionTestQuestionBo.getStatus(),
                 comprehensionTestQuestionBo.getStructureOfCorrectAns(),
-                newStudyId);
+                custumIdMap.get(STUDY_ID + comprehensionTestQuestionBo.getStudyId()));
       }
 
       comprehensionTestQuestionInsertQueryList.add(comprehensionTestQuestionInsertQuery);
@@ -1235,7 +1227,6 @@ public class StudyExportService {
   private void addQuestionnaireBoListInsertSql(
       List<QuestionnaireBo> questionnairesList,
       List<String> insertSqlStatements,
-      String newStudyId,
       String newCustomId,
       List<String> newQuestionnaireIds)
       throws SQLException {
@@ -1268,7 +1259,7 @@ public class StudyExportService {
                 questionnaireBo.getScheduleType(),
                 questionnaireBo.getShortTitle(),
                 questionnaireBo.getStatus(),
-                newStudyId,
+                custumIdMap.get(STUDY_ID + questionnaireBo.getStudyId()),
                 questionnaireBo.getStudyLifetimeEnd(),
                 questionnaireBo.getStudyLifetimeStart(),
                 questionnaireBo.getTitle(),
