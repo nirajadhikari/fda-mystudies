@@ -7038,14 +7038,16 @@ public class StudyDAOImpl implements StudyDAO {
       List<String> comprehensionTestQuestionIds) {
     logger.info("StudyDAOImpl - getComprehensionTestResponseList() - Starts");
     Session session = null;
-    List<ComprehensionTestResponseBo> comprehensionTestResponseList = null;
+    List<ComprehensionTestResponseBo> comprehensionTestResponseList = new ArrayList<>();
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      query =
-          session.createQuery(
-              "From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId in (:comprehensionTestQuestionIds)");
-      query.setParameterList("comprehensionTestQuestionIds", comprehensionTestQuestionIds);
-      comprehensionTestResponseList = query.list();
+      if (CollectionUtils.isNotEmpty(comprehensionTestResponseList)) {
+        query =
+            session.createQuery(
+                "From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId in (:comprehensionTestQuestionIds)");
+        query.setParameterList("comprehensionTestQuestionIds", comprehensionTestQuestionIds);
+        comprehensionTestResponseList = query.list();
+      }
     } catch (Exception e) {
       logger.error("StudyDAOImpl - getComprehensionTestResponseList() - ERROR ", e);
     }
