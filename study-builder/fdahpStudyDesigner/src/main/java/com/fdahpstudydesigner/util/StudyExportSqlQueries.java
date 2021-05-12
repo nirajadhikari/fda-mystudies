@@ -2,7 +2,7 @@ package com.fdahpstudydesigner.util;
 
 public class StudyExportSqlQueries {
 
-  private static final String[] ALLOWED_STUDY_TABLE_NAMES = {
+  public static final String[] ALLOWED_STUDY_TABLE_NAMES = {
     "active_task",
     "active_task_attrtibutes_values",
     "active_task_custom_frequencies",

@@ -167,7 +167,7 @@
 <!--             <div class="help-block"></div> -->
          <div>
            <button type="button" class="btn btn-default gray-btn cancel"  style="display:none">Cancel</button>
-           <button type="button" class="btn btn-default gray-btn submit"  style="display:none">Submit</button>
+           <button type="button" class="btn btn-default gray-btn submit"  style="display:none"  onclick="importStudy();">Submit</button>
            </div>
   
      </div>
@@ -395,7 +395,6 @@
   
   
   function copyStudy(){
-	  debugger
 	   var studyId = "${studyBo.id}";
 	   $
       .ajax({
@@ -417,6 +416,29 @@
       });
 }
   
+  function importStudy(){
+	  debugger
+	    var inputVal = document.getElementById("textUrl").value;
+	   $
+	   .ajax({
+           url: "/studybuilder/studies/import.do?_S=${param._S}",
+           type: "POST",
+           datatype: "json",
+           data: {
+             signedUrl: document.getElementById("textUrl").value,
+             "${_csrf.parameterName}": "${_csrf.token}",
+           },
+        success: function updateAction(data) {
+           $('#basicInfoForm').submit();
+        },
+        error: function status(data, status) {
+          $("body").removeClass("loading");
+        },
+        complete: function () {
+          $('.actBut').removeAttr('disabled');
+        }
+      });
+}
   $("#importId").click(function(){
 	  $('#textUrl').show();
 	  $('.submit').show();

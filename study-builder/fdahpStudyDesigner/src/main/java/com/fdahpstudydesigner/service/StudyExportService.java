@@ -34,13 +34,21 @@ import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.dao.StudyQuestionnaireDAO;
 import com.fdahpstudydesigner.util.FdahpStudyDesignerUtil;
 import com.fdahpstudydesigner.util.IdGenerator;
+import com.fdahpstudydesigner.util.SessionObject;
 import com.fdahpstudydesigner.util.StudyExportSqlQueries;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringReader;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +56,8 @@ import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -57,7 +66,7 @@ public class StudyExportService {
 
   private static final String STUDY_ID = "STUDY_ID_";
 
-  private static Logger logger = Logger.getLogger(StudyExportService.class.getName());
+  private static XLogger logger = XLoggerFactory.getXLogger(StudyExportService.class.getName());
 
   @Autowired private StudyDAO studyDao;
 
@@ -1391,5 +1400,72 @@ public class StudyExportService {
     questionFormInstructionIds.addAll(questionnairesStepsIdsBean.getFormsIds());
 
     return questionnairesStepsIdsBean;
+  }
+
+  public String importStudy(String SignedUrl, SessionObject sessionObject) {
+    logger.entry("StudyExportService - importStudy() - Starts");
+    Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
+
+    if (StringUtils.isNotBlank(SignedUrl)) {
+      String filepath =
+          SignedUrl.substring(SignedUrl.indexOf(UNDER_DIRECTORY), SignedUrl.indexOf("?"));
+
+      validate(SignedUrl, map, filepath);
+    }
+    return SignedUrl;
+  }
+
+  private boolean validate(String SignedUrl, Map<String, String> map, String filepath) {
+    boolean validate = true;
+    List<String> insertStatements = new ArrayList<>();
+    String[] allowedTablesName = StudyExportSqlQueries.ALLOWED_STUDY_TABLE_NAMES;
+    Storage storage = StorageOptions.getDefaultInstance().getService();
+    Blob blob = storage.get(BlobId.of(map.get("cloud.bucket.name"), filepath));
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    blob.downloadTo(outputStream);
+
+    try {
+      // validating release version
+      if (!SignedUrl.contains(map.get("release.version"))) {
+        return false;
+      }
+
+      // validating tableName and insert statements
+      String line;
+      BufferedReader bufferedReader =
+          new BufferedReader(new StringReader(new String(outputStream.toByteArray())));
+
+      while ((line = bufferedReader.readLine()) != null) {
+        String tableName =
+            line.substring(line.indexOf('`') + 1, line.indexOf('`', line.indexOf('`') + 1));
+
+        if (line.startsWith("INSERT") && Arrays.asList(allowedTablesName).contains(tableName)) {
+          insertStatements.add(line);
+        } else {
+          return false;
+        }
+      }
+    } catch (IOException e) {
+      logger.error("StudyExportService - importStudy() - ERROR ", e);
+    }
+
+    // validating checksum
+    StringBuilder content = new StringBuilder();
+    for (String insertSqlStatement : insertStatements) {
+      if (StringUtils.isNotEmpty(insertSqlStatement)) {
+        content.append(insertSqlStatement);
+        content.append(System.lineSeparator());
+      }
+    }
+
+    byte[] bytes = content.toString().getBytes();
+    String checksum =
+        SignedUrl.substring(
+            SignedUrl.indexOf('_', SignedUrl.indexOf('_') + 1) + 1, SignedUrl.indexOf(".sql"));
+    if (!checksum.equals(String.valueOf(getCRC32Checksum(bytes)))) {
+      return false;
+    }
+
+    return validate;
   }
 }

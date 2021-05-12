@@ -5317,6 +5317,23 @@ public class StudyController {
     logger.info("StudyController - exportStudy() - Ends");
   }
 
+  @RequestMapping(value = "/studies/import.do", method = RequestMethod.POST)
+  public void importStudy(HttpServletRequest request, HttpServletResponse response) {
+    logger.info("StudyController - importStudy() - Starts");
+    HttpSession session = request.getSession();
+    SessionObject sessionObject =
+        (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
+
+    String signedUrl =
+        FdahpStudyDesignerUtil.isEmpty(request.getParameter("signedUrl"))
+            ? ""
+            : request.getParameter("signedUrl");
+
+    String copiedStudyId = studyExportService.importStudy(signedUrl, sessionObject);
+
+    logger.info("StudyController - replicateStudy() - Ends");
+  }
+
   @RequestMapping(value = "/studies/{studyId}/replicate.do", method = RequestMethod.POST)
   public void replicateStudy(
       HttpServletRequest request, HttpServletResponse response, @PathVariable String studyId) {
