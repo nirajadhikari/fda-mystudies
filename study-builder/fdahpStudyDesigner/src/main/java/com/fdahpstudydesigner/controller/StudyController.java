@@ -5298,17 +5298,24 @@ public class StudyController {
 
     JSONObject jsonobject = new JSONObject();
     PrintWriter out = null;
-
     SessionObject sesObj =
         (SessionObject)
             request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 
     String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
+    StudyBo studyBo = studyService.getStudyInfo(studyId);
+
     if (StringUtils.isNotEmpty(filePath)) {
-      jsonobject.put("signedUrlOfExportStudy", FdahpStudyDesignerUtil.getSignedUrl(filePath, 12));
+      studyBo.setFilePath(filePath);
+      studyBo.setUserId(sesObj.getUserId());
+      message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId(), sesObj);
+    }
+
+    if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {
       message = FdahpStudyDesignerConstants.SUCCESS;
     }
 
+    jsonobject.put("signedUrlOfExportStudy", FdahpStudyDesignerUtil.getSignedUrl(filePath, 12));
     jsonobject.put(FdahpStudyDesignerConstants.MESSAGE, message);
     response.setContentType(FdahpStudyDesignerConstants.APPLICATION_JSON);
     out = response.getWriter();

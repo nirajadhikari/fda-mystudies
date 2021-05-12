@@ -186,6 +186,17 @@ public class StudyBo implements Serializable {
   @Column(name = "app_id")
   private String appId;
 
+  @Column(name = "file_path")
+  private String filePath;
+
+  public String getFilePath() {
+    return filePath;
+  }
+
+  public void setFilePath(String filePath) {
+    this.filePath = filePath;
+  }
+
   public String getButtonText() {
     return buttonText;
   }

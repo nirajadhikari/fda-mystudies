@@ -4255,6 +4255,7 @@ public class StudyDAOImpl implements StudyDAO {
           dbStudyBo.setModifiedBy(studyBo.getUserId());
           dbStudyBo.setModifiedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
           dbStudyBo.setAppId(studyBo.getAppId());
+          dbStudyBo.setFilePath(studyBo.getFilePath());
           session.update(dbStudyBo);
 
           String searchQuery = "From AnchorDateTypeBo where studyId=:id";
