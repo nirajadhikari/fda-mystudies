@@ -162,14 +162,15 @@
         </button>
          <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
        This action imports study from google cloud storage.
-      </div>
-   
-           <textarea rows="2" cols="20" id="area" style="display:none"></textarea> 
-       <input type="url" name="url" id="textUrl"  placeholder="Signed url" style="display:none"/> 
-       <input type="submit" id="submit" style="display:none" onclick="importStudy();" />
-          </div>
-       
-      
+<!--         <div class="help-block"></div> -->
+            <input type="text"  placeholder="Signed url" style="display:none" id="textUrl" class="form-control p-none" />  
+<!--             <div class="help-block"></div> -->
+         <div>
+           <button type="button" class="btn btn-default gray-btn cancel"  style="display:none">Cancel</button>
+           <button type="button" class="btn btn-default gray-btn submit"  style="display:none">Submit</button>
+           </div>
+  
+     </div>
 
         <div class="form-group mr-sm" style="white-space: normal;">
         <button type="button" class="btn btn-default gray-btn-action "
@@ -418,7 +419,14 @@
   
   $("#importId").click(function(){
 	  $('#textUrl').show();
-	  $('#submit').show();
+	  $('.submit').show();
+	  $('.cancel').show();
+	});
+  
+  $(".cancel").click(function(){
+	  $('#textUrl').hide();
+	  $('.submit').hide();
+	  $('.cancel').hide();
 	});
   
 </script>
