@@ -31,7 +31,8 @@ public class StudyExportSqlQueries {
     "response_type_value",
     "studies",
     "study_permission",
-    "study_sequence"
+    "study_sequence",
+    "study_page"
   };
 
   public static final String ACTIVETASK =
