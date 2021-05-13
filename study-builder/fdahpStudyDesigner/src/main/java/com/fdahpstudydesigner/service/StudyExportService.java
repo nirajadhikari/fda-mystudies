@@ -42,6 +42,7 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.SQLException;
@@ -1305,7 +1306,7 @@ public class StudyExportService {
     }
   }
 
-  public String importStudy(String SignedUrl, SessionObject sessionObject) {
+  public void importStudy(String SignedUrl, SessionObject sessionObject) {
     logger.entry("StudyExportService - importStudy() - Starts");
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
 
@@ -1315,7 +1316,6 @@ public class StudyExportService {
 
       validate(SignedUrl, map, filepath);
     }
-    return SignedUrl;
   }
 
   private boolean validate(String SignedUrl, Map<String, String> map, String filepath) {
@@ -1348,25 +1348,39 @@ public class StudyExportService {
           return false;
         }
       }
+
+      // validating checksum
+      StringBuilder content = new StringBuilder();
+      for (String insertSqlStatement : insertStatements) {
+        if (StringUtils.isNotEmpty(insertSqlStatement)) {
+          content.append(insertSqlStatement);
+          content.append(System.lineSeparator());
+        }
+      }
+
+      byte[] bytes = content.toString().getBytes();
+      String checksum =
+          SignedUrl.substring(
+              SignedUrl.indexOf('_', SignedUrl.indexOf('_') + 1) + 1, SignedUrl.indexOf(".sql"));
+      if (!checksum.equals(String.valueOf(getCRC32Checksum(bytes)))) {
+        return false;
+      }
+
+      // file creation
+      String fileName =
+          SignedUrl.substring(
+              SignedUrl.indexOf("/", SignedUrl.indexOf(UNDER_DIRECTORY)) + 1,
+              SignedUrl.indexOf("?"));
+
+      FileWriter writer;
+      writer = new FileWriter(fileName);
+      for (String str : insertStatements) {
+        writer.write(str + System.lineSeparator());
+      }
+      writer.close();
+
     } catch (IOException e) {
       logger.error("StudyExportService - importStudy() - ERROR ", e);
-    }
-
-    // validating checksum
-    StringBuilder content = new StringBuilder();
-    for (String insertSqlStatement : insertStatements) {
-      if (StringUtils.isNotEmpty(insertSqlStatement)) {
-        content.append(insertSqlStatement);
-        content.append(System.lineSeparator());
-      }
-    }
-
-    byte[] bytes = content.toString().getBytes();
-    String checksum =
-        SignedUrl.substring(
-            SignedUrl.indexOf('_', SignedUrl.indexOf('_') + 1) + 1, SignedUrl.indexOf(".sql"));
-    if (!checksum.equals(String.valueOf(getCRC32Checksum(bytes)))) {
-      return false;
     }
 
     return validate;

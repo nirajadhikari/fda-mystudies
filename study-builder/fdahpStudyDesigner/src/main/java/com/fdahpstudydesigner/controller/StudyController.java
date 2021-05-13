@@ -5336,7 +5336,7 @@ public class StudyController {
             ? ""
             : request.getParameter("signedUrl");
 
-    String copiedStudyId = studyExportService.importStudy(signedUrl, sessionObject);
+    studyExportService.importStudy(signedUrl, sessionObject);
 
     logger.info("StudyController - replicateStudy() - Ends");
   }
