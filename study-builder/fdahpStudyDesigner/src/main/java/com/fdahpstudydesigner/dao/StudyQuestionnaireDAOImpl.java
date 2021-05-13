@@ -5983,4 +5983,28 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     logger.info("StudyQuestionnaireDAOImpl - copyStudyQuestionnaireBo() - Ends");
     return newQuestionnaireBo;
   }
+
+  @Override
+  public List<String> getQuestionsByFormIds(List<String> formIds) {
+    List<String> questionIds = new ArrayList<>();
+    Session session = null;
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      if (CollectionUtils.isNotEmpty(formIds)) {
+        query =
+            session.createQuery(
+                "SELECT FMBO.questionId FROM FormMappingBo FMBO where FMBO.formId in (:formIds)");
+        query.setParameterList("formIds", formIds);
+        questionIds = query.list();
+      }
+
+    } catch (Exception e) {
+      logger.error("StudyQuestionnaireDAOImpl - deleteFromStepQuestion() - ERROR ", e);
+    } finally {
+      if (session != null) {
+        session.close();
+      }
+    }
+    return questionIds;
+  }
 }

@@ -76,6 +76,8 @@ public class StudyExportService {
 
   private static final String ACTIVETASK_ID = "ACTIVETASK_ID_";
 
+  private static final String NEW_ELIGIBILITY_ID = "NEW_ELIGIBILITY_ID_";
+
   private static XLogger logger = XLoggerFactory.getXLogger(StudyExportService.class.getName());
 
   @Autowired private StudyDAO studyDao;
@@ -108,7 +110,7 @@ public class StudyExportService {
     List<StudyPageBo> studypageList = studyDao.getOverviewStudyPagesById(studyBo.getId(), userId);
 
     EligibilityBo eligibilityBo = studyDao.getStudyEligibiltyByStudyId(studyBo.getId());
-    String newEligibilityId = IdGenerator.id();
+    customIdsMap.put(NEW_ELIGIBILITY_ID + eligibilityBo.getId(), IdGenerator.id());
 
     List<EligibilityTestBo> eligibilityBoList = new ArrayList<>();
     if (eligibilityBo != null) {
@@ -162,13 +164,23 @@ public class StudyExportService {
     List<QuestionnaireCustomScheduleBo> questionnairesCustomFrequenciesBoList =
         studyQuestionnaireDAO.getQuestionnairesCustomFrequenciesBoList(questionnaireIds);
 
+    List<FormBo> formsList = studyQuestionnaireDAO.getFormsByInstructionFormIds(instructionFormIds);
+
+    List<String> formQuestionIds = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(formsList)) {
+      for (FormBo formBo : formsList) {
+        formQuestionIds.add(formBo.getFormId());
+      }
+    }
+
+    List<String> questionIds = studyQuestionnaireDAO.getQuestionsByFormIds(formQuestionIds);
+    instructionFormIds.addAll(questionIds);
+
     List<QuestionsBo> questionsList =
         studyQuestionnaireDAO.getQuestionsByInstructionFormIds(instructionFormIds);
 
     List<FormMappingBo> formMappingList =
         studyQuestionnaireDAO.getFormMappingbyInstructionFormIds(instructionFormIds);
-
-    List<FormBo> formsList = studyQuestionnaireDAO.getFormsByInstructionFormIds(instructionFormIds);
 
     List<InstructionsBo> instructionList =
         studyQuestionnaireDAO.getInstructionListByInstructionFormIds(instructionFormIds);
@@ -218,8 +230,8 @@ public class StudyExportService {
       addAnchorDateInsertSql(anchorDate, insertSqlStatements);
       addStudypagesListInsertSql(studypageList, insertSqlStatements);
 
-      addEligibilityInsertSql(eligibilityBo, insertSqlStatements, newEligibilityId);
-      addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements, newEligibilityId);
+      addEligibilityInsertSql(eligibilityBo, insertSqlStatements);
+      addEligibilityTestListInsertSql(eligibilityBoList, insertSqlStatements);
 
       addConsentBoListInsertSql(consentBoList, insertSqlStatements);
       addConsentInfoBoListInsertSql(consentInfoBoList, insertSqlStatements);
@@ -556,8 +568,8 @@ public class StudyExportService {
               StudyExportSqlQueries.FORM_MAPPING,
               customIdsMap.get(INSTRUCTION_FORM_ID + formMappingBo.getId()),
               formMappingBo.getActive(),
-              formMappingBo.getFormId(),
-              formMappingBo.getQuestionId(),
+              customIdsMap.get(INSTRUCTION_FORM_ID + formMappingBo.getFormId()),
+              customIdsMap.get(INSTRUCTION_FORM_ID + formMappingBo.getQuestionId()),
               formMappingBo.getSequenceNo());
       formMappingBoInsertQueryList.add(formMappingInsertQuery);
     }
@@ -735,22 +747,22 @@ public class StudyExportService {
         prepareInsertQuery(
             StudyExportSqlQueries.STUDY_SEQUENCE,
             IdGenerator.id(),
-            studySequenceBo.isActions(),
-            studySequenceBo.isBasicInfo(),
+            studySequenceBo.isActions() ? "Y" : "N",
+            studySequenceBo.isBasicInfo() ? "Y" : "N",
             studySequenceBo.isCheckList(),
-            studySequenceBo.isComprehensionTest(),
-            studySequenceBo.isConsentEduInfo(),
-            studySequenceBo.iseConsent(),
-            studySequenceBo.isEligibility(),
-            studySequenceBo.isMiscellaneousBranding(),
-            studySequenceBo.isMiscellaneousNotification(),
-            studySequenceBo.isMiscellaneousResources(),
-            studySequenceBo.isOverView(),
-            studySequenceBo.isSettingAdmins(),
-            studySequenceBo.isStudyDashboardChart(),
-            studySequenceBo.isStudyDashboardStats(),
-            studySequenceBo.isStudyExcActiveTask(),
-            studySequenceBo.isStudyExcQuestionnaries(),
+            studySequenceBo.isComprehensionTest() ? "Y" : "N",
+            studySequenceBo.isConsentEduInfo() ? "Y" : "N",
+            studySequenceBo.iseConsent() ? "Y" : "N",
+            studySequenceBo.isEligibility() ? "Y" : "N",
+            studySequenceBo.isMiscellaneousBranding() ? "Y" : "N",
+            studySequenceBo.isMiscellaneousNotification() ? "Y" : "N",
+            studySequenceBo.isMiscellaneousResources() ? "Y" : "N",
+            studySequenceBo.isOverView() ? "Y" : "N",
+            studySequenceBo.isSettingAdmins() ? "Y" : "N",
+            studySequenceBo.isStudyDashboardChart() ? "Y" : "N",
+            studySequenceBo.isStudyDashboardStats() ? "Y" : "N",
+            studySequenceBo.isStudyExcActiveTask() ? "Y" : "N",
+            studySequenceBo.isStudyExcQuestionnaries() ? "Y" : "N",
             customIdsMap.get(STUDY_ID + studySequenceBo.getStudyId()));
     insertSqlStatements.add(studySequeneInsertQuery);
   }
@@ -803,8 +815,7 @@ public class StudyExportService {
   }
 
   private void addEligibilityInsertSql(
-      EligibilityBo eligibilityBo, List<String> insertSqlStatements, String newEligibilityId)
-      throws SQLException {
+      EligibilityBo eligibilityBo, List<String> insertSqlStatements) throws SQLException {
 
     if (eligibilityBo == null) {
       return;
@@ -813,7 +824,7 @@ public class StudyExportService {
     String eligibilityInsertQuery =
         prepareInsertQuery(
             StudyExportSqlQueries.ELIGIBILITY,
-            newEligibilityId,
+            customIdsMap.get(NEW_ELIGIBILITY_ID + eligibilityBo.getId()),
             eligibilityBo.getCreatedBy(),
             eligibilityBo.getCreatedOn(),
             eligibilityBo.getEligibilityMechanism(),
@@ -997,7 +1008,7 @@ public class StudyExportService {
     String studyPermissionsInsertQuery =
         prepareInsertQuery(
             StudyExportSqlQueries.STUDY_PERMISSION,
-            getNewId(),
+            IdGenerator.id(),
             studyPermissionBo.getDelFlag(),
             studyPermissionBo.getProjectLead(),
             customIdsMap.get(STUDY_ID + studyPermissionBo.getStudyId()),
@@ -1008,9 +1019,7 @@ public class StudyExportService {
   }
 
   private void addEligibilityTestListInsertSql(
-      List<EligibilityTestBo> eligibilityTestBoList,
-      List<String> insertSqlStatements,
-      String newEligibilityId)
+      List<EligibilityTestBo> eligibilityTestBoList, List<String> insertSqlStatements)
       throws SQLException {
     if (CollectionUtils.isEmpty(eligibilityTestBoList)) {
       return;
@@ -1020,9 +1029,9 @@ public class StudyExportService {
       String eligibilityTestBoBoInsertQuery =
           prepareInsertQuery(
               StudyExportSqlQueries.ELIGIBILITY_TEST,
-              getNewId(),
+              IdGenerator.id(),
               eligibilityTestBo.getActive(),
-              newEligibilityId,
+              customIdsMap.get(NEW_ELIGIBILITY_ID + eligibilityTestBo.getEligibilityId()),
               eligibilityTestBo.getQuestion(),
               eligibilityTestBo.getResponseFormat(),
               eligibilityTestBo.getResponseNoOption(),
@@ -1254,10 +1263,6 @@ public class StudyExportService {
     return sqlQuery;
   }
 
-  private String getNewId() {
-    return com.fdahpstudydesigner.util.IdGenerator.id();
-  }
-
   private void getInstructionFormIds(
       List<QuestionsBo> questionsList,
       List<FormMappingBo> formMappingList,
@@ -1377,6 +1382,7 @@ public class StudyExportService {
       for (String str : insertStatements) {
         writer.write(str + System.lineSeparator());
       }
+
       writer.close();
 
     } catch (IOException e) {
