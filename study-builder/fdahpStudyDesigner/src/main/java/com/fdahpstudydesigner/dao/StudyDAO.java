@@ -249,4 +249,6 @@ public interface StudyDAO {
   public void saveActiveTaskCustomScheduleBo(ActiveTaskCustomScheduleBo activeTaskCustomScheduleBo);
 
   public void saveActiveTaskFrequencyBo(ActiveTaskFrequencyBo activeTaskFrequencyBo);
+
+  public String saveExportFilePath(String studyId, String filePath);
 }

@@ -7042,7 +7042,7 @@ public class StudyDAOImpl implements StudyDAO {
     List<ComprehensionTestResponseBo> comprehensionTestResponseList = new ArrayList<>();
     try {
       session = hibernateTemplate.getSessionFactory().openSession();
-      if (CollectionUtils.isNotEmpty(comprehensionTestResponseList)) {
+      if (CollectionUtils.isNotEmpty(comprehensionTestQuestionIds)) {
         query =
             session.createQuery(
                 "From ComprehensionTestResponseBo CTRBO where CTRBO.comprehensionTestQuestionId in (:comprehensionTestQuestionIds)");
@@ -7353,5 +7353,43 @@ public class StudyDAOImpl implements StudyDAO {
       }
     }
     logger.info("StudyDAOImpl - saveActiveTaskFrequencyBo() - Ends");
+  }
+
+  @Override
+  public String saveExportFilePath(String studyId, String filePath) {
+    logger.entry("begin saveExportFilePath()");
+    Session session = null;
+    String message = FdahpStudyDesignerConstants.FAILURE;
+    StudyBo studyBo = null;
+
+    try {
+      session = hibernateTemplate.getSessionFactory().openSession();
+      transaction = session.beginTransaction();
+
+      if (StringUtils.isNotEmpty(studyId)) {
+        studyBo =
+            (StudyBo)
+                session
+                    .getNamedQuery(FdahpStudyDesignerConstants.STUDY_LIST_BY_ID)
+                    .setString("id", studyId)
+                    .uniqueResult();
+      }
+      if (studyBo != null) {
+        studyBo.setFilePath(filePath);
+        session.update(studyBo);
+        message = FdahpStudyDesignerConstants.SUCCESS;
+      }
+
+      transaction.commit();
+    } catch (Exception e) {
+      transaction.rollback();
+      logger.error("StudyDAOImpl - saveExportFilePath() - ERROR", e);
+    } finally {
+      if ((null != session) && session.isOpen()) {
+        session.close();
+      }
+    }
+    logger.exit("saveExportFilePath() - Ends");
+    return message;
   }
 }

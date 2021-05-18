@@ -66,6 +66,7 @@ import com.fdahpstudydesigner.bo.StudyPermissionBO;
 import com.fdahpstudydesigner.bo.StudySequenceBo;
 import com.fdahpstudydesigner.common.StudyBuilderAuditEvent;
 import com.fdahpstudydesigner.common.StudyBuilderAuditEventHelper;
+import com.fdahpstudydesigner.dao.StudyDAO;
 import com.fdahpstudydesigner.mapper.AuditEventMapper;
 import com.fdahpstudydesigner.service.NotificationService;
 import com.fdahpstudydesigner.service.OAuthService;
@@ -144,6 +145,8 @@ public class StudyController {
   @Autowired private OAuthService oauthService;
 
   @Autowired private StudyExportService studyExportService;
+
+  @Autowired private StudyDAO studyDao;
 
   @RequestMapping("/adminStudies/actionList.do")
   public ModelAndView actionList(HttpServletRequest request) {
@@ -5303,12 +5306,10 @@ public class StudyController {
             request.getSession().getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
 
     String filePath = studyExportService.exportStudy(studyId, sesObj.getUserId());
-    StudyBo studyBo = studyService.getStudyInfo(studyId);
 
     if (StringUtils.isNotEmpty(filePath)) {
-      studyBo.setFilePath(filePath);
-      studyBo.setUserId(sesObj.getUserId());
-      message = studyService.saveOrUpdateStudy(studyBo, sesObj.getUserId(), sesObj);
+
+      message = studyDao.saveExportFilePath(studyId, filePath);
     }
 
     if (message.equalsIgnoreCase(FdahpStudyDesignerConstants.SUCCESS)) {

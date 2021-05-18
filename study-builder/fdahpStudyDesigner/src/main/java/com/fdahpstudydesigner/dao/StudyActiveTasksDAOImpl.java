@@ -1228,13 +1228,16 @@ public class StudyActiveTasksDAOImpl implements StudyActiveTasksDAO {
     Session session = null;
     List<ActiveTaskMasterAttributeBo> taskMasterAttributeBos = new ArrayList<>();
     try {
+
       session = hibernateTemplate.getSessionFactory().openSession();
-      query =
-          session
-              .createQuery(
-                  " from ActiveTaskMasterAttributeBo where taskTypeId in (:activeTaskTypes) ")
-              .setParameterList("activeTaskTypes", activeTaskTypes);
-      taskMasterAttributeBos = query.list();
+      if (CollectionUtils.isNotEmpty(activeTaskTypes)) {
+        query =
+            session
+                .createQuery(
+                    " from ActiveTaskMasterAttributeBo where taskTypeId in (:activeTaskTypes) ")
+                .setParameterList("activeTaskTypes", activeTaskTypes);
+        taskMasterAttributeBos = query.list();
+      }
     } catch (Exception e) {
       logger.error("StudyActiveTasksDAOImpl - getActiveTaskMasterAttributesByType() - ERROR ", e);
     } finally {
