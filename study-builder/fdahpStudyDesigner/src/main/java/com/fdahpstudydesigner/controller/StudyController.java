@@ -5326,7 +5326,8 @@ public class StudyController {
   }
 
   @RequestMapping(value = "/studies/import.do", method = RequestMethod.POST)
-  public void importStudy(HttpServletRequest request, HttpServletResponse response) {
+  public void importStudy(HttpServletRequest request, HttpServletResponse response)
+      throws Exception {
     logger.info("StudyController - importStudy() - Starts");
     HttpSession session = request.getSession();
     SessionObject sessionObject =

@@ -42,7 +42,6 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.SQLException;
@@ -54,12 +53,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
+import javax.sql.DataSource;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.ext.XLogger;
 import org.slf4j.ext.XLoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class StudyExportService {
@@ -91,6 +93,13 @@ public class StudyExportService {
   @Autowired private NotificationDAO notificationDAO;
 
   @Autowired private StudyActiveTasksDAO studyActiveTasksDAO;
+
+  private JdbcTemplate jdbcTemplate;
+
+  @Autowired
+  public void setDataSource(DataSource dataSource) {
+    this.jdbcTemplate = new JdbcTemplate(dataSource);
+  }
 
   private static final String PATH_SEPARATOR = "/";
 
@@ -1401,21 +1410,22 @@ public class StudyExportService {
     }
   }
 
-  public void importStudy(String SignedUrl, SessionObject sessionObject) {
+  @Transactional
+  public void importStudy(String signedUrl, SessionObject sessionObject) throws Exception {
     logger.entry("StudyExportService - importStudy() - Starts");
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
 
-    if (StringUtils.isNotBlank(SignedUrl)) {
+    if (StringUtils.isNotBlank(signedUrl)) {
       String filepath =
-          SignedUrl.substring(SignedUrl.indexOf(UNDER_DIRECTORY), SignedUrl.indexOf("?"));
+          signedUrl.substring(signedUrl.indexOf(UNDER_DIRECTORY), signedUrl.indexOf("?"));
 
-      validate(SignedUrl, map, filepath);
+      validateAndExecuteQuries(signedUrl, map, filepath);
     }
   }
 
-  private boolean validate(String SignedUrl, Map<String, String> map, String filepath) {
-    boolean validate = true;
-    List<String> insertStatements = new ArrayList<>();
+  private void validateAndExecuteQuries(String signedUrl, Map<String, String> map, String filepath)
+      throws Exception {
+
     String[] allowedTablesName = StudyExportSqlQueries.ALLOWED_STUDY_TABLE_NAMES;
     Storage storage = StorageOptions.getDefaultInstance().getService();
     Blob blob = storage.get(BlobId.of(map.get("cloud.bucket.name"), filepath));
@@ -1423,62 +1433,52 @@ public class StudyExportService {
     blob.downloadTo(outputStream);
 
     try {
+
+      String path = signedUrl.substring(0, signedUrl.indexOf(".sql"));
+      String[] tokens = path.split("_");
+      long checksum = Long.parseLong(tokens[tokens.length - 1]);
+      float version = Float.parseFloat(tokens[tokens.length - 2]);
       // validating release version
-      if (!SignedUrl.contains(map.get("release.version"))) {
-        return false;
+      if (Float.parseFloat(map.get("release.version")) < version) {
+        throw new Exception("Unsupported release version ");
       }
 
       // validating tableName and insert statements
       String line;
+      StringBuilder content = new StringBuilder();
       BufferedReader bufferedReader =
           new BufferedReader(new StringReader(new String(outputStream.toByteArray())));
 
+      List<String> insertStatements = new ArrayList<>();
       while ((line = bufferedReader.readLine()) != null) {
+
+        if (!line.startsWith("INSERT")) {
+          throw new Exception("File has been tamperd");
+        }
         String tableName =
             line.substring(line.indexOf('`') + 1, line.indexOf('`', line.indexOf('`') + 1));
 
-        if (line.startsWith("INSERT") && Arrays.asList(allowedTablesName).contains(tableName)) {
-          insertStatements.add(line);
-        } else {
-          return false;
+        if (Arrays.binarySearch(allowedTablesName, tableName) == -1) {
+          throw new Exception("File has been tamperd");
         }
+        insertStatements.add(line);
+        content.append(line);
+        content.append(System.lineSeparator());
       }
 
       // validating checksum
-      StringBuilder content = new StringBuilder();
-      for (String insertSqlStatement : insertStatements) {
-        if (StringUtils.isNotEmpty(insertSqlStatement)) {
-          content.append(insertSqlStatement);
-          content.append(System.lineSeparator());
-        }
-      }
-
       byte[] bytes = content.toString().getBytes();
-      String checksum =
-          SignedUrl.substring(
-              SignedUrl.indexOf('_', SignedUrl.indexOf('_') + 1) + 1, SignedUrl.indexOf(".sql"));
-      if (!checksum.equals(String.valueOf(getCRC32Checksum(bytes)))) {
-        return false;
+      if (checksum != getCRC32Checksum(bytes)) {
+        throw new Exception("File has been tamperd");
       }
 
-      // file creation
-      String fileName =
-          SignedUrl.substring(
-              SignedUrl.indexOf("/", SignedUrl.indexOf(UNDER_DIRECTORY)) + 1,
-              SignedUrl.indexOf("?"));
-
-      FileWriter writer;
-      writer = new FileWriter(fileName);
-      for (String str : insertStatements) {
-        writer.write(str + System.lineSeparator());
+      // execution
+      for (String insert : insertStatements) {
+        jdbcTemplate.execute(insert);
       }
-
-      writer.close();
 
     } catch (IOException e) {
       logger.error("StudyExportService - importStudy() - ERROR ", e);
     }
-
-    return validate;
   }
 }
