@@ -76,7 +76,7 @@ public class StudyListBean {
   }
 
   public StudyListBean(
-      Integer id,
+      String id,
       String customStudyId,
       String name,
       String category,
