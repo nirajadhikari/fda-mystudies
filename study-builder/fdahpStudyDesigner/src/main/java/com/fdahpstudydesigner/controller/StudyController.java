@@ -3321,6 +3321,8 @@ public class StudyController {
           StringUtils.isNumeric(request.getParameter("_S"))
               ? Integer.parseInt(request.getParameter("_S"))
               : 0;
+      String elaboratedText = request.getParameter("elaborated");
+      consentInfoBo.setElaborated(elaboratedText);
       if ((sesObj != null)
           && (sesObj.getStudySession() != null)
           && sesObj.getStudySession().contains(sessionStudyCount)) {
@@ -3594,7 +3596,7 @@ public class StudyController {
               .getSession()
               .setAttribute(
                   sessionStudyCount + FdahpStudyDesignerConstants.ERR_MSG,
-                  "Error in set Setting and Admins");
+                  "Error encountered. Your settings could not be saved.");
           return new ModelAndView("redirect:viewSettingAndAdmins.do", map);
         }
       }

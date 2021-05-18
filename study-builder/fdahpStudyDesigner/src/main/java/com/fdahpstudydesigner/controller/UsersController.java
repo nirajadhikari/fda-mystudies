@@ -215,8 +215,10 @@ public class UsersController {
         }
 
         if (userBO.getRoleId().equals("1")) {
+          // Superadmin flow
           permissions = FdahpStudyDesignerConstants.SUPER_ADMIN_PERMISSIONS;
         } else {
+          // Study admin flow
           if (!"".equals(manageNotifications)) {
             if ("0".equals(manageNotifications)) {
               permissions +=

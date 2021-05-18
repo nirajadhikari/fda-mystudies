@@ -315,11 +315,13 @@
           } else {
             datarow.push(obj.title);
           }
+          
           var actions = "<span class='sprites_icon preview-g mr-lg' data-toggle='tooltip' data-placement='top' title='View' onclick='viewResourceInfo(&#34;"
               + obj.id + "&#34;);'></span>";
           if (obj.status) {
             actions += "<span class='sprites_icon edit-g mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editResourceInfo(&#34;" + obj.id
                 + "&#34;);'></span>"
+
           } else {
             actions += "<span class='sprites_icon edit-inc-draft mr-lg' data-toggle='tooltip' data-placement='top' title='Edit' onclick='editResourceInfo(&#34;"
                 + obj.id + "&#34;);'></span>";
@@ -331,7 +333,7 @@
 
         }
       });
-      if (typeof markAsComplete != 'undefined' && markAsComplete != null && markAsComplete) {
+      if (typeof markAsComplete != 'undefined' && markAsComplete != null && markAsComplete == '') {
         $("#markAsComp").attr("disabled", false);
       }
       $('#resource_list').DataTable().draw();

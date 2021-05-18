@@ -169,6 +169,8 @@ public class ActiveTaskBo implements Serializable {
 
   @Transient private boolean versionFlag = false;
 
+  @Transient private String activeTaskCreated = "";
+
   public ActiveTaskBo() {
     // Do nothing
   }
@@ -492,5 +494,13 @@ public class ActiveTaskBo implements Serializable {
 
   public void setAnchorDateId(String anchorDateId) {
     this.anchorDateId = anchorDateId;
+  }
+
+  public String getActiveTaskCreated() {
+    return activeTaskCreated;
+  }
+
+  public void setActiveTaskCreated(String activeTaskCreated) {
+    this.activeTaskCreated = activeTaskCreated;
   }
 }

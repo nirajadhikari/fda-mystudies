@@ -1,5 +1,6 @@
 /*
  * Copyright © 2017-2018 Harvard Pilgrim Health Care Institute (HPHCI) and its Contributors.
+ * Copyright 2020-2021 Google LLC
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the "Software"), to deal in the Software without restriction, including
  * without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
@@ -400,6 +401,7 @@ public class StudyActiveTasksController {
               activeTaskBo.setModifiedBy(sesObj.getUserId());
               activeTaskBo.setModifiedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
             } else {
+              jsonobject.put("activeTaskCreated", "true");
               activeTaskBo.setCreatedBy(sesObj.getUserId());
               activeTaskBo.setCreatedDate(FdahpStudyDesignerUtil.getCurrentDateTime());
               if ((activeTaskBo.getScheduleType() == null)
@@ -512,9 +514,17 @@ public class StudyActiveTasksController {
             if (StringUtils.isNotEmpty(buttonText)
                 && buttonText.equalsIgnoreCase(FdahpStudyDesignerConstants.COMPLETED_BUTTON)) {
               auditLogEventHelper.logEvent(STUDY_ACTIVE_TASK_MARKED_COMPLETE, auditRequest, values);
-              request
-                  .getSession()
-                  .setAttribute(sessionStudyCount + "sucMsg", "Active task updated successfully");
+              if (ADD.equalsIgnoreCase(activeTaskBo.getActionPage())
+                  && activeTaskBo.getActiveTaskCreated().equals("true")) {
+                request
+                    .getSession()
+                    .setAttribute(sessionStudyCount + "sucMsg", "Active task created successfully");
+              } else {
+                request
+                    .getSession()
+                    .setAttribute(sessionStudyCount + "sucMsg", "Active task updated successfully");
+              }
+
               return new ModelAndView("redirect:/adminStudies/viewStudyActiveTasks.do", map);
             } else {
               StudyBuilderAuditEvent event =

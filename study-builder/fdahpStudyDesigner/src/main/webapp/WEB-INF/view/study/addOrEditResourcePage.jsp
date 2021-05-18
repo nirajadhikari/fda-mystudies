@@ -630,17 +630,25 @@
     $("#xdays, #ydays").on('blur', function () {
       chkDaysValid(false);
     });
+
+    var today, datepicker;
+    today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    
     $('#StartDate').datetimepicker({
       format: 'MM/DD/YYYY',
+      minDate: today,
       ignoreReadonly: true,
       useCurrent: false,
     });
     $('#EndDate').datetimepicker({
       format: 'MM/DD/YYYY',
+      minDate: today,
       ignoreReadonly: true,
       useCurrent: false,
     });
 
+
+    
     $(".datepicker").on("click", function (e) {
       $('#StartDate').data("DateTimePicker").minDate(
           new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate()));
@@ -883,6 +891,18 @@
       resetValidation($(this).parents('form'));
     }
 
+    if ($('#inlineRadio4').prop('checked') == true) {
+        $('.disRadBtn1').prop('disabled', true);
+        $('.disRadBtn1').val('');
+        $('.disRadBtn1').prop('checked', false);
+        $('.disBtn1').prop('disabled', true);
+        $('.disBtn1').val('');
+        $('.disBtn1').removeAttr('required');
+        $('.disBtn2').removeAttr('required');
+        $('.disBtn1').selectpicker('refresh');
+        resetValidation($('.resetDate'));
+      }
+    
     $('#inlineRadio4').on('click', function () {
       if ($('#inlineRadio4').prop('checked') == true) {
         $('.disRadBtn1').prop('disabled', true);
@@ -895,7 +915,7 @@
         $('.disBtn1').selectpicker('refresh');
         resetValidation($('.resetDate'));
       }
-
+      
       var a = $("#inlineRadio4").val();
       if (a == 1) {
         $(".light-txt").addClass("opacity06");
