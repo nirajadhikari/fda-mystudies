@@ -2997,7 +2997,7 @@ public class StudyQuestionnaireController {
                 studyQuestionnaireService.getStudyQuestionnairesByStudyId(customStudyId, true);
           } else {
             questionnaires =
-                studyQuestionnaireService.getStudyQuestionnairesByStudyId(customStudyId, false);
+                studyQuestionnaireService.getStudyQuestionnairesByStudyId(studyId, false);
           }
           boolean markAsComplete = true;
           actMsg =
