@@ -123,10 +123,12 @@ public class StudyExportService {
     List<StudyPageBo> studypageList = studyDao.getOverviewStudyPagesById(studyBo.getId(), userId);
 
     EligibilityBo eligibilityBo = studyDao.getStudyEligibiltyByStudyId(studyBo.getId());
-    customIdsMap.put(NEW_ELIGIBILITY_ID + eligibilityBo.getId(), IdGenerator.id());
 
-    List<EligibilityTestBo> eligibilityBoList =
-        studyDao.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+    List<EligibilityTestBo> eligibilityBoList = new ArrayList<>();
+    if (eligibilityBo != null) {
+      eligibilityBoList = studyDao.viewEligibilityTestQusAnsByEligibilityId(eligibilityBo.getId());
+      customIdsMap.put(NEW_ELIGIBILITY_ID + eligibilityBo.getId(), IdGenerator.id());
+    }
 
     List<ConsentBo> consentBoList = studyDao.getConsentList(studyBo.getId());
 
