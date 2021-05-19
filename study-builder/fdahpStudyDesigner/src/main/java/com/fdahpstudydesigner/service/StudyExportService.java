@@ -1433,7 +1433,6 @@ public class StudyExportService {
     blob.downloadTo(outputStream);
 
     try {
-
       String path = signedUrl.substring(0, signedUrl.indexOf(".sql"));
       String[] tokens = path.split("_");
       long checksum = Long.parseLong(tokens[tokens.length - 1]);
@@ -1476,7 +1475,6 @@ public class StudyExportService {
       for (String insert : insertStatements) {
         jdbcTemplate.execute(insert);
       }
-
     } catch (IOException e) {
       logger.error("StudyExportService - importStudy() - ERROR ", e);
     }
