@@ -417,7 +417,6 @@
 }
   
   function importStudy(){
-	  debugger
 	    var inputVal = document.getElementById("textUrl").value;
 	   $
 	   .ajax({
