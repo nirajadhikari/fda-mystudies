@@ -429,7 +429,7 @@
              "${_csrf.parameterName}": "${_csrf.token}",
            },
         success: function updateAction(data) {
-           $('#basicInfoForm').submit();
+            $('#studyListInfoForm').submit();
         },
         error: function status(data, status) {
           $("body").removeClass("loading");

@@ -5984,6 +5984,7 @@ public class StudyQuestionnaireDAOImpl implements StudyQuestionnaireDAO {
     return newQuestionnaireBo;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<String> getQuestionsByFormIds(List<String> formIds) {
     List<String> questionIds = new ArrayList<>();

@@ -1567,20 +1567,9 @@ public class StudyServiceImpl implements StudyService {
 
     List<ResourceBO> resourceBOs = studyDAO.getResourceList(studyBo.getId());
 
-    List<ActiveTaskBo> activeTaskBos =
-        studyActiveTasksDAO.getStudyActiveTaskByStudyId(studyBo.getId());
-
-    List<String> activeTaskIds = new ArrayList<>();
-    List<String> activeTaskTypes = new ArrayList<>();
-    if (CollectionUtils.isNotEmpty(activeTaskBos)) {
-      for (ActiveTaskBo activeTaskBo : activeTaskBos) {
-        activeTaskIds.add(activeTaskBo.getId());
-        activeTaskTypes.add(activeTaskBo.getTaskTypeId());
-      }
-    }
-
     // replicating study
     studyDAO.cloneStudy(studyBo, sessionObject);
+    saveActiveTaskDetails(studyBo);
 
     if (eligibilityBo != null) {
       studyDAO.cloneEligibility(eligibilityBo, studyBo.getId());
@@ -1613,6 +1602,39 @@ public class StudyServiceImpl implements StudyService {
       }
     }
 
+    if (CollectionUtils.isNotEmpty(resourceBOs)) {
+      for (ResourceBO resourceBO : resourceBOs) {
+        resourceBO.setId(null);
+        resourceBO.setStudyId(studyBo.getId());
+        resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
+        studyDAO.saveOrUpdateResource(resourceBO);
+      }
+    }
+
+    if (CollectionUtils.isNotEmpty(notificationBOs)) {
+      for (NotificationBO notificationBO : notificationBOs) {
+        notificationBO.setNotificationId(null);
+        notificationBO.setStudyId(studyBo.getId());
+        notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
+        notificationDAO.saveNotification(notificationBO);
+      }
+    }
+    return studyBo.getId();
+  }
+
+  private void saveActiveTaskDetails(StudyBo studyBo) {
+
+    List<ActiveTaskBo> activeTaskBos =
+        studyActiveTasksDAO.getStudyActiveTaskByStudyId(studyBo.getId());
+
+    List<String> activeTaskIds = new ArrayList<>();
+    List<String> activeTaskTypes = new ArrayList<>();
+    if (CollectionUtils.isNotEmpty(activeTaskBos)) {
+      for (ActiveTaskBo activeTaskBo : activeTaskBos) {
+        activeTaskIds.add(activeTaskBo.getId());
+        activeTaskTypes.add(activeTaskBo.getTaskTypeId());
+      }
+    }
     List<ActiveTaskAtrributeValuesBo> activeTaskAtrributeValuesBos =
         studyActiveTasksDAO.getActiveTaskAtrributeValuesByActiveTaskId(activeTaskIds);
 
@@ -1652,24 +1674,5 @@ public class StudyServiceImpl implements StudyService {
         }
       }
     }
-
-    if (CollectionUtils.isNotEmpty(resourceBOs)) {
-      for (ResourceBO resourceBO : resourceBOs) {
-        resourceBO.setId(null);
-        resourceBO.setStudyId(studyBo.getId());
-        resourceBO.setCreatedOn(FdahpStudyDesignerUtil.getCurrentDateTime());
-        studyDAO.saveOrUpdateResource(resourceBO);
-      }
-    }
-
-    if (CollectionUtils.isNotEmpty(notificationBOs)) {
-      for (NotificationBO notificationBO : notificationBOs) {
-        notificationBO.setNotificationId(null);
-        notificationBO.setStudyId(studyBo.getId());
-        notificationBO.setCustomStudyId(studyBo.getCustomStudyId());
-        notificationDAO.saveNotification(notificationBO);
-      }
-    }
-    return studyBo.getId();
   }
 }

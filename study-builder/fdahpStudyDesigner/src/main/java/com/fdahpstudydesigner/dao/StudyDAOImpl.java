@@ -6001,7 +6001,6 @@ public class StudyDAOImpl implements StudyDAO {
   @SuppressWarnings("unchecked")
   public String validateDateForStudyAction(StudyBo studyBo, String buttonText) {
     boolean resourceFlag = true;
-    boolean resourceAnchorFlag = true;
     boolean activitiesFalg = true;
     boolean questionarriesFlag = true;
     boolean notificationFlag = true;
@@ -6012,10 +6011,8 @@ public class StudyDAOImpl implements StudyDAO {
     String searchQuery = "";
     Session session = null;
     String message = FdahpStudyDesignerConstants.SUCCESS;
-    boolean isExists = false;
-    List<Integer> anchorDateTypeIds = null;
-    BigInteger anchorCount = null;
     List<String> frequencyList = null;
+
     try {
       frequencyList =
           Arrays.asList(
@@ -6979,6 +6976,7 @@ public class StudyDAOImpl implements StudyDAO {
     return completed;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<ConsentBo> getConsentList(String customStudyId) {
     List<ConsentBo> consentBoList = null;
@@ -7075,6 +7073,7 @@ public class StudyDAOImpl implements StudyDAO {
     return comprehensionTestResponseList;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public void cloneStudy(StudyBo studyBo, SessionObject sessionObject) {
     logger.info("StudyDAOImpl - cloneStudy() - Starts");

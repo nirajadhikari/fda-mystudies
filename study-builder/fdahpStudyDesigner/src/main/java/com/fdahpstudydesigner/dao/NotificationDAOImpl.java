@@ -467,6 +467,7 @@ public class NotificationDAOImpl implements NotificationDAO {
     return gatewayAppList;
   }
 
+  @SuppressWarnings("unchecked")
   @Override
   public List<NotificationBO> getNotificationList(String studyId) {
     logger.entry("begin getNotificationList()");
