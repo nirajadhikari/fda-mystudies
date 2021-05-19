@@ -75,6 +75,9 @@
                     permission="view" data-toggle="tooltip" data-placement="top"
                     title="View last published version"></span>
             </c:if>
+             <span class="sprites_icon copy copyStudy" 
+                   data-toggle="tooltip" data-placement="top"
+                  title="Copy study" onclick='copyStudy("${study.id}");'></span>
           </td>
         </tr>
       </c:forEach>
