@@ -262,6 +262,15 @@ public class StudyExportService {
     List<QuestionReponseTypeBo> questionResponseTypeBo =
         studyQuestionnaireDAO.getQuestionResponseTypeBoByInstructionFormIds(instructionFormIds);
 
+    getNewInstructionFormIds(
+        questionsList,
+        formMappingList,
+        instructionList,
+        formsList,
+        questionResponseSubTypeBoList,
+        questionResponseTypeBo,
+        customIdsMap);
+
     addQuestionnaireBoListInsertSql(questionnairesList, insertSqlStatements, customIdsMap);
 
     addQuestionnaireFrequenciesBoInsertSql(
@@ -284,15 +293,6 @@ public class StudyExportService {
     addQuestionsResponseTypeInsertSql(questionResponseTypeBo, insertSqlStatements, customIdsMap);
 
     addQuestionnairesStepsListInsertSql(questionnairesStepsList, insertSqlStatements, customIdsMap);
-
-    getNewInstructionFormIds(
-        questionsList,
-        formMappingList,
-        instructionList,
-        formsList,
-        questionResponseSubTypeBoList,
-        questionResponseTypeBo,
-        customIdsMap);
   }
 
   private void prepareInsertSqlQueriesForComprehensionTest(
