@@ -35,6 +35,7 @@
                   </label>
             <button type="button" class="btn btn-primary blue-btn addEditStudy"> Create study
             </button>
+              <button type="button" class="btn btn-primary blue-btn importStudy"> Import </button>
           </div>
         </div>
       </c:if>

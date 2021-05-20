@@ -1547,7 +1547,7 @@ public class StudyServiceImpl implements StudyService {
   }
 
   @Override
-  public String replicateStudy(String studyId, SessionObject sessionObject) {
+  public StudyBo replicateStudy(String studyId, SessionObject sessionObject) {
 
     StudyBo studyBo = studyDAO.getStudy(studyId);
 
@@ -1619,7 +1619,7 @@ public class StudyServiceImpl implements StudyService {
         notificationDAO.saveNotification(notificationBO);
       }
     }
-    return studyBo.getId();
+    return studyBo;
   }
 
   private void saveActiveTaskDetails(StudyBo studyBo) {
