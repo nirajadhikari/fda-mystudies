@@ -5346,27 +5346,18 @@ public class StudyController {
   }
 
   @RequestMapping(value = "/adminStudies/replicate.do", method = RequestMethod.POST)
-  public ModelAndView replicateStudy(HttpServletRequest request) {
+  public void replicateStudy(HttpServletRequest request) {
     logger.info("StudyController - replicateStudy() - Starts");
     HttpSession session = request.getSession();
     SessionObject sessionObject =
         (SessionObject) session.getAttribute(FdahpStudyDesignerConstants.SESSION_OBJECT);
-    ModelMap map = new ModelMap();
-    Integer sessionStudyCount =
-        (Integer)
-            (request.getSession().getAttribute("sessionStudyCount") != null
-                ? request.getSession().getAttribute("sessionStudyCount")
-                : 0);
 
     String studyId =
         FdahpStudyDesignerUtil.isEmpty(request.getParameter("studyId"))
             ? ""
             : request.getParameter("studyId");
 
-    StudyBo study = studyService.replicateStudy(studyId, sessionObject);
-    map.addAttribute("_S", sessionStudyCount);
-    request.getSession().setAttribute(sessionStudyCount + "studyId", study.getId());
+    studyService.replicateStudy(studyId, sessionObject);
     logger.info("StudyController - replicateStudy() - Ends");
-    return new ModelAndView("redirect:/adminStudies/viewBasicInfo.do", map);
   }
 }

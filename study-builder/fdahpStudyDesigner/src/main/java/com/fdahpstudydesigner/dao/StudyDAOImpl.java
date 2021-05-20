@@ -7123,10 +7123,14 @@ public class StudyDAOImpl implements StudyDAO {
         }
       }
 
-      StudySequenceBo studySequenceBo = getStudySequenceByStudyId(oldStudyId);
+      /*  StudySequenceBo studySequenceBo = getStudySequenceByStudyId(oldStudyId);
       studySequenceBo.setStudySequenceId(null);
       studySequenceBo.setStudyId(studyId);
       studySequenceBo.setBasicInfo(false);
+      session.save(studySequenceBo);*/
+
+      StudySequenceBo studySequenceBo = new StudySequenceBo();
+      studySequenceBo.setStudyId(studyId);
       session.save(studySequenceBo);
 
       AnchorDateTypeBo anchorDateTypeBo = getAnchorDateDetails(oldStudyId);

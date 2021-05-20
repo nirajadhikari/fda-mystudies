@@ -172,18 +172,6 @@
   
      </div>
 
-        <div class="form-group mr-sm" style="white-space: normal;">
-        <button type="button" class="btn btn-default gray-btn-action "
-                id="copyId" onclick="copyStudy();"
-             <c:choose>
-                <c:when test="${not empty permission}"> disabled </c:when>
-                <c:when test="${not studyPermissionBO.viewPermission}"> disabled </c:when>
-             </c:choose>>Copy
-        </button>
-         <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
-       This action replicates study.
-      </div>
-      </div>
       
     </div>
   </div>
@@ -394,28 +382,7 @@
   });
   
   
-  function copyStudy(){
-	   var studyId = "${studyBo.id}";
-	   $
-      .ajax({
-        url: "/studybuilder/studies/${studyBo.id}/replicate.do",
-        type: "POST",
-        datatype: "json",
-        data: {
-          "${_csrf.parameterName}": "${_csrf.token}",
-        },
-        success: function updateAction(data) {
-           $('#basicInfoForm').submit();
-        },
-        error: function status(data, status) {
-          $("body").removeClass("loading");
-        },
-        complete: function () {
-          $('.actBut').removeAttr('disabled');
-        }
-      });
-}
-  
+ 
   function importStudy(){
 	    var inputVal = document.getElementById("textUrl").value;
 	   $
