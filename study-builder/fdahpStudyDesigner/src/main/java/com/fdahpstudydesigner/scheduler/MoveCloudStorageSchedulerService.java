@@ -104,15 +104,15 @@ public class MoveCloudStorageSchedulerService {
               session
                   .createQuery(
                       "From QuestionnairesStepsBo where questionnairesId IN (SELECT q.id from QuestionnaireBo q where studyId=:studyId)")
-                  .setInteger("studyId", studyBo.getId())
+                  .setString("studyId", studyBo.getId())
                   .list();
-          List<Integer> questionIds = new ArrayList();
+          List<String> questionIds = new ArrayList();
           for (QuestionnairesStepsBo questionnaireSteps : questionnaireStepsList) {
             if (questionnaireSteps.getStepType().equals("Form")) {
-              List<Integer> questionIdList =
+              List<String> questionIdList =
                   session
                       .createQuery("SELECT questionId FROM FormMappingBo where formId =:formId")
-                      .setInteger("formId", questionnaireSteps.getInstructionFormId())
+                      .setString("formId", questionnaireSteps.getInstructionFormId())
                       .list();
               questionIds.addAll(questionIdList);
             } else if (questionnaireSteps.getStepType().equals("Question")) {
@@ -171,7 +171,7 @@ public class MoveCloudStorageSchedulerService {
           List<StudyPageBo> studyPageBoList =
               session
                   .createQuery("from StudyPageBo where studyId=:studyId")
-                  .setInteger("studyId", studyBo.getId())
+                  .setString("studyId", studyBo.getId())
                   .list();
 
           for (StudyPageBo studyPageBo : studyPageBoList) {
@@ -187,7 +187,7 @@ public class MoveCloudStorageSchedulerService {
           List<ResourceBO> resourceBoList =
               session
                   .createQuery("from ResourceBO where studyId=:studyId")
-                  .setInteger("studyId", studyBo.getId())
+                  .setString("studyId", studyBo.getId())
                   .list();
 
           for (ResourceBO resourceBo : resourceBoList) {
