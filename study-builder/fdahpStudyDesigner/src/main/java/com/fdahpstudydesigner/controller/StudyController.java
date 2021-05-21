@@ -5340,13 +5340,19 @@ public class StudyController {
             ? ""
             : request.getParameter("signedUrl");
 
-    studyExportService.importStudy(signedUrl, sessionObject);
+    String msg = studyExportService.importStudy(signedUrl, sessionObject);
+
+    if (msg.contains(FdahpStudyDesignerConstants.SUCCESS)) {
+      request
+          .getSession()
+          .setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Study imported successfully");
+    }
 
     logger.info("StudyController - replicateStudy() - Ends");
   }
 
   @RequestMapping(value = "/adminStudies/replicate.do", method = RequestMethod.POST)
-  public void replicateStudy(HttpServletRequest request) {
+  public ModelAndView replicateStudy(HttpServletRequest request) {
     logger.info("StudyController - replicateStudy() - Starts");
     HttpSession session = request.getSession();
     SessionObject sessionObject =
@@ -5358,6 +5364,11 @@ public class StudyController {
             : request.getParameter("studyId");
 
     studyService.replicateStudy(studyId, sessionObject);
+
+    request
+        .getSession()
+        .setAttribute(FdahpStudyDesignerConstants.SUC_MSG, "Study replicated successfully");
     logger.info("StudyController - replicateStudy() - Ends");
+    return new ModelAndView("redirect:/adminStudies/studyList.do");
   }
 }

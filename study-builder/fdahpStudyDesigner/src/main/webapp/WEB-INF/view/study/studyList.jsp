@@ -6,13 +6,13 @@
 
 <style>
 #studies_list tr th {
-    padding-left: 20px !important;
+    padding-left: 10px !important;
 }
 #studies_list tr td {
-    padding-left: 20px !important;
+    padding-left: 10px !important;
 }
-.published {
-    margin-left: 17px !important;
+.mr-lg {
+    margin-right: 15px !important;
 }
 </style>
 
@@ -73,9 +73,13 @@
                 title="${(not empty study.liveStudyId)?((study.flag)?'Edit draft version':'Edit'):'Edit draft version'}"
                 studyId="${study.id}"></span>
            
-             <span class="sprites_icon copy copyStudy" 
-                   data-toggle="tooltip" data-placement="top" studyId="${study.id}"
-                  title="Copy-into-new" onclick='copyStudy("${study.id}");'></span>
+             <span class="sprites_icon copy copyStudy mr-lg
+              <c:if  test="${empty study.customStudyId}">
+								cursor-none
+						</c:if>" 
+                   data-toggle="tooltip" data-placement="top" studyId="${study.customStudyId}"
+                  title="Copy-into-new" onclick='copyStudy("${study.id}");'>
+                    </span>
            <c:if test="${not empty study.liveStudyId}">
               <span class="eye-inc viewStudyClass mr-lg published" isLive="Yes"
                     studyId="${study.liveStudyId}"
@@ -232,13 +236,13 @@
      
   }
  
-  $('.copyStudy').on('click', function () {
+  function copyStudy(studyId) {
       var form = document.createElement('form');
       form.method = 'post';
       var input = document.createElement('input');
       input.type = 'hidden';
       input.name = 'studyId';
-      input.value = $(this).attr('studyId');
+      input.value = studyId;
       form.appendChild(input);
 
       input = document.createElement('input');
@@ -250,6 +254,7 @@
       form.action = '/studybuilder/adminStudies/replicate.do';
       document.body.appendChild(form);
       form.submit();
-    }); 
+    }
 
+ 
 </script>

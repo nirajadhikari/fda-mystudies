@@ -1,5 +1,9 @@
 package com.fdahpstudydesigner.service;
 
+import static com.fdahpstudydesigner.util.FdahpStudyDesignerConstants.IMPORT_FAILED_DUE_TO_ANOMOLIES_DETECTED_IN_FILLE;
+import static com.fdahpstudydesigner.util.FdahpStudyDesignerConstants.IMPORT_FAILED_DUE_TO_INCOMPATIBLE_VERSION;
+import static com.fdahpstudydesigner.util.FdahpStudyDesignerConstants.SUCCESS;
+
 import com.fdahpstudydesigner.bo.ActiveTaskAtrributeValuesBo;
 import com.fdahpstudydesigner.bo.ActiveTaskBo;
 import com.fdahpstudydesigner.bo.ActiveTaskCustomScheduleBo;
@@ -42,7 +46,6 @@ import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.StringReader;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -1413,20 +1416,23 @@ public class StudyExportService {
   }
 
   @Transactional
-  public void importStudy(String signedUrl, SessionObject sessionObject) throws Exception {
+  public String importStudy(String signedUrl, SessionObject sessionObject) throws Exception {
     logger.entry("StudyExportService - importStudy() - Starts");
     Map<String, String> map = FdahpStudyDesignerUtil.getAppProperties();
-
+    String msg = null;
     if (StringUtils.isNotBlank(signedUrl)) {
       String filepath =
           signedUrl.substring(signedUrl.indexOf(UNDER_DIRECTORY), signedUrl.indexOf("?"));
 
-      validateAndExecuteQuries(signedUrl, map, filepath);
+      msg = validateAndExecuteQuries(signedUrl, map, filepath);
     }
+
+    // if(msg.contains(msg))
+    return msg;
   }
 
-  private void validateAndExecuteQuries(String signedUrl, Map<String, String> map, String filepath)
-      throws Exception {
+  private String validateAndExecuteQuries(
+      String signedUrl, Map<String, String> map, String filepath) throws Exception {
 
     String[] allowedTablesName = StudyExportSqlQueries.ALLOWED_STUDY_TABLE_NAMES;
     Storage storage = StorageOptions.getDefaultInstance().getService();
@@ -1441,7 +1447,7 @@ public class StudyExportService {
       float version = Float.parseFloat(tokens[tokens.length - 2]);
       // validating release version
       if (Float.parseFloat(map.get("release.version")) < version) {
-        throw new Exception("Unsupported release version ");
+        throw new Exception(IMPORT_FAILED_DUE_TO_INCOMPATIBLE_VERSION + map.get("release.version"));
       }
 
       // validating tableName and insert statements
@@ -1454,13 +1460,13 @@ public class StudyExportService {
       while ((line = bufferedReader.readLine()) != null) {
 
         if (!line.startsWith("INSERT")) {
-          throw new Exception("File has been tamperd");
+          throw new Exception(IMPORT_FAILED_DUE_TO_ANOMOLIES_DETECTED_IN_FILLE);
         }
         String tableName =
             line.substring(line.indexOf('`') + 1, line.indexOf('`', line.indexOf('`') + 1));
 
         if (Arrays.binarySearch(allowedTablesName, tableName) == -1) {
-          throw new Exception("File has been tamperd");
+          throw new Exception(IMPORT_FAILED_DUE_TO_ANOMOLIES_DETECTED_IN_FILLE);
         }
         insertStatements.add(line);
         content.append(line);
@@ -1470,15 +1476,17 @@ public class StudyExportService {
       // validating checksum
       byte[] bytes = content.toString().getBytes();
       if (checksum != getCRC32Checksum(bytes)) {
-        throw new Exception("File has been tamperd");
+        throw new Exception(IMPORT_FAILED_DUE_TO_ANOMOLIES_DETECTED_IN_FILLE);
       }
 
       // execution
       for (String insert : insertStatements) {
         jdbcTemplate.execute(insert);
       }
-    } catch (IOException e) {
+    } catch (Exception e) {
       logger.error("StudyExportService - importStudy() - ERROR ", e);
+      return e.getMessage();
     }
+    return SUCCESS;
   }
 }

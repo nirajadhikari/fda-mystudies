@@ -459,6 +459,12 @@ public class FdahpStudyDesignerConstants {
   public static final String FAILURE_EXPORT_STUDY_MESSAGE =
       "Sorry, a technical error occurred and the study could not be exported.";
 
+  public static final String IMPORT_FAILED_DUE_TO_ANOMOLIES_DETECTED_IN_FILLE =
+      "Import failed due to anomalies detected in the exported study file. Please try again with a new signed URL generated at the point of export in the origin Study Builder.";
+
+  public static final String IMPORT_FAILED_DUE_TO_INCOMPATIBLE_VERSION =
+      "Import failed. Studies can only be imported from compatible Study Builder applications (running a platform release version of 2.0.6 or higher, and lower than or equal to the destination platform version  which is";
+
   private FdahpStudyDesignerConstants() {
     // Do nothing
   }

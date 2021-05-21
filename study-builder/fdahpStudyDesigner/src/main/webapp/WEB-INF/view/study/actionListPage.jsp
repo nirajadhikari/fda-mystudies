@@ -151,29 +151,7 @@
        This action exports study to google cloud storage.
       </div>
       </div>
-      
-      <div class="form-group mr-sm" style="white-space: normal;">
-        <button type="button" class="btn btn-default gray-btn-action "
-                id="importId" 
-           <c:choose>
-                <c:when test="${not empty permission}"> disabled </c:when>
-                <c:when test="${not studyPermissionBO.viewPermission}"> disabled </c:when>
-           </c:choose>>Import
-        </button>
-         <div class="form-group mr-sm" style="white-space: normal; margin-top: 4px;">
-       This action imports study from google cloud storage.
-<!--         <div class="help-block"></div> -->
-            <input type="text"  placeholder="Signed url" style="display:none" id="textUrl" class="form-control p-none" />  
-<!--             <div class="help-block"></div> -->
-         <div>
-           <button type="button" class="btn btn-default gray-btn cancel"  style="display:none">Cancel</button>
-           <button type="button" class="btn btn-default gray-btn submit"  style="display:none"  onclick="importStudy();">Submit</button>
-           </div>
-  
-     </div>
 
-      
-    </div>
   </div>
 </div>
 <form:form
@@ -348,7 +326,7 @@
             var message = data.message;
             signedUrl = data.signedUrlOfExportStudy;
             if (message == "SUCCESS") {
-              $("#alertMsg").removeClass('e-box').addClass('s-box').text("Study exported successfully.");
+              $("#alertMsg").removeClass('e-box').addClass('s-box').text("Study exported successfully");
               $('#alertMsg').show();
             } else {
               var errMsg = data.errMsg;
@@ -380,41 +358,5 @@
     document.execCommand("Copy");
     textArea.remove();
   });
-  
-  
- 
-  function importStudy(){
-	    var inputVal = document.getElementById("textUrl").value;
-	   $
-	   .ajax({
-           url: "/studybuilder/studies/import.do?_S=${param._S}",
-           type: "POST",
-           datatype: "json",
-           data: {
-             signedUrl: document.getElementById("textUrl").value,
-             "${_csrf.parameterName}": "${_csrf.token}",
-           },
-        success: function updateAction(data) {
-            $('#studyListInfoForm').submit();
-        },
-        error: function status(data, status) {
-          $("body").removeClass("loading");
-        },
-        complete: function () {
-          $('.actBut').removeAttr('disabled');
-        }
-      });
-}
-  $("#importId").click(function(){
-	  $('#textUrl').show();
-	  $('.submit').show();
-	  $('.cancel').show();
-	});
-  
-  $(".cancel").click(function(){
-	  $('#textUrl').hide();
-	  $('.submit').hide();
-	  $('.cancel').hide();
-	});
   
 </script>
