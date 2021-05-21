@@ -741,6 +741,12 @@ public class ActivityMetaDataDao {
 
           questionResponseTypeMasterInfoList =
               session.createQuery("from QuestionResponsetypeMasterInfoDto").list();
+          StudyDto studyDto =
+              (StudyDto)
+                  session
+                      .getNamedQuery("getLiveStudyIdByCustomStudyId")
+                      .setString(StudyMetaDataEnum.QF_CUSTOM_STUDY_ID.value(), studyId)
+                      .uniqueResult();
 
           if (!instructionIdList.isEmpty()) {
             List<InstructionsDto> instructionsDtoList =
@@ -751,6 +757,7 @@ public class ActivityMetaDataDao {
                     .setParameterList("instructionIdList", instructionIdList)
                     .list();
             if ((instructionsDtoList != null) && !instructionsDtoList.isEmpty()) {
+
               stepsSequenceTreeMap =
                   (TreeMap<Integer, QuestionnaireActivityStepsBean>)
                       this.getStepsInfoForQuestionnaires(
@@ -764,7 +771,8 @@ public class ActivityMetaDataDao {
                           questionnaireStepDetailsMap,
                           null,
                           questionaireStepsList,
-                          questionnaireDto);
+                          questionnaireDto,
+                          studyDto);
             }
           }
 
@@ -791,7 +799,8 @@ public class ActivityMetaDataDao {
                           questionnaireStepDetailsMap,
                           questionResponseTypeMasterInfoList,
                           questionaireStepsList,
-                          questionnaireDto);
+                          questionnaireDto,
+                          studyDto);
             }
           }
 
@@ -822,7 +831,8 @@ public class ActivityMetaDataDao {
                             questionnaireStepDetailsMap,
                             questionResponseTypeMasterInfoList,
                             questionaireStepsList,
-                            questionnaireDto);
+                            questionnaireDto,
+                            studyDto);
               }
             }
           }
@@ -1534,7 +1544,8 @@ public class ActivityMetaDataDao {
       Map<String, QuestionnairesStepsDto> questionnaireStepDetailsMap,
       List<QuestionResponsetypeMasterInfoDto> questionResponseTypeMasterInfoList,
       List<QuestionnairesStepsDto> questionaireStepsList,
-      QuestionnairesDto questionnaireDto)
+      QuestionnairesDto questionnaireDto,
+      StudyDto studyDto)
       throws DAOException {
     LOGGER.entry("begin getStepsInfoForQuestionnaires()");
     TreeMap<Integer, QuestionnaireActivityStepsBean> stepsOrderSequenceTreeMap = new TreeMap<>();
@@ -1560,7 +1571,8 @@ public class ActivityMetaDataDao {
                       questionnaireStepDetailsMap,
                       questionResponseTypeMasterInfoList,
                       questionaireStepsList,
-                      questionnaireDto);
+                      questionnaireDto,
+                      studyDto);
           break;
         case StudyMetaDataConstants.QUESTIONAIRE_STEP_TYPE_FORM:
           stepsOrderSequenceTreeMap =
@@ -1571,7 +1583,8 @@ public class ActivityMetaDataDao {
                       session,
                       stepsSequenceTreeMap,
                       questionnaireStepDetailsMap,
-                      questionResponseTypeMasterInfoList);
+                      questionResponseTypeMasterInfoList,
+                      studyDto);
           break;
         default:
           break;
@@ -1664,7 +1677,8 @@ public class ActivityMetaDataDao {
       Map<String, QuestionnairesStepsDto> questionnaireStepDetailsMap,
       List<QuestionResponsetypeMasterInfoDto> questionResponseTypeMasterInfoList,
       List<QuestionnairesStepsDto> questionaireStepsList,
-      QuestionnairesDto questionnaireDto)
+      QuestionnairesDto questionnaireDto,
+      StudyDto studyDto)
       throws DAOException {
     LOGGER.entry("begin getQuestionDetailsForQuestionnaire()");
     List<QuestionResponseSubTypeDto> destinationConditionList = null;
@@ -1687,7 +1701,7 @@ public class ActivityMetaDataDao {
                 questionBean.setResultType(masterInfo.getResponseTypeCode());
                 questionBean.setFormat(
                     this.getQuestionaireQuestionFormatByType(
-                        questionsDto, masterInfo.getResponseTypeCode(), session));
+                        questionsDto, masterInfo.getResponseTypeCode(), session, studyDto));
                 break;
               }
             }
@@ -1935,7 +1949,8 @@ public class ActivityMetaDataDao {
       Session session,
       SortedMap<Integer, QuestionnaireActivityStepsBean> stepsSequenceTreeMap,
       Map<String, QuestionnairesStepsDto> questionnaireStepDetailsMap,
-      List<QuestionResponsetypeMasterInfoDto> questionResponseTypeMasterInfoList)
+      List<QuestionResponsetypeMasterInfoDto> questionResponseTypeMasterInfoList,
+      StudyDto studyDto)
       throws DAOException {
     LOGGER.entry("begin getFormDetailsForQuestionnaire()");
     try {
@@ -2013,7 +2028,7 @@ public class ActivityMetaDataDao {
                     formQuestionBean.setResultType(masterInfo.getResponseTypeCode());
                     formQuestionBean.setFormat(
                         this.getQuestionaireQuestionFormatByType(
-                            formQuestionDto, masterInfo.getResponseTypeCode(), session));
+                            formQuestionDto, masterInfo.getResponseTypeCode(), session, studyDto));
                     break;
                   }
                 }
@@ -2192,8 +2207,9 @@ public class ActivityMetaDataDao {
   }
 
   public Map<String, Object> getQuestionaireQuestionFormatByType(
-      QuestionsDto questionDto, String questionResultType, Session session) throws DAOException {
-    LOGGER.entry("begin getQuestionaireQuestionFormatByType()");
+      QuestionsDto questionDto, String questionResultType, Session session, StudyDto studyDto)
+      throws DAOException {
+    LOGGER.info("INFO: ActivityMetaDataDao - getQuestionaireQuestionFormatByType() :: Starts");
     Map<String, Object> questionFormat = new LinkedHashMap<>();
     QuestionReponseTypeDto reponseType = null;
     try {
@@ -2210,10 +2226,10 @@ public class ActivityMetaDataDao {
                     .uniqueResult();
         switch (questionResultType) {
           case StudyMetaDataConstants.QUESTION_SCALE:
-            questionFormat = this.formatQuestionScaleDetails(reponseType);
+            questionFormat = this.formatQuestionScaleDetails(reponseType, studyDto);
             break;
           case StudyMetaDataConstants.QUESTION_CONTINUOUS_SCALE:
-            questionFormat = this.formatQuestionContinuousScaleDetails(reponseType);
+            questionFormat = this.formatQuestionContinuousScaleDetails(reponseType, studyDto);
             break;
           case StudyMetaDataConstants.QUESTION_TEXT_SCALE:
             questionFormat = this.formatQuestionTextScaleDetails(questionDto, reponseType, session);
@@ -2222,7 +2238,7 @@ public class ActivityMetaDataDao {
             questionFormat = this.formatQuestionValuePickerDetails(questionDto, session);
             break;
           case StudyMetaDataConstants.QUESTION_IMAGE_CHOICE:
-            questionFormat = this.formatQuestionImageChoiceDetails(questionDto, session);
+            questionFormat = this.formatQuestionImageChoiceDetails(questionDto, session, studyDto);
             break;
           case StudyMetaDataConstants.QUESTION_TEXT_CHOICE:
             questionFormat =
@@ -2288,9 +2304,9 @@ public class ActivityMetaDataDao {
     return questionFormat;
   }
 
-  public Map<String, Object> formatQuestionScaleDetails(QuestionReponseTypeDto reponseType)
-      throws DAOException {
-    LOGGER.entry("begin formatQuestionScaleDetails()");
+  public Map<String, Object> formatQuestionScaleDetails(
+      QuestionReponseTypeDto reponseType, StudyDto studyDto) throws DAOException {
+    LOGGER.info("INFO: ActivityMetaDataDao - formatQuestionScaleDetails() :: Starts");
     Map<String, Object> questionFormat = new LinkedHashMap<>();
     try {
       questionFormat.put(
@@ -2344,7 +2360,11 @@ public class ActivityMetaDataDao {
               : this.getBase64Image(
                   StudyMetaDataUtil.getSignedUrl(
                       propMap.get("cloud.bucket.name"),
-                      propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
+                      StudyMetaDataConstants.STUDIES
+                          + "/"
+                          + studyDto.getCustomStudyId()
+                          + "/"
+                          + propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
                           + reponseType.getMaxImage(),
                       12)));
       questionFormat.put(
@@ -2354,7 +2374,11 @@ public class ActivityMetaDataDao {
               : this.getBase64Image(
                   StudyMetaDataUtil.getSignedUrl(
                       propMap.get("cloud.bucket.name"),
-                      propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
+                      StudyMetaDataConstants.STUDIES
+                          + "/"
+                          + studyDto.getId()
+                          + "/"
+                          + propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
                           + reponseType.getMinImage(),
                       12)));
     } catch (Exception e) {
@@ -2365,8 +2389,8 @@ public class ActivityMetaDataDao {
   }
 
   public Map<String, Object> formatQuestionContinuousScaleDetails(
-      QuestionReponseTypeDto reponseType) throws DAOException {
-    LOGGER.entry("begin formatQuestionContinuousScaleDetails()");
+      QuestionReponseTypeDto reponseType, StudyDto studyDto) throws DAOException {
+    LOGGER.info("INFO: ActivityMetaDataDao - formatQuestionContinuousScaleDetails() :: Starts");
     Map<String, Object> questionFormat = new LinkedHashMap<>();
     try {
       questionFormat.put(
@@ -2413,7 +2437,11 @@ public class ActivityMetaDataDao {
               : this.getBase64Image(
                   StudyMetaDataUtil.getSignedUrl(
                       propMap.get("cloud.bucket.name"),
-                      propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
+                      StudyMetaDataConstants.STUDIES
+                          + "/"
+                          + studyDto.getCustomStudyId()
+                          + "/"
+                          + propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
                           + reponseType.getMaxImage(),
                       12)));
       questionFormat.put(
@@ -2423,7 +2451,11 @@ public class ActivityMetaDataDao {
               : this.getBase64Image(
                   StudyMetaDataUtil.getSignedUrl(
                       propMap.get("cloud.bucket.name"),
-                      propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
+                      StudyMetaDataConstants.STUDIES
+                          + "/"
+                          + studyDto.getId()
+                          + "/"
+                          + propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
                           + reponseType.getMinImage(),
                       12)));
     } catch (Exception e) {
@@ -2527,8 +2559,8 @@ public class ActivityMetaDataDao {
 
   @SuppressWarnings("unchecked")
   public Map<String, Object> formatQuestionImageChoiceDetails(
-      QuestionsDto questionDto, Session session) throws DAOException {
-    LOGGER.entry("begin formatQuestionImageChoiceDetails()");
+      QuestionsDto questionDto, Session session, StudyDto studyDto) throws DAOException {
+    LOGGER.info("INFO: ActivityMetaDataDao - formatQuestionImageChoiceDetails() :: Starts");
     Map<String, Object> questionFormat = new LinkedHashMap<>();
     List<QuestionResponseSubTypeDto> responseSubTypeList = null;
     List<LinkedHashMap<String, Object>> imageChoicesList = new ArrayList<>();
@@ -2550,7 +2582,13 @@ public class ActivityMetaDataDao {
                   : this.getBase64Image(
                       StudyMetaDataUtil.getSignedUrl(
                           propMap.get("cloud.bucket.name"),
-                          propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
+                          StudyMetaDataConstants.STUDIES
+                              + "/"
+                              + studyDto.getCustomStudyId()
+                              + "/"
+                              + propMap
+                                  .get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE)
+                                  .trim()
                               + subType.getImage(),
                           12)));
           imageChoiceMap.put(
@@ -2560,7 +2598,13 @@ public class ActivityMetaDataDao {
                   : this.getBase64Image(
                       StudyMetaDataUtil.getSignedUrl(
                           propMap.get("cloud.bucket.name"),
-                          propMap.get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE).trim()
+                          StudyMetaDataConstants.STUDIES
+                              + "/"
+                              + studyDto.getId()
+                              + "/"
+                              + propMap
+                                  .get(StudyMetaDataConstants.FDA_SMD_QUESTIONNAIRE_IMAGE)
+                                  .trim()
                               + subType.getSelectedImage(),
                           12)));
           imageChoiceMap.put(

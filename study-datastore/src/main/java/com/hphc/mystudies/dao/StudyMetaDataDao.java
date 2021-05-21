@@ -208,7 +208,11 @@ public class StudyMetaDataDao {
                       ? ""
                       : StudyMetaDataUtil.getSignedUrl(
                           propMap.get("cloud.bucket.name"),
-                          propMap.get(StudyMetaDataConstants.FDA_SMD_RESOURCE_PDF_PATH).trim()
+                          StudyMetaDataConstants.STUDIES
+                              + "/"
+                              + resource.getStudyId()
+                              + "/"
+                              + propMap.get(StudyMetaDataConstants.FDA_SMD_RESOURCE_PDF_PATH).trim()
                               + resource.getPdfUrl(),
                           12));
             }
@@ -297,7 +301,13 @@ public class StudyMetaDataDao {
                     ? ""
                     : StudyMetaDataUtil.getSignedUrl(
                         propMap.get("cloud.bucket.name"),
-                        propMap.get(StudyMetaDataConstants.FDA_SMD_STUDY_THUMBNAIL_PATH).trim()
+                        StudyMetaDataConstants.STUDIES
+                            + "/"
+                            + studyDto.getCustomStudyId()
+                            + "/"
+                            + propMap
+                                .get(StudyMetaDataConstants.FDA_SMD_STUDY_THUMBNAIL_PATH)
+                                .trim()
                             + studyDto.getThumbnailImage(),
                         12));
             studyBean.setStudyId(
@@ -936,7 +946,11 @@ public class StudyMetaDataDao {
                       ? ""
                       : StudyMetaDataUtil.getSignedUrl(
                           propMap.get("cloud.bucket.name"),
-                          propMap.get(StudyMetaDataConstants.FDA_SMD_RESOURCE_PDF_PATH).trim()
+                          StudyMetaDataConstants.STUDIES
+                              + "/"
+                              + studyDto.getCustomStudyId()
+                              + "/"
+                              + propMap.get(StudyMetaDataConstants.FDA_SMD_RESOURCE_PDF_PATH).trim()
                               + resourcesDto.getPdfUrl(),
                           12));
             }
@@ -1144,7 +1158,11 @@ public class StudyMetaDataDao {
                     ? ""
                     : StudyMetaDataUtil.getSignedUrl(
                         propMap.get("cloud.bucket.name"),
-                        propMap.get(StudyMetaDataConstants.FDA_SMD_STUDY_PAGE_PATH).trim()
+                        StudyMetaDataConstants.STUDIES
+                            + "/"
+                            + studyDto.getCustomStudyId()
+                            + "/"
+                            + propMap.get(StudyMetaDataConstants.FDA_SMD_STUDY_PAGE_PATH).trim()
                             + studyPageInfo.getImagePath(),
                         12));
 
@@ -1173,7 +1191,11 @@ public class StudyMetaDataDao {
                   ? ""
                   : StudyMetaDataUtil.getSignedUrl(
                       propMap.get("cloud.bucket.name"),
-                      propMap.get(StudyMetaDataConstants.FDA_SMD_STUDY_THUMBNAIL_PATH).trim()
+                      StudyMetaDataConstants.STUDIES
+                          + "/"
+                          + studyDto.getId()
+                          + "/"
+                          + propMap.get(StudyMetaDataConstants.FDA_SMD_STUDY_THUMBNAIL_PATH).trim()
                           + studyDto.getThumbnailImage(),
                       12));
           info.setText(StringUtils.isEmpty(studyDto.getFullName()) ? "" : studyDto.getFullName());
@@ -1622,7 +1644,13 @@ public class StudyMetaDataDao {
                     ? ""
                     : StudyMetaDataUtil.getSignedUrl(
                         propMap.get("cloud.bucket.name"),
-                        propMap.get(StudyMetaDataConstants.FDA_SMD_STUDY_THUMBNAIL_PATH).trim()
+                        StudyMetaDataConstants.STUDIES
+                            + "/"
+                            + studyDto.getCustomStudyId()
+                            + "/"
+                            + propMap
+                                .get(StudyMetaDataConstants.FDA_SMD_STUDY_THUMBNAIL_PATH)
+                                .trim()
                             + studyDto.getThumbnailImage(),
                         12));
             studyBean.setStudyId(

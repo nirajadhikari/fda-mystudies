@@ -464,6 +464,11 @@ public class FdahpStudyDesignerConstants {
 
   public static final String IMPORT_FAILED_DUE_TO_INCOMPATIBLE_VERSION =
       "Import failed. Studies can only be imported from compatible Study Builder applications (running a platform release version of 2.0.6 or higher, and lower than or equal to the destination platform version  which is";
+  public static final String PATH_SEPARATOR = "/";
+
+  public static final String STUDIES = "studies";
+
+  public static final String DEFAULT_IMAGES = "defaultImages";
 
   private FdahpStudyDesignerConstants() {
     // Do nothing

@@ -558,6 +558,7 @@
   }
 
   function viewQuestion(questionId) {
+	  
     $("#questionId").val(questionId);
     $("#actionTypeForFormStep").val('view');
     document.formStepId.action = "/studybuilder/adminStudies/formQuestion.do?_S=${param._S}";
