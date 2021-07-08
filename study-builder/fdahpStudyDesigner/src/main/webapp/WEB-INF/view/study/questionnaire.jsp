@@ -3393,9 +3393,23 @@
       $("#" + id).parent().find(".help-block").empty();
       $("#EndDate" + count).parent().removeClass("has-danger").removeClass("has-error");
       $("#EndDate" + count).parent().find(".help-block").empty();
-      var startDate = $("#" + id).val();
-      var endDate = $("#EndDate" + count).val();
-      if (startDate != '' && endDate != '' && toJSDate(startDate) > toJSDate(endDate)) {
+      
+      var startDate =  moment($("#StartDate" + count).val(), "MM/DD/YYYY").toDate();
+ 	 var startTime = moment($("#customStartTime" + count).val(), "HH:mm A").toDate();
+ 	 
+   	if (isNaN(startTime)) {
+	    return
+	} 
+   	
+ 	 startDate.setHours(startTime.getHours());
+ 	 startDate.setMinutes(startTime.getMinutes());
+ 	 
+ 	 var endDate = moment($("#EndDate" + count).val(), "MM/DD/YYYY").toDate();
+ 	 var endTime = moment($("#customTime" + count).val(), "HH:mm A").toDate();
+ 	 endDate.setHours(endTime.getHours());
+ 	 endDate.setMinutes(endTime.getMinutes() - 1);
+   	
+      if (startDate != '' && endDate != '' && startDate > endDate) {
         $("#" + id).parent().addClass("has-danger").addClass("has-error");
         $("#" + id).parent().find(".help-block").empty().append(
             $("<ul><li> </li></ul>").attr("class","list-unstyled").text(
@@ -3424,12 +3438,28 @@
       $('#' + id).parent().find(".help-block").empty();
       $("#StartDate" + count).parent().removeClass("has-danger").removeClass("has-error");
       $("#StartDate" + count).parent().find(".help-block").empty();
-      var startDate = $("#StartDate" + count).val();
-      var endDate = $('#' + id).val();
-      if (startDate != '' && endDate != '' && toJSDate(startDate) > toJSDate(endDate)) {
+   
+      var startDate =  moment($("#StartDate" + count).val(), "MM/DD/YYYY").toDate();
+  	 var startTime = moment($("#customStartTime" + count).val(), "HH:mm A").toDate();
+  	 
+  	 startDate.setHours(startTime.getHours());
+  	 startDate.setMinutes(startTime.getMinutes());
+  	 
+  	 var endDate = moment($("#EndDate" + count).val(), "MM/DD/YYYY").toDate();
+  	 var endTime = moment($("#customTime" + count).val(), "HH:mm A").toDate();
+	 	if (isNaN(endTime)) {
+	 	    return
+	 	} 
+ 	
+  	 endDate.setHours(endTime.getHours());
+  	 endDate.setMinutes(endTime.getMinutes() - 1);
+  
+      
+      if (startDate != '' && endDate != '' && startDate > endDate) {
         $('#' + id).parent().addClass("has-danger").addClass("has-error");
-        $('#' + id).parent().find(".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+        $('#customTime' + count).parent().find(".help-block-timer").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
             "End date and time should not be less than start date and time"));
+               $('#customTime' + count).val('');
       } else {
         $('#' + id).parent().removeClass("has-danger").removeClass("has-error");
         $('#' + id).parent().find(".help-block").empty();
@@ -4809,6 +4839,10 @@
    	 var manualStartTime = moment($("#" + item).val(), "HH:mm A").toDate();
    	 var manualEndTime =  moment($("#manualEndTime" + count).val(), "HH:mm A").toDate();
    	 
+   	if (isNaN(manualStartTime)) {
+	    return
+	} 
+   	
      var pxday = $("#xdays" + count).val();
      var pxsign = $("#xSign" + count).val() === "0" ? "+" : "-";
      
@@ -4828,13 +4862,15 @@
     	 manualEndTime.setDate(manualEndTime.getDate() + parseInt(pyday));
      }
      
-   	 if (manualStartTime != '' && manualEndTime != '' && manualStartTime > manualEndTime && $('.manually-anchor-option').length === 1) {
+   	 if (manualStartTime != '' && manualEndTime != '' && manualStartTime > manualEndTime) {
    	   $('.help-block-timer').selectpicker('refresh');
    	   $(this).addClass("red-border");
    	   $("#" + item).parent().addClass("has-danger").addClass("has-error");
    	   $("#" + item).parent().find(".help-block-timer").empty().append(
    	   $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X"));
    	   $("#addbtn" + count).addClass("not-allowed");
+   		$("#" + item).val("");
+		return
    	 } else if ($('.manually-anchor-option').length === 1) {
    	   $('.help-block-timer').selectpicker('refresh');
    	   $(this).removeClass("red-border");
@@ -4897,6 +4933,10 @@
    	 var manualEndTime = moment($("#" + item).val(), "HH:mm A").toDate();
    	 var manualStartTime =  moment($("#manualStartTime" + count).val(), "HH:mm A").toDate();
    	 
+	 if (isNaN(manualEndTime)) {
+		return
+	 } 
+
      var pxday = $("#xdays" + count).val();
      var pxsign = $("#xSign" + count).val() === "0" ? "+" : "-";
      
@@ -4941,82 +4981,105 @@
 
     jQuery(document).on("keyup", ".xdays", function () {
     	
-      var xday = $(this).val()
       var parentId = $(this).parent().parent().attr("id").replace('AnchorDate','');
       var parent_id = parseInt(parentId);
-      var xsign = $("#xSign" + parent_id).val() === "0" ? "+" : "-";
-      var xdayValue = parseInt(xsign + "" + xday);
-      var yday = $("#ydays" + parent_id).val();
-      var ysign = $("#ySign" + parent_id).val() === "0" ? "+" : "-";
-      var ydayValue = parseInt(ysign + "" + yday);
-      
-      var startTime = $("#manualStartTime" + parent_id).val();
-      var endTime = $("#manualEndTime" + parent_id).val();
-      
-      if (parent_id === "0") {
+      var manualStartTime = moment($("#manualStartTime" + parent_id).val(), "HH:mm A").toDate();
+    	 var manualEndTime =  moment($("#manualEndTime" + parent_id).val(), "HH:mm A").toDate();
+    	 
+  	if (isNaN(manualStartTime)) {
+ 	    return
+ 	} 
 
-        if (ydayValue !== "") {
-          if (xdayValue > ydayValue) {
-            $(this).addClass("red-border");
-            $("#ydays" + parent_id).addClass("red-border");
-            $("#ydays" + parent_id).parent().addClass('has-error has-danger').find(
-                ".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-                "Y should be greater than or equal to X"));
-            $("#addbtn" + parent_id).addClass("not-allowed");
-          } else {
-            $(this).removeClass("red-border");
-            $("#ydays" + parent_id).removeClass("red-border");
-            $("#ydays" + parent_id).parent().removeClass('has-error has-danger').find(
-                ".help-block").empty();
-            $("#addbtn" + parent_id).removeClass("not-allowed");
-          }
-        }
-
+      var pxday = $("#xdays" + parent_id).val();
+      var pxsign = $("#xSign" + parent_id).val() === "0" ? "+" : "-";
+      
+      if (pxsign === "-") {
+        manualStartTime.setDate(manualStartTime.getDate() - parseInt(pxday));
       } else {
-        var pre_parent_id = $("#AnchorDate" + parent_id).prev().attr("id");
-        if (pre_parent_id && pre_parent_id.indexOf("AnchorDate") >= 0) {
-          pre_parent_id = pre_parent_id.replace('AnchorDate','');
-        }
-        var pre_parent = parseInt(pre_parent_id);
-        var pyday = $("#ydays" + pre_parent).val();
-        var pysign = $("#ySign" + pre_parent).val() === "0" ? "+" : "-";
-        var pydayValue = parseInt(pysign + "" + pyday);
-        
-        if (xdayValue < pydayValue) {
-          $(this).addClass("red-border");
-          $("#ydays" + pre_parent).addClass("red-border");
-          $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append(
-        	$("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-              "X should be less than or equal to Y of the current row and greater than or equal to Y of the previous row"));
-          $("#addbtn" + parent_id).addClass("not-allowed");
-        } else {
-          $(this).removeClass("red-border");
-          $("#ydays" + pre_parent).removeClass("red-border");
-          $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
-          $("#addbtn" + parent_id).addClass("not-allowed");
-          if (ydayValue !== "") {
-            if (xdayValue > ydayValue) {
-              $(this).addClass("red-border");
-              $("#ydays" + parent_id).addClass("red-border");
-              $("#ydays" + parent_id).parent().addClass('has-error has-danger').find(
-                  ".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-                  "Y should be greater than or equal to X"));
-              $("#addbtn" + parent_id).addClass("not-allowed");
-            } else {
-              $(this).removeClass("red-border");
-              $("#ydays" + parent_id).removeClass("red-border");
-              $("#ydays" + parent_id).parent().removeClass('has-error has-danger').find(
-                  ".help-block").empty();
-              $("#addbtn" + parent_id).removeClass("not-allowed");
-            }
-          }
-        }
-
-
+        manualStartTime.setDate(manualStartTime.getDate() + parseInt(pxday));
       }
+      
+      manualStartTime.setMinutes(manualStartTime.getMinutes() + 1);
+      var pyday = $("#ydays" + parent_id).val();
+      var pysign = $("#ySign" + parent_id).val() === "0" ? "+" : "-";
+      
+      if (pysign === "-") {
+     	 manualEndTime.setDate(manualEndTime.getDate() - parseInt(pyday));
+      } else {
+     	 manualEndTime.setDate(manualEndTime.getDate() + parseInt(pyday));
+      }
+      
+      
+       if (parent_id === 0) {
 
-    });
+         if (manualEndTime !== "") {
+           if (manualStartTime > manualEndTime) {
+             $(this).addClass("red-border");
+             $("#ydays" + parent_id).addClass("red-border");
+             $("#manualEndTime" + parent_id).parent().find(".help-block-timer").empty().append(
+             	   	   $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X"));
+                 $("#manualEndTime" + parent_id).val('');
+             $("#addbtn" + parent_id).addClass("not-allowed");
+           } else {
+             $(this).removeClass("red-border");
+             $("#ydays" + parent_id).removeClass("red-border");
+             $("#ydays" + parent_id).parent().removeClass('has-error has-danger').find(
+                 ".help-block").empty();
+             $("#addbtn" + parent_id).removeClass("not-allowed");
+           }
+         }
 
+       } else {
+         var pre_parent_id = $("#AnchorDate" + parent_id).prev().attr("id");
+         if (pre_parent_id && pre_parent_id.indexOf("AnchorDate") >= 0) {
+           pre_parent_id = pre_parent_id.replace('AnchorDate','');
+         }
+         var pre_parent = parseInt(pre_parent_id);
+         var pyday = $("#ydays" + pre_parent).val();
+         var pysign = $("#ySign" + pre_parent).val() === "0" ? "+" : "-";
+         var pydayValue = parseInt(pysign + "" + pyday);
+         var manualEndTimeyday =  moment($("#manualEndTime" + pre_parent).val(), "HH:mm A").toDate();
+         if (pysign === "-") {
+         	manualEndTimeyday.setDate(manualEndTimeyday.getDate() - parseInt(pydayValue));
+         } else {
+         	manualEndTimeyday.setDate(manualEndTimeyday.getDate() + parseInt(pydayValue));
+         }
+         
+         if (manualStartTime < manualEndTimeyday) {
+           $(this).addClass("red-border");
+           $("#ydays" + pre_parent).addClass("red-border");
+           $(this).parent().addClass('has-error has-danger').find(".help-block").empty().append(
+         	$("<ul><li> </li></ul>").attr("class","list-unstyled").text(
+               "X should be less than or equal to Y of the current row and greater than or equal to Y of the previous row"));
+           $("#addbtn" + parent_id).addClass("not-allowed");
+         } else {
+           $(this).removeClass("red-border");
+           $("#ydays" + pre_parent).removeClass("red-border");
+           $(this).parent().removeClass('has-error has-danger').find(".help-block").empty();
+           $("#addbtn" + parent_id).addClass("not-allowed");
+           if (manualEndTime !== "") {
+             if (manualStartTime > manualEndTime) {
+               $(this).addClass("red-border");
+               $("#ydays" + parent_id).addClass("red-border");
+               
+               $("#manualEndTime" + parent_id).parent().find(".help-block-timer").empty().append(
+            	   	   $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X"));
+                $("#manualEndTime" + parent_id).val('');
+               $("#addbtn" + parent_id).addClass("not-allowed");
+             } else {
+               $(this).removeClass("red-border");
+               $("#ydays" + parent_id).removeClass("red-border");
+               $("#ydays" + parent_id).parent().removeClass('has-error has-danger').find(
+                   ".help-block").empty();
+               $("#addbtn" + parent_id).removeClass("not-allowed");
+             }
+           }
+         }
+
+
+       }
+
+     });
     jQuery(document).on("change", ".xdays", function () {
       $(this).parent().parent().siblings().removeClass("current");
       $(this).parent().parent().addClass("current");
@@ -5033,32 +5096,53 @@
     jQuery(document).on("keyup", ".ydays", function () {
     	
       var parent_id = $(this).parent().parent().attr("id").replace('AnchorDate','');
-      var xsign = $("#xSign" + parent_id).val() === "0" ? "+" : "-";
-      var xday = $("#xdays" + parent_id).val();
-      var xdayValue = parseInt(xsign + "" + xday);
-      var yday = $("#ydays" + parent_id).val();
-      var ysign = $("#ySign" + parent_id).val() === "0" ? "+" : "-";
-      var ydayValue = parseInt(ysign + "" + yday);
-      
-      if (ydayValue < xdayValue) {
-        $(this).addClass("red-border");
-        $("#xdays" + parent_id).addClass("red-border");
-        $("#ydays" + parent_id).parent().addClass('has-error has-danger').find(
-            ".help-block").empty().append($("<ul><li> </li></ul>").attr("class","list-unstyled").text(
-            "Y should be greater than or equal to X"));
-        $(this).parent().parent().siblings().removeClass("current");
-        $(this).parent().parent().addClass("current");
-        $(".current").nextAll().remove();
-        $("#addbtn" + parent_id).addClass("not-allowed");
-      } else {
-        $(this).removeClass("red-border");
-        $("#xdays" + parent_id).removeClass("red-border");
-        $("#ydays" + parent_id).parent().removeClass('has-error has-danger').find(
-            ".help-block").empty();
-        $("#addbtn" + parent_id).removeClass("not-allowed");
-      }
+      var manualStartTime = moment($("#manualStartTime" + parent_id).val(), "HH:mm A").toDate();
+    	 var manualEndTime =  moment($("#manualEndTime" + parent_id).val(), "HH:mm A").toDate();
+    	 
+  	if (isNaN(manualEndTime) ) {
+ 	    return
+ 	} 
 
-    });
+      var pxday = $("#xdays" + parent_id).val();
+      var pxsign = $("#xSign" + parent_id).val() === "0" ? "+" : "-";
+      
+      if (pxsign === "-") {
+        manualStartTime.setDate(manualStartTime.getDate() - parseInt(pxday));
+      } else {
+        manualStartTime.setDate(manualStartTime.getDate() + parseInt(pxday));
+      }
+      
+      manualStartTime.setMinutes(manualStartTime.getMinutes() + 1);
+      var pyday = $("#ydays" + parent_id).val();
+      var pysign = $("#ySign" + parent_id).val() === "0" ? "+" : "-";
+      
+      if (pysign === "-") {
+     	 manualEndTime.setDate(manualEndTime.getDate() - parseInt(pyday));
+      } else {
+     	 manualEndTime.setDate(manualEndTime.getDate() + parseInt(pyday));
+      }
+      
+      
+       
+       if (manualEndTime < manualStartTime) {
+         $(this).addClass("red-border");
+         $("#xdays" + parent_id).addClass("red-border");
+         $("#manualEndTime" + parent_id).parent().find(".help-block-timer").empty().append(
+      	   	   $("<ul><li> </li></ul>").attr("class","list-unstyled").text("Y should be greater than X"));
+          $("#manualEndTime" + parent_id).val('');
+         $(this).parent().parent().siblings().removeClass("current");
+         $(this).parent().parent().addClass("current");
+         $(".current").nextAll().remove();
+         $("#addbtn" + parent_id).addClass("not-allowed");
+       } else {
+         $(this).removeClass("red-border");
+         $("#xdays" + parent_id).removeClass("red-border");
+         $("#ydays" + parent_id).parent().removeClass('has-error has-danger').find(
+             ".help-block").empty();
+         $("#addbtn" + parent_id).removeClass("not-allowed");
+       }
+
+     });
 
     jQuery(document).on("change", ".ydays", function () {
       $(this).parent().parent().siblings().removeClass("current");
