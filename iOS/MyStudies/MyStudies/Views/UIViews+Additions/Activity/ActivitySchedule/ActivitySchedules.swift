@@ -44,11 +44,18 @@ class ActivitySchedules: UIView, UITableViewDelegate, UITableViewDataSource {
       as? ActivitySchedules)!
     view.frame = frame
     view.activity = activity
-    view.setHighlightedActivity()
+    var activityCount = 0
+    if activity.activityRuns.isEmpty == false {
+        activityCount = activity.activityRuns.count
+        view.setHighlightedActivity()
+    } else {
+        activityCount = activity.frequencyRuns?.count ?? 0
+    }
     view.tableview?.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
     view.tableview?.delegate = view
     view.tableview?.dataSource = view
-    let height = (activity.activityRuns.count * 44) + 104
+//    let height = (activity.activityRuns.count * 44) + 104
+    let height = (activityCount * 44) + 104
     let maxViewHeight = Int(UIScreen.main.bounds.size.height - 67)
     view.heightLayoutConstraint.constant = CGFloat(
       (height > maxViewHeight) ? maxViewHeight : height
@@ -69,7 +76,11 @@ class ActivitySchedules: UIView, UITableViewDelegate, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return self.activity.activityRuns.count
+    if self.activity.activityRuns.isEmpty, let frequencyRuns = self.activity.frequencyRuns {
+        return frequencyRuns.count
+    } else {
+        return self.activity.activityRuns.count
+    }
   }
 
   func setHighlightedActivity() {
@@ -90,30 +101,56 @@ class ActivitySchedules: UIView, UITableViewDelegate, UITableViewDataSource {
 
     let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
     cell.textLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 13)
-    let activityRun = self.activity.activityRuns[indexPath.row]
-    if var startDate = activityRun.startDate,
-      var endDate = activityRun.endDate
-    {
-      startDate.updateWithOffset()
-      endDate.updateWithOffset()
-      cell.textLabel?.text =
-        ActivitySchedules.formatter.string(from: startDate)
-        + " to "
-        + ActivitySchedules.formatter.string(from: endDate)
-    }
+    if self.activity.activityRuns.isEmpty == false {
+        let activityRun = self.activity.activityRuns[indexPath.row]
+        if var startDate = activityRun.startDate,
+          var endDate = activityRun.endDate
+        {
+          startDate.updateWithOffset()
+          endDate.updateWithOffset()
+          cell.textLabel?.text =
+            ActivitySchedules.formatter.string(from: startDate)
+            + " to "
+            + ActivitySchedules.formatter.string(from: endDate)
+        }
 
-    if activityRun.runId == highlightedRun {
-      cell.textLabel?.textColor = kBlueColor
+        if activityRun.runId == highlightedRun {
+          cell.textLabel?.textColor = kBlueColor
 
-    } else if activityRun.runId < highlightedRun {
-      cell.textLabel?.textColor = UIColor.gray
+        } else if activityRun.runId < highlightedRun {
+          cell.textLabel?.textColor = UIColor.gray
+        }
+    } else if let frequesncyRuns = self.activity.frequencyRuns, frequesncyRuns.count > 0 {
+        let frequencyRun = frequesncyRuns[indexPath.row]
+        
+        if let startDate = frequencyRun["startTime"] as? String, let endDate = frequencyRun["endTime"] as? String {
+            if var startTime = Utilities.getDateFromStringWithOutTimezone(
+                dateString: (startDate)
+            ),
+            var endTime = Utilities.getDateFromStringWithOutTimezone(
+                dateString: (endDate)
+            ) {
+                startTime.updateWithOffset()
+                endTime.updateWithOffset()
+                cell.textLabel?.text =
+                    ActivitySchedules.formatter.string(from: startTime)
+                  + " to "
+                  + ActivitySchedules.formatter.string(from: endTime)
+            }
+        }
+        if indexPath.row == frequesncyRuns.count - 1 {
+            cell.textLabel?.textColor = kBlueColor
+        } else {
+            cell.textLabel?.textColor = UIColor.gray
+        }
     }
+    
     cell.textLabel?.textAlignment = .center
     cell.textLabel?.adjustsFontSizeToFitWidth = true
     return cell
   }
 
-  private static let formatter: DateFormatter = {
+static let formatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.dateFormat = "hh:mma, MMM dd, yyyy"
     return formatter

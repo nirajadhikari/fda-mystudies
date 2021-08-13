@@ -156,9 +156,13 @@ class ActivitiesTableViewCell: UITableViewCell {
       + " missed"
 
     if activity.totalRuns <= 1 {
-      self.buttonMoreSchedules?.isHidden = true
-      self.buttonMoreSchedulesBottomLine?.isHidden = true
-
+        if let frequencyRun = activity.frequencyRuns, frequencyRun.count > 1 {
+            let moreSchedulesTitle = "+" + String(frequencyRun.count - 1) + " more"
+            self.buttonMoreSchedules?.setTitle(moreSchedulesTitle, for: .normal)
+        } else {
+            self.buttonMoreSchedules?.isHidden = true
+            self.buttonMoreSchedulesBottomLine?.isHidden = true
+        }
     } else {
       self.buttonMoreSchedules?.isHidden = false
       self.buttonMoreSchedulesBottomLine?.isHidden = false
@@ -294,22 +298,105 @@ class ActivitiesTableViewCell: UITableViewCell {
     case .scheduled:
       var runStartDate: Date?
       var runEndDate: Date?
-      if let firstRun = activity.activityRuns.first {
-        runStartDate = firstRun.startDate
-        runEndDate = firstRun.endDate
-      } else if activity.currentRun != nil {
-        runStartDate = activity.currentRun.startDate
-        runEndDate = activity.currentRun.endDate
-      } else {
-        let run = activity.activityRuns.filter({ $0.runId == activity.currentRunId }).first
-        runStartDate = run?.startDate
-        runEndDate = run?.endDate
-      }
+//      if let firstRun = activity.activityRuns.first {
+//        runStartDate = firstRun.startDate
+//        runEndDate = firstRun.endDate
+//      } else if activity.currentRun != nil {
+//        runStartDate = activity.currentRun.startDate
+//        runEndDate = activity.currentRun.endDate
+//      } else {
+//        let run = activity.activityRuns.filter({ $0.runId == activity.currentRunId }).first
+//        runStartDate = run?.startDate
+//        runEndDate = run?.endDate
+//      }
+        
+        if activity.currentRun == nil {
+            if let upcomingRun = activity.activityRuns.filter({ $0.runId == activity.currentRunId+1 }).first {
+                runStartDate = upcomingRun.startDate
+                runEndDate = upcomingRun.endDate
+            } else {
+                let run = activity.activityRuns.filter({ $0.runId == activity.currentRunId }).first
+                runStartDate = run?.startDate
+                runEndDate = run?.endDate
+            }
+        }else if let currentRun = activity.currentRun {
+            if let status = activity.userParticipationStatus,
+                  status.status == .abandoned || status.status == .completed {
+                if let upcomingRun = activity.activityRuns.filter({ $0.runId == activity.currentRunId+1 }).first {
+                    runStartDate = upcomingRun.startDate
+                    runEndDate = upcomingRun.endDate
+                } else {
+                    let run = activity.activityRuns.filter({ $0.runId == activity.currentRunId }).first
+                    runStartDate = run?.startDate
+                    runEndDate = run?.endDate
+                }
+            } else {
+                runStartDate = currentRun.startDate
+                runEndDate = currentRun.endDate
+            }
+        } else if let firstRun = activity.activityRuns.first {
+          runStartDate = firstRun.startDate
+          runEndDate = firstRun.endDate
+        } else {
+            let run = activity.activityRuns.filter({ $0.runId == activity.currentRunId }).first
+            runStartDate = run?.startDate
+            runEndDate = run?.endDate
+        }
       if runEndDate == nil || runStartDate == nil {
-        runStartDate = activity.startDate
-        runEndDate = activity.endDate
-      }
-      if var startDate = runStartDate,
+        if let status = activity.userParticipationStatus,
+           status.status == .expired || status.status == .abandoned, let lastRun = activity.frequencyRuns?.last {
+            if let startDate = lastRun["startTime"] as? String, let endDate = lastRun["endTime"] as? String {
+                    if var startTime = Utilities.getDateFromStringWithOutTimezone(
+                        dateString: (startDate)
+                    ),
+                    var endTime = Utilities.getDateFromStringWithOutTimezone(
+                        dateString: (endDate)
+                    ) {
+                        startTime.updateWithOffset()
+                        endTime.updateWithOffset()
+                        labelTime?.text =
+                            ActivitySchedules.formatter.string(from: startTime)
+                          + " to "
+                          + ActivitySchedules.formatter.string(from: endTime)
+                    } else {
+                        labelTime?.text = startDate + " to " + endDate
+                    }
+                
+            } else {
+                runStartDate = activity.startDate
+                runEndDate = activity.endDate
+                if var startDate = runStartDate,
+                  var endDate = runEndDate
+                {
+                  startDate.updateWithOffset()
+                  endDate.updateWithOffset()
+                  let currentRunStartDate = ActivitiesTableViewCell.customScheduleFormatter.string(
+                    from: startDate
+                  )
+                  let currentRunEndDate = ActivitiesTableViewCell.customScheduleFormatter.string(
+                    from: endDate
+                  )
+                  labelTime?.text = currentRunStartDate + " to " + currentRunEndDate
+                }
+            }
+        } else {
+            runStartDate = activity.startDate
+            runEndDate = activity.endDate
+            if var startDate = runStartDate,
+              var endDate = runEndDate
+            {
+              startDate.updateWithOffset()
+              endDate.updateWithOffset()
+              let currentRunStartDate = ActivitiesTableViewCell.customScheduleFormatter.string(
+                from: startDate
+              )
+              let currentRunEndDate = ActivitiesTableViewCell.customScheduleFormatter.string(
+                from: endDate
+              )
+              labelTime?.text = currentRunStartDate + " to " + currentRunEndDate
+            }
+        }
+      } else if var startDate = runStartDate,
         var endDate = runEndDate
       {
         startDate.updateWithOffset()
