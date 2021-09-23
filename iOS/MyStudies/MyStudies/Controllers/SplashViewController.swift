@@ -34,6 +34,12 @@ class SplashViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    let ud = UserDefaults.standard
+    ud.set(true, forKey: kFromSplashScreen)
+    ud.set(0, forKey: kFromBackground)
+    ud.set(false, forKey: kIsShowUpdateAppVersion)
+    ud.synchronize()
   }
 
   override func viewWillAppear(_ animated: Bool) {

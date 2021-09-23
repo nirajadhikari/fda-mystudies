@@ -3,13 +3,13 @@
 <plist version="1.0">
 <dict>
 	<key>appleId</key>
-	<string></string>
+	<string>1555062513</string>
 	<key>ProductTitleName</key>
 	<string>App Name</string>
 	<key>StandaloneStudyId</key>
-	<string>SingleStudy01</string>
+	<string>iOSStudy01</string>
 	<key>IsStandaloneStudyApp</key>
-	<false/>
+	<true/>
 	<key>JoinStudyButtonTitle</key>
 	<string>Participate</string>
 	<key>ViewConsentButtonTitle</key>
